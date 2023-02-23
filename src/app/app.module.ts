@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RegistroComponent } from './components/registro/registro.component';
 import { LoginComponent } from './components/login/login.component';
-import { PrivateComponent } from './components/private/private.component';
 import { NavigateComponent } from './components/navigate/navigate.component';
 import { FormsModule } from '@angular/forms'
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -25,7 +24,6 @@ import { CentroDetalleComponent } from './components/centros/centro-detalle/cent
     AppComponent,
     RegistroComponent,
     LoginComponent,
-    PrivateComponent,
     NavigateComponent,
     HomeComponent,
     AgendaComponent,

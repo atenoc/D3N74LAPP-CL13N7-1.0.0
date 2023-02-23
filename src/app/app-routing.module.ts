@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
-import { PrivateComponent } from './components/private/private.component';
 import { HomeComponent } from './components/home/home.component';
 import { RegistroComponent } from './components/registro/registro.component';
 import { AuthGuard } from './auth.guard';
@@ -23,7 +22,6 @@ const routes: Routes = [
   {path:'usuario-form', component: UsuarioFormComponent, canActivate:[AuthGuard]},
   {path:'usuario-detalle/:id', component: UsuarioDetalleComponent, canActivate:[AuthGuard]},
   {path:'agenda', component: AgendaComponent, canActivate:[AuthGuard]},
-  {path:'private', component: PrivateComponent, canActivate:[AuthGuard]},
   {path:'centros', component: CentroListComponent, canActivate:[AuthGuard]},
   {path:'centro-form', component: CentroFormComponent, canActivate:[AuthGuard]},
   {path:'centro-detalle/:id', component: CentroDetalleComponent, canActivate:[AuthGuard]},
