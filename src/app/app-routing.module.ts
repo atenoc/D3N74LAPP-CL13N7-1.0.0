@@ -9,6 +9,9 @@ import { UsuariosListComponent } from './components/usuarios/usuarios-list/usuar
 import { AgendaComponent } from './components/agenda/agenda.component';
 import { UsuarioFormComponent } from './components/usuarios/usuario-form/usuario-form.component';
 import { UsuarioDetalleComponent } from './components/usuarios/usuario-detalle/usuario-detalle.component';
+import { CentroListComponent } from './components/centros/centro-list/centro-list.component';
+import { CentroFormComponent } from './components/centros/centro-form/centro-form.component';
+import { CentroDetalleComponent } from './components/centros/centro-detalle/centro-detalle.component';
 
 
 const routes: Routes = [
@@ -21,6 +24,9 @@ const routes: Routes = [
   {path:'usuario-detalle/:id', component: UsuarioDetalleComponent, canActivate:[AuthGuard]},
   {path:'agenda', component: AgendaComponent, canActivate:[AuthGuard]},
   {path:'private', component: PrivateComponent, canActivate:[AuthGuard]},
+  {path:'centros', component: CentroListComponent, canActivate:[AuthGuard]},
+  {path:'centro-form', component: CentroFormComponent, canActivate:[AuthGuard]},
+  {path:'centro-detalle/:id', component: CentroDetalleComponent, canActivate:[AuthGuard]},
 ];
 
 @NgModule({

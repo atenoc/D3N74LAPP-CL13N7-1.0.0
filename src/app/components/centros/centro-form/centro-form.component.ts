@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Centro } from 'src/app/models/Centro.model';
+import { CentroService } from 'src/app/services/centro.service';
 
 @Component({
   selector: 'app-centro-form',
@@ -7,9 +10,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CentroFormComponent implements OnInit {
 
-  constructor() { }
+  centro = { }
+
+  constructor(private centroService:CentroService, private router: Router) { }
 
   ngOnInit() {
+  }
+
+  crearCentro(){
+
+    var nuevoCentroJson = JSON.parse(JSON.stringify(this.centro))
+    nuevoCentroJson.id_usuario=localStorage.getItem('idusuario')
+    console.log("nuevoCentroJson a registrar: "+JSON.stringify(nuevoCentroJson))
+
+    this.centroService.createCentro(nuevoCentroJson)
+    .subscribe(
+      res => {
+        console.log("Centro creado")
+        this.router.navigate(['/centros'])
+      },
+      err => console.log(err)
+    )
   }
 
 }

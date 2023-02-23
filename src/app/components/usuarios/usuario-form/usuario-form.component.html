@@ -1,26 +1,30 @@
-<div class="col-lg-4 mx-auto text-center" style="margin-top: 80px;">
+<div class="col-lg-3 mx-auto text-center" style="margin-top: 80px;">
 
     <div class="card">
 
-        <div class="card-header">Registro de Usuarios</div>
+        <div class="card-header"><strong>Registro de Usuarios </strong></div>
         <div class="card-body">
 
             <form (submit)="crearUsuario()">
         
                 <div class="form-group">
-                    <label >Correo </label>
-                    <input type="email" [(ngModel)]="user.correo" class="form-control" name="correo" >
+                    <small class="form-text text-muted">Correo</small>
+                    <input type="email" [(ngModel)]="user.correo" class="form-control" name="correo" placeholder="ejemplo@correo.com.mx">
                 </div>
                 <div class="form-group">
-                    <label >Contraseña</label>
-                    <input type="password" [(ngModel)]="user.llave" name="llave"  >
+                    <small class="form-text text-muted">Contraseña</small>
+                    <input type="password" [(ngModel)]="user.llave" class="form-control" name="llave" placeholder="********">
                 </div>
                 <div class="form-group">
-                    <label >Rol</label>
-                    <input type="password" [(ngModel)]="user.rol" name="rol"  >
+                    <small class="form-text text-muted">Rol</small>
+                    <!-- <input type="text" [(ngModel)]="user.rol" class="form-control" name="rol"  placeholder="Selecciona una opción">-->
+                    <select [(ngModel)]="user.rol" class="form-control" name="rol">
+                        <option>admin</option>
+                        <option>asistente</option>
+                    </select>
                 </div>
         
-                <button type="submit" class="btn btn-primary">Agregar</button>
+                <button type="submit" class="btn btn-primary btn-block">Agregar</button>
             </form>
 
         </div>
