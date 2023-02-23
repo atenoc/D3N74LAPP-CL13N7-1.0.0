@@ -1,1 +1,38 @@
-<p>centro-detalle works!</p>
+<div class="col-lg-3 mx-auto text-center" style="margin-top: 80px;">
+
+    <div *ngIf="!centro; else main_content">
+        <h1>Cargando...</h1>
+    </div>
+    <ng-template #main_content>
+
+        <div class="card">
+            <div class="card-header"> <strong>Editar Centro </strong> </div>
+            <form class="card-body" (submit)="updateCentro(nombre, telefono, correo, direccion)">
+
+                <div class="form-group">
+                    <small class="form-text text-muted">Nombre</small>
+                    <input type="text" class="form-control" [value]="centro.nombre" #nombre>
+                </div>
+                <div class="form-group">
+                    <small class="form-text text-muted">Teléfono</small>
+                    <input type="text" class="form-control" [value]="centro.telefono" #telefono>
+                </div>
+                <div class="form-group">
+                    <small class="form-text text-muted">Correo</small>
+                    <input type="text" class="form-control" [value]="centro.correo" #correo>
+                </div>
+    
+                <div class="form-group">
+                    <small class="form-text text-muted">Dirección</small>
+                    <textarea class="form-control" rows="2" [value]="centro.direccion" #direccion></textarea>
+                </div>
+                                
+                <button class="btn btn-primary btn-block">
+                    Actualizar Datos
+                </button>
+            </form>
+
+        </div>      
+    </ng-template>
+
+</div>

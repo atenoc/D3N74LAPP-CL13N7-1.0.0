@@ -17,11 +17,27 @@ export class CentroListComponent implements OnInit {
   ngOnInit() {
     this.centroService.getCentros().subscribe(
       res=>{
-        console.log("Listado de centros: " + JSON.stringify(res) )
+        console.log("Listado de centros <-> " + res)
+        //console.log("Listado de centros: " + JSON.stringify(res))
         this.centros = res;
       },
      err => console.log(err)
     )
+  }
+
+  selectedIdUser(id: string) {
+    console.log("id seleccionado: "+id)
+    this.router.navigate(['/centro-detalle', id]);
+  }
+
+  deleteUser(id: string) {
+    this.centroService.deleteCentro(id)
+      .subscribe(res => {
+        console.log("Centro eliminado:" + res)
+        /* Recargamos el componente*/  
+        this.ngOnInit()
+        this.router.navigate(['/centros']);
+      })
   }
 
 }
