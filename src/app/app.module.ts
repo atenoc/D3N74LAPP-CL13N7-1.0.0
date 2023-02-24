@@ -18,6 +18,7 @@ import { UsuarioDetalleComponent } from './components/usuarios/usuario-detalle/u
 import { CentroListComponent } from './components/centros/centro-list/centro-list.component';
 import { CentroFormComponent } from './components/centros/centro-form/centro-form.component';
 import { CentroDetalleComponent } from './components/centros/centro-detalle/centro-detalle.component';
+import { PerfilComponent } from './components/perfil/perfil.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { CentroDetalleComponent } from './components/centros/centro-detalle/cent
     UsuarioDetalleComponent,
     CentroListComponent,
     CentroFormComponent,
-    CentroDetalleComponent
+    CentroDetalleComponent,
+    PerfilComponent
   ],
   imports: [
     BrowserModule,

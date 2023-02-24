@@ -31,4 +31,8 @@ export class CentroService {
   updateCentro(id: string, nombre: string, telefono: string, correo:string, direccion:string) {
     return this.http.patch(`${this.URI}/${id}`, {nombre, telefono, correo, direccion});
   }
+
+  getCentroByIdUser(id_usuario: string) {
+    return this.http.get<Centro>(`${this.URI}/usuario/${id_usuario}`);
+  }
 }

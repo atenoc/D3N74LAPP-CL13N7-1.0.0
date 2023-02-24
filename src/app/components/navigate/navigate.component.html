@@ -43,8 +43,20 @@
             </li>
           </ng-container>
           <ng-template #login>
+            <!-- 
             <li class="nav-item">
               <a class="nav-link">{{ usuario }} </a>
+            </li>
+            -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ usuario }}
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" routerLink="/perfil">Mi Perfil</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">...</a>
+              </div>
             </li>
             <li class="nav-item ml-2">
               <button class="btn btn-outline-light my-2 my-sm-0" (click)="authService.logout()">Salir</button>
