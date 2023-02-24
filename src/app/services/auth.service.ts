@@ -3,15 +3,17 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Usuario } from '../models/Usuario.model';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  URI = 'http://localhost:4000/api/seguridad';
+  //URI = 'http://localhost:4000/api/seguridad';
+  URI = environment.urlApiSeguridad
 
-  // usuario lo obtiene de localstorage, para al actualizar la página obtenga el usuario logueado
+  // usuario almacenado en localstorage, para al actualizar la página obtenga el usuario logueado en el componente navigate
   private messageSource = new BehaviorSubject<string>(localStorage.getItem('usuario')) 
   mensajeActual = this.messageSource.asObservable()
 
@@ -40,7 +42,7 @@ export class AuthService {
 
   logout(){
     localStorage.removeItem('token')
-    localStorage.removeItem('idusuario')
+    localStorage.removeItem('id_us')
     localStorage.removeItem('usuario')
 
     this.router.navigate(['/login'])

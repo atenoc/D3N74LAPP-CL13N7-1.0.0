@@ -18,7 +18,7 @@ export class PerfilComponent implements OnInit {
 
   ngOnInit() {
 
-    this.usuarioService.getUsuario(localStorage.getItem('idusuario'))   
+    this.usuarioService.getUsuario(localStorage.getItem('id_us'))   
       .subscribe(
         res => {
           this.usuario = res;
@@ -27,7 +27,7 @@ export class PerfilComponent implements OnInit {
         err => console.log("error: " + err)
       )
 
-    this.centroService.getCentroByIdUser(localStorage.getItem('idusuario')) 
+    this.centroService.getCentroByIdUser(localStorage.getItem('id_us')) 
       .subscribe(
         res => {
           this.centro = res;

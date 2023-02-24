@@ -13,15 +13,10 @@ export class LoginComponent implements OnInit {
   user = { }
   mensajeError: String
   mostrarError: Boolean
-
   correoUsuario: string
-
   usuario: Usuario
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
   }
@@ -67,7 +62,7 @@ export class LoginComponent implements OnInit {
       res => {
         console.log("Id usuario logueado: " + res.id)
         //Almacenamos el Id del usuario obtenido
-        localStorage.setItem('idusuario', res.id)
+        localStorage.setItem('id_us', res.id)
 
         //Actualizamos el usuario logueado
         this.actualizarUsuarioLogueado(res.correo)

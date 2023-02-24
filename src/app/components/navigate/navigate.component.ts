@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { LoginComponent } from '../login/login.component';
 
 @Component({
   selector: 'app-navigate',
@@ -9,12 +10,12 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class NavigateComponent implements OnInit {
 
-  usuario: string
+  correoUsuario: string
 
   constructor(private authService: AuthService, private router:Router) { }
 
   ngOnInit() {
-    this.authService.mensajeActual.subscribe(usuario => this.usuario = usuario)
+    this.authService.mensajeActual.subscribe(correoUsuario => this.correoUsuario = correoUsuario)
   }
 
 }

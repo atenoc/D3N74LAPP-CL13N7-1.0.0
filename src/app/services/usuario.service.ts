@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment.prod';
 import { Usuario } from '../models/Usuario.model';
 
 @Injectable({
@@ -8,7 +9,8 @@ import { Usuario } from '../models/Usuario.model';
 })
 export class UsuarioService {
 
-  URI = 'http://localhost:4000/api/usuarios';
+  //URI = 'http://localhost:4000/api/usuarios';
+  URI = environment.urlApiUsuarios
 
   constructor(private http: HttpClient, private router:Router) { }
 

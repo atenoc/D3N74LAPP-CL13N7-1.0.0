@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment.prod';
 import { Centro } from '../models/Centro.model';
 
 @Injectable({
@@ -8,7 +9,8 @@ import { Centro } from '../models/Centro.model';
 })
 export class CentroService {
 
-  URI = 'http://localhost:4000/api/centros';
+  //URI = 'http://localhost:4000/api/centros';
+  URI = environment.urlApiCentros
 
   constructor(private http: HttpClient, private router:Router) { }
 
