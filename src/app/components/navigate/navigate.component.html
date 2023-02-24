@@ -10,7 +10,7 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/home">Inicio</a>
         </li>
-        <li class="nav-item">
+        <li *ngIf="rol=='sop'" class="nav-item">
           <a class="nav-link" routerLink="/usuarios">Usuarios</a>
         </li>
         <li class="nav-item">
@@ -59,7 +59,7 @@
               </div>
             </li>
             <li class="nav-item ml-2">
-              <button class="btn btn-outline-light my-2 my-sm-0" (click)="authService.logout()">Salir</button>
+              <button class="btn btn-outline-light my-2 my-sm-0" (click)="authService.logout(); reload()">Salir</button>
             </li>
           </ng-template>
         </ul>
