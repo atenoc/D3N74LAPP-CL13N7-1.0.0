@@ -7,7 +7,7 @@
 
         <div class="card">
             <div class="card-header"> <strong>Editar Usuario </strong> </div>
-            <form class="card-body" (submit)="updateUsuario(nombre, correo, rol)">
+            <form class="card-body" (submit)="updateUsuario(correo, llave, rol)">
 
                 <div class="form-group">
                     <small class="form-text text-muted">Correo</small>
@@ -16,7 +16,7 @@
     
                 <div class="form-group">
                     <small class="form-text text-muted">Contraseña </small>
-                    <input type="password" class="form-control" placeholder="Contraseña" [value]="usuario.llave" #nombre>
+                    <input type="password" class="form-control" placeholder="Contraseña" [value]="usuario.llave" #llave>
                 </div>
                 
                 <div class="form-group">

@@ -19,7 +19,7 @@ export class UsuarioDetalleComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.id = params['id'];
       //console.log("id obtenido: " + this.id)
-      this.usuariosService.getUsuario(this.id)   //volver a llamar los datos con el id recibido
+      this.usuariosService.getUsuario$(this.id)   //volver a llamar los datos con el id recibido
       .subscribe(
         res => {
           this.usuario = res;

@@ -27,7 +27,7 @@ export class NavigateComponent implements OnInit {
     if(this.id_us!=null){
       console.log("Usuario activo en ls")
 
-      this.usuarioService.getUsuario(this.id_us)
+      this.usuarioService.getUsuario$(this.id_us)
       .subscribe(
         res => {
           this.usuario = res;
