@@ -16,7 +16,7 @@ export class NavigateComponent implements OnInit {
   correoUsuario: string
   rolUsuario:string
 
-  constructor(private authService: AuthService, private router:Router, private usuarioService:UsuarioService) { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
     this.authService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
@@ -25,7 +25,7 @@ export class NavigateComponent implements OnInit {
         this.idUsuario=this.usuario.id
         this.correoUsuario=this.usuario.correo
         this.rolUsuario=this.usuario.rol
-        console.log("rol:" + this.usuario.rol)
+        console.log("rol: " + this.usuario.rol)
       },
       err => console.log("error: " + err)
     )

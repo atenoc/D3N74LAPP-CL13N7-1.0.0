@@ -15,13 +15,15 @@ export class PerfilComponent implements OnInit {
   usuario: Usuario
   centro: Centro
 
-  constructor(private authService:AuthService, private usuarioService:UsuarioService, private centroService:CentroService) {}
+  constructor(private authService:AuthService, private centroService:CentroService) {}
 
   ngOnInit() {
 
+    // Consulta de Usuario por Correo
     this.authService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
       res => {
         this.usuario = res;
+        // Consulta Centro del usuario
         this.centroService.getCentroByIdUser(this.usuario.id).subscribe(
           res => {
             this.centro = res;
