@@ -19,7 +19,7 @@ export class CentroDetalleComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.id = params['id'];
       //console.log("id obtenido: " + this.id)
-      this.centroService.getCentro(this.id)   //volver a llamar los datos con el id recibido
+      this.centroService.getCentro$(this.id)   //volver a llamar los datos con el id recibido
       .subscribe(
         res => {
           this.centro = res;

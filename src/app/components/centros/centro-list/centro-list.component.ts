@@ -15,7 +15,7 @@ export class CentroListComponent implements OnInit {
   constructor(private centroService:CentroService, private router: Router) { }
 
   ngOnInit() {
-    this.centroService.getCentros().subscribe(
+    this.centroService.getCentros$().subscribe(
       res=>{
         console.log("Listado de centros <-> " + res)
         //console.log("Listado de centros: " + JSON.stringify(res))
