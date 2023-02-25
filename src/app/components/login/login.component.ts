@@ -36,10 +36,10 @@ export class LoginComponent implements OnInit {
         var userObject = JSON.parse(JSON.stringify(this.user))
         this.correoUsuario = userObject.correo
         //Almacenamos el correo 
-        localStorage.setItem('usuario', this.correoUsuario)
+        localStorage.setItem('correo_us', this.correoUsuario)
 
         /* Obtener usuario por Correo */
-        this.getIdByCorreo(this.correoUsuario)
+        this.getUsuarioByCorreo(this.correoUsuario)
 
         this.router.navigate(['/agenda'])
         this.mensajeError = ""
@@ -56,8 +56,8 @@ export class LoginComponent implements OnInit {
     )  
   }
 
-  getIdByCorreo(correo){
-    this.authService.correoByUsuario(correo)
+  getUsuarioByCorreo(correo){
+    this.authService.getUsuarioByCorreo$(correo)
     .subscribe(
       res => {
         console.log("Id usuario logueado: " + res.id)
@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('id_us', res.id)
 
         //Actualizamos el usuario logueado
-        this.actualizarUsuarioLogueado(res.correo)
+        //this.actualizarUsuarioLogueado(res.correo)
       },
       err => {
         console.log(err.error.message)
@@ -74,7 +74,8 @@ export class LoginComponent implements OnInit {
     )
   }
 
+  /*
   actualizarUsuarioLogueado(correo){
     this.authService.cambiarUsuario(correo)
-  }
+  }*/
 }

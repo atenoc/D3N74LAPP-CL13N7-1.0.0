@@ -10,7 +10,7 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/home">Inicio</a>
         </li>
-        <li *ngIf="rol=='sop'" class="nav-item">
+        <li *ngIf="rolUsuario=='sop'" class="nav-item">
           <a class="nav-link" routerLink="/usuarios">Usuarios</a>
         </li>
         <li class="nav-item">
@@ -35,19 +35,24 @@
       <div class=" nav-item" >
         <ul class="navbar-nav mr-auto">
           <ng-container *ngIf="!authService.estaLogueado(); else login">
+            <!-- 
             <li class="nav-item">
               <a class="nav-link" routerLink="/registro">Registrarme</a>
             </li>
+            -->
             <li class="nav-item">
               <button class="btn btn-outline-light my-2 my-sm-0" routerLink="/login">Ingresar</button>
             </li>
           </ng-container>
           <ng-template #login>
-            <!-- 
+            
             <li class="nav-item">
-              <a class="nav-link">{{ usuario }} </a>
+              <a class="nav-link">{{ rolUsuario }} </a>
             </li>
-            -->
+            <li class="nav-item">
+              <a class="nav-link">{{ idUsuario }} </a>
+            </li>
+            
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {{ correoUsuario }}
@@ -68,41 +73,4 @@
     </div>
   </div>
 </nav>
-
-<!-- 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style="z-index: 2;">
-
-  <div class="container">
-
-  <ul class="nav">
-    <li class="nav-item">
-      <a class="nav-link active" routerLink="/public">Public</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/private">Private</a>
-    </li>
-
-  </ul>
-
-  <ul class="nav ml-auto">
-    <ng-container *ngIf="!authService.estaLogueado(); else login">
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/registro">Registrarme</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/login">Login</a>
-      </li>
-    </ng-container>
-    <ng-template #login>
-      <li class="nav-item">
-        <a class="nav-link" style="cursor: pointer;" (click)="authService.logout()">Salir</a>
-      </li>
-    </ng-template>
-  </ul>
-
-</div>
-
-</nav>
-
--->
   

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Usuario } from '../models/Usuario.model';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
@@ -13,11 +13,15 @@ export class AuthService {
   //URI = 'http://localhost:4000/api/seguridad';
   URI = environment.urlApiSeguridad
 
-  // usuario almacenado en localstorage, para al actualizar la página obtenga el usuario logueado en el componente navigate
-  private messageSource = new BehaviorSubject<string>(localStorage.getItem('usuario')) 
-  mensajeActual = this.messageSource.asObservable()
+  private usuario$: Subject<Usuario>;
 
-  constructor(private http: HttpClient, private router:Router) { }
+  // usuario almacenado en localstorage, para al actualizar la página obtenga el usuario logueado en el componente navigate
+  //private messageSource = new BehaviorSubject<string>(localStorage.getItem('usuario')) 
+  //mensajeActual = this.messageSource.asObservable()
+
+  constructor(private http: HttpClient, private router:Router) {
+    this.usuario$ = new Subject();
+  }
 
   registro(user){
     return this.http.post<any>(this.URI + '/registro', user)
@@ -28,8 +32,14 @@ export class AuthService {
     return this.http.post<any>(this.URI + '/login', user)
   }
 
-  correoByUsuario(correo: string) {
-    return this.http.get<Usuario>(`${this.URI}/userbycorreo/${correo}`);
+  getUsuarioByCorreo$(correo: string) {
+    this.http.get<Usuario>(`${this.URI}/userbycorreo/${correo}`).subscribe(
+      res=>{
+        this.usuario$.next(res)
+      },
+      err => console.log(err)
+    )
+    return this.usuario$.asObservable();
   }
 
   estaLogueado(){
@@ -43,13 +53,13 @@ export class AuthService {
   logout(){
     localStorage.removeItem('token')
     localStorage.removeItem('id_us')
-    localStorage.removeItem('usuario')
+    localStorage.removeItem('correo_us')
 
     this.router.navigate(['/login'])
   }
-
+  /*
   cambiarUsuario(message: string){
     this.messageSource.next(message)
-  }
+  }*/
 }
 

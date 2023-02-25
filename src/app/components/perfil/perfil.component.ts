@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Centro } from 'src/app/models/Centro.model';
 import { Usuario } from 'src/app/models/Usuario.model';
+import { AuthService } from 'src/app/services/auth.service';
 import { CentroService } from 'src/app/services/centro.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
@@ -14,28 +15,21 @@ export class PerfilComponent implements OnInit {
   usuario: Usuario
   centro: Centro
 
-  constructor(private usuarioService:UsuarioService, private centroService:CentroService) { }
+  constructor(private authService:AuthService, private usuarioService:UsuarioService, private centroService:CentroService) {}
 
   ngOnInit() {
 
-    this.usuarioService.getUsuario$(localStorage.getItem('id_us'))   
-      .subscribe(
-        res => {
-          this.usuario = res;
-          console.log("id usuario obtenido:" + res.id)
-        },
-        err => console.log("error: " + err)
-      )
-
-    this.centroService.getCentroByIdUser(localStorage.getItem('id_us')) 
-      .subscribe(
-        res => {
-          this.centro = res;
-          console.log("id centro obtenido:" + res.id)
-        },
-        err => console.log("error: " + err)
-      )
-
+    this.authService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
+      res => {
+        this.usuario = res;
+        this.centroService.getCentroByIdUser(this.usuario.id).subscribe(
+          res => {
+            this.centro = res;
+          },
+          err => console.log("error: " + err)
+        ) 
+      },
+      err => console.log("error: " + err)
+    )    
   }
-
 }
