@@ -55,7 +55,7 @@ export class CentroService {
     return this.http.patch(`${this.URI}/${id}`, {nombre, telefono, correo, direccion});
   }
 
-  getCentroByIdUser(id_usuario: string) {
+  getCentroByIdUser$(id_usuario: string) {
     //return this.http.get<Centro>(`${this.URI}/usuario/${id_usuario}`);
     if(id_usuario){
       this.http.get<Centro>(`${this.URI}/usuario/${id_usuario}`).subscribe(

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from 'src/app/services/auth.service';
+import { CentroService } from 'src/app/services/centro.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
@@ -15,8 +16,9 @@ export class NavigateComponent implements OnInit {
   idUsuario:string
   correoUsuario: string
   rolUsuario:string
+  nombreCentro:string
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private centroService:CentroService) { }
 
   ngOnInit() {
     this.authService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
@@ -26,6 +28,13 @@ export class NavigateComponent implements OnInit {
         this.correoUsuario=this.usuario.correo
         this.rolUsuario=this.usuario.rol
         console.log("rol: " + this.usuario.rol)
+
+        this.centroService.getCentroByIdUser$(this.idUsuario).subscribe(
+          res=>{
+            this.nombreCentro=res.nombre;
+          },
+          err => console.log("error: " + err)
+        )
       },
       err => console.log("error: " + err)
     )

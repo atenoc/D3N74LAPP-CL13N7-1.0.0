@@ -24,7 +24,7 @@ export class PerfilComponent implements OnInit {
       res => {
         this.usuario = res;
         // Consulta Centro del usuario
-        this.centroService.getCentroByIdUser(this.usuario.id).subscribe(
+        this.centroService.getCentroByIdUser$(this.usuario.id).subscribe(
           res => {
             this.centro = res;
           },
