@@ -57,12 +57,18 @@ export class CentroService {
 
   getCentroByIdUser(id_usuario: string) {
     //return this.http.get<Centro>(`${this.URI}/usuario/${id_usuario}`);
-    this.http.get<Centro>(`${this.URI}/usuario/${id_usuario}`).subscribe(
-      res=>{
-        this.centro$.next(res)
-      },
-      err => console.log(err)
-    )
-    return this.centro$.asObservable();
+    if(id_usuario){
+      this.http.get<Centro>(`${this.URI}/usuario/${id_usuario}`).subscribe(
+        res=>{
+          //console.log("Respuesta Service: "+ JSON.stringify(res) )
+          this.centro$.next(res)
+        },
+        err => console.log(err)
+      )
+      return this.centro$.asObservable();
+    }else{
+      return this.centro$
+    }
+    
   }
 }
