@@ -35,7 +35,7 @@ export class CentroDetalleComponent implements OnInit {
     this.centroService.updateCentro(this.centro.id, nombre.value, telefono.value, correo.value, direccion.value)
       .subscribe(res => {
         console.log("Centro actualizado: "+res);
-        this.router.navigate(['/centros']);
+        this.router.navigate(['/perfil']);
       });
 
     return false;

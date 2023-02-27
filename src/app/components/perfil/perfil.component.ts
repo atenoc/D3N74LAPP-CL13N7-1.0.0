@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Centro } from 'src/app/models/Centro.model';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from 'src/app/services/auth.service';
@@ -16,7 +17,7 @@ export class PerfilComponent implements OnInit {
   centro: Centro
   idCentro:string
 
-  constructor(private authService:AuthService, private centroService:CentroService) {}
+  constructor(private authService:AuthService, private centroService:CentroService, private router:Router) {}
 
   ngOnInit() {
 
@@ -28,7 +29,6 @@ export class PerfilComponent implements OnInit {
         this.centroService.getCentroByIdUser$(this.usuario.id).subscribe(
           res => {
             this.centro = res;
-            console.log("CENTRO: "+this.centro.id)
             this.idCentro=this.centro.id;
           },
           err => console.log("error: " + err)
@@ -37,4 +37,10 @@ export class PerfilComponent implements OnInit {
       err => console.log("error: " + err)
     )    
   }
+
+  selectedIdUser(id: string) {
+    console.log("id seleccionado: "+id)
+    this.router.navigate(['/centro-detalle', id]);
+  }
+
 }

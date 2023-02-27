@@ -4,12 +4,12 @@
         
         <div class="col-sm">
             <div *ngIf="!usuario; else content_usuario">
-                <h5>Cargando datos de usuario...</h5>
+                <h5>Cargando información...</h5>
             </div>
             <ng-template #content_usuario>
                 <div class="card">
-                    <div class="card-header"> <strong>Información de usuario </strong> </div>
-                    <div class="card-body" >
+                    <div class="card-header bg-primary text-white"> <strong>Información de usuario </strong> </div>
+                    <div class="card-body bg-light" >
         
                         <div class="form-group">
                             <small class="form-text text-muted">Correo</small>
@@ -29,7 +29,7 @@
         </div>
         <div class="col-sm">
             <div *ngIf="!centro; else content_centro">
-                <label>Sin información del centro dental</label>
+                <label>Cargando Información...</label>
             </div>
             <ng-template #content_centro>
                 <div *ngIf="idCentro==0; else datos_centro" class="text-center">
@@ -38,7 +38,7 @@
                 <ng-template #datos_centro>
 
                     <div class="card">
-                        <div class="card-header"> <strong>Información del centro dental </strong> </div>
+                        <div class="card-header bg-primary text-white"> <strong>Información del centro dental </strong> </div>
                         <div class="card-body" >
                             <div class="form-group">
                                 <small class="form-text text-muted">Nombre del centro / consultorio</small>
@@ -60,6 +60,9 @@
                                 <small class="form-text text-muted">Fecha y hora de creación</small>
                                 <label>{{ centro.fecha_creacion }}</label>
                             </div> 
+                        </div>
+                        <div class="card-footer text-right bg-white" >
+                            <a> <small class="text-primary cursor-pointer" (click)="selectedIdUser(centro.id)"> Editar</small> </a>
                         </div>
                     </div> 
                 </ng-template>
