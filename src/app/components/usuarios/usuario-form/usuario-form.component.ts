@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-usuario-form',
@@ -24,10 +25,23 @@ export class UsuarioFormComponent implements OnInit {
     .subscribe(
       res => {
         //console.log("Usuario creado: "+JSON.stringify(res))
+        this.usuario=res;
         console.log("Usuario creado")
         this.router.navigate(['/usuarios'])
+
+        Swal.fire({
+          icon: 'success',
+          //title: 'Usuario registrado',
+          html:
+            `¡El usuario: <strong> ${ this.usuario.correo } </strong><br/>` +
+            'se registró con éxtio!',
+          //text:`El usuario: ${ this.usuario.correo }, se registró con éxito`,
+          showConfirmButton: true,
+          confirmButtonColor: '#28a745',
+          timer: 4000
+        })
       },
-      err => console.log(err)
+      err => console.log("error: " + err)
     )
   }
 

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Usuario } from '../models/Usuario.model';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -56,11 +57,35 @@ export class AuthService {
   }
 
   logout(){
-    localStorage.removeItem('token')
-    localStorage.removeItem('id_us')
-    localStorage.removeItem('correo_us')
 
-    this.router.navigate(['/login'])
+    Swal.fire({
+      title: `¡Cerrar Sesión!`,
+      text: "¿Estás seguro que deseas salir?",
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#aeaeae',
+      confirmButtonText: 'Si, salir',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        /*si dan clic en si, eliminar */
+
+        localStorage.removeItem('token')
+        localStorage.removeItem('id_us')
+        localStorage.removeItem('correo_us')
+
+        this.router.navigate(['/login'])
+    
+        setTimeout(() => {
+          //this.spinner.hide() 
+          //this.router.navigate(['/login'])  
+        }, 500);
+  
+      }
+    })
+
+    
   }
   /*
   cambiarUsuario(message: string){
