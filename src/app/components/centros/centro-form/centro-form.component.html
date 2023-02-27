@@ -2,26 +2,26 @@
 
     <div class="card">
 
-        <div class="card-header"><strong>Registro de Centro / Consultorio </strong></div>
+        <div class="card-header"><strong>Datos del centro o consultorio dental</strong></div>
         <div class="card-body">
 
             <form (submit)="crearCentro()">
         
                 <div class="form-group">
-                    <small class="form-text text-muted">Nombre</small>
-                    <input type="text" [(ngModel)]="centro.nombre" class="form-control" name="nombre" placeholder="Nombre de tu centro dental o consultorio">
+                    <small class="form-text text-muted">Nombre de tu centro o consultorio dental</small>
+                    <input type="text" [(ngModel)]="centro.nombre" class="form-control" name="nombre" placeholder="Ej: Centro Dental de México" maxlength="40">
                 </div>
                 <div class="form-group">
-                    <small class="form-text text-muted">Teléfono</small>
-                    <input type="text" [(ngModel)]="centro.telefono" class="form-control" name="telefono" placeholder="Telefono de contacto de 10 dígitos">
+                    <small class="form-text text-muted">Teléfono de contacto</small>
+                    <input type="text" [(ngModel)]="centro.telefono" class="form-control" name="telefono" placeholder="10 dígitos" maxlength="10">
                 </div>
                 <div class="form-group">
-                    <small class="form-text text-muted">Correo</small>
-                    <input type="email" [(ngModel)]="centro.correo" class="form-control" name="correo" placeholder="contacto@correo.com.mx">
+                    <small class="form-text text-muted">Correo de contacto</small>
+                    <input type="email" [(ngModel)]="centro.correo" class="form-control" name="correo" placeholder="tu_centro_dental@correo.com.mx" maxlength="30">
                 </div>
                 <div class="form-group">
-                    <small class="form-text text-muted">Dirección</small>
-                    <textarea [(ngModel)]="centro.direccion" name="direccion" class="form-control" rows="2"></textarea>
+                    <small class="form-text text-muted">Dirección o Domicilio</small>
+                    <textarea [(ngModel)]="centro.direccion" name="direccion" class="form-control" rows="2" maxlength="130"></textarea>
                 </div>
         
                 <button type="submit" class="btn btn-primary btn-block">Agregar Centro</button>

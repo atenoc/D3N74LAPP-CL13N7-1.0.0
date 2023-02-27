@@ -27,7 +27,7 @@ export class CentroFormComponent implements OnInit {
     .subscribe(
       res => {
         console.log("Centro creado")
-        this.router.navigate(['/centros'])
+        this.router.navigate(['/perfil'])
       },
       err => console.log(err)
     )

@@ -14,6 +14,7 @@ export class PerfilComponent implements OnInit {
 
   usuario: Usuario
   centro: Centro
+  idCentro:string
 
   constructor(private authService:AuthService, private centroService:CentroService) {}
 
@@ -27,6 +28,8 @@ export class PerfilComponent implements OnInit {
         this.centroService.getCentroByIdUser$(this.usuario.id).subscribe(
           res => {
             this.centro = res;
+            console.log("CENTRO: "+this.centro.id)
+            this.idCentro=this.centro.id;
           },
           err => console.log("error: " + err)
         ) 

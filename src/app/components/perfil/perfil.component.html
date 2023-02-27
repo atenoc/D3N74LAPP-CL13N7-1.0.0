@@ -8,19 +8,19 @@
             </div>
             <ng-template #content_usuario>
                 <div class="card">
-                    <div class="card-header"> <strong>Perfil </strong> </div>
+                    <div class="card-header"> <strong>Información de usuario </strong> </div>
                     <div class="card-body" >
         
                         <div class="form-group">
                             <small class="form-text text-muted">Correo</small>
-                            <label>{{ usuario.correo }}</label>
+                            <label class="text-primary">{{ usuario.correo }}</label>
                         </div>
                         <div class="form-group">
                             <small class="form-text text-muted">Rol</small>
                             <label>{{ usuario.rol }}</label>
                         </div> 
                         <div class="form-group">
-                            <small class="form-text text-muted">Fecha de creación</small>
+                            <small class="form-text text-muted">Fecha y hora de creación</small>
                             <label>{{ usuario.fecha_creacion }}</label>
                         </div> 
                     </div>
@@ -29,34 +29,41 @@
         </div>
         <div class="col-sm">
             <div *ngIf="!centro; else content_centro">
-                <h5>Cargando datos de tu centro dental...</h5>
+                <label>Sin información del centro dental</label>
             </div>
             <ng-template #content_centro>
-                <div class="card">
-                    <div class="card-header"> <strong>Tu Centro Dental </strong> </div>
-                    <div class="card-body" >
-                        <div class="form-group">
-                            <small class="form-text text-muted">Nombre</small>
-                            <label>{{ centro.nombre }}</label>
+                <div *ngIf="idCentro==0; else datos_centro" class="text-center">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" routerLink="/centro-form">Registra tu centro dental</button>
+                </div>
+                <ng-template #datos_centro>
+
+                    <div class="card">
+                        <div class="card-header"> <strong>Información del centro dental </strong> </div>
+                        <div class="card-body" >
+                            <div class="form-group">
+                                <small class="form-text text-muted">Nombre del centro / consultorio</small>
+                                <label class="text-primary">{{ centro.nombre }}</label>
+                            </div>
+                            <div class="form-group">
+                                <small class="form-text text-muted">Teléfono</small>
+                                <label>{{ centro.telefono }}</label>
+                            </div> 
+                            <div class="form-group">
+                                <small class="form-text text-muted">Correo de contacto</small>
+                                <label>{{ centro.correo }}</label>
+                            </div> 
+                            <div class="form-group">
+                                <small class="form-text text-muted">Dirección</small>
+                                <label>{{ centro.direccion }}</label>
+                            </div> 
+                            <div class="form-group">
+                                <small class="form-text text-muted">Fecha y hora de creación</small>
+                                <label>{{ centro.fecha_creacion }}</label>
+                            </div> 
                         </div>
-                        <div class="form-group">
-                            <small class="form-text text-muted">Teléfono</small>
-                            <label>{{ centro.telefono }}</label>
-                        </div> 
-                        <div class="form-group">
-                            <small class="form-text text-muted">Correo de contacto</small>
-                            <label>{{ centro.correo }}</label>
-                        </div> 
-                        <div class="form-group">
-                            <small class="form-text text-muted">Dirección</small>
-                            <label>{{ centro.direccion }}</label>
-                        </div> 
-                        <div class="form-group">
-                            <small class="form-text text-muted">Fecha de Creación</small>
-                            <label>{{ centro.fecha_creacion }}</label>
-                        </div> 
-                    </div>
-                </div>      
+                    </div> 
+                </ng-template>
+                     
             </ng-template>
         </div>
 
