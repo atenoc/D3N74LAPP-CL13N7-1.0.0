@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
       err => {
         console.log(err.error.message)
         console.log(err)
-        this.mensajeError = err.error.message + ", por favor revisa tu correo y contraseña."
+        this.mensajeError = err.error.message + ". ¡Por favor revisa el correo y/o contraseña!"
         this.mostrarError = true
       }
     )  
