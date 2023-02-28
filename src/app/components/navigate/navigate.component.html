@@ -13,21 +13,21 @@
         <li *ngIf="rolUsuario=='sop'" class="nav-item">
           <a class="nav-link" routerLink="/usuarios">Usuarios</a>
         </li>
-        <li class="nav-item">
+        <li *ngIf="rolUsuario=='sop'" class="nav-item">
           <a class="nav-link" routerLink="/centros">Centros</a>
         </li>
-        <li class="nav-item">
+        <li *ngIf="usuario" class="nav-item">
           <a class="nav-link" routerLink="/agenda">Agenda</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Dropdown
+            Más
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Opción 1</a>
+            <a class="dropdown-item" href="#">Opción 2</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
+            <a class="dropdown-item" href="#">Opción 3</a>
           </div>
         </li>
       </ul>
@@ -60,7 +60,7 @@
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" routerLink="/perfil">Mi Perfil</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">...</a>
+                <a class="dropdown-item text-muted">{{ rolUsuario }}</a>
               </div>
             </li>
             <li class="nav-item ml-2">
