@@ -61,7 +61,7 @@ export class AuthService {
     Swal.fire({
       title: `¡Cerrar Sesión!`,
       text: "¿Estás seguro que deseas salir?",
-      icon: 'info',
+      icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#aeaeae',

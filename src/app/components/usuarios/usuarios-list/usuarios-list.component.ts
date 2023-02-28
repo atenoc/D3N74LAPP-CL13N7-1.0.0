@@ -36,7 +36,7 @@ export class UsuariosListComponent implements OnInit {
       html:
         `¿ Estás seguro de eliminar el usuario: <br/> ` +
         `<strong> ${ correo } </strong> ? `,
-      icon: 'warning',
+      icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#dc3545',
       cancelButtonColor: '#aeaeae',
@@ -60,7 +60,17 @@ export class UsuariosListComponent implements OnInit {
           })
 
         },
-          err => console.log("error: " + err)
+          err => { 
+            console.log("error: " + err)
+            Swal.fire({
+              icon: 'error',
+              html:
+                `<strong>¡${ err.error.message }!</strong>`,
+              showConfirmButton: true,
+              confirmButtonColor: '#28a745',
+              timer: 4000
+            }) 
+          }
         )
     
       }

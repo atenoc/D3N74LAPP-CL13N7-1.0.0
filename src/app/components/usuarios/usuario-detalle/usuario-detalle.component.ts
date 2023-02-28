@@ -39,15 +39,25 @@ export class UsuarioDetalleComponent implements OnInit {
           icon: 'success',
           //title: 'Usuario actualizado',
           html:
-            `¡La información del usuario: <strong> ${ this.usuario.correo } </strong><br/>` +
-            'se actualizó con éxtio!',
+            `¡La información del usuario <strong>${ this.usuario.correo }</strong>,<br/>` +
+            'ha sido actualizada!',
           showConfirmButton: true,
           confirmButtonColor: '#28a745',
           timer: 4000
         })
 
       },
-        err => console.log("error: " + err)
+        err => {
+          console.log("error: " + err)
+          Swal.fire({
+            icon: 'error',
+            html:
+              `<strong>¡${ err.error.message }!</strong>`,
+            showConfirmButton: true,
+            confirmButtonColor: '#28a745',
+            timer: 4000
+          })
+        }
       );
 
     return false;

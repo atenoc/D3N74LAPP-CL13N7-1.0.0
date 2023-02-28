@@ -41,7 +41,17 @@ export class UsuarioFormComponent implements OnInit {
           timer: 4000
         })
       },
-      err => console.log("error: " + err)
+      err => {
+        console.log("error: " + err.error.message)
+        Swal.fire({
+          icon: 'error',
+          html:
+            `<strong>¡${ err.error.message }!</strong>`,
+          showConfirmButton: true,
+          confirmButtonColor: '#28a745',
+          timer: 4000
+        })
+      }
     )
   }
 
