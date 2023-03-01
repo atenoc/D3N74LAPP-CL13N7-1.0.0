@@ -35,6 +35,7 @@ export class UsuarioDetalleComponent implements OnInit {
     this.usuariosService.updateUsuario(this.usuario.id, correo.value, llave.value, rol.value).subscribe(res => {
         console.log("Usuario actualizado: "+res);
         this.router.navigate(['/usuarios']);
+        
         Swal.fire({
           icon: 'success',
           //title: 'Usuario actualizado',

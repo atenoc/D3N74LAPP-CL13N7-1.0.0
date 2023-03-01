@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Centro } from 'src/app/models/Centro.model';
 import { CentroService } from 'src/app/services/centro.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-centro-detalle',
@@ -36,9 +37,37 @@ export class CentroDetalleComponent implements OnInit {
       .subscribe(res => {
         console.log("Centro actualizado: "+res);
         this.router.navigate(['/perfil']);
-      });
+
+        Swal.fire({
+          icon: 'success',
+          html:
+            `¡La información del <strong>${ this.centro.nombre }</strong>,<br/>` +
+            'ha sido actualizada!',
+          showConfirmButton: true,
+          confirmButtonColor: '#28a745',
+          timer: 4000
+        })
+
+      },
+        err => {
+          console.log("error: " + err)
+          Swal.fire({
+            icon: 'error',
+            html:
+              `<strong>¡${ err.error.message }!</strong>`,
+            showConfirmButton: true,
+            confirmButtonColor: '#28a745',
+            timer: 4000
+          })
+        }
+      
+      );
 
     return false;
+  }
+
+  regresar(){
+    this.router.navigate(['/perfil']);
   }
 
 }
