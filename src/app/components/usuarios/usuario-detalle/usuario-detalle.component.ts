@@ -40,8 +40,8 @@ export class UsuarioDetalleComponent implements OnInit {
           icon: 'success',
           //title: 'Usuario actualizado',
           html:
-            `¡La información del usuario <strong>${ this.usuario.correo }</strong>,<br/>` +
-            'ha sido actualizada!',
+            `<strong>${ this.usuario.correo }</strong><br/>` +
+            '¡Información actualizada!',
           showConfirmButton: true,
           confirmButtonColor: '#28a745',
           timer: 4000

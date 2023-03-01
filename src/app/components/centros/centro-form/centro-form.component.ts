@@ -35,8 +35,8 @@ export class CentroFormComponent implements OnInit {
         Swal.fire({
           icon: 'success',
           html:
-            `¡<strong>${ this.centroRes.nombre }</strong><br/>` +
-            'se registró con éxito!',
+            `<strong>${ this.centroRes.nombre }</strong><br/>` +
+            'Registrado con éxito!',
           showConfirmButton: true,
           confirmButtonColor: '#28a745',
           timer: 4000

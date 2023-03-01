@@ -33,8 +33,8 @@ export class UsuarioFormComponent implements OnInit {
           icon: 'success',
           //title: 'Usuario registrado',
           html:
-            `¡El usuario: <strong> ${ this.usuario.correo } </strong><br/>` +
-            'se registró con éxito!',
+            `<strong> ${ this.usuario.correo } </strong><br/>` +
+            '¡Registrado con éxito!',
           //text:`El usuario: ${ this.usuario.correo }, se registró con éxito`,
           showConfirmButton: true,
           confirmButtonColor: '#28a745',

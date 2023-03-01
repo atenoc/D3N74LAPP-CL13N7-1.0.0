@@ -41,8 +41,8 @@ export class CentroDetalleComponent implements OnInit {
         Swal.fire({
           icon: 'success',
           html:
-            `¡La información del <strong>${ this.centro.nombre }</strong>,<br/>` +
-            'ha sido actualizada!',
+            `<strong>${ this.centro.nombre }</strong><br/>` +
+            '¡Información actualizada!',
           showConfirmButton: true,
           confirmButtonColor: '#28a745',
           timer: 4000
