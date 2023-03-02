@@ -10,7 +10,7 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/home">Inicio</a>
         </li>
-        <li *ngIf="rolUsuario=='sop'" class="nav-item">
+        <li *ngIf="rolUsuario=='sop' || rolUsuario=='admin'" class="nav-item">
           <a class="nav-link" routerLink="/usuarios">Usuarios</a>
         </li>
         <li *ngIf="rolUsuario=='sop'" class="nav-item">

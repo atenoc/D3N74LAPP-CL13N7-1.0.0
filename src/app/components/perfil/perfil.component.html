@@ -4,7 +4,7 @@
         
         <div class="col-sm">
             <div *ngIf="!usuario; else content_usuario">
-                <h5>Cargando información...</h5>
+                <label>Cargando información...</label>
             </div>
             <ng-template #content_usuario>
                 <div class="card">
@@ -13,7 +13,7 @@
         
                         <div class="form-group">
                             <small class="form-text text-muted">Correo</small>
-                            <label class="text-primary">{{ usuario.correo }}</label>
+                            <strong class="text-primary">{{ usuario.correo }}</strong>
                         </div>
                         <div class="form-group">
                             <small class="form-text text-muted">Rol</small>
@@ -42,7 +42,7 @@
                         <div class="card-body" >
                             <div class="form-group">
                                 <small class="form-text text-muted">Nombre del centro / consultorio</small>
-                                <label class="text-primary">{{ centro.nombre }}</label>
+                                <strong class="text-primary">{{ centro.nombre }}</strong>
                             </div>
                             <div class="form-group">
                                 <small class="form-text text-muted">Teléfono</small>
