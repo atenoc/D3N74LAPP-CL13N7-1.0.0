@@ -21,7 +21,9 @@ export class UsuarioFormComponent implements OnInit {
 
   crearUsuario(){
     console.log("Usuario a registrar: "+ JSON.stringify(this.user))
-    this.usuarioService.createUsuario(this.user)
+    var nuevoUsuarioJson = JSON.parse(JSON.stringify(this.user))
+    nuevoUsuarioJson.id_usuario=localStorage.getItem('id_us')
+    this.usuarioService.createUsuario(nuevoUsuarioJson)
     .subscribe(
       res => {
         //console.log("Usuario creado: "+JSON.stringify(res))

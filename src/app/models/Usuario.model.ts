@@ -4,4 +4,5 @@ export interface Usuario{
     llave:string;
     rol:string;
     fecha_creacion:string;
+    id_usuario:string;
 }
