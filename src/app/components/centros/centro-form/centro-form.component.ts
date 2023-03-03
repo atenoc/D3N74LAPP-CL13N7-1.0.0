@@ -23,7 +23,7 @@ export class CentroFormComponent implements OnInit {
 
     var nuevoCentroJson = JSON.parse(JSON.stringify(this.centro))
     nuevoCentroJson.id_usuario=localStorage.getItem('id_us')
-    console.log("nuevoCentroJson a registrar: "+JSON.stringify(nuevoCentroJson))
+    //console.log("nuevoCentroJson a registrar: "+JSON.stringify(nuevoCentroJson))
 
     this.centroService.createCentro(nuevoCentroJson)
     .subscribe(
@@ -36,7 +36,7 @@ export class CentroFormComponent implements OnInit {
           icon: 'success',
           html:
             `<strong>${ this.centroRes.nombre }</strong><br/>` +
-            'Registrado con éxito!',
+            '¡Registrado con éxito!',
           showConfirmButton: true,
           confirmButtonColor: '#28a745',
           timer: 4000

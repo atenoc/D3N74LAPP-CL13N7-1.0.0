@@ -31,7 +31,7 @@ export class CentroListComponent implements OnInit {
     this.router.navigate(['/centro-detalle', id]);
   }
 
-  deleteUser(id: string, nombre:string) {
+  deleteCentro(id: string, nombre:string) {
 
     Swal.fire({
       html:
@@ -56,7 +56,7 @@ export class CentroListComponent implements OnInit {
             icon: 'success',
             showConfirmButton: false,
             text:'¡El centro dental ha sido eliminado!',
-            timer: 2500
+            timer: 4000
           })
         },
           err => { 
