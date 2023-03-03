@@ -27,7 +27,7 @@ export class NavigateComponent implements OnInit {
         this.idUsuario=this.usuario.id
         this.correoUsuario=this.usuario.correo
         this.rolUsuario=this.usuario.rol
-        console.log("rol: " + this.usuario.rol)
+        console.log("Rol Navigate: " + this.usuario.rol)
 
         this.centroService.getCentroByIdUser$(this.idUsuario).subscribe(
           res=>{

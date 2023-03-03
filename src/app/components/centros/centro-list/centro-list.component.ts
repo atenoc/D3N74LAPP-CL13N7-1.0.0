@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Centro } from 'src/app/models/Centro.model';
+import { Usuario } from 'src/app/models/Usuario.model';
+import { AuthService } from 'src/app/services/auth.service';
 import { CentroService } from 'src/app/services/centro.service';
 import Swal from 'sweetalert2';
 
@@ -12,10 +14,23 @@ import Swal from 'sweetalert2';
 export class CentroListComponent implements OnInit {
 
   centros: Centro[] = [];
+  usuario:Usuario
 
-  constructor(private centroService:CentroService, private router: Router) { }
+  constructor(private authService: AuthService, private centroService:CentroService, private router: Router) { }
 
   ngOnInit() {
+
+    this.authService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
+      res => {
+        this.usuario = res;
+        console.log("Rol Centros: "+this.usuario.rol)
+        if(this.usuario.rol != "sop"){
+          this.router.navigate(['/perfil']);
+        }
+      },
+      err => console.log("error: " + err)
+    )
+
     this.centroService.getCentros$().subscribe(
       res=>{
         console.log("Listado de centros <-> " + res)
