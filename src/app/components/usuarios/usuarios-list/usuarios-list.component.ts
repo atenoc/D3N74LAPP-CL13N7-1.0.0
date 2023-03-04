@@ -24,7 +24,6 @@ export class UsuariosListComponent implements OnInit {
         this.usuario = res;
         console.log("Rol Usuarios: "+this.usuario.rol)
         if(this.usuario.rol == "sop"){  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
-          //this.router.navigate(['/perfil']);
           this.usuarioService.getUsuarios$().subscribe(res=>{
             console.log("Listado de usuarios <-> " + res)
             this.usuarios = res;
