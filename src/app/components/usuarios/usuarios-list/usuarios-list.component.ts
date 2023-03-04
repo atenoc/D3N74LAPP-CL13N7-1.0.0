@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
+import { AuthService } from 'src/app/services/auth.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
 
@@ -12,16 +13,39 @@ import Swal from 'sweetalert2';
 export class UsuariosListComponent implements OnInit {
 
   usuarios: Usuario[] = [];
+  usuario:Usuario
 
-  constructor(private usuariosService:UsuarioService, private router: Router) { }
+  constructor(private authService: AuthService, private usuarioService:UsuarioService, private router: Router) { }
 
   ngOnInit() {
-    this.usuariosService.getUsuarios$().subscribe(res=>{
-        console.log("Listado de usuarios <-> " + res)
-        this.usuarios = res;
-    },
-      err => console.log(err)
+
+    this.authService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
+      res => {
+        this.usuario = res;
+        console.log("Rol Usuarios: "+this.usuario.rol)
+        if(this.usuario.rol == "sop"){  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
+          //this.router.navigate(['/perfil']);
+          this.usuarioService.getUsuarios$().subscribe(res=>{
+            console.log("Listado de usuarios <-> " + res)
+            this.usuarios = res;
+          },
+            err => console.log(err)
+          )
+        }
+
+        if(this.usuario.rol == "admin"){
+          this.usuarioService.getUsuariosByUsuario$(this.usuario.id).subscribe(res=>{
+            console.log("Listado de usuarios x Usuario <-> " + JSON.stringify( res))
+            this.usuarios = res;
+          },
+            err => console.log(err)
+          )
+        }
+
+      },
+      err => console.log("error: " + err)
     )
+    
   }
 
   selectedIdUser(id: string) {
@@ -46,7 +70,7 @@ export class UsuariosListComponent implements OnInit {
       if (result.value) {
         /*si dan clic en si, eliminar */
 
-        this.usuariosService.deleteUsuario(id).subscribe(res => {
+        this.usuarioService.deleteUsuario(id).subscribe(res => {
           console.log("Usuario eliminado:" + res)
           /* Recargamos el componente*/  
           this.ngOnInit()

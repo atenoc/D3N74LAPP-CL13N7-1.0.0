@@ -55,4 +55,14 @@ export class UsuarioService {
     return this.http.patch(`${this.URI}/${id}`, {correo, llave, rol});
   }
 
+  getUsuariosByUsuario$(id:string){
+    this.http.get<Usuario[]>(`${this.URI}/usuario/${id}`).subscribe(
+      res=>{
+        this.usuarios$.next(res)
+      },
+      err => console.log(err)
+    )
+    return this.usuarios$.asObservable();
+  }
+
 }
