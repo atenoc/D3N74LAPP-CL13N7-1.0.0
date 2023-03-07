@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { RegistroComponent } from './components/registro/registro.component';
 import { LoginComponent } from './components/login/login.component';
 import { NavigateComponent } from './components/navigate/navigate.component';
 import { FormsModule } from '@angular/forms'
@@ -23,7 +22,6 @@ import { PerfilComponent } from './components/perfil/perfil.component';
 @NgModule({
   declarations: [
     AppComponent,
-    RegistroComponent,
     LoginComponent,
     NavigateComponent,
     HomeComponent,
