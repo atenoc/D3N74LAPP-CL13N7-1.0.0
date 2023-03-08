@@ -16,9 +16,10 @@ export class NavigateComponent implements OnInit {
   idUsuario:string
   correoUsuario: string
   rolUsuario:string
-  nombreCentro:string
+  nombreCentro:string="Dental App"
+  mostrarTitulo:boolean=true
 
-  constructor(private authService: AuthService, private centroService:CentroService) { }
+  constructor(public authService: AuthService, private centroService:CentroService) { }
 
   ngOnInit() {
     this.authService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
@@ -31,7 +32,12 @@ export class NavigateComponent implements OnInit {
 
         this.centroService.getCentroByIdUser$(this.idUsuario).subscribe(
           res=>{
-            this.nombreCentro=res.nombre;
+            if(res.nombre){
+              this.nombreCentro=res.nombre
+              this.mostrarTitulo=true
+            }else{
+              this.mostrarTitulo=false
+            }
           },
           err => console.log("error: " + err)
         )

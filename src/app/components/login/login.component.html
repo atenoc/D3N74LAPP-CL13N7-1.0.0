@@ -5,19 +5,25 @@
         <div class="card-header bg-primary text-white"><strong>Iniciar Sesion</strong></div>
         <div class="card-body">
 
-            <form (submit)="login()">
+            <form [formGroup]="formularioLogin">
      
                 <div class="form-group">
-                    <label class="text-muted">Correo </label>
-                    <input type="email" [(ngModel)]="user.correo" class="form-control" name="correo" placeholder="ejemplo@correo.com.mx">
+                    <small class="text-muted">Correo</small>
+                    <input type="email" class="form-control" formControlName="correo" placeholder="Ingrese su correo electrónico">
+                    <div *ngIf="formularioLogin.controls['correo'].invalid && formularioLogin.controls['correo'].dirty" class="alert alert-danger" role="alert">
+                      <span *ngIf="formularioLogin.controls['correo'].errors.required">El correo es requerido</span>
+                        <span *ngIf="formularioLogin.controls['correo'].errors.email">El correo no es válido</span>
+                    </div>
                 </div>
-        
                 <div class="form-group">
-                    <label class="text-muted">Contraseña</label>
-                    <input type="password" [(ngModel)]="user.llave" class="form-control" name="llave" placeholder="Escribe tu contraseña">
+                    <small class="text-muted">Contraseña</small>
+                    <input type="password" class="form-control" formControlName="llave" placeholder="Ingrese su contraseña">
+                    <div *ngIf="formularioLogin.controls['llave'].invalid && formularioLogin.controls['llave'].dirty" class="alert alert-danger" role="alert">
+                        <span *ngIf="formularioLogin.controls['llave'].errors.required">La contraseña es requerida</span> 
+                    </div>
                 </div>
         
-                <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+                <button type="submit" class="btn btn-primary btn-block" (click)="login()" [disabled]="formularioLogin.invalid" >Entrar</button>
             </form>
 
             <div *ngIf="mostrarError" class="alert alert-warning mt-5" role="alert">

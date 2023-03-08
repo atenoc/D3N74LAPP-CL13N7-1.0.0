@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from '../../services/auth.service'
@@ -10,30 +11,36 @@ import { AuthService } from '../../services/auth.service'
 })
 export class LoginComponent implements OnInit {
 
-  user = { }
+  //user = { }
   mensajeError: String
   mostrarError: Boolean
   correoUsuario: string
   usuario: Usuario
+  formularioLogin:FormGroup
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private formBuilder:FormBuilder, private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
+    this.formularioLogin = this.formBuilder.group({
+      correo: ['', Validators.compose([
+        Validators.required, Validators.email
+      ])],
+      llave: ['', Validators.required]
+    })
   }
 
   login(){
-    console.log("Usuario a enviar <-")
-    console.log(this.user)
-    this.authService.login(this.user)
-    .subscribe(
+    
+    this.authService.login(this.formularioLogin.value).subscribe(
       res => {
         //Obtenemos el token de la sesion
         console.log("Respuesta token <-")
         console.log(res)
+
         //Almacenamos token
         localStorage.setItem('token', res.token)
           
-        var userObject = JSON.parse(JSON.stringify(this.user))
+        var userObject = JSON.parse(JSON.stringify(this.formularioLogin.value))
         this.correoUsuario = userObject.correo
         //Almacenamos el correo 
         localStorage.setItem('correo_us', this.correoUsuario)
@@ -53,7 +60,8 @@ export class LoginComponent implements OnInit {
         this.mensajeError = err.error.message + ". ¡Por favor revisa el correo y/o contraseña!"
         this.mostrarError = true
       }
-    )  
+    ) 
+
   }
 
   getUsuarioByCorreo(correo){

@@ -32,7 +32,7 @@
                 <label>Cargando Información...</label>
             </div>
             <ng-template #content_centro>
-                <div *ngIf="idCentro==0; else datos_centro" class="text-center">
+                <div *ngIf="!existeCentro; else datos_centro" class="text-center">
                     <button class="btn btn-outline-primary my-2 my-sm-0" routerLink="/centro-form">Registrar mi centro dental</button>
                 </div>
                 <ng-template #datos_centro>

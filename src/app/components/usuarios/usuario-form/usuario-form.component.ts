@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
@@ -11,17 +12,25 @@ import Swal from 'sweetalert2';
 })
 export class UsuarioFormComponent implements OnInit {
 
-  user = { }
+  //user = { }
   usuario:Usuario
+  formularioUsuario:FormGroup
 
-  constructor(private usuarioService:UsuarioService, private router: Router) { }
+  constructor(private formBuilder:FormBuilder, private usuarioService:UsuarioService, private router: Router) { }
 
   ngOnInit() {
+    this.formularioUsuario = this.formBuilder.group({
+      correo: ['', Validators.compose([
+        Validators.required, Validators.email
+      ])],
+      llave: ['', Validators.required],
+      rol: ['', Validators.required]
+    })
   }
 
   crearUsuario(){
-    console.log("Usuario a registrar: "+ JSON.stringify(this.user))
-    var nuevoUsuarioJson = JSON.parse(JSON.stringify(this.user))
+    console.log("Usuario a registrar: "+ JSON.stringify(this.formularioUsuario.value))
+    var nuevoUsuarioJson = JSON.parse(JSON.stringify(this.formularioUsuario.value))
     nuevoUsuarioJson.id_usuario=localStorage.getItem('id_us')
     this.usuarioService.createUsuario(nuevoUsuarioJson)
     .subscribe(

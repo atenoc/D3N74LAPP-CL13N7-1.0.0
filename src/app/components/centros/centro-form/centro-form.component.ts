@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Centro } from 'src/app/models/Centro.model';
 import { CentroService } from 'src/app/services/centro.service';
@@ -11,17 +12,26 @@ import Swal from 'sweetalert2';
 })
 export class CentroFormComponent implements OnInit {
 
-  centro = { }
+  //centro = { }
   centroRes:Centro
+  formularioCentro:FormGroup
 
-  constructor(private centroService:CentroService, private router: Router) { }
+  constructor(private formBuilder:FormBuilder, private centroService:CentroService, private router: Router) { }
 
   ngOnInit() {
+    this.formularioCentro = this.formBuilder.group({
+      nombre: ['', Validators.required],
+      telefono: ['', Validators.required],
+      correo: ['', Validators.compose([
+        Validators.required, Validators.email
+      ])],
+      direccion: ['', Validators.required]
+    })
   }
 
   crearCentro(){
 
-    var nuevoCentroJson = JSON.parse(JSON.stringify(this.centro))
+    var nuevoCentroJson = JSON.parse(JSON.stringify(this.formularioCentro.value))
     nuevoCentroJson.id_usuario=localStorage.getItem('id_us')
     //console.log("nuevoCentroJson a registrar: "+JSON.stringify(nuevoCentroJson))
 

@@ -3,6 +3,7 @@ export interface Centro{
     nombre:string;
     telefono:string;
     correo:string;
+    direccion:string;
     fecha_creacion:string;
     id_usuario:string;
 }

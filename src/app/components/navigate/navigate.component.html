@@ -1,72 +1,70 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <div class="container">
-    <a class="navbar-brand" href="/home">{{ nombreCentro }}</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarColor01">
+  <a *ngIf="mostrarTitulo" class="navbar-brand" href="/home">{{ nombreCentro }}</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    
+    <ul class="navbar-nav mr-auto">
+
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/home">Inicio</a>
+      </li>
+      <li *ngIf="rolUsuario=='admin'" class="nav-item">
+        <a class="nav-link" routerLink="/usuarios">Usuarios</a>
+      </li>
+      <li *ngIf="rolUsuario=='sop'" class="nav-item">
+        <a class="nav-link" routerLink="/centros">Centros</a>
+      </li>
+      <li *ngIf="usuario" class="nav-item">
+        <a class="nav-link" routerLink="/agenda">Agenda</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Más
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Opción 1</a>
+          <a class="dropdown-item" href="#">Opción 2</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Opción 3</a>
+        </div>
+      </li>
+    </ul>
+
+    <div class=" nav-item" >
       <ul class="navbar-nav mr-auto">
-
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/home">Inicio</a>
-        </li>
-        <li *ngIf="rolUsuario=='admin'" class="nav-item">
-          <a class="nav-link" routerLink="/usuarios">Usuarios</a>
-        </li>
-        <li *ngIf="rolUsuario=='sop'" class="nav-item">
-          <a class="nav-link" routerLink="/centros">Centros</a>
-        </li>
-        <li *ngIf="usuario" class="nav-item">
-          <a class="nav-link" routerLink="/agenda">Agenda</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Más
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Opción 1</a>
-            <a class="dropdown-item" href="#">Opción 2</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Opción 3</a>
-          </div>
-        </li>
+        <ng-container *ngIf="!authService.estaLogueado(); else login">
+          <!-- 
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/registro">Registrarme</a>
+          </li>
+          -->
+          <li class="nav-item">
+            <button class="btn btn-outline-light my-2 my-sm-0" routerLink="/login">Ingresar</button>
+          </li>
+        </ng-container>
+        <ng-template #login>
+          <!-- 
+          <li class="nav-item">
+            <a class="nav-link">{{ rolUsuario }} </a>
+          </li> -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{ correoUsuario }}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" routerLink="/perfil">Mi Perfil</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item text-muted">{{ rolUsuario }}</a>
+            </div>
+          </li>
+          <li class="nav-item ml-2">
+            <button class="btn btn-outline-light my-2 my-sm-0" (click)="authService.logout(); reload()">Salir</button>
+          </li>
+        </ng-template>
       </ul>
-
-      <div class=" nav-item" >
-        <ul class="navbar-nav mr-auto">
-          <ng-container *ngIf="!authService.estaLogueado(); else login">
-            <!-- 
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/registro">Registrarme</a>
-            </li>
-            -->
-            <li class="nav-item">
-              <button class="btn btn-outline-light my-2 my-sm-0" routerLink="/login">Ingresar</button>
-            </li>
-          </ng-container>
-          <ng-template #login>
-            <!-- 
-            <li class="nav-item">
-              <a class="nav-link">{{ rolUsuario }} </a>
-            </li> -->
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {{ correoUsuario }}
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" routerLink="/perfil">Mi Perfil</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item text-muted">{{ rolUsuario }}</a>
-              </div>
-            </li>
-            <li class="nav-item ml-2">
-              <button class="btn btn-outline-light my-2 my-sm-0" (click)="authService.logout(); reload()">Salir</button>
-            </li>
-          </ng-template>
-        </ul>
-      </div>
-
     </div>
+
   </div>
 </nav>
-  

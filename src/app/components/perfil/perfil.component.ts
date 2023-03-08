@@ -15,7 +15,7 @@ export class PerfilComponent implements OnInit {
 
   usuario: Usuario
   centro: Centro
-  idCentro:string
+  existeCentro:boolean
 
   constructor(private authService:AuthService, private centroService:CentroService, private router:Router) {}
 
@@ -29,7 +29,12 @@ export class PerfilComponent implements OnInit {
         this.centroService.getCentroByIdUser$(this.usuario.id).subscribe(
           res => {
             this.centro = res;
-            this.idCentro=this.centro.id;
+            if(this.centro.id.length > 0){
+              this.existeCentro = true
+            }else{
+              this.existeCentro = false
+            }
+            console.log("Existe centro: "+this.existeCentro)
           },
           err => console.log("error: " + err)
         ) 
