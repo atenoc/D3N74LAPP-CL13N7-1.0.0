@@ -7,38 +7,40 @@ import { CentroService } from 'src/app/services/centro.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-centro-list',
-  templateUrl: './centro-list.component.html',
-  styleUrls: ['./centro-list.component.css']
+  selector: 'app-perfil',
+  templateUrl: './perfil.component.html',
+  styleUrls: ['./perfil.component.css']
 })
-export class CentroListComponent implements OnInit {
+export class PerfilComponent implements OnInit {
 
-  centros: Centro[] = [];
-  usuario:Usuario
+  usuario: Usuario
+  centro: Centro
+  existeCentro:boolean
 
-  constructor(private authService: AuthService, private centroService:CentroService, private router: Router) { }
+  constructor(private authService:AuthService, private centroService:CentroService, private router:Router) {}
 
   ngOnInit() {
 
+    // Consulta de Usuario por Correo
     this.authService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
       res => {
         this.usuario = res;
-        console.log("Rol Centros: "+this.usuario.rol)
-        if(this.usuario.rol != "sop"){
-          this.router.navigate(['/perfil']);
-        }
+        // Consulta Centro del usuario
+        this.centroService.getCentroByIdUser$(this.usuario.id).subscribe(
+          res => {
+            this.centro = res;
+            if(this.centro.id.length > 0){
+              this.existeCentro = true
+            }else{
+              this.existeCentro = false
+            }
+            console.log("Existe centro: "+this.existeCentro)
+          },
+          err => console.log("error: " + err)
+        ) 
       },
       err => console.log("error: " + err)
-    )
-
-    this.centroService.getCentros$().subscribe(
-      res=>{
-        console.log("Listado de centros <-> " + res)
-        //console.log("Listado de centros: " + JSON.stringify(res))
-        this.centros = res;
-      },
-     err => console.log(err)
-    )
+    )    
   }
 
   selectedIdUser(id: string) {

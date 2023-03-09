@@ -1,1 +1,41 @@
-<p>centro-detalle works!</p>
+<div class="col-lg-3 mx-auto text-center" style="margin-top: 80px;">
+
+    <div *ngIf="!centro; else main_content">
+        <h5>Cargando...</h5>
+    </div>
+    <ng-template #main_content>
+
+        <div class="card">
+            <div class="card-header bg-dark text-white"> <strong>Editar Información </strong> </div>
+            <form class="card-body" (submit)="updateCentro(nombre, telefono, correo, direccion)">
+
+                <div class="form-group">
+                    <small class="form-text text-muted">Nombre de tu centro o consultorio dental</small>
+                    <input type="text" class="form-control" maxlength="40" [value]="centro.nombre" #nombre >
+                </div>
+                <div class="form-group">
+                    <small class="form-text text-muted">Teléfono de contacto</small>
+                    <input type="text" class="form-control" maxlength="10" [value]="centro.telefono" #telefono >
+                </div>
+                <div class="form-group">
+                    <small class="form-text text-muted">Correo de contacto</small>
+                    <input type="text" class="form-control" maxlength="30" [value]="centro.correo" #correo>
+                </div>
+    
+                <div class="form-group">
+                    <small class="form-text text-muted">Dirección o Domicilio</small>
+                    <textarea class="form-control" rows="2" maxlength="130" [value]="centro.direccion" #direccion></textarea>
+                </div>
+                                
+                <button class="btn btn-primary btn-block">
+                    Actualizar Datos
+                </button>
+                <button class="btn btn-secondary btn-block" (click)="regresar()">
+                    Cancelar
+                </button>
+            </form>
+
+        </div>      
+    </ng-template>
+
+</div>

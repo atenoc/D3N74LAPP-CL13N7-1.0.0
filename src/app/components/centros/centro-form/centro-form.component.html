@@ -1,1 +1,46 @@
-<p>centro-form works!</p>
+<div class="col-lg-3 mx-auto text-center" style="margin-top: 80px;">
+
+    <div class="card">
+
+        <div class="card-header bg-primary text-white"><strong>Datos del centro o consultorio dental</strong></div>
+        <div class="card-body">
+
+            <form [formGroup]="formularioCentro">
+     
+                <div class="form-group">
+                    <small class="form-text text-muted">Nombre del centro o consultorio dental</small>
+                    <input type="email" class="form-control" formControlName="nombre" placeholder="Ingrese un nombre">
+                    <div *ngIf="formularioCentro.controls['nombre'].invalid && formularioCentro.controls['nombre'].dirty" class="alert alert-danger" role="alert">
+                      <span *ngIf="formularioCentro.controls['nombre'].errors.required">El nombre es requerido</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <small class="text-muted">Teléfono de contacto</small>
+                    <input type="text" class="form-control" formControlName="telefono" placeholder="10 dígitos" maxlength="10">
+                    <div *ngIf="formularioCentro.controls['telefono'].invalid && formularioCentro.controls['telefono'].dirty" class="alert alert-danger" role="alert">
+                        <span *ngIf="formularioCentro.controls['telefono'].errors.required">El teléfono es requerido</span> 
+                    </div>
+                </div>
+                <div class="form-group">
+                    <small class="text-muted">Correo de contacto</small>
+                    <input type="email" class="form-control" formControlName="correo" placeholder="Ingrese el correo electrónico">
+                    <div *ngIf="formularioCentro.controls['correo'].invalid && formularioCentro.controls['correo'].dirty" class="alert alert-danger" role="alert">
+                      <span *ngIf="formularioCentro.controls['correo'].errors.required">El correo es requerido</span>
+                        <span *ngIf="formularioCentro.controls['correo'].errors.email">El correo no es válido</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <small class="text-muted">Dirección ó Domicilio</small>
+                    <textarea class="form-control" formControlName="direccion" rows="2" maxlength="130"></textarea>
+                    <div *ngIf="formularioCentro.controls['direccion'].invalid && formularioCentro.controls['direccion'].dirty" class="alert alert-danger" role="alert">
+                        <span *ngIf="formularioCentro.controls['direccion'].errors.required">La direccion es requerida</span> 
+                    </div>
+                </div>
+        
+                <button type="submit" class="btn btn-primary btn-block" (click)="crearCentro()" [disabled]="formularioCentro.invalid" >Agregar</button>
+            </form>
+
+        </div>
+
+    </div>
+</div>

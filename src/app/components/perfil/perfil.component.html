@@ -1,0 +1,80 @@
+<div class="container mt-4">
+
+    <div class="row">
+        
+        <div class="col-sm">
+            <div *ngIf="!usuario; else content_usuario">
+                <label>Cargando información...</label>
+            </div>
+            <ng-template #content_usuario>
+                <div class="card">
+                    <div class="card-header bg-primary text-white"> <strong>Información de usuario </strong> </div>
+                    <div class="card-body bg-light" >
+        
+                        <div class="form-group">
+                            <small class="form-text text-muted">Correo</small>
+                            <strong class="text-primary">{{ usuario.correo }}</strong>
+                        </div>
+                        <div class="form-group">
+                            <small class="form-text text-muted">Rol</small>
+                            <label>{{ usuario.rol }}</label>
+                        </div> 
+                        <div class="form-group">
+                            <small class="form-text text-muted">Fecha y hora de creación</small>
+                            <label>{{ usuario.fecha_creacion }}</label>
+                        </div> 
+                    </div>
+                </div>      
+            </ng-template>
+        </div>
+        <div class="col-sm">
+            <div *ngIf="!centro; else content_centro">
+                <label>Cargando Información...</label>
+            </div>
+            <ng-template #content_centro>
+                <div *ngIf="!existeCentro; else datos_centro" class="text-center">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" routerLink="/centro-form">Registrar mi centro dental</button>
+                </div>
+                <ng-template #datos_centro>
+
+                    <div class="card">
+                        <div class="card-header bg-primary text-white"> <strong>Información del centro dental </strong> </div>
+                        <div class="card-body" >
+                            <div class="form-group">
+                                <small class="form-text text-muted">Nombre del centro / consultorio</small>
+                                <strong class="text-primary">{{ centro.nombre }}</strong>
+                            </div>
+                            <div class="form-group">
+                                <small class="form-text text-muted">Teléfono</small>
+                                <label>{{ centro.telefono }}</label>
+                            </div> 
+                            <div class="form-group">
+                                <small class="form-text text-muted">Correo de contacto</small>
+                                <label>{{ centro.correo }}</label>
+                            </div> 
+                            <div class="form-group">
+                                <small class="form-text text-muted">Dirección</small>
+                                <label>{{ centro.direccion }}</label>
+                            </div> 
+                            <div class="form-group">
+                                <small class="form-text text-muted">Fecha y hora de creación</small>
+                                <label>{{ centro.fecha_creacion }}</label>
+                            </div> 
+                        </div>
+                        <div class="card-footer text-right bg-white" >
+                            <a> <small class="text-primary cursor-pointer mr-3" (click)="selectedIdUser(centro.id)"> Editar</small> </a>
+                            <a> <small class="text-danger cursor-pointer" (click)="deleteCentro(centro.id, centro.nombre)"> Eliminar</small> </a>
+                        </div>
+                    </div> 
+                </ng-template>
+                     
+            </ng-template>
+        </div>
+
+        <div class="col-sm">
+            <img src="https://res.cloudinary.com/dnblt4j16/image/upload/v1677808769/dentalapp/images/dentalapp-01-example_vcuf3h.png" alt="..." class="img-thumbnail">
+        </div>
+
+      </div>
+
+</div>
