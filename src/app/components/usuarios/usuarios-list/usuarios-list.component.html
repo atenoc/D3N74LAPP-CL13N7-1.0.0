@@ -46,7 +46,7 @@
 <!-- Modal Crear Usuario -->
 <ng-template #content let-c="close" let-d="dismiss">
 	<div class="modal-header">
-		<h4 class="modal-title">Modal title</h4>
+		<h4 class="modal-title">Nuevo usuario</h4>
 		<button type="button" class="btn-close" aria-label="Close" (click)="d('Cross click')">X</button>
 	</div>
 	<div class="modal-body">
@@ -55,7 +55,7 @@
      
       <div class="form-group">
           <small class="text-muted">Correo</small>
-          <input type="email" class="form-control" formControlName="correo" placeholder="Ingrese su correo electrónico">
+          <input type="email" class="form-control" formControlName="correo" placeholder="Ingrese un correo electrónico">
           <div *ngIf="formularioUsuario.controls['correo'].invalid && formularioUsuario.controls['correo'].dirty" class="alert alert-danger" role="alert">
             <span *ngIf="formularioUsuario.controls['correo'].errors.required">El correo es requerido</span>
               <span *ngIf="formularioUsuario.controls['correo'].errors.email">El correo no es válido</span>
@@ -63,7 +63,7 @@
       </div>
       <div class="form-group">
           <small class="text-muted">Contraseña</small>
-          <input type="password" class="form-control" formControlName="llave" placeholder="Ingrese su contraseña">
+          <input type="password" class="form-control" formControlName="llave" placeholder="Ingrese una contraseña">
           <div *ngIf="formularioUsuario.controls['llave'].invalid && formularioUsuario.controls['llave'].dirty" class="alert alert-danger" role="alert">
               <span *ngIf="formularioUsuario.controls['llave'].errors.required">La contraseña es requerida</span> 
           </div>
@@ -83,7 +83,7 @@
           </div>
       </div>
 
-      <button type="submit" class="btn btn-primary btn-block" (click)="crearUsuario()" [disabled]="formularioUsuario.invalid" >Agregar</button>
+      <button type="submit" class="btn btn-primary btn-block" (click)="crearUsuario()" [disabled]="formularioUsuario.invalid" >Registrar</button>
     </form>
 
 	</div>
