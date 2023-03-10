@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
+import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-usuarios',
@@ -14,10 +16,23 @@ export class UsuariosListComponent implements OnInit {
 
   usuarios: Usuario[] = [];
   usuario:Usuario
+  formularioUsuario:FormGroup
 
-  constructor(private authService: AuthService, private usuarioService:UsuarioService, private router: Router) { }
+  constructor(private formBuilder:FormBuilder, private authService: AuthService, private usuarioService:UsuarioService, private router: Router,
+    private modalService: NgbModal, config: NgbModalConfig) {
+      config.backdrop = 'static';
+		  config.keyboard = false;
+     }
 
   ngOnInit() {
+
+    this.formularioUsuario = this.formBuilder.group({
+      correo: ['', Validators.compose([
+        Validators.required, Validators.email
+      ])],
+      llave: ['', Validators.required],
+      rol: ['', Validators.required]
+    })
 
     this.authService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
       res => {
@@ -47,6 +62,43 @@ export class UsuariosListComponent implements OnInit {
     
   }
 
+  openVerticallyCentered(content) {
+		this.modalService.open(content, { centered: true });
+	}
+
+  crearUsuario(){
+    var nuevoUsuarioJson = JSON.parse(JSON.stringify(this.formularioUsuario.value))
+    nuevoUsuarioJson.id_usuario=localStorage.getItem('id_us')
+    this.usuarioService.createUsuario(nuevoUsuarioJson).subscribe(
+      res => {
+        this.usuario=res;
+        this.modalService.dismissAll()
+        this.ngOnInit()
+
+        Swal.fire({
+          icon: 'success',
+          html:
+            `<strong> ${ this.usuario.correo } </strong><br/>` +
+            '¡Registrado con éxito!',
+          showConfirmButton: true,
+          confirmButtonColor: '#28a745',
+          timer: 2000
+        })
+      },
+      err => {
+        console.log("error: " + err.error.message)
+        Swal.fire({
+          icon: 'error',
+          html:
+            `<strong>¡${ err.error.message }!</strong>`,
+          showConfirmButton: true,
+          confirmButtonColor: '#28a745',
+          timer: 4000
+        })
+      }
+    )
+  }
+
   selectedIdUser(id: string) {
     console.log("id seleccionado: "+id)
     this.router.navigate(['/usuario-detalle', id]);
@@ -55,7 +107,6 @@ export class UsuariosListComponent implements OnInit {
   deleteUser(id: string, correo:string) {
 
     Swal.fire({
-      //title: `¡Eliminar Usuario!`,
       html:
         `¿ Estás seguro de eliminar el usuario: <br/> ` +
         `<strong> ${ correo } </strong> ? `,
@@ -67,19 +118,15 @@ export class UsuariosListComponent implements OnInit {
       cancelButtonText: 'No, cancelar'
     }).then((result) => {
       if (result.value) {
-        /*si dan clic en si, eliminar */
-
+        /* Confirm */
         this.usuarioService.deleteUsuario(id).subscribe(res => {
           console.log("Usuario eliminado:" + res)
-          /* Recargamos el componente*/  
           this.ngOnInit()
-          this.router.navigate(['/usuarios']);
           Swal.fire({
             icon: 'success',
-            //title: 'Usuario registrado',
             showConfirmButton: false,
             text:'¡El usuario ha sido eliminado!',
-            timer: 2500
+            timer: 1500
           })
 
         },
@@ -99,6 +146,10 @@ export class UsuariosListComponent implements OnInit {
       }
     })
 
+  }
+
+  limpiarForm(){
+    this.formularioUsuario.reset();
   }
 
 }
