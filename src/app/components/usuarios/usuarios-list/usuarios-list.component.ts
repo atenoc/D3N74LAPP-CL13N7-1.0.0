@@ -38,7 +38,7 @@ export class UsuariosListComponent implements OnInit {
       res => {
         this.usuario = res;
         console.log("Rol Usuarios: "+this.usuario.rol)
-        if(this.usuario.rol == "sop"){  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
+        if(this.usuario.rol == "sop"){  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
           this.usuarioService.getUsuarios$().subscribe(res=>{
             console.log("Listado de usuarios <-> " + res)
             this.usuarios = res;
@@ -47,9 +47,9 @@ export class UsuariosListComponent implements OnInit {
           )
         }
 
-        if(this.usuario.rol == "admin"){
+        if(this.usuario.rol == "admin"){ // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
           this.usuarioService.getUsuariosByUsuario$(this.usuario.id).subscribe(res=>{
-            console.log("Listado de usuarios x Usuario <-> " + JSON.stringify( res))
+            console.log("Listado de usuarios x Usuario <-> " + res)
             this.usuarios = res;
           },
             err => console.log(err)

@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { CentroService } from 'src/app/services/centro.service';
-import { UsuarioService } from 'src/app/services/usuario.service';
+import { NavigateService } from 'src/app/services/navigate.service';
 
 @Component({
   selector: 'app-navigate',
@@ -19,7 +18,7 @@ export class NavigateComponent implements OnInit {
   nombreCentro:string="Dental App"
   mostrarTitulo:boolean=true
 
-  constructor(public authService: AuthService, private centroService:CentroService) { }
+  constructor(private navigateService:NavigateService, public authService: AuthService, private centroService:CentroService) { }
 
   ngOnInit() {
     this.authService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
@@ -50,8 +49,21 @@ export class NavigateComponent implements OnInit {
     
   }
 
+  salir(){
+    this.authService.logout()
+
+    this.navigateService.mensajeActual.subscribe(
+      res => {
+        if(res){
+          this.reload()
+        }
+      }
+    )
+  }
+
   reload(){
     this.rolUsuario=""
+    this.nombreCentro="Dental App"
     this.ngOnInit()
     console.log("reload navigate <-")
   }

@@ -23,22 +23,24 @@ export class CentroListComponent implements OnInit {
     this.authService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
       res => {
         this.usuario = res;
-        console.log("Rol Centros: "+this.usuario.rol)
-        if(this.usuario.rol != "sop"){
+        console.log("Rol Centro: "+this.usuario.rol)
+
+        if(this.usuario.rol != "sop"){  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
           this.router.navigate(['/perfil']);
+        }else{
+          this.centroService.getCentros$().subscribe(
+            res=>{
+              console.log("Listado de centros <-> " + res)
+              this.centros = res;
+            },
+           err => console.log(err)
+          )
         }
       },
       err => console.log("error: " + err)
     )
 
-    this.centroService.getCentros$().subscribe(
-      res=>{
-        console.log("Listado de centros <-> " + res)
-        //console.log("Listado de centros: " + JSON.stringify(res))
-        this.centros = res;
-      },
-     err => console.log(err)
-    )
+    
   }
 
   selectedIdUser(id: string) {
@@ -60,11 +62,10 @@ export class CentroListComponent implements OnInit {
       cancelButtonText: 'No, cancelar'
     }).then((result) => {
       if (result.value) {
-        /*si dan clic en si, eliminar */
+        /* Confirm */
 
         this.centroService.deleteCentro(id).subscribe(res => {
           console.log("Centro eliminado:" + res)
-          /* Recargamos el componente*/  
           this.ngOnInit()
           this.router.navigate(['/perfil']);
           Swal.fire({

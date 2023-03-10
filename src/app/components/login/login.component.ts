@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from '../../services/auth.service'
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -57,7 +58,17 @@ export class LoginComponent implements OnInit {
       err => {
         console.log(err.error.message)
         console.log(err)
-        this.mensajeError = err.error.message + ". ¡Por favor revisa el correo y/o contraseña!"
+
+        Swal.fire({
+          icon: 'warning',
+          html:
+            `<strong> ${ err.error.message  } </strong><br/>` +
+            '<small> ¡Por favor verifica el correo y/o contraseña! </small> ',
+          showConfirmButton: false,
+          timer: 3000
+        }) 
+
+        this.mensajeError = err.error.message + ". ¡Por favor verifica el correo y/o contraseña!"
         this.mostrarError = true
       }
     ) 
