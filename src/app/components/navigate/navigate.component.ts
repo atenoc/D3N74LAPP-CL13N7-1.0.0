@@ -3,6 +3,7 @@ import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { CentroService } from 'src/app/services/centro.service';
 import { NavigateService } from 'src/app/services/navigate.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-navigate',
@@ -18,10 +19,10 @@ export class NavigateComponent implements OnInit {
   nombreCentro:string="Dental App"
   mostrarTitulo:boolean=true
 
-  constructor(private navigateService:NavigateService, public authService: AuthService, private centroService:CentroService) { }
+  constructor(private navigateService:NavigateService, public authService: AuthService, public usuarioService: UsuarioService, private centroService:CentroService) { }
 
   ngOnInit() {
-    this.authService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
+    this.usuarioService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
       res => {
         this.usuario = res;
         this.idUsuario=this.usuario.id

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
-import { AuthService } from 'src/app/services/auth.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -18,7 +17,7 @@ export class UsuariosListComponent implements OnInit {
   usuario:Usuario
   formularioUsuario:FormGroup
 
-  constructor(private formBuilder:FormBuilder, private authService: AuthService, private usuarioService:UsuarioService, private router: Router,
+  constructor(private formBuilder:FormBuilder, private usuarioService:UsuarioService, private router: Router,
     private modalService: NgbModal, config: NgbModalConfig) {
       config.backdrop = 'static';
 		  config.keyboard = false;
@@ -34,7 +33,7 @@ export class UsuariosListComponent implements OnInit {
       rol: ['', Validators.required]
     })
 
-    this.authService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
+    this.usuarioService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
       res => {
         this.usuario = res;
         console.log("Rol Usuarios: "+this.usuario.rol)

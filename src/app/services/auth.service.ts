@@ -25,28 +25,10 @@ export class AuthService {
     this.usuario$ = new Subject();
   }
 
-  registro(user){
-    return this.http.post<any>(this.URI + '/registro', user)
-  }
-
+  // POST
   login(user){
-    console.log("usuario enviado: "+ JSON.stringify(user))
+    console.log("usuario enviado: "+ user)
     return this.http.post<any>(this.URI + '/login', user)
-  }
-
-  getUsuarioByCorreo$(correo: string) {
-    //console.log("Auth service | correo: "+correo)
-    if(correo){
-      this.http.get<Usuario>(`${this.URI}/userbycorreo/${correo}`).subscribe(
-        res=>{
-          this.usuario$.next(res)
-        },
-        err => console.log(err)
-      )
-      return this.usuario$.asObservable();
-    }else{
-      return this.usuario$;
-    }
   }
 
   estaLogueado(){

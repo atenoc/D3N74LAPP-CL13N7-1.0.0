@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Centro } from 'src/app/models/Centro.model';
 import { Usuario } from 'src/app/models/Usuario.model';
-import { AuthService } from 'src/app/services/auth.service';
 import { CentroService } from 'src/app/services/centro.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -17,12 +17,12 @@ export class PerfilComponent implements OnInit {
   centro: Centro
   existeCentro:boolean
 
-  constructor(private authService:AuthService, private centroService:CentroService, private router:Router) {}
+  constructor(private usuarioService:UsuarioService, private centroService:CentroService, private router:Router) {}
 
   ngOnInit() {
 
     // Consulta de Usuario por Correo
-    this.authService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
+    this.usuarioService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
       res => {
         this.usuario = res;
         // Consulta Centro del usuario
