@@ -18,6 +18,8 @@ import { CentroListComponent } from './components/centros/centro-list/centro-lis
 import { CentroFormComponent } from './components/centros/centro-form/centro-form.component';
 import { CentroDetalleComponent } from './components/centros/centro-detalle/centro-detalle.component';
 import { PerfilComponent } from './components/perfil/perfil.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -32,14 +34,16 @@ import { PerfilComponent } from './components/perfil/perfil.component';
     CentroListComponent,
     CentroFormComponent,
     CentroDetalleComponent,
-    PerfilComponent
+    PerfilComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule
   ],
   providers: [
     AuthGuard,

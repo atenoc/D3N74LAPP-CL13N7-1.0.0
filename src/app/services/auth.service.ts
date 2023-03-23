@@ -5,6 +5,7 @@ import { Usuario } from '../models/Usuario.model';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
 import Swal from 'sweetalert2';
+import { NavigateService } from './navigate.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,35 +18,17 @@ export class AuthService {
   private usuario$: Subject<Usuario>;
 
   // usuario almacenado en localstorage, para al actualizar la página obtenga el usuario logueado en el componente navigate
-  //private messageSource = new BehaviorSubject<string>(localStorage.getItem('usuario')) 
+  //private messageSource = new BehaviorSubject<string>(localStorage.getItem('')) 
   //mensajeActual = this.messageSource.asObservable()
 
-  constructor(private http: HttpClient, private router:Router) {
+  constructor(private http: HttpClient, private router:Router, private navigateService:NavigateService) {
     this.usuario$ = new Subject();
   }
 
-  registro(user){
-    return this.http.post<any>(this.URI + '/registro', user)
-  }
-
+  // POST
   login(user){
-    console.log("usuario enviado: "+ JSON.stringify(user))
+    console.log("usuario enviado: "+ user)
     return this.http.post<any>(this.URI + '/login', user)
-  }
-
-  getUsuarioByCorreo$(correo: string) {
-    //console.log("Auth service | correo: "+correo)
-    if(correo){
-      this.http.get<Usuario>(`${this.URI}/userbycorreo/${correo}`).subscribe(
-        res=>{
-          this.usuario$.next(res)
-        },
-        err => console.log(err)
-      )
-      return this.usuario$.asObservable();
-    }else{
-      return this.usuario$;
-    }
   }
 
   estaLogueado(){
@@ -69,18 +52,30 @@ export class AuthService {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        /*si dan clic en si, eliminar */
+        // Confirm
 
         localStorage.removeItem('token')
         localStorage.removeItem('id_us')
         localStorage.removeItem('correo_us')
 
         this.router.navigate(['/login'])
+
+        // Se manda un mensaje para validar el cierre de sesion y refrescar el menu 
+        this.navigateService.cambiarMensaje("refresh_navigate")
+
+        Swal.fire({
+          icon: 'info',
+          html:
+            `<strong> ¡Sesión finalizada! </strong><br/>`,
+          showConfirmButton: false,
+          timer: 1500
+        }) 
     
+        /*
         setTimeout(() => {
-          //this.spinner.hide() 
-          //this.router.navigate(['/login'])  
-        }, 500);
+          this.spinner.hide() 
+          this.router.navigate(['/login'])  
+        }, 500); */
   
       }
     })

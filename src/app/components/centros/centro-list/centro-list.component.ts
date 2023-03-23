@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Centro } from 'src/app/models/Centro.model';
 import { Usuario } from 'src/app/models/Usuario.model';
-import { AuthService } from 'src/app/services/auth.service';
 import { CentroService } from 'src/app/services/centro.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -16,29 +16,31 @@ export class CentroListComponent implements OnInit {
   centros: Centro[] = [];
   usuario:Usuario
 
-  constructor(private authService: AuthService, private centroService:CentroService, private router: Router) { }
+  constructor(private usuarioService: UsuarioService, private centroService:CentroService, private router: Router) { }
 
   ngOnInit() {
 
-    this.authService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
+    this.usuarioService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
       res => {
         this.usuario = res;
-        console.log("Rol Centros: "+this.usuario.rol)
-        if(this.usuario.rol != "sop"){
+        console.log("Rol Centro: "+this.usuario.rol)
+
+        if(this.usuario.rol != "sop"){  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
           this.router.navigate(['/perfil']);
+        }else{
+          this.centroService.getCentros$().subscribe(
+            res=>{
+              console.log("Listado de centros <-> " + res)
+              this.centros = res;
+            },
+           err => console.log(err)
+          )
         }
       },
       err => console.log("error: " + err)
     )
 
-    this.centroService.getCentros$().subscribe(
-      res=>{
-        console.log("Listado de centros <-> " + res)
-        //console.log("Listado de centros: " + JSON.stringify(res))
-        this.centros = res;
-      },
-     err => console.log(err)
-    )
+    
   }
 
   selectedIdUser(id: string) {
@@ -60,11 +62,10 @@ export class CentroListComponent implements OnInit {
       cancelButtonText: 'No, cancelar'
     }).then((result) => {
       if (result.value) {
-        /*si dan clic en si, eliminar */
+        /* Confirm */
 
         this.centroService.deleteCentro(id).subscribe(res => {
           console.log("Centro eliminado:" + res)
-          /* Recargamos el componente*/  
           this.ngOnInit()
           this.router.navigate(['/perfil']);
           Swal.fire({

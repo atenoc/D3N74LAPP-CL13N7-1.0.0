@@ -19,14 +19,15 @@ export class CentroService {
   constructor(private http: HttpClient, private router:Router) {
     this.centros$ = new Subject();
     this.centro$ = new Subject();
-   }
+  }
 
+  // POST One
   createCentro(centro) {
     return this.http.post<any>(this.URI, centro)
   }
 
+  // GET All
   getCentros$() {
-    //return this.http.get<Centro[]>(this.URI);
     this.http.get<Centro[]>(this.URI).subscribe(
       res=>{
         this.centros$.next(res)
@@ -36,8 +37,8 @@ export class CentroService {
     return this.centros$.asObservable();
   }
 
+  // GET One
   getCentro$(id: string) {
-    //return this.http.get<Centro>(`${this.URI}/${id}`);
     this.http.get<Centro>(`${this.URI}/${id}`).subscribe(
       res=>{
         this.centro$.next(res)
@@ -47,20 +48,21 @@ export class CentroService {
     return this.centro$.asObservable();
   }
 
-  deleteCentro(id: string) {
-    return this.http.delete(`${this.URI}/${id}`);
-  }
-
+  // PATCH One
   updateCentro(id: string, nombre: string, telefono: string, correo:string, direccion:string) {
     return this.http.patch(`${this.URI}/${id}`, {nombre, telefono, correo, direccion});
   }
 
+  // DELETE One
+  deleteCentro(id: string) {
+    return this.http.delete(`${this.URI}/${id}`);
+  }
+
+  // GET One by
   getCentroByIdUser$(id_usuario: string) {
-    //return this.http.get<Centro>(`${this.URI}/usuario/${id_usuario}`);
     if(id_usuario){
       this.http.get<Centro>(`${this.URI}/usuario/${id_usuario}`).subscribe(
         res=>{
-          //console.log("Respuesta Service: "+ JSON.stringify(res) )
           this.centro$.next(res)
         },
         err => console.log(err)
