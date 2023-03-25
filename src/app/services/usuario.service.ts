@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
 import { Usuario } from '../models/Usuario.model';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -16,25 +17,50 @@ export class UsuarioService {
   private usuarios$: Subject<Usuario[]>;
   private usuario$: Subject<Usuario>;
 
+  private usuario = new BehaviorSubject<any>(null);
+  private usuarios = new BehaviorSubject<Usuario[]>([]);
+
+  private usuarioCreado:Usuario
+
   constructor(private http: HttpClient, private router:Router) {
     this.usuarios$ = new Subject();
     this.usuario$ = new Subject();
   }
 
   // POST
-  createUsuario(user) {
-    return this.http.post<any>(this.URI, user)
+  createUsuario(user): Observable<Usuario> {
+    return this.http.post<any>(this.URI, user).pipe(
+      map(response => {
+        // Crear un nuevo objeto de usuario a partir de la respuesta del servidor
+        this.usuarioCreado = response
+        
+        // Agregar el usuario recién creado a la lista de usuarios
+        const newUsuarios = [...this.usuarios.getValue(), this.usuarioCreado];
+        this.usuarios.next(newUsuarios);
+  
+        // Actualizar el usuario BehaviorSubject con el usuario recién creado
+        this.usuario.next(this.usuarioCreado);
+        console.log("Usuario creado service");
+  
+        // Devolver el objeto de usuario recién creado
+        return this.usuarioCreado;
+      }),
+      catchError(error => {
+        console.log(error);
+        return throwError(error);
+      })
+    );
   }
-
+  
   // GET
-  getUsuarios$(){
+  getUsuarios$(): Observable<Usuario[]>{
     this.http.get<Usuario[]>(this.URI).subscribe(
       res=>{
-        this.usuarios$.next(res)
+        this.usuarios.next(res)
       },
       err => console.log(err)
     )
-    return this.usuarios$.asObservable();
+    return this.usuarios.asObservable();
   }
 
   // GET

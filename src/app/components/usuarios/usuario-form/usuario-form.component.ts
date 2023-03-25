@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
@@ -12,11 +13,10 @@ import Swal from 'sweetalert2';
 })
 export class UsuarioFormComponent implements OnInit {
 
-  //user = { }
   usuario:Usuario
   formularioUsuario:FormGroup
 
-  constructor(private formBuilder:FormBuilder, private usuarioService:UsuarioService, private router: Router) { }
+  constructor(private formBuilder:FormBuilder, private usuarioService:UsuarioService, private router: Router, private modalService: NgbModal) { }
 
   ngOnInit() {
     this.formularioUsuario = this.formBuilder.group({
@@ -35,21 +35,19 @@ export class UsuarioFormComponent implements OnInit {
     this.usuarioService.createUsuario(nuevoUsuarioJson)
     .subscribe(
       res => {
-        //console.log("Usuario creado: "+JSON.stringify(res))
-        this.usuario=res;
+        this.usuario = res;
         console.log("Usuario creado")
-        this.router.navigate(['/usuarios'])
-
+        this.modalService.dismissAll()
+ 
         Swal.fire({
           icon: 'success',
-          //title: 'Usuario registrado',
           html:
             `<strong> ${ this.usuario.correo } </strong><br/>` +
             '¡Registrado con éxito!',
           //text:`El usuario: ${ this.usuario.correo }, se registró con éxito`,
           showConfirmButton: true,
           confirmButtonColor: '#28a745',
-          timer: 4000
+          timer: 2000
         })
       },
       err => {
@@ -64,6 +62,11 @@ export class UsuarioFormComponent implements OnInit {
         })
       }
     )
+  }
+
+  limpiarForm(){
+    this.formularioUsuario.reset();
+    console.log("Limpiando formulario")
   }
 
 }
