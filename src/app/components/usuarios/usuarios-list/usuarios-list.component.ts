@@ -18,7 +18,7 @@ export class UsuariosListComponent implements OnInit {
 
   formularioDetalleUsuario:FormGroup
 
-  constructor(private usuarioService:UsuarioService, private router: Router, private formBuilder:FormBuilder,
+  constructor(private usuarioService:UsuarioService, private router: Router,
     private modalService: NgbModal, config: NgbModalConfig) {
       config.backdrop = 'static';
 		  config.keyboard = false;
@@ -58,10 +58,6 @@ export class UsuariosListComponent implements OnInit {
 		this.modalService.open(content, { centered: true });
 	}
 
-  openFullscreen(content) {
-		this.modalService.open(content, { size: 'xl' });
-	}
-
   selectedIdUser(id: string) {
     console.log("id seleccionado: "+id)
     this.router.navigate(['/usuario-detalle', id]);
@@ -84,7 +80,7 @@ export class UsuariosListComponent implements OnInit {
         // Confirm
         this.usuarioService.deleteUsuario(id).subscribe(res => {
           console.log("Usuario eliminado:" + JSON.stringify(res))
-          this.ngOnInit()
+
           Swal.fire({
             icon: 'success',
             showConfirmButton: false,

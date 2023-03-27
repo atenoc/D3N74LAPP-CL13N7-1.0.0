@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
 import { Usuario } from '../models/Usuario.model';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +18,7 @@ export class UsuarioService {
   private usuario = new BehaviorSubject<Usuario>(null);
   private usuarios = new BehaviorSubject<Usuario[]>([]);
 
-  constructor(private http: HttpClient, private router:Router) {
+  constructor(private http: HttpClient) {
     this.usuario$ = new Subject();
   }
 
@@ -69,10 +68,19 @@ export class UsuarioService {
   }
 
   // DELETE
-  deleteUsuario(id: string) {
-    return this.http.delete(`${this.URI}/${id}`);
+  deleteUsuario(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.URI}/${id}`).pipe(
+      tap(() => {
+        const usuarios = this.usuarios.getValue();
+        const index = usuarios.findIndex(usuario => usuario.id === id);
+        if (index !== -1) {
+          usuarios.splice(index, 1);
+          this.usuarios.next([...usuarios]);
+        }
+      })
+    );
   }
-
+  
   // GET One by
   getUsuarioByCorreo$(correo: string) {
     if(correo){
