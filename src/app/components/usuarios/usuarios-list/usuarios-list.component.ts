@@ -83,7 +83,7 @@ export class UsuariosListComponent implements OnInit {
       if (result.value) {
         // Confirm
         this.usuarioService.deleteUsuario(id).subscribe(res => {
-          console.log("Usuario eliminado:" + res)
+          console.log("Usuario eliminado:" + JSON.stringify(res))
           this.ngOnInit()
           Swal.fire({
             icon: 'success',
