@@ -19,28 +19,30 @@ export class CentroListComponent implements OnInit {
   constructor(private usuarioService: UsuarioService, private centroService:CentroService, private router: Router) { }
 
   ngOnInit() {
+    if(localStorage.getItem('correo_us')){
 
-    this.usuarioService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
-      res => {
-        this.usuario = res;
-        console.log("Rol Centro: "+this.usuario.rol)
+      this.usuarioService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
+        res => {
 
-        if(this.usuario.rol != "sop"){  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
-          this.router.navigate(['/perfil']);
-        }else{
-          this.centroService.getCentros$().subscribe(
-            res=>{
-              console.log("Listado de centros <-> " + res)
-              this.centros = res;
-            },
-           err => console.log(err)
-          )
-        }
-      },
-      err => console.log("error: " + err)
-    )
+          this.usuario = res;
+          console.log("Rol Centros: "+this.usuario.rol)
+  
+          if(this.usuario.rol != "sop"){  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
+            this.router.navigate(['/agenda']);
+          }else{
+            this.centroService.getCentros$().subscribe(
+              res=>{
+                console.log("Listado de centros:: " + res)
+                this.centros = res;
+              },
+             err => console.log(err)
+            )
+          }
+        },
+        err => console.log("error: " + err)
+      )
 
-    
+    } 
   }
 
   selectedIdUser(id: string) {

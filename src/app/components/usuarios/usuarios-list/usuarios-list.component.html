@@ -23,7 +23,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let usuario of usuarios?.reverse()">
+          <tr *ngFor="let usuario of usuarios">
             <th class="text-muted"><small><strong>{{ usuario.id }}</strong></small></th>
             <td>{{ usuario.correo }}</td>
             <td>********</td>
@@ -31,69 +31,38 @@
             <td class="text-muted"><small>{{ usuario.fecha_creacion }} </small></td>
             <td class="text-muted"><small>{{ usuario.id_usuario }} </small></td>
             <td class="text-center">
+              <button class="btn btn-outline-primary my-2 my-sm-0 btn-sm" (click)="selectedIdUser(usuario.id)">!</button>
+              <button class="btn btn-outline-danger my-2 my-sm-0 btn-sm ml-2" (click)="deleteUser(usuario.id, usuario.correo)">x</button>
+          </td>
+            <!-- <td class="text-center">
                 <button class="btn btn-outline-primary my-2 my-sm-0 btn-sm" (click)="selectedIdUser(usuario.id)"
                   ngbTooltip="Ver o actualizar información"><strong>!</strong>
                 </button>
                 <button class="btn btn-outline-danger my-2 my-sm-0 btn-sm ml-2" (click)="deleteUser(usuario.id, usuario.correo)"
                   ngbTooltip="Eliminar completamente"> <strong>x</strong>
                 </button>
-            </td>
+            </td> -->
           </tr>
         </tbody>
       </table>
 
 
-<!-- Modal Crear Usuario -->
-<ng-template #content let-c="close" let-d="dismiss">
-	<div class="modal-header">
-		<h4 class="modal-title">Nuevo usuario</h4>
-		<button type="button" class="btn-close" aria-label="Close" (click)="d('Cross click')">X</button>
-	</div>
-	<div class="modal-body">
-		
-    <form [formGroup]="formularioUsuario">
-     
-      <div class="form-group">
-          <small class="text-muted">Correo</small>
-          <input type="email" class="form-control" formControlName="correo" placeholder="Ingrese un correo electrónico">
-          <div *ngIf="formularioUsuario.controls['correo'].invalid && formularioUsuario.controls['correo'].dirty" class="alert alert-danger" role="alert">
-            <span *ngIf="formularioUsuario.controls['correo'].errors.required">El correo es requerido</span>
-              <span *ngIf="formularioUsuario.controls['correo'].errors.email">El correo no es válido</span>
-          </div>
-      </div>
-      <div class="form-group">
-          <small class="text-muted">Contraseña</small>
-          <input type="password" class="form-control" formControlName="llave" placeholder="Ingrese una contraseña">
-          <div *ngIf="formularioUsuario.controls['llave'].invalid && formularioUsuario.controls['llave'].dirty" class="alert alert-danger" role="alert">
-              <span *ngIf="formularioUsuario.controls['llave'].errors.required">La contraseña es requerida</span> 
-          </div>
-      </div>
-      <div class="form-group">
-          <small class="text-muted">Rol</small>
-          <select class="form-control" formControlName="rol">
-              <option value="">Selecciona una opción</option>
-              <option>admin</option>
-              <option>asistente</option>
-              <option>recepcionista</option>
-              <option>cajero</option>
-              <option>invitado</option>
-          </select>
-          <div *ngIf="formularioUsuario.controls['rol'].invalid && formularioUsuario.controls['rol'].dirty" class="alert alert-danger" role="alert">
-            <span *ngIf="formularioUsuario.controls['rol'].errors.required">El rol es requerido</span>
-          </div>
-      </div>
+  <!-- Nuevo Modal Crear Usuario -->
+  <ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Nuevo usuario</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="d('Cross click')">X</button>
+    </div>
+    <div class="modal-body">
 
-      <button type="submit" class="btn btn-primary btn-block" (click)="crearUsuario()" [disabled]="formularioUsuario.invalid" >Registrar</button>
-    </form>
+      <app-usuario-form></app-usuario-form>
 
-	</div>
-	<div class="modal-footer">
-    <button type="button" class="btn btn-light" (click)="limpiarForm()">Limpiar</button>
-		<button type="button" class="btn btn-light" (click)="c('Cerrar')">Cerrar</button>
-	</div>
-</ng-template>
-
-
+    </div>
+    <div class="modal-footer">
+      <!-- <button type="button" class="btn btn-light" (click)="limpiarForm()">Limpiar</button> -->
+      <button type="button" class="btn btn-light" (click)="c('Cerrar')">Cerrar</button>
+    </div>
+  </ng-template>
 
 
 </div>

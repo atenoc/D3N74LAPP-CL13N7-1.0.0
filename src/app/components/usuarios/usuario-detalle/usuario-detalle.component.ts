@@ -22,6 +22,7 @@ export class UsuarioDetalleComponent implements OnInit {
       this.usuariosService.getUsuario$(this.id).subscribe(res => {   //volver a llamar los datos con el id recibido
         this.usuario = res;
         console.log("id obtenido:" + res.id)
+        console.log("usuario obtenido:" + JSON.stringify(res))
       },
         err => console.log("error: " + err)
       )
