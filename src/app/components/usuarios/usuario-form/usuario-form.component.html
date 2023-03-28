@@ -26,13 +26,21 @@
                 <div class="form-group">
                     <small class="text-muted">Rol</small>
                     <select class="form-control" formControlName="rol">
+                        <optgroup label="Selecciona una opción:"></optgroup>
+                        <option value="admin">Administrador</option>
+                        <option value="asistente">Asistente</option>
+                        <option value="recepcionista">Recepcionista</option>
+                        <option value="cajero">cajero</option>
+                        <option value="invitado">Invitado</option>
+                      </select>
+                    <!-- <select class="form-control" formControlName="rol">
                         <option value="">Selecciona una opción</option>
                         <option>admin</option>
                         <option>asistente</option>
                         <option>recepcionista</option>
                         <option>cajero</option>
                         <option>invitado</option>
-                    </select>
+                    </select> -->
                     <div *ngIf="formularioUsuario.controls['rol'].invalid && formularioUsuario.controls['rol'].dirty" class="alert alert-danger" role="alert">
                       <span *ngIf="formularioUsuario.controls['rol'].errors.required">El rol es requerido</span>
                     </div>

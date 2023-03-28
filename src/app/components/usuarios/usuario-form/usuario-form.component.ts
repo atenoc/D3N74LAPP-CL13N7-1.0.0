@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
@@ -16,7 +15,7 @@ export class UsuarioFormComponent implements OnInit {
   usuario:Usuario
   formularioUsuario:FormGroup
 
-  constructor(private formBuilder:FormBuilder, private usuarioService:UsuarioService, private router: Router, private modalService: NgbModal) { }
+  constructor(private formBuilder:FormBuilder, private usuarioService:UsuarioService, private modalService: NgbModal) { }
 
   ngOnInit() {
     this.formularioUsuario = this.formBuilder.group({
