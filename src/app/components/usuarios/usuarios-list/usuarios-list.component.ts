@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
@@ -25,33 +25,43 @@ export class UsuariosListComponent implements OnInit {
      }
 
   ngOnInit() {
+    if(localStorage.getItem('correo_us')){
 
-    this.usuarioService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
-      res => {
-        this.usuario = res;
-        console.log("Rol Usuarios: "+this.usuario.rol)
-        if(this.usuario.rol == "sop"){  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
-          this.usuarioService.getUsuarios$().subscribe(res=>{
-            console.log("Listado de usuarios <-> " + res)
-            this.usuarios = res;
-          },
-            err => console.log(err)
-          )
-        }
-
-        if(this.usuario.rol == "admin"){ // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
-          this.usuarioService.getUsuariosByUsuario$(this.usuario.id).subscribe(res=>{
-            console.log("Listado de usuarios x Usuario <-> " + res)
-            this.usuarios = res;
-          },
-            err => console.log(err)
-          )
-        }
-
-      },
-      err => console.log("error: " + err)
-    )
+      this.usuarioService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
+        res => {
+  
+          this.usuario = res;
+          console.log("Rol Usuarios: "+this.usuario.rol)
+  
+          if(this.usuario.rol != "sop" && this.usuario.rol != "admin"){ // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
+            this.router.navigate(['/agenda']);
+          }else{
+  
+            if(this.usuario.rol == "sop"){  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
+              this.usuarioService.getUsuarios$().subscribe(res=>{
+                console.log("Listado de usuarios:: " + res)
+                this.usuarios = res;
+              },
+                err => console.log(err)
+              )
+            }
     
+            if(this.usuario.rol == "admin"){ // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
+              this.usuarioService.getUsuariosByUsuario$(this.usuario.id).subscribe(res=>{
+                console.log("Listado de usuarios x Usuario <-> " + res)
+                this.usuarios = res;
+              },
+                err => console.log(err)
+              )
+            }
+  
+          }
+  
+        },
+        err => console.log("error: " + err)
+      )
+
+    }
   }
 
   openVerticallyCentered(content) {

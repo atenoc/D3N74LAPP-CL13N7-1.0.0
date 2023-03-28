@@ -20,27 +20,30 @@ export class PerfilComponent implements OnInit {
   constructor(private usuarioService:UsuarioService, private centroService:CentroService, private router:Router) {}
 
   ngOnInit() {
+    if(localStorage.getItem('correo_us')){
 
-    // Consulta de Usuario por Correo
-    this.usuarioService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
-      res => {
-        this.usuario = res;
-        // Consulta Centro del usuario
-        this.centroService.getCentroByIdUser$(this.usuario.id).subscribe(
-          res => {
-            this.centro = res;
-            if(this.centro.id.length > 0){
-              this.existeCentro = true
-            }else{
-              this.existeCentro = false
-            }
-            console.log("Existe centro: "+this.existeCentro)
-          },
-          err => console.log("error: " + err)
-        ) 
-      },
-      err => console.log("error: " + err)
-    )    
+      // Consulta de Usuario por Correo
+      this.usuarioService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
+        res => {
+          this.usuario = res;
+          // Consulta Centro del usuario
+          this.centroService.getCentroByIdUser$(this.usuario.id).subscribe(
+            res => {
+              this.centro = res;
+              if(this.centro.id.length > 0){
+                this.existeCentro = true
+              }else{
+                this.existeCentro = false
+              }
+              console.log("Existe centro: "+this.existeCentro)
+            },
+            err => console.log("error: " + err)
+          ) 
+        },
+        err => console.log("error: " + err)
+      )  
+
+    }  
   }
 
   selectedIdUser(id: string) {
