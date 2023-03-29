@@ -55,7 +55,7 @@ export class AuthService {
         // Confirm
 
         localStorage.removeItem('token')
-        localStorage.removeItem('id_us')
+        localStorage.removeItem('_us')
         localStorage.removeItem('correo_us')
 
         this.router.navigate(['/login'])

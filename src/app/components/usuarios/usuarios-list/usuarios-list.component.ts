@@ -25,9 +25,9 @@ export class UsuariosListComponent implements OnInit {
      }
 
   ngOnInit() {
-    if(localStorage.getItem('correo_us')){
+    if(localStorage.getItem('_us')){
 
-      this.usuarioService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
+      this.usuarioService.getUsuario$(localStorage.getItem('_us')).subscribe(
         res => {
   
           this.usuario = res;

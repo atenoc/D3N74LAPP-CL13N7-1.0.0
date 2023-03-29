@@ -32,7 +32,7 @@ export class CentroFormComponent implements OnInit {
   crearCentro(){
 
     var nuevoCentroJson = JSON.parse(JSON.stringify(this.formularioCentro.value))
-    nuevoCentroJson.id_usuario=localStorage.getItem('id_us')
+    nuevoCentroJson.id_usuario=localStorage.getItem('_us')
     //console.log("nuevoCentroJson a registrar: "+JSON.stringify(nuevoCentroJson))
 
     this.centroService.createCentro(nuevoCentroJson)

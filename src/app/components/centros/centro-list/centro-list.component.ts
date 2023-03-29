@@ -19,9 +19,9 @@ export class CentroListComponent implements OnInit {
   constructor(private usuarioService: UsuarioService, private centroService:CentroService, private router: Router) { }
 
   ngOnInit() {
-    if(localStorage.getItem('correo_us')){
+    if(localStorage.getItem('_us')){
 
-      this.usuarioService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
+      this.usuarioService.getUsuario$(localStorage.getItem('_us')).subscribe(
         res => {
 
           this.usuario = res;
@@ -74,7 +74,7 @@ export class CentroListComponent implements OnInit {
             icon: 'success',
             showConfirmButton: false,
             text:'¡El centro dental ha sido eliminado!',
-            timer: 4000
+            timer: 1500
           })
         },
           err => { 
