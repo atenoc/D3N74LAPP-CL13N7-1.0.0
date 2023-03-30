@@ -12,15 +12,15 @@
                 <div class="form-group">
                     <small class="text-muted">Correo</small>
                     <input type="email" class="form-control" formControlName="correo" placeholder="Ingrese su correo electrónico">
-                    <div *ngIf="formularioLogin.controls['correo'].invalid && formularioLogin.controls['correo'].dirty" class="alert alert-danger" role="alert">
+                    <div *ngIf="formularioLogin.controls['correo'].invalid && formularioLogin.controls['correo'].dirty" class="alert alert-danger my-alert" role="alert">
                       <span *ngIf="formularioLogin.controls['correo'].errors.required">El correo es requerido</span>
-                        <span *ngIf="formularioLogin.controls['correo'].errors.email">El correo no es válido</span>
+                        <span *ngIf="formularioLogin.controls['correo'].errors.email">Ingresa un correo válido</span>
                     </div>
                 </div>
                 <div class="form-group">
                     <small class="text-muted">Contraseña</small>
                     <input type="password" class="form-control" formControlName="llave" placeholder="Ingrese su contraseña">
-                    <div *ngIf="formularioLogin.controls['llave'].invalid && formularioLogin.controls['llave'].dirty" class="alert alert-danger" role="alert">
+                    <div *ngIf="formularioLogin.controls['llave'].invalid && formularioLogin.controls['llave'].dirty" class="alert alert-danger my-alert" role="alert">
                         <span *ngIf="formularioLogin.controls['llave'].errors.required">La contraseña es requerida</span> 
                     </div>
                 </div>
@@ -29,7 +29,7 @@
             </form>
 
             <div *ngIf="mostrarError" class="alert alert-warning mt-5" role="alert">
-                <strong>{{ mensajeError }} </strong>
+                <label>{{ mensajeError }} </label>
             </div>
 
         </div>
