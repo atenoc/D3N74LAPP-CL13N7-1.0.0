@@ -20,6 +20,7 @@ import { CentroDetalleComponent } from './components/centros/centro-detalle/cent
 import { PerfilComponent } from './components/perfil/perfil.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FooterComponent } from './components/footer/footer.component';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { FooterComponent } from './components/footer/footer.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgbModule
+    NgbModule,
+    NgxSpinnerModule
   ],
   providers: [
     AuthGuard,
