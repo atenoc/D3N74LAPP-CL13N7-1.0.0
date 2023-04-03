@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Centro } from 'src/app/models/Centro.model';
 import { CentroService } from 'src/app/services/centro.service';
 import Swal from 'sweetalert2';
@@ -16,7 +16,7 @@ export class CentroFormComponent implements OnInit {
   centroRes:Centro
   formularioCentro:FormGroup
 
-  constructor(private formBuilder:FormBuilder, private centroService:CentroService, private router: Router) { }
+  constructor(private formBuilder:FormBuilder, private centroService:CentroService, private modalService: NgbModal) { }
 
   ngOnInit() {
     this.formularioCentro = this.formBuilder.group({
@@ -40,7 +40,7 @@ export class CentroFormComponent implements OnInit {
       res => {
         this.centroRes = res
         console.log("Centro creado")
-        this.router.navigate(['/perfil'])
+        this.modalService.dismissAll()
 
         Swal.fire({
           icon: 'success',
@@ -49,7 +49,7 @@ export class CentroFormComponent implements OnInit {
             '¡Registrado con éxito!',
           showConfirmButton: true,
           confirmButtonColor: '#28a745',
-          timer: 4000
+          timer: 1500
         })
 
       },
@@ -65,6 +65,11 @@ export class CentroFormComponent implements OnInit {
         })
       }
     )
+  }
+
+  limpiarForm(){
+    this.formularioCentro.reset();
+    console.log("Limpiando formulario")
   }
 
 }

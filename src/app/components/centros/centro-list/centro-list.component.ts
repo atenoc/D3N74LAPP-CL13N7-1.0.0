@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Centro } from 'src/app/models/Centro.model';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { CentroService } from 'src/app/services/centro.service';
@@ -16,7 +17,11 @@ export class CentroListComponent implements OnInit {
   centros: Centro[] = [];
   usuario:Usuario
 
-  constructor(private usuarioService: UsuarioService, private centroService:CentroService, private router: Router) { }
+  constructor(private usuarioService: UsuarioService, private centroService:CentroService, private router: Router,
+    private modalService: NgbModal, config: NgbModalConfig) {
+      config.backdrop = 'static';
+		  config.keyboard = false;
+    }
 
   ngOnInit() {
     if(localStorage.getItem('_us')){
@@ -45,6 +50,10 @@ export class CentroListComponent implements OnInit {
     } 
   }
 
+  openVerticallyCentered(content) {
+		this.modalService.open(content, { centered: true });
+	}
+
   selectedIdUser(id: string) {
     console.log("id seleccionado: "+id)
     this.router.navigate(['/centro-detalle', id]);
@@ -68,8 +77,7 @@ export class CentroListComponent implements OnInit {
 
         this.centroService.deleteCentro(id).subscribe(res => {
           console.log("Centro eliminado:" + res)
-          this.ngOnInit()
-          this.router.navigate(['/perfil']);
+          //this.ngOnInit()
           Swal.fire({
             icon: 'success',
             showConfirmButton: false,

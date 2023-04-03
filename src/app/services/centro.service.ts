@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
 import { Centro } from '../models/Centro.model';
+import { catchError, map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -13,28 +14,41 @@ export class CentroService {
   //URI = 'http://localhost:4000/api/centros';
   URI = environment.urlApiCentros
 
-  private centros$: Subject<Centro[]>;
+  private centro = new BehaviorSubject<Centro>(null);
+  private centros = new BehaviorSubject<Centro[]>([]);
+  private centroCreado:Centro 
   private centro$: Subject<Centro>;
 
   constructor(private http: HttpClient, private router:Router) {
-    this.centros$ = new Subject();
     this.centro$ = new Subject();
   }
 
   // POST One
-  createCentro(centro) {
-    return this.http.post<any>(this.URI, centro)
+  createCentro(centro): Observable<Centro> {
+    return this.http.post<Centro>(this.URI, centro).pipe(
+      map(response => {
+        this.centroCreado = response
+        const newCentros = [this.centroCreado, ...this.centros.getValue()];
+        this.centros.next(newCentros);
+        this.centro.next(this.centroCreado);
+        return this.centroCreado;
+      }),
+      catchError(error => {
+        console.log(error);
+        return throwError(error);
+      })
+    );
   }
 
   // GET All
-  getCentros$() {
+  getCentros$(): Observable<Centro[]>{
     this.http.get<Centro[]>(this.URI).subscribe(
       res=>{
-        this.centros$.next(res)
+        this.centros.next(res)
       },
       err => console.log(err)
     )
-    return this.centros$.asObservable();
+    return this.centros.asObservable();
   }
 
   // GET One
@@ -54,8 +68,17 @@ export class CentroService {
   }
 
   // DELETE One
-  deleteCentro(id: string) {
-    return this.http.delete(`${this.URI}/${id}`);
+  deleteCentro(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.URI}/${id}`).pipe(
+      tap(() => {
+        const centros = this.centros.getValue();
+        const index = centros.findIndex(usuario => usuario.id === id);
+        if (index !== -1) {
+          centros.splice(index, 1);
+          this.centros.next([...centros]);
+        }
+      })
+    );
   }
 
   // GET One by
