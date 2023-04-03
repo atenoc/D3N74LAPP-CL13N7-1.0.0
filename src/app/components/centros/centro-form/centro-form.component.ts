@@ -21,9 +21,10 @@ export class CentroFormComponent implements OnInit {
   ngOnInit() {
     this.formularioCentro = this.formBuilder.group({
       nombre: ['', Validators.required],
-      telefono: ['', Validators.required],
+      telefono: ['', [Validators.required, Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
       correo: ['', Validators.compose([
-        Validators.required, Validators.email
+        //Validators.required, 
+        Validators.email
       ])],
       direccion: ['', Validators.required]
     })
