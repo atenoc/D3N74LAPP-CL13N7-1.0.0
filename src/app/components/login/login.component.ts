@@ -5,6 +5,7 @@ import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from '../../services/auth.service'
 import Swal from 'sweetalert2';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,8 @@ export class LoginComponent implements OnInit {
   usuario: Usuario
   formularioLogin:FormGroup
 
-  constructor(private formBuilder:FormBuilder, private authService: AuthService, private usuarioService:UsuarioService, private router: Router) { }
+  constructor(private formBuilder:FormBuilder, private authService: AuthService, private usuarioService:UsuarioService, private router: Router,
+    private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     this.formularioLogin = this.formBuilder.group({
@@ -32,7 +34,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(){
-    
+    this.spinner.show();
     this.authService.login(this.formularioLogin.value).subscribe(
       res => {
         //Obtenemos el token de la sesion
@@ -54,9 +56,10 @@ export class LoginComponent implements OnInit {
         this.mensajeError = ""
         this.mostrarError = false
         console.log("**************************************** Fin login ****************************************************")
-
+        this.spinner.hide();
       },
       err => {
+        this.spinner.hide();
         console.log(err.error.message)
         console.log(err)
 
@@ -82,7 +85,7 @@ export class LoginComponent implements OnInit {
       res => {
         console.log("Id usuario logueado: " + res.id)
         //Almacenamos el Id del usuario obtenido
-        localStorage.setItem('id_us', res.id)
+        localStorage.setItem('_us', res.id)
 
         //Actualizamos el usuario logueado
         //this.actualizarUsuarioLogueado(res.correo)

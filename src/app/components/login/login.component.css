@@ -5,3 +5,11 @@
 .fondo{
     background-image: linear-gradient(to right top, #bc3369, #b053a0, #8c74ca, #5791df, #0aa8e0);
 }
+
+.my-alert {
+    font-size: 15px;
+    padding: 0px;
+    border-radius: 15px;
+    color: #c16e6e
+    /* Añade otros estilos personalizados aquí */
+  }

@@ -34,14 +34,6 @@
               <button class="btn btn-outline-primary my-2 my-sm-0 btn-sm" (click)="selectedIdUser(usuario.id)">!</button>
               <button class="btn btn-outline-danger my-2 my-sm-0 btn-sm ml-2" (click)="deleteUser(usuario.id, usuario.correo)">x</button>
           </td>
-            <!-- <td class="text-center">
-                <button class="btn btn-outline-primary my-2 my-sm-0 btn-sm" (click)="selectedIdUser(usuario.id)"
-                  ngbTooltip="Ver o actualizar información"><strong>!</strong>
-                </button>
-                <button class="btn btn-outline-danger my-2 my-sm-0 btn-sm ml-2" (click)="deleteUser(usuario.id, usuario.correo)"
-                  ngbTooltip="Eliminar completamente"> <strong>x</strong>
-                </button>
-            </td> -->
           </tr>
         </tbody>
       </table>
@@ -51,7 +43,9 @@
   <ng-template #content let-c="close" let-d="dismiss">
     <div class="modal-header">
       <h4 class="modal-title">Nuevo usuario</h4>
-      <button type="button" class="btn-close" aria-label="Close" (click)="d('Cross click')">X</button>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
     <div class="modal-body">
 

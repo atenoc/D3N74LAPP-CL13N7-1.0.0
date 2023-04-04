@@ -12,11 +12,10 @@ export class UsuarioService {
 
   URI = environment.urlApiUsuarios
 
-  private usuario$: Subject<Usuario>;
-  private usuarioCreado:Usuario
-
   private usuario = new BehaviorSubject<Usuario>(null);
   private usuarios = new BehaviorSubject<Usuario[]>([]);
+  private usuarioCreado:Usuario 
+  private usuario$: Subject<Usuario>; // Para actualizar la info del usuario en el navigate
 
   constructor(private http: HttpClient) {
     this.usuario$ = new Subject();
@@ -30,7 +29,10 @@ export class UsuarioService {
         this.usuarioCreado = response
         
         // Agregar el usuario recién creado a la lista de usuarios
-        const newUsuarios = [...this.usuarios.getValue(), this.usuarioCreado];
+        // const newUsuarios = [...this.usuarios.getValue(), this.usuarioCreado];
+        
+        // Agregar el usuario recién creado al principio de la lista de usuarios
+        const newUsuarios = [this.usuarioCreado, ...this.usuarios.getValue()];
         this.usuarios.next(newUsuarios);
   
         // Actualizar el usuario BehaviorSubject con el usuario recién creado

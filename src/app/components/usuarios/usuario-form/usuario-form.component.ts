@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
@@ -16,9 +15,10 @@ export class UsuarioFormComponent implements OnInit {
   usuario:Usuario
   formularioUsuario:FormGroup
 
-  constructor(private formBuilder:FormBuilder, private usuarioService:UsuarioService, private router: Router, private modalService: NgbModal) { }
+  constructor(private formBuilder:FormBuilder, private usuarioService:UsuarioService, private modalService: NgbModal, private el: ElementRef) { }
 
   ngOnInit() {
+    this.el.nativeElement.querySelector('input').focus();
     this.formularioUsuario = this.formBuilder.group({
       correo: ['', Validators.compose([
         Validators.required, Validators.email
@@ -31,7 +31,7 @@ export class UsuarioFormComponent implements OnInit {
   crearUsuario(){
     console.log("Usuario a registrar: "+ JSON.stringify(this.formularioUsuario.value))
     var nuevoUsuarioJson = JSON.parse(JSON.stringify(this.formularioUsuario.value))
-    nuevoUsuarioJson.id_usuario=localStorage.getItem('id_us')
+    nuevoUsuarioJson.id_usuario=localStorage.getItem('_us')
     this.usuarioService.createUsuario(nuevoUsuarioJson)
     .subscribe(
       res => {
@@ -47,19 +47,34 @@ export class UsuarioFormComponent implements OnInit {
           //text:`El usuario: ${ this.usuario.correo }, se registró con éxito`,
           showConfirmButton: true,
           confirmButtonColor: '#28a745',
-          timer: 2000
+          timer: 1500
         })
       },
       err => {
         console.log("error: " + err.error.message)
-        Swal.fire({
-          icon: 'error',
-          html:
-            `<strong>¡${ err.error.message }!</strong>`,
-          showConfirmButton: true,
-          confirmButtonColor: '#28a745',
-          timer: 4000
-        })
+        if(err.error.message=="200"){
+          // Ya existe usuario
+          this.el.nativeElement.querySelector('input').focus();
+          Swal.fire({
+            icon: 'warning',
+            html:
+              `<strong> Aviso </strong><br/>` +
+              '¡Este correo ya se encuentra registrado!',
+            showConfirmButton: true,
+            confirmButtonColor: '#28a745',
+            timer: 3000
+          })
+        }else{
+          Swal.fire({
+            icon: 'error',
+            html:
+              `<strong>¡${ err.error.message }!</strong>`,
+            showConfirmButton: true,
+            confirmButtonColor: '#28a745',
+            timer: 3000
+          })
+        }
+        
       }
     )
   }
