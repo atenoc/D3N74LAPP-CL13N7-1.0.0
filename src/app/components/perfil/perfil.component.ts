@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Centro } from 'src/app/models/Centro.model';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { CentroService } from 'src/app/services/centro.service';
@@ -17,7 +18,11 @@ export class PerfilComponent implements OnInit {
   centro: Centro
   existeCentro:boolean
 
-  constructor(private usuarioService:UsuarioService, private centroService:CentroService, private router:Router) {}
+  constructor(private usuarioService:UsuarioService, private centroService:CentroService, private router:Router,
+    private modalService: NgbModal, config: NgbModalConfig) {
+      config.backdrop = 'static';
+		  config.keyboard = false;
+    }
 
   ngOnInit() {
     if(localStorage.getItem('_us')){
@@ -38,13 +43,27 @@ export class PerfilComponent implements OnInit {
               console.log("Existe centro: "+this.existeCentro)
             },
             err => console.log("error: " + err)
-          ) 
+          )
+          
+          // Suscribirse al Subject del centro recién creado
+          this.centroService.getCentroCreado$.subscribe(
+            res => {
+              // Actualizar el valor del centro
+              this.centro = res;
+            },
+            err => console.log("error: " + err)
+          );
+
         },
         err => console.log("error: " + err)
       )  
 
     }  
   }
+
+  openVerticallyCentered(content) {
+		this.modalService.open(content, { centered: true });
+	}
 
   selectedIdUser(id: string) {
     console.log("id seleccionado: "+id)
@@ -65,13 +84,11 @@ export class PerfilComponent implements OnInit {
       cancelButtonText: 'No, cancelar'
     }).then((result) => {
       if (result.value) {
-        /*si dan clic en si, eliminar */
+        // Confirm
 
         this.centroService.deleteCentro(id).subscribe(res => {
           console.log("Centro eliminado:" + res)
-          /* Recargamos el componente*/  
           this.ngOnInit()
-          this.router.navigate(['/perfil']);
           Swal.fire({
             icon: 'success',
             showConfirmButton: false,

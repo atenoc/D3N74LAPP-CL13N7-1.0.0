@@ -17,9 +17,9 @@ export class CentroService {
   private centro = new BehaviorSubject<Centro>(null);
   private centros = new BehaviorSubject<Centro[]>([]);
   private centroCreado:Centro 
-  private centro$: Subject<Centro>;
+  private centro$: Subject<Centro>; // Para actualizar el centro creado desde el perfil
 
-  constructor(private http: HttpClient, private router:Router) {
+  constructor(private http: HttpClient) {
     this.centro$ = new Subject();
   }
 
@@ -31,6 +31,10 @@ export class CentroService {
         const newCentros = [this.centroCreado, ...this.centros.getValue()];
         this.centros.next(newCentros);
         this.centro.next(this.centroCreado);
+
+        // Emitir el valor del centro recién creado desde el perfil
+        this.centro$.next(this.centroCreado);
+
         return this.centroCreado;
       }),
       catchError(error => {
@@ -79,6 +83,10 @@ export class CentroService {
         }
       })
     );
+  }
+
+  get getCentroCreado$(): Observable<Centro> {
+    return this.centro$.asObservable();
   }
 
   // GET One by
