@@ -65,7 +65,8 @@ export class UsuariosListComponent implements OnInit {
   }
 
   openVerticallyCentered(content) {
-		this.modalService.open(content, { centered: true });
+		//this.modalService.open(content, { centered: true });
+    this.modalService.open(content, { size: 'lg', centered: true });
 	}
 
   selectedIdUser(id: string) {

@@ -35,26 +35,19 @@
     <div class=" nav-item" >
       <ul class="navbar-nav mr-auto">
         <ng-container *ngIf="!authService.estaLogueado(); else login">
-          <!-- 
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/registro">Registrarme</a>
-          </li>
-          -->
           <li class="nav-item">
             <button class="btn btn-outline-light my-2 my-sm-0" routerLink="/login">Ingresar</button>
           </li>
         </ng-container>
         <ng-template #login>
-          <!-- 
-          <li class="nav-item">
-            <a class="nav-link">{{ rolUsuario }} </a>
-          </li> -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {{ correoUsuario }}
+              {{ nombreUsuario }}
             </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" routerLink="/perfil">Mi Perfil</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item text-muted">{{ correoUsuario }}</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item text-muted">{{ rolUsuario }}</a>
             </div>

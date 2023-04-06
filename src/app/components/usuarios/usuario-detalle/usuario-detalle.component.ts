@@ -13,13 +13,14 @@ export class UsuarioDetalleComponent implements OnInit {
 
   id: string
   usuario: Usuario
+  editando: boolean = false;
   
-  constructor(private activatedRoute: ActivatedRoute, private usuariosService:UsuarioService, private router: Router) { }
+  constructor(private activatedRoute: ActivatedRoute, private usuarioService:UsuarioService, private router: Router) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       this.id = params['id'];
-      this.usuariosService.getUsuario$(this.id).subscribe(res => {   //volver a llamar los datos con el id recibido
+      this.usuarioService.getUsuario$(this.id).subscribe(res => {   //volver a llamar los datos con el id recibido
         this.usuario = res;
         console.log("id obtenido:" + res.id)
         console.log("usuario obtenido:" + JSON.stringify(res))
@@ -32,11 +33,14 @@ export class UsuarioDetalleComponent implements OnInit {
     );
   }
 
-  updateUsuario(correo: HTMLInputElement, llave: HTMLInputElement, rol: HTMLInputElement): boolean {
-    this.usuariosService.updateUsuario(this.usuario.id, correo.value, llave.value, rol.value).subscribe(res => {
+  updateUsuario(correo: HTMLInputElement, llave: HTMLInputElement, rol: HTMLInputElement,
+    titulo: HTMLInputElement, nombre: HTMLInputElement, apellidop: HTMLInputElement, apellidom: HTMLInputElement, especialidad: HTMLInputElement, telefono: HTMLInputElement): boolean {
+    this.usuarioService.updateUsuario(this.usuario.id, correo.value, llave.value, rol.value, 
+      titulo.value, nombre.value, apellidop.value, apellidom.value, especialidad.value, telefono.value).subscribe(res => {
         console.log("Usuario actualizado: "+res);
-        this.router.navigate(['/usuarios']);
-        
+        //this.router.navigate(['/usuarios']);
+        this.editando=false
+        this.ngOnInit()
         Swal.fire({
           icon: 'success',
           //title: 'Usuario actualizado',
@@ -45,7 +49,7 @@ export class UsuarioDetalleComponent implements OnInit {
             '¡Información actualizada!',
           showConfirmButton: true,
           confirmButtonColor: '#28a745',
-          timer: 4000
+          timer: 1500
         })
 
       },
@@ -57,7 +61,7 @@ export class UsuarioDetalleComponent implements OnInit {
               `<strong>¡${ err.error.message }!</strong>`,
             showConfirmButton: true,
             confirmButtonColor: '#28a745',
-            timer: 4000
+            timer: 3000
           })
         }
       );

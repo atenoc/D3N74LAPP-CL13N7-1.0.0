@@ -1,44 +1,233 @@
-<div class="col-lg-3 mx-auto text-center" style="margin-top: 80px;">
+<div class="container">
 
     <div *ngIf="!usuario; else main_content">
         <h5>Loading...</h5>
     </div>
     <ng-template #main_content>
 
-        <div class="card">
-            <div class="card-header bg-dark text-white"> <strong>Editar Información </strong> </div>
-            <form class="card-body" (submit)="updateUsuario(correo, llave, rol)">
+        <div class="card" *ngIf="!editando">
+            <div class="card-header bg-dark text-white"> 
+                <div class="d-flex mt-2 ">
+                    <div>
+                        Información del usuario
+                    </div>
+                    <div class="ml-auto">
+                       <button class="btn btn-light btn-sm" (click)="editando = true">Editar</button>
+                    </div>
+                </div>
+            </div>
+            <form class="card-body">
 
-                <div class="form-group">
-                    <small class="form-text text-muted">Correo</small>
-                    <input type="text" class="form-control" [value]="usuario.correo" readonly #correo>
+                <div class="row">
+                    <div class="col-sm">
+                        <small>Id de usuario:</small>
+                        <small class="text-muted"> {{ usuario.id }} </small>
+                        
+                    </div>  
                 </div>
-    
-                <div class="form-group">
-                    <small class="form-text text-muted">Contraseña </small>
-                    <input type="password" class="form-control" placeholder="Contraseña" [value]="usuario.llave" #llave>
+
+                <hr/>
+
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <small class="form-text text-muted">Correo</small>
+                            <input type="text" class="form-control" [value]="usuario.correo" readonly>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <small class="form-text text-muted">Contraseña </small>
+                            <input type="password" class="form-control" [value]="usuario.llave" readonly>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <small class="form-text text-muted">Rol</small>
+                            <select class="form-control" id="rol" [value]="usuario.rol" readonly>
+                                <option>admin</option>
+                                <option>asistente</option>
+                                <option>recepcionista</option>
+                                <option>cajero</option>
+                                <option>invitado</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <small class="form-text text-muted">Título</small>
+                            <input type="text" class="form-control" [value]="usuario.titulo" readonly>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <small class="form-text text-muted">Nombre(s)</small>
+                            <input type="text" class="form-control" [value]="usuario.nombre" readonly>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <small class="form-text text-muted">Apellido Paterno</small>
+                            <input type="text" class="form-control" [value]="usuario.apellidop" readonly>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <small class="form-text text-muted">Apellido Materno</small>
+                            <input type="text" class="form-control" [value]="usuario.apellidom" readonly>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <small class="form-text text-muted">Rol</small>
-                    <select class="form-control" id="rol" [value]="usuario.rol" #rol>
-                        <option>admin</option>
-                        <option>asistente</option>
-                        <option>recepcionista</option>
-                        <option>cajero</option>
-                        <option>invitado</option>
-                    </select>
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <small class="form-text text-muted">Especialidad</small>
+                            <input type="text" class="form-control" [value]="usuario.especialidad" readonly>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <small class="form-text text-muted">Teléfono</small>
+                            <input type="text" class="form-control" [value]="usuario.telefono" readonly>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <small>Fecha de Creación</small>
+                            <input type="text" class="form-control" [value]="usuario.fecha_creacion" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex mt-2 ">
+                    <div></div>
+                    <div class="ml-auto">
+                        <button class="btn btn-light" (click)="regresar()">Regresar</button> 
+                    </div>
                 </div>
                 
-                <button class="btn btn-primary btn-block">
-                    Actualizar Datos
-                </button>
-                <button class="btn btn-secondary btn-block" (click)="regresar()">
-                    Cancelar
-                </button>
             </form>
+        </div>  
 
-        </div>      
+
+
+        <div class="card" *ngIf="editando">
+            <div class="card-header bg-dark text-white"> 
+                <div class="d-flex mt-2 ">
+                    <div>
+                        Editar información del usuario
+                    </div>
+                    <div class="ml-auto">
+                       <button class="btn btn-light btn-sm" (click)="editando = false">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+            <form class="card-body" (submit)="updateUsuario(correo, llave, rol, titulo, nombre, apellidop, apellidom, especialidad, telefono)">
+
+                <div class="row">
+                    <div class="col-sm">
+                        <small>Id de usuario:</small>
+                        <small class="text-muted"> {{ usuario.id }} </small>
+                        
+                    </div>  
+                </div>
+
+                <hr/>
+
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <small class="form-text text-muted">Correo</small>
+                            <input type="text" class="form-control" [value]="usuario.correo" readonly #correo>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <small class="form-text text-muted">Contraseña </small>
+                            <input type="password" class="form-control" placeholder="Contraseña" [value]="usuario.llave" #llave>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <small class="form-text text-muted">Rol</small>
+                            <select class="form-control" id="rol" [value]="usuario.rol" #rol>
+                                <option>admin</option>
+                                <option>asistente</option>
+                                <option>recepcionista</option>
+                                <option>cajero</option>
+                                <option>invitado</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <small class="form-text text-muted">Título</small>
+                            <select class="form-control" [value]="usuario.titulo" #titulo>
+                                <option>Dr.</option>
+                                <option>Dra.</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <small class="form-text text-muted">Nombre(s)</small>
+                            <input type="text" class="form-control" [value]="usuario.nombre" #nombre>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <small class="form-text text-muted">Apellido Paterno</small>
+                            <input type="text" class="form-control" [value]="usuario.apellidop" #apellidop>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <small class="form-text text-muted">Apellido Materno</small>
+                            <input type="text" class="form-control" [value]="usuario.apellidom" #apellidom>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <small class="form-text text-muted">Especialidad</small>
+                            <select class="form-control" [value]="usuario.especialidad" #especialidad>
+                                <option>Especialidad 1</option>
+                                <option>Especialidad 2</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <small class="form-text text-muted">Teléfono</small>
+                            <input type="text" class="form-control" [value]="usuario.telefono" #telefono>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <small>Fecha de Creación</small>
+                            <input type="text" class="form-control" [value]="usuario.fecha_creacion" readonly #fecha_creacion>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-flex mt-2 ">
+                    <div></div>
+                    <div class="ml-auto">
+                        <button class="btn btn-primary btn-block">Actualizar Datos</button>
+                    </div>
+                </div>
+            </form>
+        </div>  
+
     </ng-template>
 
 </div>

@@ -16,6 +16,7 @@ export class NavigateComponent implements OnInit {
   idUsuario:string
   correoUsuario: string
   rolUsuario:string
+  nombreUsuario:string
   nombreCentro:string="Dental App"
   mostrarTitulo:boolean=true
 
@@ -28,6 +29,7 @@ export class NavigateComponent implements OnInit {
         this.idUsuario=this.usuario.id
         this.correoUsuario=this.usuario.correo
         this.rolUsuario=this.usuario.rol
+        this.nombreUsuario=this.usuario.nombre
         console.log("Rol Navigate: " + this.usuario.rol)
 
         this.centroService.getCentroByIdUser$(this.idUsuario).subscribe(
@@ -44,10 +46,6 @@ export class NavigateComponent implements OnInit {
       },
       err => console.log("error: " + err)
     )
-
-    //consulta de localstorage
-    //this.authService.mensajeActual.subscribe(correoUsuario => this.correoUsuario = correoUsuario)
-    
   }
 
   salir(){
