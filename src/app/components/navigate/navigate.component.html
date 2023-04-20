@@ -19,15 +19,15 @@
       <li *ngIf="usuario" class="nav-item">
         <a class="nav-link" routerLink="/agenda">Agenda</a>
       </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <li *ngIf="rolUsuario=='admin' || rolUsuario=='sop'" class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Más
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Opción 1</a>
-          <a class="dropdown-item" href="#">Opción 2</a>
+          <a class="dropdown-item" >Opción 1</a>
+          <a class="dropdown-item" >Opción 2</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Opción 3</a>
+          <a class="dropdown-item" >Opción 3</a>
         </div>
       </li>
     </ul>

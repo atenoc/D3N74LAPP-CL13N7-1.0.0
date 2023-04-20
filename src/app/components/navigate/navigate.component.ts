@@ -23,6 +23,7 @@ export class NavigateComponent implements OnInit {
   constructor(private navigateService:NavigateService, public authService: AuthService, public usuarioService: UsuarioService, private centroService:CentroService) { }
 
   ngOnInit() {
+    console.log("NAVIGATE COMP")
     this.usuarioService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
       res => {
         this.usuario = res;

@@ -5,6 +5,7 @@ import { Usuario } from 'src/app/models/Usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { CentroService } from 'src/app/services/centro.service';
 
 @Component({
   selector: 'app-usuarios',
@@ -15,17 +16,31 @@ export class UsuariosListComponent implements OnInit {
 
   usuarios: Usuario[] = [];
   usuario:Usuario
-
+  existeCentro:boolean
   formularioDetalleUsuario:FormGroup
+  existenUsuarios:boolean=false
 
-  constructor(private usuarioService:UsuarioService, private router: Router,
+  constructor(private usuarioService:UsuarioService, private router: Router, private centroService:CentroService,
     private modalService: NgbModal, config: NgbModalConfig) {
       config.backdrop = 'static';
 		  config.keyboard = false;
      }
 
   ngOnInit() {
+    console.log("USUARIOS LIST COMP")
     if(localStorage.getItem('_us')){
+
+      // Consultar si existe centro
+      this.centroService.getCentroByIdUser$(localStorage.getItem('_us')).subscribe(
+        res => {
+          if(res.id.length > 0){
+            this.existeCentro = true
+          }else{
+            this.existeCentro = false
+          }
+        },
+        err => console.log("error: " + err)
+      )
 
       this.usuarioService.getUsuario$(localStorage.getItem('_us')).subscribe(
         res => {
@@ -41,6 +56,7 @@ export class UsuariosListComponent implements OnInit {
               this.usuarioService.getUsuarios$().subscribe(res=>{
                 console.log("Listado de usuarios:: " + res)
                 this.usuarios = res;
+                this.existenUsuarios = this.usuarios.length > 0;
               },
                 err => console.log(err)
               )
@@ -50,6 +66,7 @@ export class UsuariosListComponent implements OnInit {
               this.usuarioService.getUsuariosByUsuario$(this.usuario.id).subscribe(res=>{
                 console.log("Listado de usuarios x Usuario <-> " + res)
                 this.usuarios = res;
+                this.existenUsuarios = this.usuarios.length > 0;
               },
                 err => console.log(err)
               )
@@ -65,6 +82,7 @@ export class UsuariosListComponent implements OnInit {
   }
 
   openVerticallyCentered(content) {
+    console.log("OPEN MODAL")
 		//this.modalService.open(content, { centered: true });
     this.modalService.open(content, { size: 'lg', centered: true });
 	}

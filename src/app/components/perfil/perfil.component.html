@@ -34,7 +34,11 @@
             <ng-template #content_centro>
                 <div *ngIf="!existeCentro; else datos_centro" class="text-center">
                     <!-- <button class="btn btn-outline-primary my-2 my-sm-0" routerLink="/centro-form">Registrar mi centro dental</button> -->
-                    <button class="btn btn-outline-primary mb-2 me-2" (click)="openVerticallyCentered(content)"> Registrar centro dental </button>
+                    <!-- <button class="btn btn-outline-primary mb-2 me-2" (click)="openVerticallyCentered(content)"> Registrar centro dental </button> -->
+                    <button class="btn btn-outline-primary mb-2 me-2" (click)="openVerticallyCentered(content)"
+                        placement="bottom" ngbTooltip="Es necesario para comenzar a registrar tus usuarios, gestionar citas, y más...">
+                        Registrar centro dental 
+                    </button>
                 </div>
                 <ng-template #datos_centro>
 
