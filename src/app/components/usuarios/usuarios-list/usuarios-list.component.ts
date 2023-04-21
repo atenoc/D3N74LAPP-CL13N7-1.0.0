@@ -19,6 +19,7 @@ export class UsuariosListComponent implements OnInit {
   existeCentro:boolean
   formularioDetalleUsuario:FormGroup
   existenUsuarios:boolean=false
+  mensajeRegistrarCentro:string
 
   constructor(private usuarioService:UsuarioService, private router: Router, private centroService:CentroService,
     private modalService: NgbModal, config: NgbModalConfig) {
@@ -57,6 +58,9 @@ export class UsuariosListComponent implements OnInit {
                 console.log("Listado de usuarios:: " + res)
                 this.usuarios = res;
                 this.existenUsuarios = this.usuarios.length > 0;
+                if(!this.existenUsuarios){
+                  this.mensajeRegistrarCentro='¡Registra un centro dental!'
+                }
               },
                 err => console.log(err)
               )
@@ -67,6 +71,9 @@ export class UsuariosListComponent implements OnInit {
                 console.log("Listado de usuarios x Usuario <-> " + res)
                 this.usuarios = res;
                 this.existenUsuarios = this.usuarios.length > 0;
+                if(!this.existenUsuarios){
+                  this.mensajeRegistrarCentro='Para registrar y gestionar a tus usuarios, es necesario que previamente registres tu centro/consultorio dental. Por favor, dirígete a la parte superior derecha y da clic en tu nombre de usuario, después da clic en -> Mi Perfil.'
+                }
               },
                 err => console.log(err)
               )

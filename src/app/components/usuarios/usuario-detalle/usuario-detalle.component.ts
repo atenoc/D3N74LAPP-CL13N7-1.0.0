@@ -69,8 +69,4 @@ export class UsuarioDetalleComponent implements OnInit {
     return false;
   }
 
-  regresar(){
-    this.router.navigate(['/usuarios']);
-  }
-
 }
