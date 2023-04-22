@@ -36,7 +36,7 @@
       <ul class="navbar-nav mr-auto">
         <ng-container *ngIf="!authService.estaLogueado(); else login">
           <li class="nav-item">
-            <button class="btn btn-outline-light my-2 my-sm-0" routerLink="/login">Ingresar</button>
+            <button *ngIf="mostrarBotonIngresar" class="btn btn-outline-light my-2 my-sm-0" routerLink="/login">Ingresar</button>
           </li>
         </ng-container>
         <ng-template #login>

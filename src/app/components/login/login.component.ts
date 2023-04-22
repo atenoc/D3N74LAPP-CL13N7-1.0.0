@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
@@ -22,9 +22,10 @@ export class LoginComponent implements OnInit {
   formularioLogin:FormGroup
 
   constructor(private formBuilder:FormBuilder, private authService: AuthService, private usuarioService:UsuarioService, private router: Router,
-    private spinner: NgxSpinnerService) { }
+    private spinner: NgxSpinnerService, private el: ElementRef) { }
 
   ngOnInit() {
+    this.el.nativeElement.querySelector('input').focus();
     this.formularioLogin = this.formBuilder.group({
       correo: ['', Validators.compose([
         Validators.required, Validators.email
