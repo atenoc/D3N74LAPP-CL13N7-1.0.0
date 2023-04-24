@@ -141,8 +141,10 @@
                     <div class="col-sm">
                         <div class="form-group">
                             <small class="form-text text-muted">Contraseña </small>
-                            <input type="password" class="form-control" placeholder="Contraseña" maxlength="30" [value]="usuario.llave" #llave>
+                            <input type="password" class="form-control" placeholder="Contraseña" maxlength="30" [value]="usuario.llave" readonly #llave>
+                            <a> <small class="text-primary" style="cursor: pointer;" (click)="selectedIdUser()">Cambiar contraseña...</small> </a>
                         </div>
+                        
                     </div>
                     <div class="col-sm">
                         <div class="form-group">

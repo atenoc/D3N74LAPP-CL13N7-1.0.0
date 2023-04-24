@@ -21,6 +21,8 @@ import { PerfilComponent } from './components/perfil/perfil.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FooterComponent } from './components/footer/footer.component';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { ContrasenaComponent } from './components/usuarios/usuario-detalle/contrasena/contrasena.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
     CentroFormComponent,
     CentroDetalleComponent,
     PerfilComponent,
-    FooterComponent
+    FooterComponent,
+    ContrasenaComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
     ReactiveFormsModule,
     HttpClientModule,
     NgbModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    FontAwesomeModule
   ],
   providers: [
     AuthGuard,

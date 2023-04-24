@@ -5,6 +5,7 @@ import { CentroService } from 'src/app/services/centro.service';
 import { NavigateService } from 'src/app/services/navigate.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Router, NavigationEnd } from '@angular/router';
+import { faUser, faHome, faUsers, faBuilding, faArrowRight, faCalendarDay, faAddressCard, faEnvelope } from '@fortawesome/free-solid-svg-icons'
 
 @Component({
   selector: 'app-navigate',
@@ -21,6 +22,18 @@ export class NavigateComponent implements OnInit {
   nombreCentro:string="Dental App"
   mostrarTitulo:boolean=true
   mostrarBotonIngresar:boolean=true
+  mostrarCambiarContrasena:boolean=true
+
+  //icons
+
+  faUser=faUser;
+  faHome=faHome;
+  faUsers=faUsers;
+  faBuilding=faBuilding;
+  faArrowRight=faArrowRight;
+  faCalendarDay=faCalendarDay;
+  faAddressCard=faAddressCard;
+  faEnvelope=faEnvelope;
 
   constructor(private navigateService:NavigateService, public authService: AuthService, public usuarioService: UsuarioService, private centroService:CentroService,
     private router: Router) { }
@@ -36,6 +49,13 @@ export class NavigateComponent implements OnInit {
         } else {
           console.log('Estoy en otra ruta');
           this.mostrarBotonIngresar=true
+        }
+
+        if (event.url.includes('/password')) {
+          console.log('Estoy en Usuario Detalle');
+          this.mostrarCambiarContrasena=false
+        }else{
+          this.mostrarCambiarContrasena=true
         }
       }
     });
@@ -64,6 +84,10 @@ export class NavigateComponent implements OnInit {
       },
       err => console.log("error: " + err)
     )
+  }
+
+  selectedIdUser(){
+    this.router.navigate(['/password', this.idUsuario]);
   }
 
   salir(){

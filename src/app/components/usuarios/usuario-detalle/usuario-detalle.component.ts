@@ -33,6 +33,11 @@ export class UsuarioDetalleComponent implements OnInit {
     );
   }
 
+  selectedIdUser() {
+    console.log("id seleccionado: "+this.id)
+    this.router.navigate(['/password', this.id]);
+  }
+
   updateUsuario(correo: HTMLInputElement, llave: HTMLInputElement, rol: HTMLInputElement,
     titulo: HTMLInputElement, nombre: HTMLInputElement, apellidop: HTMLInputElement, apellidom: HTMLInputElement, especialidad: HTMLInputElement, telefono: HTMLInputElement): boolean {
     this.usuarioService.updateUsuario(this.usuario.id, correo.value, llave.value, rol.value, 

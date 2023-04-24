@@ -109,4 +109,8 @@ export class UsuarioService {
     return this.usuarios.asObservable();
   }
 
+  updateUsuarioLlave(id: string, llave: string){
+    return this.http.patch(`${this.URI}/passwordusuario/${id}`, { llave });
+  }
+
 }
