@@ -19,6 +19,7 @@ export class NavigateComponent implements OnInit {
   correoUsuario: string
   rolUsuario:string
   nombreUsuario:string
+  llaveStatus:number
   nombreCentro:string="Dental App"
   mostrarTitulo:boolean=true
   mostrarBotonIngresar:boolean=true
@@ -41,6 +42,12 @@ export class NavigateComponent implements OnInit {
   ngOnInit() {
     console.log("NAVIGATE COMP")
 
+    this.navigateService.getData().subscribe(data => {
+      this.mostrarCambiarContrasena = data;
+      console.log("Actualizar Navigate")
+      console.log("Mostrar Cambiar contraeña: "+ this.mostrarCambiarContrasena)
+    });
+
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         if (event.url.includes('/login')) {
@@ -49,13 +56,6 @@ export class NavigateComponent implements OnInit {
         } else {
           console.log('Estoy en otra ruta');
           this.mostrarBotonIngresar=true
-        }
-
-        if (event.url.includes('/password')) {
-          console.log('Estoy en Usuario Detalle');
-          this.mostrarCambiarContrasena=false
-        }else{
-          this.mostrarCambiarContrasena=true
         }
       }
     });
@@ -68,7 +68,14 @@ export class NavigateComponent implements OnInit {
         this.correoUsuario=this.usuario.correo
         this.rolUsuario=this.usuario.rol
         this.nombreUsuario=this.usuario.nombre
+        this.llaveStatus=this.usuario.llave_status
         console.log("Rol Navigate: " + this.usuario.rol)
+        console.log("Llave status Navigate: " + this.usuario.llave_status)
+        if(this.usuario.llave_status == 0){
+          this.mostrarCambiarContrasena=true
+        }else{
+          this.mostrarCambiarContrasena=false
+        }
 
         this.centroService.getCentroByIdUser$(this.idUsuario).subscribe(
           res=>{

@@ -10,6 +10,7 @@ export interface Usuario{
     especialidad:string, 
     telefono:string,
     fecha_creacion:string;
+    llave_status:number
     id_usuario:string;
     id_centro:string;
 }

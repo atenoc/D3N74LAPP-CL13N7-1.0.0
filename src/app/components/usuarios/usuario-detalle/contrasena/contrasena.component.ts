@@ -4,6 +4,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NavigateService } from 'src/app/services/navigate.service';
 
 @Component({
   selector: 'app-contrasena',
@@ -21,7 +22,7 @@ export class ContrasenaComponent implements OnInit {
   faEye=faEye;
   faEyeSlash=faEyeSlash;
 
-  constructor(private formBuilder:FormBuilder, private activatedRoute: ActivatedRoute, private usuarioService:UsuarioService) { }
+  constructor(private formBuilder:FormBuilder, private activatedRoute: ActivatedRoute, private usuarioService:UsuarioService, private navigateService:NavigateService) { }
 
   ngOnInit() {
 
@@ -36,7 +37,7 @@ export class ContrasenaComponent implements OnInit {
       this.id = params['id'];
       this.usuarioService.getUsuario$(this.id).subscribe(res => {   //volver a llamar los datos con el id recibido
         this.llave = res.llave;
-        console.log("id obtenido:" + res.llave)
+        //console.log("id obtenido:" + res.llave)
 
       },
         err => console.log("error: " + err)
@@ -67,12 +68,15 @@ export class ContrasenaComponent implements OnInit {
     this.usuarioService.updateUsuarioLlave(this.id, formGroup.get('nuevoPassword1').value).subscribe(res => {
         console.log("Contraseña actualizada: "+res);
         this.ngOnInit()
+
+        this.navigateService.setData(false);
+
         Swal.fire({
           icon: 'success',
           //title: 'Usuario actualizado',
           html:
             //`<strong>${ this.id }</strong><br/>` +
-            '¡Tu contraseña se actualizó correctamente!',
+            '¡La contraseña se actualizó correctamente!',
           showConfirmButton: true,
           confirmButtonColor: '#28a745',
           timer: 1500
