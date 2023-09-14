@@ -19,10 +19,12 @@ import { CentroFormComponent } from './components/centros/centro-form/centro-for
 import { CentroDetalleComponent } from './components/centros/centro-detalle/centro-detalle.component';
 import { PerfilComponent } from './components/perfil/perfil.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FooterComponent } from './components/footer/footer.component';
+import { FooterComponent } from './shared/footer/footer.component';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { ContrasenaComponent } from './components/usuarios/usuario-detalle/contrasena/contrasena.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { HeaderComponent } from './shared/header/header.component';
+import { SidebarComponent } from './shared/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     CentroDetalleComponent,
     PerfilComponent,
     FooterComponent,
-    ContrasenaComponent
+    ContrasenaComponent,
+    HeaderComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
