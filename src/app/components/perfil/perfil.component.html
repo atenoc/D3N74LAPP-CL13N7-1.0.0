@@ -16,14 +16,22 @@
                             <strong class="text-primary">{{ usuario.correo }}</strong>
                         </div>
                         <div class="form-group">
-                            <small class="form-text text-muted">Rol</small>
-                            <label>{{ usuario.rol }}</label>
+                            <small class="form-text text-muted">Nombre</small>
+                            <label>{{ usuario.titulo }} {{ usuario.nombre }} {{ usuario.apellidop }} {{ usuario.apellidom }}</label>
                         </div> 
                         <div class="form-group">
-                            <small class="form-text text-muted">Fecha y hora de creación</small>
-                            <label>{{ usuario.fecha_creacion }}</label>
+                            <small class="form-text text-muted">Especialidad</small>
+                            <label>{{ usuario.especialidad }}</label>
                         </div> 
+                        <div class="form-group">
+                            <small class="form-text text-muted">Teléfono</small>
+                            <label>{{ usuario.telefono }}</label>
+                        </div> 
+                        
                     </div>
+                    <div class="card-footer text-right bg-white">
+                        <a> <small class="text-primary cursor-pointer mr-3" (click)="selectedIdUser(usuario.id)">Más detalle...</small> </a>
+                    </div> 
                 </div>      
             </ng-template>
         </div>
@@ -34,7 +42,11 @@
             <ng-template #content_centro>
                 <div *ngIf="!existeCentro; else datos_centro" class="text-center">
                     <!-- <button class="btn btn-outline-primary my-2 my-sm-0" routerLink="/centro-form">Registrar mi centro dental</button> -->
-                    <button class="btn btn-outline-primary mb-2 me-2" (click)="openVerticallyCentered(content)"> Registrar centro dental </button>
+                    <!-- <button class="btn btn-outline-primary mb-2 me-2" (click)="openVerticallyCentered(content)"> Registrar centro dental </button> -->
+                    <button class="btn btn-outline-primary mb-2 me-2" (click)="openVerticallyCentered(content)"
+                        placement="bottom" ngbTooltip="Es necesario para comenzar a registrar tus usuarios, gestionar citas, y más...">
+                        Registrar centro dental 
+                    </button>
                 </div>
                 <ng-template #datos_centro>
 
@@ -63,7 +75,7 @@
                             </div> 
                         </div>
                         <div class="card-footer text-right bg-white" >
-                            <a> <small class="text-primary cursor-pointer mr-3" (click)="selectedIdUser(centro.id)"> Editar</small> </a>
+                            <a> <small class="text-primary cursor-pointer mr-3" (click)="selectedIdCentro(centro.id)"> Editar...</small> </a>
                             <a> <small class="text-danger cursor-pointer" (click)="deleteCentro(centro.id, centro.nombre)"> Eliminar</small> </a>
                         </div>
                     </div> 

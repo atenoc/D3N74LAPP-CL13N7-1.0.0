@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { CentroService } from 'src/app/services/centro.service';
 import { NavigateService } from 'src/app/services/navigate.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
-import { Router, NavigationEnd } from '@angular/router';
-import { faUser, faHome, faUsers, faBuilding, faArrowRight, faCalendarDay, faAddressCard, faEnvelope } from '@fortawesome/free-solid-svg-icons'
 
 @Component({
-  selector: 'app-navigate',
-  templateUrl: './navigate.component.html',
-  styleUrls: ['./navigate.component.css']
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.css']
 })
-export class NavigateComponent implements OnInit {
+export class HeaderComponent implements OnInit {
 
   usuario:Usuario
   idUsuario:string
@@ -25,21 +24,10 @@ export class NavigateComponent implements OnInit {
   mostrarBotonIngresar:boolean=true
   mostrarCambiarContrasena:boolean=true
 
-  //icons
-
-  faUser=faUser;
-  faHome=faHome;
-  faUsers=faUsers;
-  faBuilding=faBuilding;
-  faArrowRight=faArrowRight;
-  faCalendarDay=faCalendarDay;
-  faAddressCard=faAddressCard;
-  faEnvelope=faEnvelope;
-
   constructor(private navigateService:NavigateService, public authService: AuthService, public usuarioService: UsuarioService, private centroService:CentroService,
     private router: Router) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     console.log("NAVIGATE COMP")
 
     this.navigateService.getData().subscribe(data => {

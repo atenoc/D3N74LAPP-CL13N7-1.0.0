@@ -8,26 +8,38 @@
     <ul class="navbar-nav mr-auto">
 
       <li class="nav-item">
-        <a class="nav-link" routerLink="/home">Inicio</a>
+        <a class="nav-link" routerLink="/home">
+          <fa-icon [icon]="faHome"></fa-icon>
+          <span style="padding-left: 5px;">Inicio</span>
+        </a>
       </li>
       <li *ngIf="rolUsuario=='admin' || rolUsuario=='sop'" class="nav-item">
-        <a class="nav-link" routerLink="/usuarios">Usuarios</a>
+        <a class="nav-link" routerLink="/usuarios">
+          <fa-icon [icon]="faUsers"></fa-icon> 
+          <span style="padding-left: 5px;">Usuarios</span>
+        </a>
       </li>
       <li *ngIf="rolUsuario=='sop'" class="nav-item">
-        <a class="nav-link" routerLink="/centros">Centros</a>
+        <a class="nav-link" routerLink="/centros">
+          <fa-icon [icon]="faBuilding"></fa-icon> 
+          <span style="padding-left: 5px;">Centros</span>
+        </a>
       </li>
       <li *ngIf="usuario" class="nav-item">
-        <a class="nav-link" routerLink="/agenda">Agenda</a>
+        <a class="nav-link" routerLink="/agenda">
+          <fa-icon [icon]="faCalendarDay"></fa-icon> 
+          <span style="padding-left: 5px;">Agenda</span>
+        </a>
       </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <li *ngIf="rolUsuario=='admin' || rolUsuario=='sop'" class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Más
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Opción 1</a>
-          <a class="dropdown-item" href="#">Opción 2</a>
+          <a class="dropdown-item" >Opción 1</a>
+          <a class="dropdown-item" >Opción 2</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Opción 3</a>
+          <a class="dropdown-item" >Opción 3</a>
         </div>
       </li>
     </ul>
@@ -35,32 +47,35 @@
     <div class=" nav-item" >
       <ul class="navbar-nav mr-auto">
         <ng-container *ngIf="!authService.estaLogueado(); else login">
-          <!-- 
           <li class="nav-item">
-            <a class="nav-link" routerLink="/registro">Registrarme</a>
-          </li>
-          -->
-          <li class="nav-item">
-            <button class="btn btn-outline-light my-2 my-sm-0" routerLink="/login">Ingresar</button>
+            <button *ngIf="mostrarBotonIngresar" class="btn btn-outline-light my-2 my-sm-0" routerLink="/login">Ingresar</button>
           </li>
         </ng-container>
         <ng-template #login>
-          <!-- 
-          <li class="nav-item">
-            <a class="nav-link">{{ rolUsuario }} </a>
-          </li> -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {{ correoUsuario }}
+              <fa-icon [icon]="faUser"></fa-icon>
+              <span style="padding-left: 5px;">{{ nombreUsuario }}</span>
             </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" routerLink="/perfil">Mi Perfil</a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" routerLink="/perfil">
+                <fa-icon [icon]="faAddressCard"></fa-icon> 
+                <span style="padding-left: 5px;">Mi Perfil</span>
+              </a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item text-muted">
+                <fa-icon [icon]="faEnvelope"></fa-icon> 
+                <span style="padding-left: 5px;">{{ correoUsuario }}</span>
+              </a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item text-muted">{{ rolUsuario }}</a>
             </div>
           </li>
           <li class="nav-item ml-2">
-            <button class="btn btn-outline-light my-2 my-sm-0" (click)="salir()">Salir</button>
+            <button class="btn btn-outline-light my-2 my-sm-0" (click)="salir()">
+              <span>Salir</span>
+              <fa-icon style="padding-left: 5px;" [icon]="faArrowRight"></fa-icon> 
+            </button>
           </li>
         </ng-template>
       </ul>
@@ -68,3 +83,8 @@
 
   </div>
 </nav>
+
+<div *ngIf="authService.estaLogueado() && mostrarCambiarContrasena" class="alert alert-warning text-center my-alert" >
+  ¡Por favor, por seguridad debes cambiar tu contraseña!
+  <a> <small class="text-primary mr-3" style="cursor: pointer;" (click)="selectedIdUser()">Da clic aquí...</small> </a>
+</div>

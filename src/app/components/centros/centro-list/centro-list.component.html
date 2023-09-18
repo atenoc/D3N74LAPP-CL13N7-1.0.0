@@ -1,63 +1,88 @@
-<div class="container-fluid">
-
-    <div class="d-flex mt-2 ">
-      <div>
-        <h5 class="p-2">Lista de Centros / Consultorios</h5>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h5>
+          Centros / Consultorios
+        </h5>
       </div>
-      <div class="ml-auto">
-        <!-- Open Modal Crear Usuario -->
-      <button class="btn btn-outline-primary mb-2 me-2" (click)="openVerticallyCentered(content)"> + Centro </button>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active">Consultorios</li>
+        </ol>
       </div>
     </div>
-  
-      <table class="table table-hover table-striped table-bordered">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Nombre</th>
-              <th scope="col">Teléfono</th>
-              <th scope="col">Correo</th>
-              <th scope="col">Dirección</th>
-              <th scope="col">Fecha de Creación</th>
-              <th scope="col">Creado por</th>
-              <th scope="col">Opciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let centro of centros">
-              <th class="text-muted"><small><strong>{{ centro.id }}</strong></small></th>
-              <td>{{ centro.nombre }}</td>
-              <td>{{ centro.telefono }}</td>
-              <td>{{ centro.correo }}</td>
-              <td>{{ centro.direccion }}</td>
-              <td class="text-muted"><small>{{ centro.fecha_creacion }} </small></td>
-              <td class="text-muted"><small>{{ centro.id_usuario }}</small></td>
-              <td class="text-center">
-                  <button class="btn btn-outline-primary my-2 my-sm-0 btn-sm" (click)="selectedIdUser(centro.id)">Editar</button>
-                  <button class="btn btn-outline-danger my-2 my-sm-0  btn-sm ml-2" (click)="deleteCentro(centro.id, centro.nombre)">Eliminar</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+  </div><!-- /.container-fluid -->
+</section>
 
-  <!-- Nuevo Modal Crear Usuario -->
-  <ng-template #content let-c="close" let-d="dismiss">
-    <div class="modal-header">
-      <h4 class="modal-title">Datos del consultorio</h4>
-      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h3 class="card-title">
+              <button class="btn btn-outline-primary btn-sm" (click)="openVerticallyCentered(content)"> 
+                <i class="fas fa-plus"></i> Agregar Centro </button>
+            </h3>
+          </div>
+          <div class="card-body">
+            <table class="table table-responsive table-hover table-striped table-bordered">
+              <thead class="thead-dark">
+                <tr>
+                  <th class="col-2">ID</th>
+                  <th class="col-2">Nombre</th>
+                  <th class="col-1">Teléfono</th>
+                  <th class="col-1">Correo</th>
+                  <th class="col-2">Dirección</th>
+                  <th class="col-1">Fecha de Creación</th>
+                  <th class="col-2">Creado por</th>
+                  <th class="col-1">Opciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let centro of centros">
+                  <th class="text-muted"><small><strong>{{ centro.id }}</strong></small></th>
+                  <td>{{ centro.nombre }}</td>
+                  <td>{{ centro.telefono }}</td>
+                  <td>{{ centro.correo }}</td>
+                  <td>{{ centro.direccion }}</td>
+                  <td class="text-muted"><small>{{ centro.fecha_creacion }} </small></td>
+                  <td class="text-muted"><small>{{ centro.id_usuario }}</small></td>
+                  <td class="text-center">
+                      <button class="btn btn-outline-primary my-2 my-sm-0 btn-sm" (click)="selectedIdUser(centro.id)">
+                        <i class="fas fa-edit"></i> Editar</button>
+                      <button class="btn btn-outline-danger my-2 my-sm-0  btn-sm ml-2" (click)="deleteCentro(centro.id, centro.nombre)">
+                        <i class="fas fa-trash-alt"></i> Borrar</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="modal-body">
-
-      <app-centro-form></app-centro-form>
-
-    </div>
-    <div class="modal-footer">
-      <!-- <button type="button" class="btn btn-light" (click)="limpiarForm()">Limpiar</button> -->
-      <button type="button" class="btn btn-light" (click)="c('Cerrar')">Cerrar</button>
-    </div>
-  </ng-template>
-  
   </div>
+</section>
+
+<!-- Nuevo Modal Crear Usuario -->
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Datos del consultorio</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <app-centro-form></app-centro-form>
+
+  </div>
+  <div class="modal-footer">
+    <!-- <button type="button" class="btn btn-light" (click)="limpiarForm()">Limpiar</button> -->
+    <button type="button" class="btn btn-light" (click)="c('Cerrar')">Cerrar</button>
+  </div>
+</ng-template>
   

@@ -11,6 +11,7 @@ import { CentroListComponent } from './components/centros/centro-list/centro-lis
 import { CentroFormComponent } from './components/centros/centro-form/centro-form.component';
 import { CentroDetalleComponent } from './components/centros/centro-detalle/centro-detalle.component';
 import { PerfilComponent } from './components/perfil/perfil.component';
+import { ContrasenaComponent } from './components/usuarios/usuario-detalle/contrasena/contrasena.component';
 
 
 const routes: Routes = [
@@ -25,6 +26,7 @@ const routes: Routes = [
   {path:'centro-form', component: CentroFormComponent, canActivate:[AuthGuard]},
   {path:'centro-detalle/:id', component: CentroDetalleComponent, canActivate:[AuthGuard]},
   {path:'perfil', component: PerfilComponent, canActivate:[AuthGuard]},
+  {path:'password/:id', component: ContrasenaComponent, canActivate:[AuthGuard]},
 ];
 
 @NgModule({

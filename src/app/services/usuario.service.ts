@@ -65,8 +65,8 @@ export class UsuarioService {
   }
 
   // PATCH
-  updateUsuario(id: string, correo: string, llave: string, rol:string) {
-    return this.http.patch(`${this.URI}/${id}`, {correo, llave, rol});
+  updateUsuario(id: string, correo: string, llave: string, rol:string, titulo:string, nombre:string, apellidop:string, apellidom:string, especialidad:string, telefono:string) {
+    return this.http.patch(`${this.URI}/${id}`, {correo, llave, rol, titulo, nombre, apellidop, apellidom, especialidad, telefono});
   }
 
   // DELETE
@@ -83,7 +83,7 @@ export class UsuarioService {
     );
   }
   
-  // GET One by
+  // GET One by - Login / Navigate
   getUsuarioByCorreo$(correo: string) {
     if(correo){
       this.http.get<Usuario>(`${this.URI}/usuarioxcorreo/${correo}`).subscribe(
@@ -107,6 +107,10 @@ export class UsuarioService {
       err => console.log(err)
     )
     return this.usuarios.asObservable();
+  }
+
+  updateUsuarioLlave(id: string, llave: string){
+    return this.http.patch(`${this.URI}/passwordusuario/${id}`, { llave });
   }
 
 }

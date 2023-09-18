@@ -15,17 +15,12 @@ export class AuthService {
   //URI = 'http://localhost:4000/api/seguridad';
   URI = environment.urlApiSeguridad
 
-  private usuario$: Subject<Usuario>;
-
-  // usuario almacenado en localstorage, para al actualizar la página obtenga el usuario logueado en el componente navigate
-  //private messageSource = new BehaviorSubject<string>(localStorage.getItem('')) 
-  //mensajeActual = this.messageSource.asObservable()
+  //private usuario$: Subject<Usuario>;
 
   constructor(private http: HttpClient, private router:Router, private navigateService:NavigateService) {
-    this.usuario$ = new Subject();
+    //this.usuario$ = new Subject();
   }
 
-  // POST
   login(user){
     console.log("usuario enviado: "+ user)
     return this.http.post<any>(this.URI + '/login', user)
@@ -70,21 +65,10 @@ export class AuthService {
           showConfirmButton: false,
           timer: 1500
         }) 
-    
-        /*
-        setTimeout(() => {
-          this.spinner.hide() 
-          this.router.navigate(['/login'])  
-        }, 500); */
-  
       }
-    })
+    }) //end Swal
 
-    
   }
-  /*
-  cambiarUsuario(message: string){
-    this.messageSource.next(message)
-  }*/
+
 }
 

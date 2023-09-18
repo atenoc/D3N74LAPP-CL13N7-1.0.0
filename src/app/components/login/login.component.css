@@ -13,3 +13,8 @@
     color: #c16e6e
     /* Añade otros estilos personalizados aquí */
   }
+
+.my-card {
+    border: 0px solid;
+    box-shadow: 5px 5px 10px #121212;
+}

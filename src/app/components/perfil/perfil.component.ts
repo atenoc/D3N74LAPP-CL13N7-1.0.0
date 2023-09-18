@@ -67,6 +67,11 @@ export class PerfilComponent implements OnInit {
 
   selectedIdUser(id: string) {
     console.log("id seleccionado: "+id)
+    this.router.navigate(['/usuario-detalle', id]);
+  }
+
+  selectedIdCentro(id: string) {
+    console.log("id seleccionado: "+id)
     this.router.navigate(['/centro-detalle', id]);
   }
 
