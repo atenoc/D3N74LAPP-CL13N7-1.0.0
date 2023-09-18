@@ -9,13 +9,27 @@
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar user (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="../../../assets/images/avatar5.png" class="img-circle elevation-2" alt="User Image">
-        </div>
-        <div class="info">
-          <a href="#" class="d-block">Caramelo Atn</a>
-        </div>
+      <div class="user-panel d-flex mt-2 mb-2">
+
+        <ng-container *ngIf="!authService.estaLogueado(); else login">
+            <button *ngIf="mostrarBotonIngresar" class="btn btn-outline-light my-2 my-sm-0" routerLink="/login">Ingresar</button>
+        </ng-container>
+        <ng-template #login>
+          <div class="row row-width">
+            <div class="col-10 text-center mt-2">
+              <a routerLink="/perfil" data-bs-toggle="tooltip" data-bs-placement="right" title="Ver mi perfil">{{ nombreUsuario }}</a>  
+            </div>
+            
+            <div class="col-2">
+              <div class="info">
+                <div class="btn btn-outline-light btn-sm" data-bs-toggle="tooltip" data-bs-placement="right" title="Cerrar sesión" (click)="salir()">
+                  <i class="fas fa-sign-out-alt"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+
       </div>
 
       <!-- SidebarSearch Form -->
@@ -36,7 +50,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="#" class="nav-link active">
+            <a href="#" class="nav-link">
               <i class="fas fa-building"></i>
               <p>
                 Consultorios
@@ -45,7 +59,7 @@
             </a>
                 <ul class="nav nav-treeview ul-bg ul-p">
                   <li class="nav-item">
-                    <a href="../../index.html" class="nav-link">
+                    <a routerLink="/centros" class="nav-link">
                       <i class="fas fa-list"></i>
                       <p> Todos</p>
                     </a>
@@ -67,7 +81,7 @@
               </a>
                 <ul class="nav nav-treeview ul-bg ul-p">
                   <li class="nav-item">
-                    <a href="../../index.html" class="nav-link">
+                    <a routerLink="/agenda" class="nav-link">
                       <i class="far fa-calendar-alt"></i>
                       <p> Calendario</p>
                     </a>
@@ -111,7 +125,7 @@
             </a>
             <ul class="nav nav-treeview ul-bg ul-p">
               <li class="nav-item">
-                <a href="../../index.html" class="nav-link">
+                <a routerLink="/usuarios" class="nav-link">
                   <i class="fas fa-users"></i>
                   <p> Ver Usuarios</p>
                 </a>
