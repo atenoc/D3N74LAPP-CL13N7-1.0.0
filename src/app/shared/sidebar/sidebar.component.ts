@@ -3,7 +3,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { CentroService } from 'src/app/services/centro.service';
-import { NavigateService } from 'src/app/services/navigate.service';
+import { SharedService } from 'src/app/services/shared.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
@@ -25,7 +25,7 @@ export class SidebarComponent implements OnInit {
   mostrarCambiarContrasena:boolean=true
 
   constructor(
-    private navigateService:NavigateService, 
+    private sharedService:SharedService, 
     public authService: AuthService, 
     public usuarioService: UsuarioService, 
     private centroService:CentroService,
@@ -34,7 +34,7 @@ export class SidebarComponent implements OnInit {
   ngOnInit(): void {
     console.log("NAVIGATE COMP")
 
-    this.navigateService.getData().subscribe(data => {
+    this.sharedService.getData().subscribe(data => {
       this.mostrarCambiarContrasena = data;
       console.log("Actualizar Navigate")
       console.log("Mostrar Cambiar contraeña: "+ this.mostrarCambiarContrasena)
@@ -92,9 +92,11 @@ export class SidebarComponent implements OnInit {
   salir(){
     this.authService.logout()
 
-    this.navigateService.mensajeActual.subscribe(
+    this.sharedService.mensajeActual.subscribe(
       res => {
         if(res){
+          this.sharedService.notifyApp.emit();
+          console.log("Voy a mandar una notificación a App Component")
           this.reload()
         }
       }

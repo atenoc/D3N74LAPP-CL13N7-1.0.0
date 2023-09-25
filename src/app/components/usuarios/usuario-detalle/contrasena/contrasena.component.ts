@@ -4,7 +4,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavigateService } from 'src/app/services/navigate.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-contrasena',
@@ -22,7 +22,7 @@ export class ContrasenaComponent implements OnInit {
   faEye=faEye;
   faEyeSlash=faEyeSlash;
 
-  constructor(private formBuilder:FormBuilder, private activatedRoute: ActivatedRoute, private usuarioService:UsuarioService, private navigateService:NavigateService) { }
+  constructor(private formBuilder:FormBuilder, private activatedRoute: ActivatedRoute, private usuarioService:UsuarioService, private sharedService:SharedService) { }
 
   ngOnInit() {
 
@@ -69,7 +69,7 @@ export class ContrasenaComponent implements OnInit {
         console.log("Contraseña actualizada: "+res);
         this.ngOnInit()
 
-        this.navigateService.setData(false);
+        this.sharedService.setData(false);
 
         Swal.fire({
           icon: 'success',
