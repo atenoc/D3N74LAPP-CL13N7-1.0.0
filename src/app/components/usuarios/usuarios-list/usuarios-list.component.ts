@@ -143,4 +143,8 @@ export class UsuariosListComponent implements OnInit {
 
   }
 
+  irUsuarioForm(){
+    this.router.navigate(['/usuario-form']);
+  }
+
 }

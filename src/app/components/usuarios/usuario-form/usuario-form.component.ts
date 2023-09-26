@@ -5,6 +5,7 @@ import { Usuario } from 'src/app/models/Usuario.model';
 import { CentroService } from 'src/app/services/centro.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
+import { Mensajes } from 'src/app/shared/mensajes.config';
 
 @Component({
   selector: 'app-usuario-form',
@@ -17,8 +18,25 @@ export class UsuarioFormComponent implements OnInit {
   formularioUsuario:FormGroup
   idCentroUsuarioActivo:string
 
-  constructor(private formBuilder:FormBuilder, private usuarioService:UsuarioService, private centroService:CentroService,
-    private modalService: NgbModal, private el: ElementRef) { }
+  //mensajes
+  campoRequerido: string;
+  correoValido: string;
+  contrasenaLongitud: string;
+  telefonoLongitud: string;
+  soloNumeros: string;
+
+  constructor(
+    private formBuilder:FormBuilder, 
+    private usuarioService:UsuarioService, 
+    private centroService:CentroService,
+    private modalService: NgbModal, 
+    private el: ElementRef) {
+      this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
+      this.correoValido = Mensajes.CORREO_VALIDO;
+      this.contrasenaLongitud = Mensajes.CONTRASENA_LONGITUD;
+      this.telefonoLongitud = Mensajes.TELEFONO_LONGITUD;
+      this.soloNumeros = Mensajes.SOLO_NUMEROS;
+    }
 
   ngOnInit() {
     console.log("USUARIO FORM")
@@ -27,11 +45,11 @@ export class UsuarioFormComponent implements OnInit {
       correo: ['', Validators.compose([
         Validators.required, Validators.email
       ])],
-      llave: ['', Validators.required],
+      llave: ['', [Validators.required, Validators.minLength(6)]],
       rol: ['', Validators.required],
       titulo: [''],
-      nombre: ['', Validators.required],
-      apellidop: ['', Validators.required],
+      nombre: ['', [Validators.required, Validators.minLength(3)]],
+      apellidop: ['', [Validators.required, Validators.minLength(3)]],
       apellidom: [''],
       especialidad: [''],
       telefono: ['', [Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
@@ -43,6 +61,13 @@ export class UsuarioFormComponent implements OnInit {
       },
       err => console.log("error: " + err)
     )
+  }
+
+  getInputClass(controlName: string) {
+    const control = this.formularioUsuario.get(controlName);
+    return {
+      'invalid-input': control?.invalid && control?.dirty
+    };
   }
 
   crearUsuario(){

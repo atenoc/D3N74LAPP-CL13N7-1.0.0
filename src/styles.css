@@ -1,1 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+
+.invalid-input {
+    border: 1px solid #ff7a7a !important;
+}
+
+.invalid-input-message {
+    font-size: 13px;
+    color: red;
+    padding-left: 1px;
+}

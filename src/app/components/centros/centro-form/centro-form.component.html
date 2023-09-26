@@ -1,53 +1,92 @@
-<!-- 
-<div class="col-lg-3 mx-auto text-center" style="margin-top: 80px;">
-
-    <div class="card">
-
-        <div class="card-header bg-primary text-white"><strong>Datos del centro o consultorio dental</strong></div>
-        <div class="card-body"> -->
-
-            <form [formGroup]="formularioCentro">
-     
-                <div class="form-group">
-                    <small class="form-text text-muted">Nombre *</small>
-                    <input type="email" class="form-control" formControlName="nombre" placeholder="Ingresa el nombre de tu consultorio">
-                    <div *ngIf="formularioCentro.controls['nombre'].invalid && formularioCentro.controls['nombre'].dirty" class="alert alert-danger my-alert" role="alert">
-                      <span *ngIf="formularioCentro.controls['nombre'].errors.required">El nombre es requerido</span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <small class="text-muted">Teléfono de contacto *</small>
-                    <input type="text" class="form-control" formControlName="telefono" placeholder="10 dígitos" maxlength="10">
-                    <div *ngIf="formularioCentro.controls['telefono'].invalid && formularioCentro.controls['telefono'].dirty" class="alert alert-danger my-alert" role="alert">
-                        <span *ngIf="formularioCentro.controls['telefono'].errors.pattern && !formularioCentro.controls['telefono'].errors.required">Por favor ingresa sólo números. </span> 
-                        <span *ngIf="formularioCentro.controls['telefono'].errors.required">El teléfono es requerido. </span> 
-                        <span *ngIf="formularioCentro.controls['telefono'].errors.minlength">El teléfono debe tener al menos 10 dígitos. </span> 
-                    </div>
-                      
-                      
-                </div>
-                <div class="form-group">
-                    <small class="text-muted">Correo (opcional)</small>
-                    <input type="email" class="form-control" formControlName="correo" placeholder="Ingrese un correo electrónico">
-                    <div *ngIf="formularioCentro.controls['correo'].invalid && formularioCentro.controls['correo'].dirty" class="alert alert-danger my-alert" role="alert">
-                        <!-- <span *ngIf="formularioCentro.controls['correo'].errors.required">El correo es requerido</span> -->
-                        <span *ngIf="formularioCentro.controls['correo'].errors.email">Ingresa un correo válido</span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <small class="text-muted">Dirección ó Domicilio *</small>
-                    <textarea class="form-control" formControlName="direccion" rows="2" maxlength="130"></textarea>
-                    <div *ngIf="formularioCentro.controls['direccion'].invalid && formularioCentro.controls['direccion'].dirty" class="alert alert-danger my-alert" role="alert">
-                        <span *ngIf="formularioCentro.controls['direccion'].errors.required">La direccion es requerida</span> 
-                    </div>
-                </div>
-        
-                <small class="text-muted">Los campos marcados con (*) son obligatorios</small>
-                <button type="submit" class="btn btn-primary btn-block" (click)="crearCentro()" [disabled]="formularioCentro.invalid" >Agregar</button>
-                <button type="button" class="btn btn-outline-secondary mt-3" (click)="limpiarForm()">Limpiar campos</button>
-            </form>
-<!-- 
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h5>
+            Agregar Centro / Consultorio
+          </h5>
         </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item active">Inicio</li>
+            <li class="breadcrumb-item active">Centros</li>
+            <li class="breadcrumb-item active">Registrar</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+</section>
+  
+<section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card card-primary card-outline">
+            <div class="card-header">
+              <h3 class="card-title">
+                Formulario de registro
+              </h3>
+            </div>
+            <div class="card-body">
+  
+                <form [formGroup]="formularioCentro">
+     
+                    <div class="form-group">
+                        <small class="form-text text-muted">Nombre *</small>
+                        <input type="email" class="form-control" formControlName="nombre" [ngClass]="getInputClass('nombre')" placeholder="Ingresa el nombre de tu consultorio">
+                        <div *ngIf="formularioCentro.controls['nombre'].invalid && formularioCentro.controls['nombre'].dirty" class="invalid-input-message">
+                          <span *ngIf="formularioCentro.controls['nombre'].errors.required">{{ campoRequerido }}</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <small class="text-muted">Teléfono de contacto *</small>
+                        <input type="text" class="form-control" formControlName="telefono" [ngClass]="getInputClass('telefono')" placeholder="10 dígitos" maxlength="10">
+                        <div *ngIf="formularioCentro.controls['telefono'].invalid && formularioCentro.controls['telefono'].dirty" class="invalid-input-message">
+                            <span *ngIf="formularioCentro.controls['telefono'].errors.pattern && !formularioCentro.controls['telefono'].errors.required">{{ soloNumeros }}</span> 
+                            <span *ngIf="formularioCentro.controls['telefono'].errors.required">{{ campoRequerido }}</span> 
+                            <span *ngIf="formularioCentro.controls['telefono'].errors.minlength">{{ telefonoLongitud }}</span> 
+                        </div>
+                          
+                          
+                    </div>
+                    <div class="form-group">
+                        <small class="text-muted">Correo (opcional)</small>
+                        <input type="email" class="form-control" formControlName="correo" [ngClass]="getInputClass('correo')" placeholder="Ingrese un correo electrónico">
+                        <div *ngIf="formularioCentro.controls['correo'].invalid && formularioCentro.controls['correo'].dirty" class="invalid-input-message">
+                            <!-- <span *ngIf="formularioCentro.controls['correo'].errors.required">El correo es requerido</span> -->
+                            <span *ngIf="formularioCentro.controls['correo'].errors.email">{{ correoValido }}</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <small class="text-muted">Dirección ó Domicilio *</small>
+                        <textarea class="form-control" formControlName="direccion" [ngClass]="getInputClass('direccion')" rows="2" maxlength="130"></textarea>
+                        <div *ngIf="formularioCentro.controls['direccion'].invalid && formularioCentro.controls['direccion'].dirty" class="invalid-input-message">
+                            <span *ngIf="formularioCentro.controls['direccion'].errors.required">{{ campoRequerido }}</span> 
+                        </div>
+                    </div>
+            
+                    <div class="d-flex mt-2 ">
+                        <div></div>
+                        <div class="ml-auto">
+                            <small class="text-muted">Los campos marcados con (*) son obligatorios</small>
+                        </div>
+                    </div>
+                
+                    <div class="d-flex mt-2 ">
+                        <div>
+                            <button type="button" class="btn btn-outline-secondary" (click)="limpiarForm()">Limpiar campos</button>
+                        </div>
+                        <div class="ml-auto">
+                            <button type="submit" class="btn btn-primary btn-block" (click)="crearCentro()" [disabled]="formularioCentro.invalid">Guardar</button>
+                        </div>
+                    </div>
 
+                </form>
+  
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</div> -->
+</section>
