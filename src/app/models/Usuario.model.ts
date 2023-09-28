@@ -12,5 +12,6 @@ export interface Usuario{
     fecha_creacion:string;
     llave_status:number
     id_usuario:string;
+    nombre_usuario_creador:string;
     id_centro:string;
 }
