@@ -6,6 +6,11 @@ import { CentroService } from 'src/app/services/centro.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
 import { Mensajes } from 'src/app/shared/mensajes.config';
+import { CatRolService } from 'src/app/services/cat-rol.service';
+import { Catalogo } from 'src/app/models/Catalogo.model';
+import { CatTituloService } from 'src/app/services/cat-titulo.service';
+import { CatEspecialidadService } from 'src/app/services/cat-especialidad.service';
+//import { CatRolesService } from 'src/app/services/cat-roles.service';
 
 @Component({
   selector: 'app-usuario-form',
@@ -17,6 +22,10 @@ export class UsuarioFormComponent implements OnInit {
   usuario:Usuario
   formularioUsuario:FormGroup
   idCentroUsuarioActivo:string
+
+  catRoles:Catalogo[] = [];
+  catTitulos:Catalogo[] = [];
+  catEspecialidades:Catalogo[] = [];
 
   //mensajes
   campoRequerido: string;
@@ -30,7 +39,11 @@ export class UsuarioFormComponent implements OnInit {
     private usuarioService:UsuarioService, 
     private centroService:CentroService,
     private modalService: NgbModal, 
-    private el: ElementRef) {
+    private el: ElementRef,
+    private catRolService:CatRolService,
+    private catTituloService:CatTituloService,
+    private catEspecialidadService:CatEspecialidadService
+    ) {
       this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
       this.correoValido = Mensajes.CORREO_VALIDO;
       this.contrasenaLongitud = Mensajes.CONTRASENA_LONGITUD;
@@ -55,9 +68,30 @@ export class UsuarioFormComponent implements OnInit {
       telefono: ['', [Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
     })
 
+    //get ID Centro
     this.centroService.getCentroByIdUser$(localStorage.getItem('_us')).subscribe(
       res => { 
         this.idCentroUsuarioActivo=res.id
+      },
+      err => console.log("error: " + err)
+    )
+
+    // carga Catálogos
+    this.catRolService.getRoles$().subscribe(res => { 
+        this.catRoles = res
+        console.log("Roles: "+res.length)
+      },
+      err => console.log("error: " + err)
+    )
+    this.catTituloService.getTitulos$().subscribe(res => { 
+        this.catTitulos = res
+        console.log("Titulos: "+res.length)
+      },
+      err => console.log("error: " + err)
+    )
+    this.catEspecialidadService.getEspecialidades$().subscribe(res => { 
+        this.catEspecialidades = res
+        console.log("Especialidades: "+res.length)
       },
       err => console.log("error: " + err)
     )
@@ -79,6 +113,7 @@ export class UsuarioFormComponent implements OnInit {
     console.log("ID Centro Activo: "+this.idCentroUsuarioActivo)
     //console.log("Usuario a registrar: "+ JSON.stringify(nuevoUsuarioJson))
     console.log("Usuario a registrar: "+ nuevoUsuarioJson)
+    console.log(nuevoUsuarioJson)
     this.usuarioService.createUsuario(nuevoUsuarioJson).subscribe(
       res => {
         this.usuario = res;

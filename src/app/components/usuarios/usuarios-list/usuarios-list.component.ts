@@ -51,6 +51,7 @@ export class UsuariosListComponent implements OnInit {
   
           if(this.usuario.rol != "sop" && this.usuario.rol != "admin"){ // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
             this.router.navigate(['/agenda']);
+            console.log("No tienes Acceso a esta página!")
           }else{
   
             if(this.usuario.rol == "sop"){  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL

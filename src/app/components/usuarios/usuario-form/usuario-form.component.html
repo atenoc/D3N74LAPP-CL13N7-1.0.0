@@ -84,10 +84,9 @@
                             <div class="form-group">
                                 <small class="text-muted"> Título </small>
                                 <select class="form-select" formControlName="titulo">
-                                    <optgroup label="Selecciona una opción:"></optgroup>
-                                    <option value="Dr.">Dr.</option>
-                                    <option value="Dra.">Dra.</option>
-                                  </select>
+                                    <option selected disabled [value]="0">Selecciona una opción:</option>
+                                    <option *ngFor="let item of catTitulos" [value]="item.id">{{ item.descripcion }}</option>
+                                </select>
                             </div>
                         </div>
                 
@@ -125,10 +124,9 @@
                             <div class="form-group">
                                 <small class="text-muted"> Especialidad </small>
                                 <select class="form-select" formControlName="especialidad">
-                                    <optgroup label="Selecciona una opción:"></optgroup>
-                                    <option value="Especialidad 1">Especialidad 1</option>
-                                    <option value="Especialidad 2">Especialidad 2</option>
-                                  </select>
+                                    <option selected disabled [value]="0">Selecciona una opción:</option>
+                                    <option *ngFor="let item of catEspecialidades" [value]="item.id">{{ item.descripcion }}</option>
+                                </select>
                             </div>
                         </div>
                 
