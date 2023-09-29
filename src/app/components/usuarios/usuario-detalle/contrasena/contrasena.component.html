@@ -1,8 +1,8 @@
 <div class="container">
 
-    <div class="row mt-2">
-        <div class="col-3"></div>
-        <div class="col-6">
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6 mt-3">
 
             <h5>
                 Cambio de contraseña
@@ -10,9 +10,9 @@
 
             <br>
 
-            <small>Contraseña Actual</small>
+            <small>Contraseña actual</small>
             <div class="input-group">
-              <input type="{{ passwordType }}" class="form-control" [(ngModel)]="llave">
+              <input type="{{ passwordType }}" class="form-control" [(ngModel)]="llave" readonly>
               <div class="input-group-append">
                 <button class="btn btn-outline-secondary" type="button" (click)="togglePasswordVisibility()">
                   <fa-icon [icon]="faEye" *ngIf="passwordType === 'password'"></fa-icon>
@@ -26,7 +26,7 @@
                 <div class="form-group">
                   <small>Nueva Contraseña</small>
                   <input type="password" class="form-control" formControlName="nuevoPassword1">
-                  <div *ngIf="formPassword.controls['nuevoPassword1'].invalid && formPassword.controls['nuevoPassword1'].dirty" class="alert alert-danger my-alert" role="alert">
+                  <div *ngIf="formPassword.controls['nuevoPassword1'].invalid && formPassword.controls['nuevoPassword1'].dirty" class="invalid-input-message">
                     <span *ngIf="formPassword.controls['nuevoPassword1'].errors.required">La nueva contraseña es requerida</span>
                     <span *ngIf="formPassword.controls['nuevoPassword1'].errors.minlength">La contraseña debe contener al menos 8 caracteres.</span> 
                   </div>                  
@@ -35,21 +35,21 @@
                 <div class="form-group">
                   <small>Confirmar Contraseña</small>
                   <input type="password" class="form-control" formControlName="nuevoPassword2" >
-                  <div *ngIf="formPassword.controls['nuevoPassword2'].invalid && formPassword.controls['nuevoPassword2'].dirty" class="alert alert-danger my-alert" role="alert">
+                  <div *ngIf="formPassword.controls['nuevoPassword2'].invalid && formPassword.controls['nuevoPassword2'].dirty" class="invalid-input-message">
                     <span *ngIf="formPassword.controls['nuevoPassword2'].errors.required">Por favor confirma tu nueva contraseña</span>
                   </div>
                 </div>
 
-                <div *ngIf="formPassword.controls['nuevoPassword2'].errors?.mismatch" class="alert alert-danger my-alert" role="alert">
+                <div *ngIf="formPassword.controls['nuevoPassword2'].errors?.mismatch" class="invalid-input-message">
                   Las contraseñas no coinciden.
                 </div>
 
-                <button class="btn btn-primary btn-block" [disabled]="formPassword.invalid" (click)="updateUsuarioLlave(formPassword)">Actualizar</button>
+                <button class="btn btn-primary btn-block mt-3" [disabled]="formPassword.invalid" (click)="updateUsuarioLlave(formPassword)">Actualizar</button>
 
             </form>
 
         </div>
-        <div class="col-3"></div>
+        <div class="col-sm-3"></div>
     </div>
 
     

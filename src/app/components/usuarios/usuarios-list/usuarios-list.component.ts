@@ -57,6 +57,7 @@ export class UsuariosListComponent implements OnInit {
             if(this.usuario.rol == "sop"){  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
               this.usuarioService.getUsuarios$().subscribe(res=>{
                 console.log("Listado de usuarios:: " + res)
+                console.log(res)
                 this.usuarios = res;
                 this.existenUsuarios = this.usuarios.length > 0;
                 if(!this.existenUsuarios){

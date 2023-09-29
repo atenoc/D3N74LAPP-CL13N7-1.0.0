@@ -10,6 +10,7 @@ import { CatRolService } from 'src/app/services/cat-rol.service';
 import { Catalogo } from 'src/app/models/Catalogo.model';
 import { CatTituloService } from 'src/app/services/cat-titulo.service';
 import { CatEspecialidadService } from 'src/app/services/cat-especialidad.service';
+import { Router } from '@angular/router';
 //import { CatRolesService } from 'src/app/services/cat-roles.service';
 
 @Component({
@@ -38,7 +39,8 @@ export class UsuarioFormComponent implements OnInit {
     private formBuilder:FormBuilder, 
     private usuarioService:UsuarioService, 
     private centroService:CentroService,
-    private modalService: NgbModal, 
+    private modalService: NgbModal,
+    private router: Router, 
     private el: ElementRef,
     private catRolService:CatRolService,
     private catTituloService:CatTituloService,
@@ -118,17 +120,25 @@ export class UsuarioFormComponent implements OnInit {
       res => {
         this.usuario = res;
         console.log("Usuario creado")
-        this.modalService.dismissAll()
+        //this.modalService.dismissAll()
+        this.router.navigate(['/usuarios'])
 
         Swal.fire({
-          icon: 'success',
+          position: 'top-end',
+          //icon: 'success',
           html:
-            `<strong> ${ this.usuario.correo } </strong><br/>` +
-            '¡Registrado con éxito!',
-          //text:`El usuario: ${ this.usuario.correo }, se registró con éxito`,
-          showConfirmButton: true,
-          confirmButtonColor: '#28a745',
-          timer: 1500
+            `<h5>Usuario registrado exitosamente</h5>`+
+            `<span>Usuario: ${ this.usuario.correo }</span>`, 
+            
+          showConfirmButton: false,
+          //confirmButtonColor: '#28a745',
+          timer: 3000,
+          backdrop: false, // Deshabilita el fondo oscuro
+          width: 400,
+          background: 'rgb(40, 167, 69, .90)',
+          color:'white',
+          //iconColor: 'white',
+          timerProgressBar:true
         })
       },
       err => {
@@ -149,10 +159,12 @@ export class UsuarioFormComponent implements OnInit {
           Swal.fire({
             icon: 'error',
             html:
-              `<strong>¡${ err.error.message }!</strong>`,
-            showConfirmButton: true,
-            confirmButtonColor: '#28a745',
-            timer: 3000
+              `<strong>${ err.error.message }</strong></br>`+
+              `<span>¡Por favor intente más tarde!</span></br>`+
+              `<small>Si el problema persiste, coctacte a su administrador.</small>`,
+            showConfirmButton: false,
+            //confirmButtonColor: '#28a745',
+            timer: 10000
           })
         }
         
