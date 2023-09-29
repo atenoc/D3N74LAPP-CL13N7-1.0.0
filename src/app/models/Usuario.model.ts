@@ -1,4 +1,5 @@
 export interface Usuario{
+    contador:number;
     id:string;
     correo:string;
     llave:string;

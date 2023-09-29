@@ -36,7 +36,7 @@
                 <table class="table table-responsive table-hover table-striped table-bordered">
                   <thead class="thead-dark">
                     <tr>
-                      <!-- <th class="col-2">ID</th> -->
+                      <th class="col-1">#</th> 
                       <th class="col-1">Título</th>
                       <th class="col-2">Nombre</th>
                       <th class="col-1">Correo</th>
@@ -45,13 +45,14 @@
                       <th class="col-1">Teléfono</th>
                       <!-- <th class="col-1">Id Usuario Creador</th> -->
                       <th class="col-1">Creado por</th>
-                      <th class="col-1">Fecha creación</th>
-                      <th class="col-2">Opciones</th>
+                      <th class="col-2">Fecha creación</th>
+                      <th class="col-1">Opciones</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let usuario of usuarios">
                       <!-- <th class="text-muted"><small><strong>{{ usuario.id }}</strong></small></th> -->
+                      <td>{{ usuario.contador }}</td>
                       <td>{{ usuario.titulo }}</td>
                       <td>{{ usuario.nombre }} {{ usuario.apellidop }} {{ usuario.apellidom }}</td>
                       <td>{{ usuario.correo }}</td>
