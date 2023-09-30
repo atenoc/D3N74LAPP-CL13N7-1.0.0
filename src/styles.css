@@ -15,3 +15,9 @@
     background: #f8f9fa !important;
 }
 
+/* Modal de Ng-Modal */
+.modal-backdrop {
+    z-index: 1040 !important; /* Asegúrate de que sea menor que el z-index del modal-window */
+}
+
+
