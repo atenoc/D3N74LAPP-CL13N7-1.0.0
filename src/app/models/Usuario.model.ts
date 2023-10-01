@@ -18,3 +18,13 @@ export interface Usuario{
     nombre_usuario_creador:string;
     id_centro:string;
 }
+
+export interface UsuariosPaginados {
+    data: Usuario[];
+    pagination: {
+      page: number;
+      size: number;
+      totalPages: number;
+      totalElements: number;
+    };
+}
