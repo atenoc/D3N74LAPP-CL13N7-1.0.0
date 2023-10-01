@@ -3,9 +3,22 @@
     <tr>
       <th class="col-1">#</th> 
       <th class="col-1">Título</th>
-      <th class="col-1">Nombre(s)</th>
-      <th class="col-1">Ap. Paterno</th>
-      <th class="col-1">Ap. Materno</th>
+      <th class="col-1" (click)="onSortChange('nombre')">
+        Nombre(s)
+        <span *ngIf="orderBy === 'nombre' && way === 'asc'">▲</span>
+        <span *ngIf="orderBy === 'nombre' && way === 'desc'">▼</span>
+      </th>
+      <th class="col-1" (click)="onSortChange('apellidop')">
+        Ap. Paterno
+        <span *ngIf="orderBy === 'apellidop' && way === 'asc'">▲</span>
+        <span *ngIf="orderBy === 'apellidop' && way === 'desc'">▼</span>
+      </th>
+      <th class="col-1" (click)="onSortChange('apellidom')">
+        Ap. Materno
+        <span *ngIf="orderBy === 'apellidom' && way === 'asc'">▲</span>
+        <span *ngIf="orderBy === 'apellidom' && way === 'desc'">▼</span>
+      </th>
+      
       <th class="col-1">Correo</th>
       <th class="col-1">Rol</th>
       <th class="col-1">Especialidad</th>

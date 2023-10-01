@@ -24,7 +24,7 @@ export class UsuariosListComponent implements OnInit {
   // Paginación
   currentPage = 1;      // actual
   pageSize = 2;         // tamaño
-  orderBy = 'nombre';   // orden
+  orderBy = '';   // orden
   way = 'asc';          // direccion 
   totalElements:number  // total 
 
@@ -183,8 +183,21 @@ export class UsuariosListComponent implements OnInit {
   }
 
   onPageSizeChange() {
-    // Manejar el cambio de tamaño de página aquí
     this.getUsuariosPaginados();
   }
+
+  onSortChange(campo: string) {
+    if (this.orderBy === campo) {
+      this.way = this.way === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.orderBy = campo;
+      this.way = 'asc'; // Establece 'asc' como valor predeterminado al cambiar de columna
+    }
+  
+    console.log("Ordenar por: " + this.orderBy);
+    console.log("Modo: " + this.way);
+    this.getUsuariosPaginados();
+  }
+  
 
 }
