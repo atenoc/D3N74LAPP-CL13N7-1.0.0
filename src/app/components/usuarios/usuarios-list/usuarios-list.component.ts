@@ -23,7 +23,7 @@ export class UsuariosListComponent implements OnInit {
  
   // Paginación
   currentPage = 1;      // actual
-  pageSize = 2;         // tamaño
+  pageSize = 5;         // default size
   orderBy = '';   // orden
   way = 'asc';          // direccion 
   totalElements:number  // total 
@@ -43,10 +43,8 @@ export class UsuariosListComponent implements OnInit {
 
   ngOnInit() {
 
-    this.getUsuariosPaginados();
-    
     console.log("USUARIOS LIST COMP")
-    /*if(localStorage.getItem('_us')){
+    if(localStorage.getItem('_us')){
 
       // Consultar si existe centro
       this.centroService.getCentroByIdUser$(localStorage.getItem('_us')).subscribe(
@@ -60,6 +58,7 @@ export class UsuariosListComponent implements OnInit {
         err => console.log("error: " + err)
       )
 
+      //Consultar rol
       this.usuarioService.getUsuario$(localStorage.getItem('_us')).subscribe(
         res => {
   
@@ -73,17 +72,8 @@ export class UsuariosListComponent implements OnInit {
   
             if(this.usuario.rol == "sop"){  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
               
-              this.usuarioService.getUsuarios$().subscribe(res=>{
-                console.log("Listado de usuarios:: " + res)
-                console.log(res)
-                this.usuarios = res;
-                this.existenUsuarios = this.usuarios.length > 0;
-                if(!this.existenUsuarios){
-                  this.mensajeRegistrarCentro='¡Registra un centro dental!'
-                }
-              },
-                err => console.log(err)
-              )
+              this.getUsuariosPaginados();
+
             }
     
             if(this.usuario.rol == "admin"){ // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
@@ -105,7 +95,7 @@ export class UsuariosListComponent implements OnInit {
         err => console.log("error: " + err)
       )
 
-    }*/
+    }
   }
 
   openVerticallyCentered(content) {
@@ -174,6 +164,11 @@ export class UsuariosListComponent implements OnInit {
         this.usuarios = res.data
         this.totalElements = res.pagination.totalElements
         console.log(res)
+
+        this.existenUsuarios = this.usuarios.length > 0;
+        if(!this.existenUsuarios){
+          this.mensajeRegistrarCentro='¡Registra un centro dental!'
+        }
       });
   }
 

@@ -1,105 +1,3 @@
-<table class="table table-responsive table-hover table-striped table-bordered">
-  <thead class="thead-dark">
-    <tr>
-      <th class="col-1">#</th> 
-      <th class="col-1">Título</th>
-      <th class="col-1" (click)="onSortChange('nombre')">
-        Nombre(s)
-        <span *ngIf="orderBy === 'nombre' && way === 'asc'">▲</span>
-        <span *ngIf="orderBy === 'nombre' && way === 'desc'">▼</span>
-      </th>
-      <th class="col-1" (click)="onSortChange('apellidop')">
-        Ap. Paterno
-        <span *ngIf="orderBy === 'apellidop' && way === 'asc'">▲</span>
-        <span *ngIf="orderBy === 'apellidop' && way === 'desc'">▼</span>
-      </th>
-      <th class="col-1" (click)="onSortChange('apellidom')">
-        Ap. Materno
-        <span *ngIf="orderBy === 'apellidom' && way === 'asc'">▲</span>
-        <span *ngIf="orderBy === 'apellidom' && way === 'desc'">▼</span>
-      </th>
-      
-      <th class="col-1">Correo</th>
-      <th class="col-1">Rol</th>
-      <th class="col-1">Especialidad</th>
-      <th class="col-1">Teléfono</th>
-      <!-- <th class="col-1">Id Usuario Creador</th> -->
-      <th class="col-1">Creado por</th>
-      <th class="col-1">Fecha creación</th>
-      <th class="col-1">Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let usuario of usuarios">
-      <!-- <th class="text-muted"><small><strong>{{ usuario.id }}</strong></small></th> -->
-      <td scope="row">{{ usuario.contador }}</td>
-      <td>{{ usuario.titulo }}</td>
-      <td>{{ usuario.nombre }}</td>
-      <td>{{ usuario.apellidop }}</td>
-      <td>{{ usuario.apellidom }}</td>
-      <td>{{ usuario.correo }}</td>
-      <td>{{ usuario.rol }}</td>
-      <td>{{ usuario.especialidad }}</td>
-      <td>{{ usuario.telefono }}</td>
-      <!-- <td>{{ usuario.id_usuario }}</td> -->
-      <td>{{ usuario.nombre_usuario_creador }}</td>
-      <td> <small>{{ usuario.fecha_creacion }}</small> </td>
-      <td class="text-center">
-        
-        <button class="btn btn-outline-primary my-2 my-sm-0 btn-sm" (click)="selectedIdUser(usuario.id)"
-          ngbTooltip="Información del usuario"><i class="fas fa-info-circle"></i> Info
-        </button>
-        <button class="btn btn-outline-secondary my-2 my-sm-0 btn-sm ml-2" (click)="deleteUser(usuario.id, usuario.correo)"
-          ngbTooltip="Eliminar usuario"><i class="fas fa-trash-alt"></i>
-        </button>
-    </td>
-    </tr>
-  </tbody>
-</table>
-<div class="container">
-  <div class="row">
-    <div class="col-sm-2 text-sm-end">
-      Mostrar:
-    </div>
-    <div class="col-sm-1">
-      <div class="d-inline">
-        <select class="form-select" [(ngModel)]="pageSize" (change)="onPageSizeChange()">
-          <option value="1">1</option>
-          <option value="3">3</option>
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="15">15</option>
-          <option value="30">30</option>
-          <option value="50">50</option>
-        </select>
-      </div>
-    </div>
-  
-    <div class="col-sm-5">
-      <ngb-pagination
-        [collectionSize]="totalElements"
-        [(page)]="currentPage"
-        [pageSize]="pageSize"
-        [maxSize]="5"
-        [rotate]="true"
-        (pageChange)="onPageChange($event)">
-        <ng-template ngbPaginationFirst>Primero</ng-template>
-        <ng-template ngbPaginationLast>Último</ng-template>
-        <ng-template ngbPaginationPrevious>Anterior</ng-template>
-        <ng-template ngbPaginationNext>Siguiente</ng-template>
-        <ng-template ngbPaginationEllipsis>...</ng-template>
-        <ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>
-      </ngb-pagination>
-    </div>
-  
-    <div class="col-sm-1">
-      <span>Total: <span class="text-muted">{{ totalElements }}</span></span>
-    </div>
-  </div>
-</div>
-
-
-
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <div class="container-fluid">
@@ -140,41 +38,100 @@
                     <tr>
                       <th class="col-1">#</th> 
                       <th class="col-1">Título</th>
-                      <th class="col-2">Nombre</th>
+                      <th class="col-1" (click)="onSortChange('nombre')">
+                        Nombre(s)
+                        <span *ngIf="orderBy === 'nombre' && way === 'asc'">▲</span>
+                        <span *ngIf="orderBy === 'nombre' && way === 'desc'">▼</span>
+                      </th>
+                      <th class="col-1" (click)="onSortChange('apellidop')">
+                        Ap. Paterno
+                        <span *ngIf="orderBy === 'apellidop' && way === 'asc'">▲</span>
+                        <span *ngIf="orderBy === 'apellidop' && way === 'desc'">▼</span>
+                      </th>
+                      <th class="col-1" (click)="onSortChange('apellidom')">
+                        Ap. Materno
+                        <span *ngIf="orderBy === 'apellidom' && way === 'asc'">▲</span>
+                        <span *ngIf="orderBy === 'apellidom' && way === 'desc'">▼</span>
+                      </th>
+                      
                       <th class="col-1">Correo</th>
                       <th class="col-1">Rol</th>
                       <th class="col-1">Especialidad</th>
                       <th class="col-1">Teléfono</th>
                       <!-- <th class="col-1">Id Usuario Creador</th> -->
                       <th class="col-1">Creado por</th>
-                      <th class="col-2">Fecha creación</th>
-                      <th class="col-1">Opciones</th>
+                      <th class="col-1">Fecha creación</th>
+                      <th class="col-1">Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let usuario of usuarios">
                       <!-- <th class="text-muted"><small><strong>{{ usuario.id }}</strong></small></th> -->
-                      <td>{{ usuario.contador }}</td>
+                      <td scope="row">{{ usuario.contador }}</td>
                       <td>{{ usuario.titulo }}</td>
-                      <td>{{ usuario.nombre }} {{ usuario.apellidop }} {{ usuario.apellidom }}</td>
+                      <td>{{ usuario.nombre }}</td>
+                      <td>{{ usuario.apellidop }}</td>
+                      <td>{{ usuario.apellidom }}</td>
                       <td>{{ usuario.correo }}</td>
                       <td>{{ usuario.rol }}</td>
                       <td>{{ usuario.especialidad }}</td>
                       <td>{{ usuario.telefono }}</td>
                       <!-- <td>{{ usuario.id_usuario }}</td> -->
                       <td>{{ usuario.nombre_usuario_creador }}</td>
-                      <td>{{ usuario.fecha_creacion }}</td>
+                      <td> <small>{{ usuario.fecha_creacion }}</small> </td>
                       <td class="text-center">
-                          <button class="btn btn-outline-primary my-2 my-sm-0 btn-sm" (click)="selectedIdUser(usuario.id)"
-                            ngbTooltip="Información del usuario">Detalle
-                          </button>
-                          <button class="btn btn-outline-secondary my-2 my-sm-0 btn-sm ml-2" (click)="deleteUser(usuario.id, usuario.correo)"
-                            ngbTooltip="Eliminar completamente"> x
-                          </button>
-                      </td>
+                        
+                        <button class="btn btn-outline-primary my-2 my-sm-0 btn-sm" (click)="selectedIdUser(usuario.id)"
+                          ngbTooltip="Información del usuario"><i class="fas fa-info-circle"></i> Info
+                        </button>
+                        <button class="btn btn-outline-secondary my-2 my-sm-0 btn-sm ml-2" (click)="deleteUser(usuario.id, usuario.correo)"
+                          ngbTooltip="Eliminar usuario"><i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
                     </tr>
                   </tbody>
                 </table>
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm-3 text-sm-end">
+                      Mostrar:
+                    </div>
+                    <div class="col-sm-1">
+                      <div class="d-inline">
+                        <select class="form-select" [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+                          <option value="1">1</option>
+                          <option value="3">3</option>
+                          <option value="5">5</option>
+                          <option value="10">10</option>
+                          <option value="15">15</option>
+                          <option value="30">30</option>
+                          <option value="50">50</option>
+                        </select>
+                      </div>
+                    </div>
+                  
+                    <div class="col-sm-5">
+                      <ngb-pagination
+                        [collectionSize]="totalElements"
+                        [(page)]="currentPage"
+                        [pageSize]="pageSize"
+                        [maxSize]="5"
+                        [rotate]="true"
+                        (pageChange)="onPageChange($event)">
+                        <ng-template ngbPaginationFirst>Primero</ng-template>
+                        <ng-template ngbPaginationLast>Último</ng-template>
+                        <ng-template ngbPaginationPrevious>Anterior</ng-template>
+                        <ng-template ngbPaginationNext>Siguiente</ng-template>
+                        <ng-template ngbPaginationEllipsis>...</ng-template>
+                        <ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>
+                      </ngb-pagination>
+                    </div>
+                  
+                    <div class="col-sm-1">
+                      <span>Total: <span class="text-muted">{{ totalElements }}</span></span>
+                    </div>
+                  </div>
+                </div>
               </div>
           
             </div>
