@@ -22,7 +22,7 @@ export class UsuarioFormComponent implements OnInit {
 
   usuario:Usuario
   formularioUsuario:FormGroup
-  idCentroUsuarioActivo:string
+  //idCentroUsuarioActivo:string
 
   catRoles:Catalogo[] = [];
   catTitulos:Catalogo[] = [];
@@ -71,12 +71,12 @@ export class UsuarioFormComponent implements OnInit {
     })
 
     //get ID Centro
-    this.centroService.getCentroByIdUser$(localStorage.getItem('_us')).subscribe(
+    /*this.centroService.getCentroByIdUser$(localStorage.getItem('_us')).subscribe(
       res => { 
         this.idCentroUsuarioActivo=res.id
       },
       err => console.log("error: " + err)
-    )
+    )*/
 
     // carga Catálogos
     this.catRolService.getRoles$().subscribe(res => { 
@@ -111,8 +111,8 @@ export class UsuarioFormComponent implements OnInit {
 
     var nuevoUsuarioJson = JSON.parse(JSON.stringify(this.formularioUsuario.value))
     nuevoUsuarioJson.id_usuario=localStorage.getItem('_us') 
-    nuevoUsuarioJson.id_centro=this.idCentroUsuarioActivo
-    console.log("ID Centro Activo: "+this.idCentroUsuarioActivo)
+    //nuevoUsuarioJson.id_centro=this.idCentroUsuarioActivo
+    //console.log("ID Centro Activo: "+this.idCentroUsuarioActivo)
     //console.log("Usuario a registrar: "+ JSON.stringify(nuevoUsuarioJson))
     console.log("Usuario a registrar: "+ nuevoUsuarioJson)
     console.log(nuevoUsuarioJson)

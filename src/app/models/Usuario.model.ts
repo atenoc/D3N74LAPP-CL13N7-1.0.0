@@ -16,7 +16,7 @@ export interface Usuario{
     llave_status:number
     id_usuario:string;
     nombre_usuario_creador:string;
-    id_centro:string;
+    id_clinica:string;
 }
 
 export interface UsuariosPaginados {
