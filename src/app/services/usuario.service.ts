@@ -125,6 +125,23 @@ export class UsuarioService {
     return this.usuarios.asObservable();
   }
 
+  // GET Usuarios Paginado
+  getUsuariosByUsuarioPaginados$(
+    id:string,
+    page: number,
+    size: number,
+    orderBy: string,
+    way: string
+  ): Observable<UsuariosPaginados> {
+    let params = new HttpParams()
+      .set('page', String(page))
+      .set('size', String(size))
+      .set('orderBy', String(orderBy))
+      .set('way', String(way));
+  
+    return this.http.get<UsuariosPaginados>(`${this.URI}/usuario/${id}`, { params });
+  }
+
   updateUsuarioLlave(id: string, llave: string){
     return this.http.patch(`${this.URI}/passwordusuario/${id}`, { llave });
   }

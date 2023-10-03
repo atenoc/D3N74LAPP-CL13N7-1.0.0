@@ -5,12 +5,12 @@ export interface Usuario{
     llave:string;
     rol:string;
     id_titulo:string,
-    descripcion_titulo:string,  
+    desc_titulo:string,  
     nombre:string, 
     apellidop:string, 
     apellidom:string, 
     id_especialidad:string,
-    descripcion_especialidad:string, 
+    desc_especialidad:string, 
     telefono:string,
     fecha_creacion:Date;
     llave_status:number

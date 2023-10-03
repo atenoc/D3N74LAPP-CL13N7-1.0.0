@@ -77,16 +77,9 @@ export class UsuariosListComponent implements OnInit {
             }
     
             if(this.usuario.rol == "admin"){ // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
-              this.usuarioService.getUsuariosByUsuario$(this.usuario.id).subscribe(res=>{
-                console.log("Listado de usuarios x Usuario <-> " + res)
-                this.usuarios = res;
-                this.existenUsuarios = this.usuarios.length > 0;
-                if(!this.existenUsuarios){
-                  this.mensajeRegistrarCentro='Para registrar y gestionar a tus usuarios, es necesario que previamente registres tu centro/consultorio dental. Por favor, dirígete a la parte superior derecha y da clic en tu nombre de usuario, después da clic en -> Mi Perfil.'
-                }
-              },
-                err => console.log(err)
-              )
+              
+              this.getUsuariosPaginados();
+
             }
   
           }
@@ -159,7 +152,8 @@ export class UsuariosListComponent implements OnInit {
 
   getUsuariosPaginados() {
     this.usuarioService
-      .getUsuariosPaginados$(this.currentPage, this.pageSize, this.orderBy, this.way)
+      //.getUsuariosPaginados$(this.currentPage, this.pageSize, this.orderBy, this.way)
+      .getUsuariosByUsuarioPaginados$(this.usuario.id, this.currentPage, this.pageSize, this.orderBy, this.way)
       .subscribe((res) => {
         this.usuarios = res.data
         this.totalElements = res.pagination.totalElements
