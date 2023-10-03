@@ -58,10 +58,10 @@ export class SidebarComponent implements OnInit {
         this.usuario = res;
         this.idUsuario=this.usuario.id
         this.correoUsuario=this.usuario.correo
-        this.rolUsuario=this.usuario.rol
+        this.rolUsuario=this.usuario.desc_rol
         this.nombreUsuario=this.usuario.nombre
         this.llaveStatus=this.usuario.llave_status
-        console.log("Rol Navigate: " + this.usuario.rol)
+        console.log("Rol Navigate: " + this.usuario.desc_rol)
         console.log("Llave status Navigate: " + this.usuario.llave_status)
         if(this.usuario.llave_status == 0){
           this.mostrarCambiarContrasena=true
