@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
-import { Usuario } from '../models/Usuario.model';
+import { Usuario, UsuariosPaginados } from '../models/Usuario.model';
 import { catchError, map, tap } from 'rxjs/operators';
 
 @Injectable({
@@ -59,6 +59,22 @@ export class UsuarioService {
     return this.usuarios.asObservable();
   }
 
+  // GET Usuarios Paginado
+  getUsuariosPaginados$(
+    page: number,
+    size: number,
+    orderBy: string,
+    way: string
+  ): Observable<UsuariosPaginados> {
+    let params = new HttpParams()
+      .set('page', String(page))
+      .set('size', String(size))
+      .set('orderBy', String(orderBy))
+      .set('way', String(way));
+  
+    return this.http.get<UsuariosPaginados>(`${this.URI}/pagination`, { params });
+  }
+
   // GET
   getUsuario$(id: string){
     return this.http.get<Usuario>(`${this.URI}/${id}`)
@@ -107,6 +123,23 @@ export class UsuarioService {
       err => console.log(err)
     )
     return this.usuarios.asObservable();
+  }
+
+  // GET Usuarios Paginado
+  getUsuariosByUsuarioPaginados$(
+    id:string,
+    page: number,
+    size: number,
+    orderBy: string,
+    way: string
+  ): Observable<UsuariosPaginados> {
+    let params = new HttpParams()
+      .set('page', String(page))
+      .set('size', String(size))
+      .set('orderBy', String(orderBy))
+      .set('way', String(way));
+  
+    return this.http.get<UsuariosPaginados>(`${this.URI}/usuario/${id}`, { params });
   }
 
   updateUsuarioLlave(id: string, llave: string){

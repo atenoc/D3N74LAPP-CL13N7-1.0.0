@@ -2,11 +2,22 @@
 <!-- <app-navigate></app-navigate>
 <router-outlet></router-outlet> -->
 
-<app-header></app-header>
-<app-sidebar></app-sidebar>
-  <div class="content-wrapper">
-    <app-navigate></app-navigate>
-    <router-outlet></router-outlet>
-  </div>
-<app-footer></app-footer>
+
+
+<ng-container *ngIf="usuarioActivo; else public">
+
+  <app-header></app-header>
+  <app-sidebar></app-sidebar>
+    <div class="content-wrapper">
+      <!-- <app-navigate></app-navigate> -->
+      <router-outlet></router-outlet>
+    </div>
+  <app-footer></app-footer>
+ 
+</ng-container>
+<ng-template #public>
+  <app-navigate></app-navigate>
+  <router-outlet></router-outlet>
+  <app-footer></app-footer>
+</ng-template>
 

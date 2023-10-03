@@ -1,1 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+
+.invalid-input {
+    border: 1px solid #ff7a7a !important;
+}
+
+.invalid-input-message {
+    font-size: 13px;
+    color: red;
+    padding-left: 1px;
+}
+
+.sin-borde{
+    border: 0 !important;
+    background: #f8f9fa !important;
+}
+
+/* Modal de Ng-Modal */
+.modal-backdrop {
+    z-index: 1040 !important; /* Asegúrate de que sea menor que el z-index del modal-window */
+}
+
+

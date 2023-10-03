@@ -5,5 +5,8 @@ export const environment = {
   production: true,
   urlApiSeguridad: ipHost+'/api/seguridad',
   urlApiUsuarios: ipHost+'/api/usuarios',
-  urlApiCentros: ipHost+'/api/centros'
+  urlApiCentros: ipHost+'/api/centros',
+  urlApiRoles: ipHost+'/api/roles',
+  urlApiTitulos: ipHost+'/api/titulos',
+  urlApiEspecialidades: ipHost+'/api/especialidades'
 };

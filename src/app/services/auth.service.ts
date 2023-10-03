@@ -5,7 +5,7 @@ import { Usuario } from '../models/Usuario.model';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
 import Swal from 'sweetalert2';
-import { NavigateService } from './navigate.service';
+import { SharedService } from './shared.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class AuthService {
 
   //private usuario$: Subject<Usuario>;
 
-  constructor(private http: HttpClient, private router:Router, private navigateService:NavigateService) {
+  constructor(private http: HttpClient, private router:Router, private sharedService:SharedService) {
     //this.usuario$ = new Subject();
   }
 
@@ -56,12 +56,12 @@ export class AuthService {
         this.router.navigate(['/login'])
 
         // Se manda un mensaje para validar el cierre de sesion y refrescar el menu 
-        this.navigateService.cambiarMensaje("refresh_navigate")
+        this.sharedService.cambiarMensaje("refresh_navigate")
 
         Swal.fire({
           icon: 'info',
           html:
-            `<strong> ¡Sesión finalizada! </strong><br/>`,
+            `<strong> ¡Hasta pronto! </strong><br/>`,
           showConfirmButton: false,
           timer: 1500
         }) 

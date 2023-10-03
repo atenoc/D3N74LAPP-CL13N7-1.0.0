@@ -1,132 +1,173 @@
-<form [formGroup]="formularioUsuario">
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h5>
+            Agregar Usuario
+          </h5>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item active">Inicio</li>
+            <li class="breadcrumb-item active">Usuarios</li>
+            <li class="breadcrumb-item active">Registrar</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+</section>
+  
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card card-primary card-outline">
+            <div class="card-header">
+              <h3 class="card-title">
+                Formulario de registro
+              </h3>
+            </div>
+            <div class="card-body">
+  
+                <form [formGroup]="formularioUsuario">
      
-    <div class="row">
-
-        <div class="col-sm">
-            <div class="form-group">
-                <small class="text-muted"><strong> Correo * </strong></small>
-                <input type="email" class="form-control" formControlName="correo" placeholder="ejemplo@correo.com">
-                <div *ngIf="formularioUsuario.controls['correo'].invalid && formularioUsuario.controls['correo'].dirty" class="alert alert-danger my-alert" role="alert">
-                  <span *ngIf="formularioUsuario.controls['correo'].errors.required">El correo es requerido</span>
-                    <span *ngIf="formularioUsuario.controls['correo'].errors.email">Ingrese el correo con un formato válido</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm">
-            <div class="form-group">
-                <small class="text-muted"><strong> Contraseña * </strong></small>
-                <input type="password" class="form-control" formControlName="llave" placeholder="Ingrese una contraseña">
-                <div *ngIf="formularioUsuario.controls['llave'].invalid && formularioUsuario.controls['llave'].dirty" class="alert alert-danger my-alert" role="alert">
-                    <span *ngIf="formularioUsuario.controls['llave'].errors.required">La contraseña es requerida</span> 
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm">
-            <div class="form-group">
-                <small class="text-muted"><strong> Rol * </strong></small>
-                <select class="form-control" formControlName="rol">
-                    <optgroup label="Selecciona una opción:"></optgroup>
-                    <option value="admin">Administrador</option>
-                    <option value="asistente">Asistente</option>
-                    <option value="recepcionista">Recepcionista</option>
-                    <option value="cajero">Cajero</option>
-                    <option value="invitado">Invitado</option>
-                  </select>
-
-                <div *ngIf="formularioUsuario.controls['rol'].invalid && formularioUsuario.controls['rol'].dirty" class="alert alert-danger" role="alert">
-                  <span *ngIf="formularioUsuario.controls['rol'].errors.required">El rol es requerido</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <hr/>
-
-    <div class="row">
-
-        <div class="col-sm">
-            <div class="form-group">
-                <small class="text-muted"> Título </small>
-                <select class="form-control" formControlName="titulo">
-                    <optgroup label="Selecciona una opción:"></optgroup>
-                    <option value="Dr.">Dr.</option>
-                    <option value="Dra.">Dra.</option>
-                  </select>
-            </div>
-        </div>
-
-        <div class="col-sm">
-            <div class="form-group">
-                <small class="text-muted"><strong> Nombre(s) * </strong></small>
-                <input type="text" class="form-control" formControlName="nombre" placeholder="">
-                <div *ngIf="formularioUsuario.controls['nombre'].invalid && formularioUsuario.controls['nombre'].dirty" class="alert alert-danger my-alert" role="alert">
-                    <span *ngIf="formularioUsuario.controls['nombre'].errors.required">El nombre es requerido</span> 
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm">
-            <div class="form-group">
-                <small class="text-muted"><strong> Apellido Paterno * </strong></small>
-                <input type="text" class="form-control" formControlName="apellidop" placeholder="">
-                <div *ngIf="formularioUsuario.controls['apellidop'].invalid && formularioUsuario.controls['apellidop'].dirty" class="alert alert-danger my-alert" role="alert">
-                    <span *ngIf="formularioUsuario.controls['apellidop'].errors.required">El apellido paterno es requerido</span> 
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm">
-            <div class="form-group">
-                <small class="text-muted"> Apellido Materno </small>
-                <input type="text" class="form-control" formControlName="apellidom" placeholder="">
-            </div>
-        </div>
-
-    </div>
-
-    <div class="row">
-        <div class="col-sm">
-            <div class="form-group">
-                <small class="text-muted"> Especialidad </small>
-                <select class="form-control" formControlName="especialidad">
-                    <optgroup label="Selecciona una opción:"></optgroup>
-                    <option value="Especialidad 1">Especialidad 1</option>
-                    <option value="Especialidad 2">Especialidad 2</option>
-                  </select>
-            </div>
-        </div>
-
-        <div class="col-sm">
-            <div class="form-group">
-                <small class="text-muted"> Teléfono</small>
-                <input type="text" class="form-control" formControlName="telefono" placeholder="10 dígitos" maxlength="10">
-                <div *ngIf="formularioUsuario.controls['telefono'].invalid && formularioUsuario.controls['telefono'].dirty" class="alert alert-danger my-alert" role="alert">
-                    <div>
-                        <span *ngIf="formularioUsuario.controls['telefono'].errors.pattern && !formularioUsuario.controls['telefono'].errors.required">Por favor ingresa sólo números. </span> 
+                    <div class="row">
+                
+                        <div class="col-sm">
+                            <div class="form-group">
+                                <small class="text-muted"><strong> Correo * </strong></small>
+                                <input type="email" class="form-control" formControlName="correo" [ngClass]="getInputClass('correo')" placeholder="ejemplo@correo.com">
+                                <div *ngIf="formularioUsuario.controls['correo'].invalid && formularioUsuario.controls['correo'].dirty" class="invalid-input-message">
+                                    <span *ngIf="formularioUsuario.controls['correo'].errors.required" >{{ campoRequerido }}</span>
+                                    <span *ngIf="formularioUsuario.controls['correo'].errors.email">{{ correoValido }}</span>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <div class="col-sm">
+                            <div class="form-group">
+                                <small class="text-muted"><strong> Contraseña * </strong></small>
+                                <input type="password" class="form-control" formControlName="llave" [ngClass]="getInputClass('llave')" placeholder="Ingrese una contraseña">
+                                <div *ngIf="formularioUsuario.controls['llave'].invalid && formularioUsuario.controls['llave'].dirty" class="invalid-input-message">
+                                    <span *ngIf="formularioUsuario.controls['llave'].errors.required">{{ campoRequerido }}</span>
+                                    <span *ngIf="formularioUsuario.controls['llave'].errors.minlength">{{ contrasenaLongitud }}</span>  
+                                </div>
+                            </div>
+                        </div>
+                
+                        <div class="col-sm">
+                          
+                            <div class="form-group">
+                                <small class="text-muted"><strong> Rol * </strong></small>
+                                <select class="form-select" formControlName="rol" [ngClass]="getInputClass('rol')">
+                                  <option selected>Selecciona una opción:</option>
+                                    <option value="admin">Administrador</option>
+                                    <option value="asistente">Asistente</option>
+                                    <option value="recepcionista">Recepcionista</option>
+                                    <option value="cajero">Cajero</option>
+                                    <option value="invitado">Invitado</option>
+                                </select>
+                
+                                <div *ngIf="formularioUsuario.controls['rol'].invalid && formularioUsuario.controls['rol'].dirty" class="invalid-input-message">
+                                  <span *ngIf="formularioUsuario.controls['rol'].errors.required">{{ campoRequerido }}</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <span *ngIf="formularioUsuario.controls['telefono'].errors.minlength">El teléfono debe tener al menos 10 dígitos. </span> 
+                
+                    <hr/>
+                
+                    <div class="row">
+                
+                        <div class="col-sm">
+                            <div class="form-group">
+                                <small class="text-muted"> Título </small>
+                                <select class="form-select" formControlName="titulo">
+                                    <option selected disabled [value]="0">Selecciona una opción:</option>
+                                    <option *ngFor="let item of catTitulos" [value]="item.id">{{ item.descripcion }}</option>
+                                </select>
+                            </div>
+                        </div>
+                
+                        <div class="col-sm">
+                            <div class="form-group">
+                                <small class="text-muted"><strong> Nombre(s) * </strong></small>
+                                <input type="text" class="form-control" formControlName="nombre" [ngClass]="getInputClass('nombre')" placeholder="">
+                                <div *ngIf="formularioUsuario.controls['nombre'].invalid && formularioUsuario.controls['nombre'].dirty" class="invalid-input-message">
+                                    <span *ngIf="formularioUsuario.controls['nombre'].errors.required">{{ campoRequerido }}</span> 
+                                </div>
+                            </div>
+                        </div>
+                
+                        <div class="col-sm">
+                            <div class="form-group">
+                                <small class="text-muted"><strong> Apellido Paterno * </strong></small>
+                                <input type="text" class="form-control" formControlName="apellidop" [ngClass]="getInputClass('apellidop')" placeholder="">
+                                <div *ngIf="formularioUsuario.controls['apellidop'].invalid && formularioUsuario.controls['apellidop'].dirty" class="invalid-input-message">
+                                    <span *ngIf="formularioUsuario.controls['apellidop'].errors.required">{{ campoRequerido }}</span> 
+                                </div>
+                            </div>
+                        </div>
+                
+                        <div class="col-sm">
+                            <div class="form-group">
+                                <small class="text-muted"> Apellido Materno </small>
+                                <input type="text" class="form-control" formControlName="apellidom" placeholder="">
+                            </div>
+                        </div>
+                
                     </div>
-                </div> 
+                
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="form-group">
+                                <small class="text-muted"> Especialidad </small>
+                                <select class="form-select" formControlName="especialidad">
+                                    <option selected disabled [value]="0">Selecciona una opción:</option>
+                                    <option *ngFor="let item of catEspecialidades" [value]="item.id">{{ item.descripcion }}</option>
+                                </select>
+                            </div>
+                        </div>
+                
+                        <div class="col-sm">
+                            <div class="form-group">
+                                <small class="text-muted"> Teléfono</small>
+                                <input type="text" class="form-control" formControlName="telefono" [ngClass]="getInputClass('telefono')" placeholder="10 dígitos" maxlength="10">
+                                <div *ngIf="formularioUsuario.controls['telefono'].invalid && formularioUsuario.controls['telefono'].dirty" class="invalid-input-message">
+                                    <div>
+                                        <span *ngIf="formularioUsuario.controls['telefono'].errors.pattern && !formularioUsuario.controls['telefono'].errors.required">{{ soloNumeros }}</span> 
+                                    </div>
+                                    <div>
+                                        <span *ngIf="formularioUsuario.controls['telefono'].errors.minlength">{{ telefonoLongitud }}</span> 
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="d-flex mt-2 ">
+                        <div></div>
+                        <div class="ml-auto">
+                            <small class="text-muted">Los campos marcados con (*) son obligatorios</small>
+                        </div>
+                    </div>
+                
+                    <div class="d-flex mt-2 ">
+                        <div>
+                            <button type="button" class="btn btn-outline-secondary" (click)="limpiarForm()">Limpiar campos</button>
+                        </div>
+                        <div class="ml-auto">
+                           <button type="submit" class="btn btn-primary btn-block" (click)="crearUsuario()" [disabled]="formularioUsuario.invalid">Guardar</button>
+                        </div>
+                    </div>
+                </form>
+  
             </div>
+          </div>
         </div>
+      </div>
     </div>
+  </section>
 
-    <div class="d-flex mt-2 ">
-        <div></div>
-        <div class="ml-auto">
-            <small class="text-muted">Los campos marcados con (*) son obligatorios</small>
-        </div>
-    </div>
 
-    <div class="d-flex mt-2 ">
-        <div>
-            <button type="button" class="btn btn-light" (click)="limpiarForm()">Limpiar campos</button>
-        </div>
-        <div class="ml-auto">
-           <button type="submit" class="btn btn-primary btn-block" (click)="crearUsuario()" [disabled]="formularioUsuario.invalid" >Agregar</button>
-        </div>
-    </div>
-</form>

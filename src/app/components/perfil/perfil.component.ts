@@ -31,6 +31,7 @@ export class PerfilComponent implements OnInit {
       this.usuarioService.getUsuario$(localStorage.getItem('_us')).subscribe(
         res => {
           this.usuario = res;
+          console.log(this.usuario )
           // Consulta Centro del usuario
           this.centroService.getCentroByIdUser$(this.usuario.id).subscribe(
             res => {

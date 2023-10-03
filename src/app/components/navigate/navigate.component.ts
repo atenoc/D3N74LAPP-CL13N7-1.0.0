@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { CentroService } from 'src/app/services/centro.service';
-import { NavigateService } from 'src/app/services/navigate.service';
+import { SharedService } from 'src/app/services/shared.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { faUser, faHome, faUsers, faBuilding, faArrowRight, faCalendarDay, faAddressCard, faEnvelope } from '@fortawesome/free-solid-svg-icons'
@@ -36,13 +36,13 @@ export class NavigateComponent implements OnInit {
   faAddressCard=faAddressCard;
   faEnvelope=faEnvelope;
 
-  constructor(private navigateService:NavigateService, public authService: AuthService, public usuarioService: UsuarioService, private centroService:CentroService,
+  constructor(private sharedService:SharedService, public authService: AuthService, public usuarioService: UsuarioService, private centroService:CentroService,
     private router: Router) { }
 
   ngOnInit() {
     console.log("NAVIGATE COMP")
 
-    this.navigateService.getData().subscribe(data => {
+    this.sharedService.getData().subscribe(data => {
       this.mostrarCambiarContrasena = data;
       console.log("Actualizar Navigate")
       console.log("Mostrar Cambiar contraeña: "+ this.mostrarCambiarContrasena)
@@ -100,7 +100,7 @@ export class NavigateComponent implements OnInit {
   salir(){
     this.authService.logout()
 
-    this.navigateService.mensajeActual.subscribe(
+    this.sharedService.mensajeActual.subscribe(
       res => {
         if(res){
           this.reload()

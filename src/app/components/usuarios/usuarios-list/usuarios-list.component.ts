@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
-import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalConfig, NgbPaginationConfig } from '@ng-bootstrap/ng-bootstrap';
 import { CentroService } from 'src/app/services/centro.service';
 
 @Component({
@@ -20,14 +20,29 @@ export class UsuariosListComponent implements OnInit {
   formularioDetalleUsuario:FormGroup
   existenUsuarios:boolean=false
   mensajeRegistrarCentro:string
+ 
+  // Paginación
+  currentPage = 1;      // actual
+  pageSize = 5;         // default size
+  orderBy = '';   // orden
+  way = 'asc';          // direccion 
+  totalElements:number  // total 
 
-  constructor(private usuarioService:UsuarioService, private router: Router, private centroService:CentroService,
-    private modalService: NgbModal, config: NgbModalConfig) {
+  constructor(
+    private usuarioService:UsuarioService, 
+    private router: Router, 
+    private centroService:CentroService,
+    private modalService: NgbModal,
+    private paginationConfig: NgbPaginationConfig, 
+    config: NgbModalConfig) {
       config.backdrop = 'static';
 		  config.keyboard = false;
+      paginationConfig.pageSize = this.pageSize;
+      
      }
 
   ngOnInit() {
+
     console.log("USUARIOS LIST COMP")
     if(localStorage.getItem('_us')){
 
@@ -43,6 +58,7 @@ export class UsuariosListComponent implements OnInit {
         err => console.log("error: " + err)
       )
 
+      //Consultar rol
       this.usuarioService.getUsuario$(localStorage.getItem('_us')).subscribe(
         res => {
   
@@ -51,32 +67,19 @@ export class UsuariosListComponent implements OnInit {
   
           if(this.usuario.rol != "sop" && this.usuario.rol != "admin"){ // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
             this.router.navigate(['/agenda']);
+            console.log("No tienes Acceso a esta página!")
           }else{
   
             if(this.usuario.rol == "sop"){  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
-              this.usuarioService.getUsuarios$().subscribe(res=>{
-                console.log("Listado de usuarios:: " + res)
-                this.usuarios = res;
-                this.existenUsuarios = this.usuarios.length > 0;
-                if(!this.existenUsuarios){
-                  this.mensajeRegistrarCentro='¡Registra un centro dental!'
-                }
-              },
-                err => console.log(err)
-              )
+              
+              this.getUsuariosPaginados();
+
             }
     
             if(this.usuario.rol == "admin"){ // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
-              this.usuarioService.getUsuariosByUsuario$(this.usuario.id).subscribe(res=>{
-                console.log("Listado de usuarios x Usuario <-> " + res)
-                this.usuarios = res;
-                this.existenUsuarios = this.usuarios.length > 0;
-                if(!this.existenUsuarios){
-                  this.mensajeRegistrarCentro='Para registrar y gestionar a tus usuarios, es necesario que previamente registres tu centro/consultorio dental. Por favor, dirígete a la parte superior derecha y da clic en tu nombre de usuario, después da clic en -> Mi Perfil.'
-                }
-              },
-                err => console.log(err)
-              )
+              
+              this.getUsuariosPaginados();
+
             }
   
           }
@@ -142,5 +145,48 @@ export class UsuariosListComponent implements OnInit {
     })
 
   }
+
+  irUsuarioForm(){
+    this.router.navigate(['/usuario-form']);
+  }
+
+  getUsuariosPaginados() {
+    this.usuarioService
+      //.getUsuariosPaginados$(this.currentPage, this.pageSize, this.orderBy, this.way)
+      .getUsuariosByUsuarioPaginados$(this.usuario.id, this.currentPage, this.pageSize, this.orderBy, this.way)
+      .subscribe((res) => {
+        this.usuarios = res.data
+        this.totalElements = res.pagination.totalElements
+        console.log(res)
+
+        this.existenUsuarios = this.usuarios.length > 0;
+        if(!this.existenUsuarios){
+          this.mensajeRegistrarCentro='¡Registra un centro dental!'
+        }
+      });
+  }
+
+  onPageChange(event: any) {
+    this.currentPage = event;
+    this.getUsuariosPaginados();
+  }
+
+  onPageSizeChange() {
+    this.getUsuariosPaginados();
+  }
+
+  onSortChange(campo: string) {
+    if (this.orderBy === campo) {
+      this.way = this.way === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.orderBy = campo;
+      this.way = 'asc'; // Establece 'asc' como valor predeterminado al cambiar de columna
+    }
+  
+    console.log("Ordenar por: " + this.orderBy);
+    console.log("Modo: " + this.way);
+    this.getUsuariosPaginados();
+  }
+  
 
 }

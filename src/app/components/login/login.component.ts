@@ -6,6 +6,7 @@ import { AuthService } from '../../services/auth.service'
 import Swal from 'sweetalert2';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Mensajes } from 'src/app/shared/mensajes.config';
 
 @Component({
   selector: 'app-login',
@@ -21,8 +22,21 @@ export class LoginComponent implements OnInit {
   usuario: Usuario
   formularioLogin:FormGroup
 
-  constructor(private formBuilder:FormBuilder, private authService: AuthService, private usuarioService:UsuarioService, private router: Router,
-    private spinner: NgxSpinnerService, private el: ElementRef) { }
+  //mensajes
+  campoRequerido: string;
+  correoValido: string;
+
+  constructor(
+    private formBuilder:FormBuilder, 
+    private authService: AuthService, 
+    private usuarioService:UsuarioService, 
+    private router: Router,
+    private spinner: NgxSpinnerService, 
+    private el: ElementRef
+    ) {
+      this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
+      this.correoValido = Mensajes.CORREO_VALIDO;
+     }
 
   ngOnInit() {
     this.el.nativeElement.querySelector('input').focus();
