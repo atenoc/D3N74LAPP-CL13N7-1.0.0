@@ -5,7 +5,7 @@
       <div class="row mb-2">
         <div class="col-sm-6">
           <h5>
-            Información de usuario
+            Información del usuario
           </h5>
         </div>
         <div class="col-sm-6">
@@ -35,11 +35,12 @@
 
                 <div class="row">
                     <div class="col-sm">
-                        <small>Id de usuario:</small>
-                        <small class="text-muted"> {{ idUsuario }} </small>
+                        <small class="text-muted">Id de usuario:</small>
+                        <small class="text-muted"> {{ idUsuario }} </small> <br>
+                        <small class="text-muted">Fecha de creación:</small>
+                        <small class="text-muted"> {{ fecha_creacion }} </small>
                         <hr/> 
-                    </div> 
-                    
+                    </div>
                 </div>
 
                 <div class="container">
@@ -63,7 +64,7 @@
                     
                             <div class="col-sm">
                                 <div class="form-group">
-                                    <small class="text-muted"> Rol </small>
+                                    <small class="text-muted"><strong> Rol * </strong></small>
                                     <select class="form-select sin-borde" formControlName="rol" disabled>
                                         <option selected disabled [value]="null">Selecciona una opción:</option>
                                         <option *ngFor="let item of catRoles" [value]="item.id">{{ item.descripcion }}</option>
@@ -138,6 +139,10 @@
     </div>
 </section>
 
+
+
+
+
 <section class="content" *ngIf="editando">
     <div class="container-fluid">
       <div class="row">
@@ -155,11 +160,12 @@
 
                 <div class="row">
                     <div class="col-sm">
-                        <small>Id de usuario:</small>
-                        <small class="text-muted"> {{ idUsuario }} </small>
+                        <small class="text-muted">Id de usuario:</small>
+                        <small class="text-muted"> {{ idUsuario }} </small> <br>
+                        <small class="text-muted">Fecha de creación:</small>
+                        <small class="text-muted"> {{ fecha_creacion }} </small>
                         <hr/> 
-                    </div> 
-                    
+                    </div>
                 </div>
 
                 <div class="container">
@@ -185,7 +191,7 @@
                             <div class="col-sm">
                                 <div class="form-group">
                                     <div class="form-group">
-                                        <small class="text-muted"> Rol * </small>
+                                        <small class="text-muted"><strong> Rol * </strong></small>
                                         <select class="form-select" formControlName="rol">
                                             <option selected disabled [value]="0">Selecciona una opción:</option>
                                             <option *ngFor="let item of catRoles" [value]="item.id">{{ item.descripcion }}</option>

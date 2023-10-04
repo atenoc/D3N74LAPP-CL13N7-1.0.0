@@ -33,7 +33,7 @@
             <div *ngIf="existeCentro; else ver_mensaje" class="text-center mt-2">
             
               <div *ngIf="existenUsuarios">
-                <table class="table table-responsive table-hover table-striped table-bordered">
+                <table class="table table-responsive table-hover table-striped">
                   <thead class="thead-dark">
                     <tr>
                       <th class="col-1">#</th> 
@@ -60,7 +60,7 @@
                       <th class="col-1">Teléfono</th>
                       <!-- <th class="col-1">Id Usuario Creador</th> -->
                       <th class="col-1">Creado por</th>
-                      <th class="col-1">Fecha creación</th>
+                      <!-- <th class="col-1">Fecha creación</th> -->
                       <th class="col-1">Acciones</th>
                     </tr>
                   </thead>
@@ -78,7 +78,7 @@
                       <td>{{ usuario.telefono }}</td>
                       <!-- <td>{{ usuario.id_usuario }}</td> -->
                       <td>{{ usuario.nombre_usuario_creador }}</td>
-                      <td> <small>{{ usuario.fecha_creacion }}</small> </td>
+                      <!-- <td> <small>{{ usuario.fecha_creacion }}</small> </td> -->
                       <td class="text-center">
                         
                         <button class="btn btn-outline-primary my-2 my-sm-0 btn-sm" (click)="selectedIdUser(usuario.id)"

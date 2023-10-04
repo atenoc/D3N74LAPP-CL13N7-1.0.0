@@ -23,6 +23,7 @@ export class UsuarioDetalleComponent implements OnInit {
   editando: boolean = false;
   tituloCard: string;
   idUsuario:string;
+  fecha_creacion:Date;
 
   catRoles:Catalogo[] = [];
   catTitulos:Catalogo[] = [];
@@ -73,15 +74,17 @@ export class UsuarioDetalleComponent implements OnInit {
       this.id = params['id'];
       this.usuarioService.getUsuario$(this.id).subscribe(res => {   //volver a llamar los datos con el id recibido
         this.usuario = res;
-        console.log("id obtenido:" + res.id)
+        console.log(res)
         console.log("id Especialidad:" + res.id_especialidad)
         console.log("usuario obtenido:" + JSON.stringify(res))
         this.tituloCard = this.usuario.nombre+' '+this.usuario.apellidop+' '+this.usuario.apellidom
         this.idUsuario=this.usuario.id
+        this.fecha_creacion=this.usuario.fecha_creacion
 
         this.formularioUsuario.patchValue({
           correo: this.usuario.correo,
           llave: this.usuario.llave,
+          rol: this.usuario.id_rol,
           titulo: this.usuario.id_titulo,
           nombre: this.usuario.nombre,
           apellidop: this.usuario.apellidop,
