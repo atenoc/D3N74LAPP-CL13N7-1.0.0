@@ -11,24 +11,19 @@
       <!-- Sidebar user (optional) -->
       <div class="user-panel d-flex mt-2 mb-2">
 
-        <ng-container *ngIf="!authService.estaLogueado(); else login">
-            <button *ngIf="mostrarBotonIngresar" class="btn btn-outline-light my-2 my-sm-0" routerLink="/login">Ingresar</button>
-        </ng-container>
-        <ng-template #login>
-          <div class="row row-width">
-            <div class="col-10 text-center mt-2">
-              <a routerLink="/perfil" data-bs-toggle="tooltip" data-bs-placement="right" title="Ver mi perfil">{{ nombreUsuario }} ({{ rolUsuario }})</a>  
-            </div>
-            
-            <div class="col-2">
-              <div class="info">
-                <div class="btn btn-outline-light btn-sm" data-bs-toggle="tooltip" data-bs-placement="right" title="Cerrar sesión" (click)="salir()">
-                  <i class="fas fa-sign-out-alt"></i>
-                </div>
+        <div class="row row-width">
+          <div class="col-10 text-center mt-2">
+            <a routerLink="/perfil" data-bs-toggle="tooltip" data-bs-placement="right" title="Ver mi perfil">{{ nombreUsuario }} ({{ rolUsuario }})</a>  
+          </div>
+          
+          <div class="col-2">
+            <div class="info">
+              <div class="btn btn-outline-light btn-sm" data-bs-toggle="tooltip" data-bs-placement="right" title="Cerrar sesión" (click)="salir()">
+                <i class="fas fa-sign-out-alt"></i>
               </div>
             </div>
           </div>
-        </ng-template>
+        </div>
 
       </div>
 

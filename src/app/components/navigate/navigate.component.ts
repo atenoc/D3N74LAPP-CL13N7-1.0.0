@@ -40,7 +40,7 @@ export class NavigateComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    console.log("NAVIGATE COMP")
+    console.log("NAVIGATE Component")
 
     this.sharedService.getData().subscribe(data => {
       this.mostrarCambiarContrasena = data;

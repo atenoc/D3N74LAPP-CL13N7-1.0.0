@@ -135,3 +135,8 @@
     </ul>
   </nav>
   <!-- /.navbar -->
+
+  <div *ngIf="mostrarCambiarContrasena" class="text-center bg-warning" >
+    <small>¡Por seguridad debes cambiar tu contraseña!</small>
+    <a> <small class="text-primary mr-3" style="cursor: pointer;" (click)="selectedIdUser()">Da clic aquí...</small> </a>
+  </div>
