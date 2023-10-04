@@ -79,7 +79,7 @@ export class UsuarioFormComponent implements OnInit {
     )*/
 
     // carga Catálogos
-    this.catRolService.getRoles$().subscribe(res => { 
+    this.catRolService.getRoles$(localStorage.getItem('_us')).subscribe(res => { 
         this.catRoles = res
         console.log("Roles: "+res.length)
       },

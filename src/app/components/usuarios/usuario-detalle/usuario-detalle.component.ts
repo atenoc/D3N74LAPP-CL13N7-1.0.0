@@ -92,6 +92,11 @@ export class UsuarioDetalleComponent implements OnInit {
           especialidad: this.usuario.id_especialidad,
           telefono: this.usuario.telefono
         });
+
+        // carga Catálogos
+        this.cargarRoles()
+        this.cargarTitulos()
+        this.cargarEspecialidades()
         
       },
         err => console.log("error: " + err)
@@ -100,26 +105,6 @@ export class UsuarioDetalleComponent implements OnInit {
     },
       err => console.log("error: " + err)
     );
-
-    // carga Catálogos
-    this.catRolService.getRoles$().subscribe(res => { 
-        this.catRoles = res
-        console.log("Roles: "+res.length)
-      },
-      err => console.log("error: " + err)
-    )
-    this.catTituloService.getTitulos$().subscribe(res => { 
-        this.catTitulos = res
-        console.log("Titulos: "+res.length)
-      },
-      err => console.log("error: " + err)
-    )
-    this.catEspecialidadService.getEspecialidades$().subscribe(res => { 
-        this.catEspecialidades = res
-        console.log("Especialidades: "+res.length)
-      },
-      err => console.log("error: " + err)
-    )
 
   }
 
@@ -190,6 +175,33 @@ export class UsuarioDetalleComponent implements OnInit {
       );
 
     return false;
+  }
+
+  cargarRoles(){
+    this.catRolService.getRoles$(localStorage.getItem('_us')).subscribe(res => { 
+      this.catRoles = res
+      console.log("Roles: "+res.length)
+    },
+    err => console.log("error: " + err)
+    )
+  }
+
+  cargarTitulos(){
+    this.catTituloService.getTitulos$().subscribe(res => { 
+      this.catTitulos = res
+      console.log("Titulos: "+res.length)
+    },
+    err => console.log("error: " + err)
+    )
+  }
+
+  cargarEspecialidades(){
+    this.catEspecialidadService.getEspecialidades$().subscribe(res => { 
+      this.catEspecialidades = res
+      console.log("Especialidades: "+res.length)
+    },
+    err => console.log("error: " + err)
+    )
   }
 
 }
