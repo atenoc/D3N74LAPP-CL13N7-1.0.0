@@ -114,6 +114,20 @@ export class UsuarioService {
     }
   }
 
+  getUsuarioById$(id: string) {
+    if(id){
+      this.http.get<Usuario>(`${this.URI}/usuarioxid/${id}`).subscribe(
+        res=>{
+          this.usuario$.next(res)
+        },
+        err => console.log(err)
+      )
+      return this.usuario$.asObservable();
+    }else{
+      return this.usuario$;
+    }
+  }
+
   // GET All by
   getUsuariosByUsuario$(id:string): Observable<Usuario[]>{
     this.http.get<Usuario[]>(`${this.URI}/usuario/${id}`).subscribe(

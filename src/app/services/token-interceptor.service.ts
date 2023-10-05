@@ -10,7 +10,7 @@ export class TokenInterceptorService implements HttpInterceptor{
   constructor(private authService: AuthService) { }
 
   intercept(req, next){
-    console.log("obteniendo token: " +this.authService.getToken())
+    //console.log("obteniendo token: " +this.authService.getToken())
     const tokenizeReq = req.clone({
       setHeaders: {
         Authorization: `Bearer ${this.authService.getToken()}`

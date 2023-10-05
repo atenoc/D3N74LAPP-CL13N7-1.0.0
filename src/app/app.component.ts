@@ -28,7 +28,7 @@ export class AppComponent {
 
     console.log("App Component")
 
-    this.usuarioService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
+    this.usuarioService.getUsuarioById$(localStorage.getItem('_us')).subscribe(
       res => {
         this.usuario = res;
         if(this.usuario){

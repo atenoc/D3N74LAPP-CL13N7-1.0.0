@@ -44,24 +44,24 @@ export class NavigateComponent implements OnInit {
 
     this.sharedService.getData().subscribe(data => {
       this.mostrarCambiarContrasena = data;
-      console.log("Actualizar Navigate")
-      console.log("Mostrar Cambiar contraeña: "+ this.mostrarCambiarContrasena)
+      //console.log("Actualizar Navigate")
+      //console.log("Mostrar Cambiar contraeña: "+ this.mostrarCambiarContrasena)
     });
 
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         if (event.url.includes('/login')) {
-          console.log('Estoy en LoginComponent');
+          //console.log('Estoy en LoginComponent');
           this.mostrarBotonIngresar=false
         } else {
-          console.log('Estoy en otra ruta');
+          //console.log('Estoy en otra ruta');
           this.mostrarBotonIngresar=true
         }
       }
     });
 
 
-    this.usuarioService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
+    this.usuarioService.getUsuarioById$(localStorage.getItem('_us')).subscribe(
       res => {
         this.usuario = res;
         this.idUsuario=this.usuario.id
@@ -69,8 +69,8 @@ export class NavigateComponent implements OnInit {
         this.rolUsuario=this.usuario.desc_rol
         this.nombreUsuario=this.usuario.nombre
         this.llaveStatus=this.usuario.llave_status
-        console.log("Rol Navigate: " + this.usuario.desc_rol)
-        console.log("Llave status Navigate: " + this.usuario.llave_status)
+        //console.log("Rol Navigate: " + this.usuario.desc_rol)
+        //console.log("Llave status Navigate: " + this.usuario.llave_status)
         if(this.usuario.llave_status == 0){
           this.mostrarCambiarContrasena=true
         }else{
@@ -113,7 +113,7 @@ export class NavigateComponent implements OnInit {
     this.rolUsuario=""
     this.nombreCentro="Dental App"
     this.ngOnInit()
-    console.log("reload navigate <-")
+    //console.log("reload navigate <-")
   }
 
 }

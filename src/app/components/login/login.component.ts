@@ -101,7 +101,7 @@ export class LoginComponent implements OnInit {
         console.log("Id usuario logueado: " + res.id)
         //Almacenamos el Id del usuario obtenido
         localStorage.setItem('_us', res.id)
-
+        localStorage.removeItem('correo_us')
         //Actualizamos el usuario logueado
         //this.actualizarUsuarioLogueado(res.correo)
       },

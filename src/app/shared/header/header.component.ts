@@ -27,7 +27,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     console.log("HEADER Component")
 
-    this.usuarioService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
+    this.usuarioService.getUsuarioById$(localStorage.getItem('_us')).subscribe(
       res => {
         this.usuario = res;
         this.idUsuario=this.usuario.id

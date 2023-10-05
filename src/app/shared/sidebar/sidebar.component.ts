@@ -28,12 +28,14 @@ export class SidebarComponent implements OnInit {
     console.log("SIDEBAR Component")
     this.inicializarAccordion()
 
-    this.usuarioService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
+    this.usuarioService.getUsuarioById$(localStorage.getItem('_us')).subscribe(
       res => {
         this.usuario = res;
         this.idUsuario=this.usuario.id
         this.rolUsuario=this.usuario.desc_rol
         this.nombreUsuario=this.usuario.nombre
+        console.log("Usuario sidebar:: ")
+        console.log(this.usuario)
       },
       err => console.log("error: " + err)
     )
@@ -49,18 +51,13 @@ export class SidebarComponent implements OnInit {
     this.sharedService.mensajeActual.subscribe(
       res => {
         if(res){
+          this.rolUsuario=""
           this.sharedService.notifyApp.emit();
           console.log("Voy a mandar una notificación a App Component")
-          this.reload()
+
         }
       }
     )
-  }
-
-  reload(){
-    this.rolUsuario=""
-    this.ngOnInit()
-    console.log("reload navigate <-")
   }
 
   inicializarAccordion(): void {
