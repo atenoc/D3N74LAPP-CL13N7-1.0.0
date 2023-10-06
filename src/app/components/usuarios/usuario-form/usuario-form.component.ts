@@ -11,6 +11,7 @@ import { Catalogo } from 'src/app/models/Catalogo.model';
 import { CatTituloService } from 'src/app/services/cat-titulo.service';
 import { CatEspecialidadService } from 'src/app/services/cat-especialidad.service';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 //import { CatRolesService } from 'src/app/services/cat-roles.service';
 
 @Component({
@@ -44,7 +45,8 @@ export class UsuarioFormComponent implements OnInit {
     private el: ElementRef,
     private catRolService:CatRolService,
     private catTituloService:CatTituloService,
-    private catEspecialidadService:CatEspecialidadService
+    private catEspecialidadService:CatEspecialidadService,
+    private spinner: NgxSpinnerService, 
     ) {
       this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
       this.correoValido = Mensajes.CORREO_VALIDO;
@@ -107,6 +109,7 @@ export class UsuarioFormComponent implements OnInit {
   }
 
   crearUsuario(){
+    this.spinner.show();
     console.log("CREAR USUARIO")
 
     var nuevoUsuarioJson = JSON.parse(JSON.stringify(this.formularioUsuario.value))
@@ -121,8 +124,9 @@ export class UsuarioFormComponent implements OnInit {
         this.usuario = res;
         console.log("Usuario creado")
         //this.modalService.dismissAll()
+      
+        this.spinner.hide();
         this.router.navigate(['/usuarios'])
-
         Swal.fire({
           position: 'top-end',
           //icon: 'success',
@@ -142,6 +146,7 @@ export class UsuarioFormComponent implements OnInit {
         })
       },
       err => {
+        this.spinner.hide();
         console.log("error: " + err.error.message)
         if(err.error.message=="200"){
           // Ya existe usuario

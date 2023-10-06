@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Catalogo } from 'src/app/models/Catalogo.model';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { CatEspecialidadService } from 'src/app/services/cat-especialidad.service';
@@ -44,7 +45,8 @@ export class UsuarioDetalleComponent implements OnInit {
     private el: ElementRef,
     private catRolService:CatRolService,
     private catTituloService:CatTituloService,
-    private catEspecialidadService:CatEspecialidadService
+    private catEspecialidadService:CatEspecialidadService,
+    private spinner: NgxSpinnerService, 
     ) {
       this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
       this.correoValido = Mensajes.CORREO_VALIDO;
@@ -54,7 +56,6 @@ export class UsuarioDetalleComponent implements OnInit {
     }
 
   ngOnInit() {
-
     //this.el.nativeElement.querySelector('input').focus();
     this.formularioUsuario = this.formBuilder.group({
       correo: ['', Validators.compose([
@@ -97,15 +98,14 @@ export class UsuarioDetalleComponent implements OnInit {
         this.cargarRoles()
         this.cargarTitulos()
         this.cargarEspecialidades()
-        
       },
-        err => console.log("error: " + err)
-      )
+      err => {
+        console.log("error: " + err)
+      })
 
     },
       err => console.log("error: " + err)
     );
-
   }
 
   getInputClass(controlName: string) {
@@ -121,6 +121,7 @@ export class UsuarioDetalleComponent implements OnInit {
   }
 
   actualizarUsuario(){
+    this.spinner.show();
     console.log("Actualizar usuario:")
     console.log(this.formularioUsuario)
 
@@ -140,6 +141,7 @@ export class UsuarioDetalleComponent implements OnInit {
         //this.router.navigate(['/usuarios']);
         this.editando=false
         this.ngOnInit()
+        this.spinner.hide();
         Swal.fire({
           position: 'top-end',
           //icon: 'success',
@@ -160,6 +162,7 @@ export class UsuarioDetalleComponent implements OnInit {
 
       },
         err => {
+          this.spinner.hide();
           console.log("error: " + err)
           Swal.fire({
             icon: 'error',
