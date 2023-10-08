@@ -1,11 +1,8 @@
-
-<!-- <app-navigate></app-navigate>
-<router-outlet></router-outlet> -->
-
-
+<div *ngIf="!isOnline" class="text-center offline-message">
+  Sin conexión a internet
+</div>
 
 <ng-container *ngIf="usuarioActivo; else public">
-
   <app-header></app-header>
   <app-sidebar></app-sidebar>
     <div class="content-wrapper">
@@ -13,8 +10,8 @@
       <router-outlet></router-outlet>
     </div>
   <app-footer></app-footer>
- 
 </ng-container>
+
 <ng-template #public>
   <app-navigate></app-navigate>
   <router-outlet></router-outlet>
