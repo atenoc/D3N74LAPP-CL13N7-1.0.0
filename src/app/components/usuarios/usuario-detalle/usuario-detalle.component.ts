@@ -207,4 +207,48 @@ export class UsuarioDetalleComponent implements OnInit {
     )
   }
 
+  deleteUser(id: string, correo:string) {
+
+    Swal.fire({
+      html:
+        `¿ Estás seguro de eliminar el usuario: <br/> ` +
+        `<strong> ${ correo } </strong> ? `,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#dc3545',
+      cancelButtonColor: '#aeaeae',
+      confirmButtonText: 'Si, eliminar',
+      cancelButtonText: 'No, cancelar'
+    }).then((result) => {
+      if (result.value) {
+        // Confirm
+        this.usuarioService.deleteUsuario(id).subscribe(res => {
+          console.log("Usuario eliminado:" + JSON.stringify(res))
+
+          Swal.fire({
+            icon: 'success',
+            showConfirmButton: false,
+            text:'¡El usuario ha sido eliminado!',
+            timer: 1500
+          })
+          this.router.navigate(['/usuarios']);
+        },
+          err => { 
+            console.log("error: " + err)
+            Swal.fire({
+              icon: 'error',
+              html:
+                `<strong>¡${ err.error.message }!</strong>`,
+              showConfirmButton: true,
+              confirmButtonColor: '#28a745',
+              timer: 4000
+            }) 
+          }
+        )
+    
+      }
+    })
+
+  }
+
 }

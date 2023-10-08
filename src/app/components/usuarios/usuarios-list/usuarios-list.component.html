@@ -61,13 +61,13 @@
                       <!-- <th class="col-1">Id Usuario Creador</th> -->
                       <th class="col-1">Creado por</th>
                       <!-- <th class="col-1">Fecha creación</th> -->
-                      <th class="col-1">Acciones</th>
+                      <th class="col-1">Detalle</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let usuario of usuarios">
                       <!-- <th class="text-muted"><small><strong>{{ usuario.id }}</strong></small></th> -->
-                      <td scope="row">{{ usuario.contador }}</td>
+                      <td scope="row" class="text-muted">{{ usuario.contador }}</td>
                       <td>{{ usuario.desc_titulo }}</td>
                       <td>{{ usuario.nombre }}</td>
                       <td>{{ usuario.apellidop }}</td>
@@ -82,11 +82,11 @@
                       <td class="text-center">
                         
                         <button class="btn btn-outline-primary my-2 my-sm-0 btn-sm" (click)="selectedIdUser(usuario.id)"
-                          ngbTooltip="Información del usuario"><i class="fas fa-info-circle"></i> Info
+                          ngbTooltip="Información del usuario"><i class="fas fa-info-circle"></i> Ver
                         </button>
-                        <button class="btn btn-outline-secondary my-2 my-sm-0 btn-sm ml-2" (click)="deleteUser(usuario.id, usuario.correo)"
+                        <!-- <button class="btn btn-outline-secondary my-2 my-sm-0 btn-sm ml-2" (click)="deleteUser(usuario.id, usuario.correo)"
                           ngbTooltip="Eliminar usuario"><i class="fas fa-trash-alt"></i>
-                        </button>
+                        </button> -->
                     </td>
                     </tr>
                   </tbody>

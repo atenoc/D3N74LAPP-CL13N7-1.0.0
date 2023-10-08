@@ -275,13 +275,20 @@
                             </div>
                     
                             <div class="d-flex mt-2 ">
-                                <div></div>
+                                <div>
+                                    <small class="text-muted">Eliminar usuario</small>
+                                </div>
                                 <div class="ml-auto">
                                     <small class="text-muted">Los campos marcados con (*) son obligatorios</small>
                                 </div>
                             </div>
                         
                             <div class="d-flex mt-2 ">
+                                <div>
+                                    <button class="btn btn-outline-secondary my-2 my-sm-0 btn-sm ml-2" (click)="deleteUser(usuario.id, usuario.correo)"
+                                        ngbTooltip="Eliminar usuario de forma permanente"><i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
                                 <div class="ml-auto">
                                    <button type="submit" class="btn btn-primary btn-block" (click)="actualizarUsuario()" [disabled]="formularioUsuario.invalid">Guardar</button>
                                 </div>
