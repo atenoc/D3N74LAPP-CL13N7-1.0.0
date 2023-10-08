@@ -57,12 +57,12 @@ export class LoginComponent implements OnInit {
         console.log(res)
 
         //Almacenamos token
-        localStorage.setItem('token', res.token)
+        localStorage.setItem('__tooqn', res.token)
           
         var userObject = JSON.parse(JSON.stringify(this.formularioLogin.value))
         this.correoUsuario = userObject.correo
         //Almacenamos el correo 
-        localStorage.setItem('correo_us', this.correoUsuario)
+        localStorage.setItem('_us_em', this.correoUsuario)
 
         /* Obtener usuario por Correo */
         this.getUsuarioByCorreo(this.correoUsuario)
@@ -101,7 +101,6 @@ export class LoginComponent implements OnInit {
         console.log("Id usuario logueado: " + res.id)
         //Almacenamos el Id del usuario obtenido
         localStorage.setItem('_us', res.id)
-        localStorage.removeItem('correo_us')
         //Actualizamos el usuario logueado
         //this.actualizarUsuarioLogueado(res.correo)
       },

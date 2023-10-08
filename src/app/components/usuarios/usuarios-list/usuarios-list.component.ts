@@ -47,7 +47,7 @@ export class UsuariosListComponent implements OnInit {
     if(localStorage.getItem('_us')){
 
       // Consultar si existe centro
-      this.centroService.getCentroByIdUser$(localStorage.getItem('_us')).subscribe(
+      this.usuarioService.validarUsuarioActivo$(localStorage.getItem('_us'), localStorage.getItem('_us_em')).subscribe(
         res => {
           if(res.id.length > 0){
             this.existeCentro = true

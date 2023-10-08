@@ -114,6 +114,20 @@ export class UsuarioService {
     }
   }
 
+  validarUsuarioActivo$(id:string, correo:string) {
+    if(id && correo){
+      this.http.get<Usuario>(`${this.URI}/usuario/${id}/${correo}`).subscribe(
+        res=>{
+          this.usuario$.next(res)
+        },
+        err => console.log(err)
+      )
+      return this.usuario$.asObservable();
+    }else{
+      return this.usuario$;
+    }
+  }
+
   getUsuarioById$(id: string) {
     if(id){
       this.http.get<Usuario>(`${this.URI}/usuarioxid/${id}`).subscribe(

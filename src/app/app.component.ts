@@ -36,7 +36,7 @@ export class AppComponent {
     });
 
     // validar usuario activo
-    this.usuarioService.getUsuarioById$(localStorage.getItem('_us')).subscribe(
+    this.usuarioService.validarUsuarioActivo$(localStorage.getItem('_us'), localStorage.getItem('_us_em')).subscribe(
       res => {
         this.usuario = res;
         if(this.usuario){
