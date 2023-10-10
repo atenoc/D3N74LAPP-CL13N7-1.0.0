@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Mensajes } from 'src/app/shared/mensajes.config';
+import { CifradoService } from 'src/app/services/shared/cifrado.service';
 
 @Component({
   selector: 'app-login',
@@ -32,7 +33,8 @@ export class LoginComponent implements OnInit {
     private usuarioService:UsuarioService, 
     private router: Router,
     private spinner: NgxSpinnerService, 
-    private el: ElementRef
+    private el: ElementRef,
+    private cifrado: CifradoService
     ) {
       this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
       this.correoValido = Mensajes.CORREO_VALIDO;
@@ -57,8 +59,9 @@ export class LoginComponent implements OnInit {
         console.log(res)
 
         //Almacenamos token
-        localStorage.setItem('__tooqn', res.token)
-          
+        //localStorage.setItem('__tooqn', res.token)
+        this.cifrado.setEncryptedToken(res.token)
+
         var userObject = JSON.parse(JSON.stringify(this.formularioLogin.value))
         this.correoUsuario = userObject.correo
         //Almacenamos el correo 
@@ -101,6 +104,7 @@ export class LoginComponent implements OnInit {
         console.log("Id usuario logueado: " + res.id)
         //Almacenamos el Id del usuario obtenido
         localStorage.setItem('_us', res.id)
+        this.cifrado.setEncryptedRol(res.desc_rol)
         //Actualizamos el usuario logueado
         //this.actualizarUsuarioLogueado(res.correo)
       },

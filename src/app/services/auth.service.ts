@@ -26,12 +26,14 @@ export class AuthService {
   }
 
   estaLogueado(){
-    return !!localStorage.getItem('__tooqn')  // comprobamos si existe el token para retornar true:false
+    //return !!localStorage.getItem('__tooqn')  // comprobamos si existe el token para retornar true:false
+    return !!localStorage.getItem('_enc_tk')
   }
 
+  /*
   getToken(){
     return localStorage.getItem('__tooqn')
-  }
+  }*/
 
   logout(){
 
@@ -47,7 +49,8 @@ export class AuthService {
     }).then((result) => {
       if (result.value) {
 
-        localStorage.removeItem('__tooqn')
+        localStorage.removeItem('_enc_tk')
+        localStorage.removeItem('_lor_')
         localStorage.removeItem('_us')
         localStorage.removeItem('_us_em')
         this.router.navigate(['/login'])
