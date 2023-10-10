@@ -1,14 +1,15 @@
-import { Component, ElementRef, Renderer2 } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { UsuarioService } from './services/usuario.service';
 import { SharedService } from './services/shared.service';
 import { Usuario } from './models/Usuario.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   //title = 'dentalapp-client';
   isOnline: boolean;
 
@@ -19,7 +20,8 @@ export class AppComponent {
     public sharedService: SharedService,
     public usuarioService: UsuarioService,
     private renderer: Renderer2, 
-    private el: ElementRef 
+    private el: ElementRef,
+    private router:Router
     ) {
       this.isOnline = window.navigator.onLine;
      }
@@ -44,7 +46,10 @@ export class AppComponent {
           this.usuarioActivo=true
         }
       },
-      err => console.log("error AppComponent: " + err)
+      err => {
+        console.log("error AppComponent: " + err)
+        this.router.navigate(['/pagina-no-encontrada'])
+      }
     )
 
     //Recibir mensaje de cierre de sesión

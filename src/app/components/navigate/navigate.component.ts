@@ -23,7 +23,7 @@ export class NavigateComponent implements OnInit {
   nombreCentro:string="Dental App"
   mostrarTitulo:boolean=true
   mostrarBotonIngresar:boolean=true
-  mostrarCambiarContrasena:boolean=true
+  //mostrarCambiarContrasena:boolean=true
 
   //icons
 
@@ -43,7 +43,7 @@ export class NavigateComponent implements OnInit {
     console.log("NAVIGATE Component")
 
     this.sharedService.getData().subscribe(data => {
-      this.mostrarCambiarContrasena = data;
+      //this.mostrarCambiarContrasena = data;
       //console.log("Actualizar Navigate")
       //console.log("Mostrar Cambiar contraeña: "+ this.mostrarCambiarContrasena)
     });
@@ -71,11 +71,7 @@ export class NavigateComponent implements OnInit {
         this.llaveStatus=this.usuario.llave_status
         //console.log("Rol Navigate: " + this.usuario.desc_rol)
         //console.log("Llave status Navigate: " + this.usuario.llave_status)
-        if(this.usuario.llave_status == 0){
-          this.mostrarCambiarContrasena=true
-        }else{
-          this.mostrarCambiarContrasena=false
-        }
+
 
         this.centroService.getCentroByIdUser$(this.idUsuario).subscribe(
           res=>{
@@ -91,10 +87,6 @@ export class NavigateComponent implements OnInit {
       },
       err => console.log("error: " + err)
     )
-  }
-
-  selectedIdUser(){
-    this.router.navigate(['/password', this.idUsuario]);
   }
 
   salir(){

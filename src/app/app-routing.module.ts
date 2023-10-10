@@ -12,6 +12,7 @@ import { CentroFormComponent } from './components/centros/centro-form/centro-for
 import { CentroDetalleComponent } from './components/centros/centro-detalle/centro-detalle.component';
 import { PerfilComponent } from './components/perfil/perfil.component';
 import { ContrasenaComponent } from './components/usuarios/usuario-detalle/contrasena/contrasena.component';
+import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
 
 
 const routes: Routes = [
@@ -27,6 +28,7 @@ const routes: Routes = [
   {path:'centro-detalle/:id', component: CentroDetalleComponent, canActivate:[AuthGuard]},
   {path:'perfil', component: PerfilComponent, canActivate:[AuthGuard]},
   {path:'password/:id', component: ContrasenaComponent, canActivate:[AuthGuard]},
+  {path:'pagina-no-encontrada', component: PageNotFoundComponent},
 ];
 
 @NgModule({

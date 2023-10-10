@@ -114,21 +114,20 @@ export class UsuarioService {
     }
   }
 
-  validarUsuarioActivo$(id:string, correo:string) {
-    if(id && correo){
-      this.http.get<Usuario>(`${this.URI}/usuario/${id}/${correo}`).subscribe(
-        res=>{
-          this.usuario$.next(res)
-        },
-        err => console.log(err)
-      )
-      return this.usuario$.asObservable();
-    }else{
+  validarUsuarioActivo$(id: string, correo: string) {
+    if (id && correo) {
+      return this.http.get<Usuario>(`${this.URI}/usuario/${id}/${correo}`).pipe(
+        catchError((err) => {
+          //console.log(err); 
+          return throwError(err); // Lanzar el error nuevamente para que lo maneje el componente
+        })
+      );
+    } else {
       return this.usuario$;
     }
   }
 
-  getUsuarioById$(id: string) {
+  /*getUsuarioById$(id: string) {
     if(id){
       this.http.get<Usuario>(`${this.URI}/usuarioxid/${id}`).subscribe(
         res=>{
@@ -140,7 +139,7 @@ export class UsuarioService {
     }else{
       return this.usuario$;
     }
-  }
+  }*/
 
   // GET All by
   getUsuariosByUsuario$(id:string): Observable<Usuario[]>{
