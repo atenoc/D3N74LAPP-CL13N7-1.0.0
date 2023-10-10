@@ -44,10 +44,20 @@ export class UsuariosListComponent implements OnInit {
   ngOnInit() {
 
     console.log("USUARIOS LIST COMP")
-    if(localStorage.getItem('_us')){
+    if(localStorage.getItem('_us') && localStorage.getItem('_us_em') && localStorage.getItem('__tooqn')){
+
+      // validar usuario activo
+      this.usuarioService.validarUsuarioActivo$(localStorage.getItem('_us'), localStorage.getItem('_us_em')).subscribe(
+        res => {
+        },
+        err => {
+          console.log("error usuarios list: " + err)
+          this.router.navigate(['/pagina-no-encontrada'])
+        }
+      )
 
       // Consultar si existe centro
-      this.usuarioService.validarUsuarioActivo$(localStorage.getItem('_us'), localStorage.getItem('_us_em')).subscribe(
+      this.centroService.getCentroByIdUser$(localStorage.getItem('_us')).subscribe(
         res => {
           if(res.id.length > 0){
             this.existeCentro = true
@@ -87,8 +97,10 @@ export class UsuariosListComponent implements OnInit {
         },
         err => console.log("error: " + err)
       )
-
+    }else{
+      this.router.navigate(['/pagina-no-encontrada'])
     }
+    
   }
 
   openVerticallyCentered(content) {
