@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { CentroService } from 'src/app/services/centro.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { Mensajes } from '../mensajes.config';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-header',
@@ -18,8 +20,10 @@ export class HeaderComponent implements OnInit {
   llaveStatus:number
   nombreCentro:string="Dental App"
   mostrarCambiarContrasena:boolean=true
+  mensajeContrasena:string
 
   constructor(
+    private sharedService:SharedService,
     public usuarioService: UsuarioService, 
     private centroService:CentroService,
     private router: Router) { }
@@ -27,12 +31,19 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     console.log("HEADER Component")
 
-    this.usuarioService.validarUsuarioActivo$(localStorage.getItem('_us'), localStorage.getItem('_us_em')).subscribe(
+    this.sharedService.getData().subscribe(data => {
+      this.mostrarCambiarContrasena = data;
+      console.log("Dato recibido: "+ this.mostrarCambiarContrasena)
+    });
+
+    this.usuarioService.getUsuario$(localStorage.getItem('_us')).subscribe(
       res => {
         this.usuario = res;
+        console.log("Header:: "+ JSON.stringify(this.usuario))
         this.idUsuario=this.usuario.id
         if(this.usuario.llave_status == 0){
           this.mostrarCambiarContrasena=true
+          this.mensajeContrasena=Mensajes.CAMBIAR_CONTRASENA;
         }else{
           this.mostrarCambiarContrasena=false
         }

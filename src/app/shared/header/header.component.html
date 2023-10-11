@@ -139,6 +139,5 @@
   <!-- /.navbar -->
 
   <div *ngIf="mostrarCambiarContrasena" class="text-center bg-warning" >
-    <small class="text-muted">Por seguridad, debes </small>
-    <a> <small class="text-primary mr-3" style="cursor: pointer;" (click)="selectedIdUser()" ngbTooltip="cambiar contraseña"> actualizar tu contaseña...</small> </a>
+    <a> <small class="text-primary mr-3" style="cursor: pointer;" (click)="selectedIdUser()" ngbTooltip="cambiar contraseña"> {{ mensajeContrasena }}</small> </a>
   </div>
