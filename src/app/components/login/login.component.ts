@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit {
         var userObject = JSON.parse(JSON.stringify(this.formularioLogin.value))
         this.correoUsuario = userObject.correo
         //Almacenamos el correo 
-        localStorage.setItem('_us_em', this.correoUsuario)
+        localStorage.setItem('_em', this.correoUsuario)
 
         /* Obtener usuario por Correo */
         this.getUsuarioByCorreo(this.correoUsuario)

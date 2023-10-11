@@ -6,6 +6,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
 import { NgbModal, NgbModalConfig, NgbPaginationConfig } from '@ng-bootstrap/ng-bootstrap';
 import { CentroService } from 'src/app/services/centro.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-usuarios',
@@ -29,6 +30,7 @@ export class UsuariosListComponent implements OnInit {
   totalElements:number  // total 
 
   constructor(
+    private authService:AuthService,
     private usuarioService:UsuarioService, 
     private router: Router, 
     private centroService:CentroService,
@@ -44,7 +46,7 @@ export class UsuariosListComponent implements OnInit {
   ngOnInit() {
 
     console.log("USUARIOS LIST COMP")
-    if(localStorage.getItem('_us') && localStorage.getItem('_us_em') && localStorage.getItem('_enc_tk')){
+    if(this.authService.validarSesionActiva()){
 
       // Consultar si existe centro
       this.centroService.getCentroByIdUser$(localStorage.getItem('_us')).subscribe(

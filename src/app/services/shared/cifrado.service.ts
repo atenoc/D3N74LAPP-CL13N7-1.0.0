@@ -15,12 +15,12 @@ export class CifradoService {
   setEncryptedToken(token: string): void {
     //console.log("Llegó aqui: " +token)
     const encryptedToken = CryptoJS.AES.encrypt(token, this.secretKey).toString();
-    localStorage.setItem('_enc_tk', encryptedToken);
+    localStorage.setItem('_enc_t', encryptedToken);
   }
 
   // Método para obtener y descifrar el token
   getDecryptedToken(): string | null {
-    const encryptedToken = localStorage.getItem('_enc_tk');
+    const encryptedToken = localStorage.getItem('_enc_t');
     if (encryptedToken) {
       const bytes = CryptoJS.AES.decrypt(encryptedToken, this.secretKey);
       //console.log("token  des:: "+bytes.toString(CryptoJS.enc.Utf8))

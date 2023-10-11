@@ -28,7 +28,7 @@ export class SidebarComponent implements OnInit {
     console.log("SIDEBAR Component")
     this.inicializarAccordion()
 
-    this.usuarioService.validarUsuarioActivo$(localStorage.getItem('_us'), localStorage.getItem('_us_em')).subscribe(
+    this.usuarioService.validarUsuarioActivo$(localStorage.getItem('_us'), localStorage.getItem('_em')).subscribe(
       res => {
         this.usuario = res;
         this.idUsuario=this.usuario.id

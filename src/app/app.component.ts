@@ -38,7 +38,7 @@ export class AppComponent implements OnInit{
     });
 
     // validar usuario activo
-    this.usuarioService.validarUsuarioActivo$(localStorage.getItem('_us'), localStorage.getItem('_us_em')).subscribe(
+    this.usuarioService.validarUsuarioActivo$(localStorage.getItem('_us'), localStorage.getItem('_em')).subscribe(
       res => {
         this.usuario = res;
         if(this.usuario){

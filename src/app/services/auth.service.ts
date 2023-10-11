@@ -26,8 +26,15 @@ export class AuthService {
   }
 
   estaLogueado(){
-    //return !!localStorage.getItem('__tooqn')  // comprobamos si existe el token para retornar true:false
-    return !!localStorage.getItem('_enc_tk')
+    // comprobamos si existe el token para retornar true:false
+    return !!localStorage.getItem('_enc_t')
+  }
+
+  validarSesionActiva(){
+    return !!localStorage.getItem('_enc_t') 
+        && !!localStorage.getItem('_us')
+        && !!localStorage.getItem('_lor_')
+        && !!localStorage.getItem('_em')
   }
 
   /*
@@ -49,10 +56,10 @@ export class AuthService {
     }).then((result) => {
       if (result.value) {
 
-        localStorage.removeItem('_enc_tk')
+        localStorage.removeItem('_enc_t')
         localStorage.removeItem('_lor_')
         localStorage.removeItem('_us')
-        localStorage.removeItem('_us_em')
+        localStorage.removeItem('_em')
         this.router.navigate(['/login'])
 
         // Se manda un mensaje para validar el cierre de sesion y refrescar el menu 
