@@ -25,6 +25,7 @@ export class PerfilComponent implements OnInit {
     }
 
   ngOnInit() {
+    console.log("PERFIL Component")
     if(localStorage.getItem('_us')){
 
       // Consulta de Usuario por Correo
@@ -35,15 +36,14 @@ export class PerfilComponent implements OnInit {
           // Consulta Centro del usuario
           this.centroService.getCentroByIdUser$(this.usuario.id).subscribe(
             res => {
-              this.centro = res;
-              if(this.centro.id.length > 0){
-                this.existeCentro = true
-              }else{
-                this.existeCentro = false
-              }
+              this.existeCentro = true
               console.log("Existe centro: "+this.existeCentro)
             },
-            err => console.log("error: " + err)
+            err => {
+              console.log("error: " + err)
+              this.existeCentro = false
+              console.log("Existe False: "+this.existeCentro)
+            }
           )
           
           // Suscribirse al Subject del centro recién creado
@@ -60,6 +60,7 @@ export class PerfilComponent implements OnInit {
       )  
 
     }  
+    console.log("Existe Final: "+this.existeCentro)
   }
 
   openVerticallyCentered(content) {
