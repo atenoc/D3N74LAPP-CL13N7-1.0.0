@@ -8,6 +8,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Mensajes } from 'src/app/shared/mensajes.config';
 import { CifradoService } from 'src/app/services/shared/cifrado.service';
+import { CentroService } from 'src/app/services/centro.service';
 
 @Component({
   selector: 'app-login',
@@ -28,6 +29,7 @@ export class LoginComponent implements OnInit {
   correoValido: string;
 
   constructor(
+    private centroService:CentroService,
     private formBuilder:FormBuilder, 
     private authService: AuthService, 
     private usuarioService:UsuarioService, 
@@ -68,11 +70,35 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('_em', this.correoUsuario)
 
         /* Obtener usuario por Correo */
-        this.getUsuarioByCorreo(this.correoUsuario)
+        this.usuarioService.getUsuarioByCorreo$(this.correoUsuario).subscribe(
+          res => {
+    
+            localStorage.setItem('_us', res.id)
+            this.cifrado.setEncryptedRol(res.desc_rol)
 
-        this.router.navigate(['/agenda'])
+            this.centroService.getCentroByIdUser$(res.id).subscribe(
+              res => {
+                console.log("Si existe Centro")
+                this.router.navigate(['/agenda'])
+              },
+              err => {
+                console.log("No existe Centro")
+                console.log(err)
+                this.router.navigate(['/configuracion/perfil/usuario'])
+              }
+            )
+    
+          },
+          err => {
+            console.log(err.error.message)
+            console.log(err)
+          }
+        )
+        
         this.mensajeError = ""
         this.mostrarError = false
+
+        
         console.log("**************************************** Fin login ****************************************************")
         this.spinner.hide();
       },
@@ -97,22 +123,12 @@ export class LoginComponent implements OnInit {
 
   }
 
-  getUsuarioByCorreo(correo){
-    this.usuarioService.getUsuarioByCorreo$(correo)
-    .subscribe(
-      res => {
-        console.log("Id usuario logueado: " + res.id)
-        //Almacenamos el Id del usuario obtenido
-        localStorage.setItem('_us', res.id)
-        this.cifrado.setEncryptedRol(res.desc_rol)
-        //Actualizamos el usuario logueado
-        //this.actualizarUsuarioLogueado(res.correo)
-      },
-      err => {
-        console.log(err.error.message)
-        console.log(err)
-      }
-    )
+  
+
+  validaExisteCentro(){
+    console.log("Validando Centro")
+    console.log("Id_Usuario: "+localStorage.getItem('_us'))
+    
   }
 
   /*

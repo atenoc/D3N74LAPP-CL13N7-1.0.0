@@ -48,7 +48,7 @@ export class AppComponent implements OnInit{
       },
       err => {
         console.log("error AppComponent: " + err)
-        this.router.navigate(['/pagina-no-encontrada'])
+        this.router.navigate(['/pagina/404/no-encontrada'])
       }
     )
 

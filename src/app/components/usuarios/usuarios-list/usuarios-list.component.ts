@@ -90,7 +90,7 @@ export class UsuariosListComponent implements OnInit {
         err => console.log("error: " + err)
       )
     }else{
-      this.router.navigate(['/pagina-no-encontrada'])
+      this.router.navigate(['/pagina/404/no-encontrada'])
     }
     
   }

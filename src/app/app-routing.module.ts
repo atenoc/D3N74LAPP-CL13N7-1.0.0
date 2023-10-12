@@ -13,12 +13,14 @@ import { CentroDetalleComponent } from './components/centros/centro-detalle/cent
 import { PerfilComponent } from './components/perfil/perfil.component';
 import { ContrasenaComponent } from './components/usuarios/usuario-detalle/contrasena/contrasena.component';
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
+import { ConfigPerfilUsuarioComponent } from './components/perfil/config-perfil-usuario/config-perfil-usuario.component';
 
 
 const routes: Routes = [
   {path:'', redirectTo:'/home', pathMatch:'full'},
   {path:'home', component: HomeComponent},
   {path:'login', component: LoginComponent},
+  {path:'configuracion/perfil/usuario', component: ConfigPerfilUsuarioComponent, canActivate:[AuthGuard]},
   {path:'usuarios', component: UsuariosListComponent, canActivate:[AuthGuard]},
   {path:'usuario-form', component: UsuarioFormComponent, canActivate:[AuthGuard]},
   {path:'usuario-detalle/:id', component: UsuarioDetalleComponent, canActivate:[AuthGuard]},
@@ -28,7 +30,7 @@ const routes: Routes = [
   {path:'centro-detalle/:id', component: CentroDetalleComponent, canActivate:[AuthGuard]},
   {path:'perfil', component: PerfilComponent, canActivate:[AuthGuard]},
   {path:'password/:id', component: ContrasenaComponent, canActivate:[AuthGuard]},
-  {path:'pagina-no-encontrada', component: PageNotFoundComponent},
+  {path:'pagina/404/no-encontrada', component: PageNotFoundComponent, canActivate:[AuthGuard]},
 ];
 
 @NgModule({

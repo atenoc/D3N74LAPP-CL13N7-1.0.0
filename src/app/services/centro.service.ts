@@ -91,17 +91,10 @@ export class CentroService {
 
   // GET One by
   getCentroByIdUser$(id_usuario: string) {
-    if(id_usuario){
-      this.http.get<Centro>(`${this.URI}/usuario/${id_usuario}`).subscribe(
-        res=>{
-          this.centro$.next(res)
-        },
-        err => console.log(err)
-      )
-      return this.centro$.asObservable();
-    }else{
-      return this.centro$
-    }
-    
+    return this.http.get<Centro>(`${this.URI}/usuario/${id_usuario}`).pipe(
+      catchError((err) => {
+        return throwError(err); // Lanzar el error nuevamente para que lo maneje el componente
+      })
+    );
   }
 }
