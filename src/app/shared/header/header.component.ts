@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit {
   rolUsuario:string
   nombreUsuario:string
   llaveStatus:number
-  nombreCentro:string="Dental App"
+  nombreCentro:string
   mostrarCambiarContrasena:boolean=true
   mensajeContrasena:string
 
@@ -33,13 +33,13 @@ export class HeaderComponent implements OnInit {
 
     this.sharedService.getData().subscribe(data => {
       this.mostrarCambiarContrasena = data;
-      console.log("Dato recibido: "+ this.mostrarCambiarContrasena)
+      //console.log("Dato recibido: "+ this.mostrarCambiarContrasena)
     });
 
     this.usuarioService.getUsuario$(localStorage.getItem('_us')).subscribe(
       res => {
         this.usuario = res;
-        console.log("Header:: "+ JSON.stringify(this.usuario))
+        //console.log("Header:: "+ JSON.stringify(this.usuario))
         this.idUsuario=this.usuario.id
         if(this.usuario.llave_status == 0){
           this.mostrarCambiarContrasena=true

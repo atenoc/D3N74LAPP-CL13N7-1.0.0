@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CentroService } from 'src/app/services/centro.service';
+declare var require: any;
 
 @Component({
   selector: 'app-config-perfil-usuario',
@@ -9,11 +10,17 @@ import { CentroService } from 'src/app/services/centro.service';
 })
 export class ConfigPerfilUsuarioComponent implements OnInit {
 
+  nombre:string
+  apellido:string
+  nombreClinica:string
+  telefono:number
+
   constructor(private centroService:CentroService, private router:Router) { }
 
   ngOnInit(): void {
     console.log("CONFIG PERFIL U Component")
     this.noBack()
+    require('../../../../assets/js/custom-wizard.js');
 
     this.centroService.getCentroByIdUser$(localStorage.getItem('_us')).subscribe(
       res => {
@@ -34,4 +41,5 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
         window.history.pushState(null, null, window.location.href);
     };
   }
+
 }

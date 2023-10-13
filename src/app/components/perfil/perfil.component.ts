@@ -36,6 +36,7 @@ export class PerfilComponent implements OnInit {
           // Consulta Centro del usuario
           this.centroService.getCentroByIdUser$(this.usuario.id).subscribe(
             res => {
+              this.centro = res;
               this.existeCentro = true
               console.log("Existe centro: "+this.existeCentro)
             },
@@ -47,13 +48,13 @@ export class PerfilComponent implements OnInit {
           )
           
           // Suscribirse al Subject del centro recién creado
-          this.centroService.getCentroCreado$.subscribe(
+          /*this.centroService.getCentroCreado$.subscribe(
             res => {
               // Actualizar el valor del centro
               this.centro = res;
             },
             err => console.log("error: " + err)
-          );
+          );*/
 
         },
         err => console.log("error: " + err)
