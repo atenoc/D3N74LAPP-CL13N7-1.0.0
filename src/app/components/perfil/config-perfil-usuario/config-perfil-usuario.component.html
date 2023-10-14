@@ -46,7 +46,7 @@
             <div class="col-sm-6">
               <div class="form-group">
                 <label for="lastname">Teléfono de tu clínica:</label>
-                <input type="text" class="form-control" id="lastname" [(ngModel)]="telefono">
+                <input type="text" class="form-control" id="lastname" [(ngModel)]="telefono" placeholder="10 dígitos" maxlength="10" minlength="10" required>
               </div>
             </div>
           </div>
@@ -89,7 +89,7 @@
               </button>
             </div>
             <div class="col-sm">
-              <button id="wizard-subm" style="display:none" type="button" class="btn btn-success">
+              <button id="wizard-subm" style="display:none" type="button" class="btn btn-success" (click)="validarInfo()">
                 Iniciar
               </button>
             </div>

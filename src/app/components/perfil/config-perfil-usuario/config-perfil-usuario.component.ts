@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CentroService } from 'src/app/services/centro.service';
+import Swal from 'sweetalert2';
 declare var require: any;
 
 @Component({
@@ -13,7 +14,7 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
   nombre:string
   apellido:string
   nombreClinica:string
-  telefono:number
+  telefono:string
 
   constructor(private centroService:CentroService, private router:Router) { }
 
@@ -40,6 +41,21 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
     window.onpopstate = function(event) {
         window.history.pushState(null, null, window.location.href);
     };
+  }
+
+  validarInfo(){
+    console.log("Validando info")
+
+    if(this.nombre ==="" || this.apellido ==="" || this.nombreClinica ==="" || this.telefono.length !=10){
+      Swal.fire({
+        icon: 'warning',
+        html:
+          '¡Por favor, rellena todos los campos!',
+        showConfirmButton: true,
+        confirmButtonColor: '#28a745',
+        timer: 2000
+      })
+    }
   }
 
 }
