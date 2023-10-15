@@ -33,7 +33,10 @@ export class HeaderComponent implements OnInit {
 
     this.sharedService.getData().subscribe(data => {
       this.mostrarCambiarContrasena = data;
-      //console.log("Dato recibido: "+ this.mostrarCambiarContrasena)
+    });
+
+    this.sharedService.getDataString().subscribe(nombreCentro => {
+      this.nombreCentro = nombreCentro;
     });
 
     this.usuarioService.getUsuario$(localStorage.getItem('_us')).subscribe(

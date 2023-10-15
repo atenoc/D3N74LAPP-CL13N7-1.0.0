@@ -33,12 +33,16 @@ export class SidebarComponent implements OnInit {
         this.usuario = res;
         this.idUsuario=this.usuario.id
         this.rolUsuario=this.usuario.desc_rol
-        this.nombreUsuario=this.usuario.nombre
+        this.nombreUsuario=this.usuario.nombre +" "+this.usuario.apellidop
         console.log("Usuario sidebar:: ")
         console.log(this.usuario)
       },
       err => console.log("error: " + err)
     )
+
+    this.sharedService.getNombreUsuario().subscribe(datoRecibido => {
+      this.nombreUsuario = datoRecibido;
+    });
   }
 
   selectedIdUser(){

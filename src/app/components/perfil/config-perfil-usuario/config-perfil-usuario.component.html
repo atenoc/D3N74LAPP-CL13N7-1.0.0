@@ -23,13 +23,13 @@
             <div class="col-sm-6">
               <div class="form-group">
                 <label for="firstname">¿Cuál es tu nombre?</label>
-                <input type="text" class="form-control" id="firstname" [(ngModel)]="nombre">
+                <input type="text" class="form-control" id="firstname" [(ngModel)]="nombre" placeholder="Escribe tu nombre...">
               </div>
             </div>
             <div class="col-sm-6">
               <div class="form-group">
                 <label for="lastname">Ingresa tu primer apellido</label>
-                <input type="text" class="form-control" id="lastname" [(ngModel)]="apellido">
+                <input type="text" class="form-control" id="lastname" [(ngModel)]="apellido" placeholder="Tu apellido paterno">
               </div>
             </div>
           </div>
@@ -39,14 +39,25 @@
           <div class="row">
             <div class="col-sm-6">
               <div class="form-group">
-                <label for="firstname">¿Cómo se llama tu clínica / consultorio dental?:</label>
-                <input type="text" class="form-control" id="firstname" [(ngModel)]="nombreClinica">
+                <label for="firstname">¿Cómo se llama tu clínica / consultorio dental?</label>
+                <input type="text" class="form-control" id="firstname" [(ngModel)]="nombreClinica" placeholder="Consultorio dental...">
               </div>
             </div>
             <div class="col-sm-6">
               <div class="form-group">
-                <label for="lastname">Teléfono de tu clínica:</label>
-                <input type="text" class="form-control" id="lastname" [(ngModel)]="telefono" placeholder="10 dígitos" maxlength="10" minlength="10" required>
+                <label for="lastname">Teléfono de tu clínica</label>
+                <input type="text" class="form-control" id="lastname" [(ngModel)]="telefono" placeholder="Ingresa 10 dígitos" maxlength="10" minlength="10" required>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="step">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label for="firstname">¿Cuál es la dirección de tu clínica?</label>
+                <input type="text" class="form-control" id="firstname" [(ngModel)]="direccionClinica" placeholder="Ciudad de México...">
               </div>
             </div>
           </div>
@@ -66,9 +77,12 @@
             <p>
               <span>Teléfono: {{ telefono }}</span>
             </p>
+            <p>
+              <span>Dirección: {{ direccionClinica }}</span>
+            </p>
 
             <p>
-              <small class="text-muted">Los datos ingresados son necesarios para poder iniciar, puedes editarlo más adelante...</small>
+              <small class="text-muted">Los datos ingresados son necesarios para poder iniciar, podrás editarlos en cualquier momento...</small>
             </p>
           </div>
 

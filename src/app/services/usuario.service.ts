@@ -85,6 +85,10 @@ export class UsuarioService {
     return this.http.patch(`${this.URI}/${id}`, {correo, llave, rol, titulo, nombre, apellidop, apellidom, especialidad, telefono});
   }
 
+  updateUsuarioRegister(id: string, nombre:string, apellidop:string) {
+    return this.http.patch(`${this.URI}/usuario/${id}`, {nombre, apellidop});
+  }
+
   // DELETE
   deleteUsuario(id: string): Observable<void> {
     return this.http.delete<void>(`${this.URI}/${id}`).pipe(
