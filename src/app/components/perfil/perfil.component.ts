@@ -14,8 +14,9 @@ import Swal from 'sweetalert2';
 })
 export class PerfilComponent implements OnInit {
 
-  usuario: Usuario
-  centro: Centro
+  usuario: Usuario = {} as Usuario;
+  centro: Centro = {} as Centro;
+
   existeCentro:boolean
 
   constructor(private usuarioService:UsuarioService, private centroService:CentroService, private router:Router,
@@ -46,16 +47,6 @@ export class PerfilComponent implements OnInit {
               console.log("Existe False: "+this.existeCentro)
             }
           )
-          
-          // Suscribirse al Subject del centro recién creado
-          /*this.centroService.getCentroCreado$.subscribe(
-            res => {
-              // Actualizar el valor del centro
-              this.centro = res;
-            },
-            err => console.log("error: " + err)
-          );*/
-
         },
         err => console.log("error: " + err)
       )  
