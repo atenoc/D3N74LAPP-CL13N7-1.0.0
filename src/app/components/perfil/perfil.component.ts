@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalConfig, NgbModalRef  } from '@ng-bootstrap/ng-bootstrap';
 import { Centro } from 'src/app/models/Centro.model';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { CentroService } from 'src/app/services/centro.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
+import { CentroDetalleComponent } from '../centros/centro-detalle/centro-detalle.component';
 
 @Component({
   selector: 'app-perfil',
@@ -13,6 +14,8 @@ import Swal from 'sweetalert2';
   styleUrls: ['./perfil.component.css']
 })
 export class PerfilComponent implements OnInit {
+
+  modalRef: NgbModalRef; // Declara una variable para guardar la referencia al modal
 
   usuario: Usuario = {} as Usuario;
   centro: Centro = {} as Centro;
@@ -55,8 +58,11 @@ export class PerfilComponent implements OnInit {
     console.log("Existe Final: "+this.existeCentro)
   }
 
-  openVerticallyCentered(content) {
-		this.modalService.open(content, { centered: true });
+  openVerticallyCentered() {
+		//this.modalService.open(content, { centered: true });
+    this.modalRef = this.modalService.open(CentroDetalleComponent, { centered: true });
+    console.log("Enviando id centro:: "+this.centro.id)
+    this.modalRef.componentInstance.idCentroModal = this.centro.id; // Pasar el UUID al componente CentroDetalleComponent
 	}
 
   selectedIdUser(id: string) {

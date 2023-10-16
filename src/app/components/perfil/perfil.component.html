@@ -93,6 +93,10 @@
                 <hr>
 
                 <div class="card-footer text-right bg-white" >
+                  <button class="btn btn-outline-primary mb-2 me-2" (click)="openVerticallyCentered()"
+                        placement="bottom" ngbTooltip="Ver en modal">
+                        <i class="fas fa-pencil-alt mr-1"></i> Editar
+                  </button>
                     <a> <small class="text-primary cursor-pointer mr-3" (click)="selectedIdCentro(centro.id)"> <i class="fas fa-pencil-alt mr-1"></i> Editar...</small> </a>
                     <a> <small class="text-danger cursor-pointer" (click)="deleteCentro(centro.id, centro.nombre)"> Eliminar</small> </a>
                 </div>
@@ -107,25 +111,4 @@
     </div><!-- /.container-fluid -->
   </section>
   <!-- /.content -->
-
-
-<!-- Nuevo Modal Crear Usuario -->
-<ng-template #content let-c="close" let-d="dismiss">
-    <div class="modal-header">
-      <h4 class="modal-title">Centro</h4>
-      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-
-      <app-centro-detalle></app-centro-detalle>
-
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-light" (click)="c('Cerrar')">Cerrar</button>
-    </div>
-</ng-template>
-
-
 

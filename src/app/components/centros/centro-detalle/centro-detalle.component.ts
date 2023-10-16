@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Centro } from 'src/app/models/Centro.model';
 import { CentroService } from 'src/app/services/centro.service';
 import Swal from 'sweetalert2';
@@ -11,32 +12,45 @@ import Swal from 'sweetalert2';
 })
 export class CentroDetalleComponent implements OnInit {
 
+  @Input() idCentroModal: string;
+
   id: string
   centro: Centro
 
-  constructor(private activatedRoute: ActivatedRoute, private centroService:CentroService, private router: Router) { }
+  constructor(
+    private activatedRoute: ActivatedRoute, 
+    private centroService:CentroService, 
+    public modal: NgbActiveModal
+    ) { }
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe(params => {
+    console.log("CENTRO DETALLE Comp")
+    console.log("idCentroModal recibido:: "+this.idCentroModal)
+    /*this.activatedRoute.params.subscribe(params => {
       this.id = params['id'];
-      //console.log("id obtenido: " + this.id)
-      this.centroService.getCentro$(this.id)   //volver a llamar los datos con el id recibido
-      .subscribe(
-        res => {
-          this.centro = res;
-          console.log("id Centro obtenido:" + res.id)
-        },
-        err => console.log("error: " + err)
-      )
+      this.cargarCentro(this.id)
+      
+    });*/
 
-    });
+    this.cargarCentro(this.idCentroModal)
+    
+  }
+
+  cargarCentro(id_centro:string){
+    this.centroService.getCentro$(id_centro).subscribe(
+      res => {
+        this.centro = res;
+        console.log("id Centro obtenido:" + res.id)
+      },
+      err => console.log("error: " + err)
+    )
   }
 
   updateCentro(nombre: HTMLInputElement, telefono: HTMLInputElement, correo: HTMLInputElement, direccion: HTMLInputElement): boolean {
     this.centroService.updateCentro(this.centro.id, nombre.value, telefono.value, correo.value, direccion.value)
       .subscribe(res => {
         console.log("Centro actualizado: "+res);
-        this.router.navigate(['/perfil']);
+        this.modal.close()
 
         Swal.fire({
           icon: 'success',
@@ -65,9 +79,4 @@ export class CentroDetalleComponent implements OnInit {
 
     return false;
   }
-
-  regresar(){
-    this.router.navigate(['/perfil']);
-  }
-
 }
