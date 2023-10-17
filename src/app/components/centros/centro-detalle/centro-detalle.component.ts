@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+//import { ActivatedRoute } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Centro } from 'src/app/models/Centro.model';
 import { CentroService } from 'src/app/services/centro.service';
 import Swal from 'sweetalert2';
@@ -12,28 +12,29 @@ import Swal from 'sweetalert2';
 })
 export class CentroDetalleComponent implements OnInit {
 
-  @Input() idCentroModal: string;
-
   id: string
   centro: Centro
 
   constructor(
-    private activatedRoute: ActivatedRoute, 
+    //private activatedRoute: ActivatedRoute,
     private centroService:CentroService, 
-    public modal: NgbActiveModal
+    private modalService: NgbModal
     ) { }
 
   ngOnInit() {
     console.log("CENTRO DETALLE Comp")
-    console.log("idCentroModal recibido:: "+this.idCentroModal)
+
     /*this.activatedRoute.params.subscribe(params => {
       this.id = params['id'];
       this.cargarCentro(this.id)
       
     });*/
 
-    this.cargarCentro(this.idCentroModal)
-    
+    this.centroService.currentCentroId.subscribe((idCentroService) => {
+      this.id = idCentroService;
+      this.cargarCentro(this.id)
+    });
+ 
   }
 
   cargarCentro(id_centro:string){
@@ -50,8 +51,9 @@ export class CentroDetalleComponent implements OnInit {
     this.centroService.updateCentro(this.centro.id, nombre.value, telefono.value, correo.value, direccion.value)
       .subscribe(res => {
         console.log("Centro actualizado: "+res);
-        this.modal.close()
 
+        this.modalService.dismissAll()
+        this.centroService.changeCentroId('success') //Regresamos el idCentro
         Swal.fire({
           icon: 'success',
           html:

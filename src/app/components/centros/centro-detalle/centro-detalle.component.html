@@ -1,43 +1,40 @@
-<!-- <div *ngIf="!centro; else main_content">
+<div *ngIf="!centro; else main_content">
     <h5>Cargando...</h5>
 </div>
 <ng-template #main_content>
 
-    <div class="card">
-        <div class="card-header bg-dark text-white"> <strong>Editar Información </strong> </div>
-        <form class="card-body" (submit)="updateCentro(nombre, telefono, correo, direccion)">
+    <form class="card-body" (submit)="updateCentro(nombre, telefono, correo, direccion)">
 
-            <div class="form-group">
-                <small class="form-text text-muted">Nombre de tu centro o consultorio dental</small>
-                <input type="text" class="form-control" maxlength="100" [value]="centro.nombre" #nombre >
-            </div>
-            <div class="form-group">
-                <small class="form-text text-muted">Teléfono de contacto</small>
-                <input type="text" class="form-control" maxlength="10" [value]="centro.telefono" #telefono >
-            </div>
-            <div class="form-group">
-                <small class="form-text text-muted">Correo de contacto</small>
-                <input type="text" class="form-control" maxlength="30" [value]="centro.correo" #correo>
-            </div>
+        <div class="form-group">
+            <small class="form-text text-muted">Nombre de tu centro o consultorio dental</small>
+            <input type="text" class="form-control" maxlength="100" [value]="centro.nombre" #nombre >
+        </div>
+        <div class="form-group">
+            <small class="form-text text-muted">Teléfono de contacto</small>
+            <input type="text" class="form-control" maxlength="10" [value]="centro.telefono" #telefono >
+        </div>
+        <div class="form-group">
+            <small class="form-text text-muted">Correo de contacto</small>
+            <input type="text" class="form-control" maxlength="30" [value]="centro.correo" #correo>
+        </div>
 
-            <div class="form-group">
-                <small class="form-text text-muted">Dirección o Domicilio</small>
-                <textarea class="form-control" rows="2" maxlength="130" [value]="centro.direccion" #direccion></textarea>
-            </div>
-                            
-            <button class="btn btn-primary btn-block">
-                Actualizar Datos
-            </button>
-        </form>
-
-    </div>      
-</ng-template> -->
+        <div class="form-group">
+            <small class="form-text text-muted">Dirección o Domicilio</small>
+            <textarea class="form-control" rows="2" maxlength="130" [value]="centro.direccion" #direccion></textarea>
+        </div>
+                        
+        <button class="btn btn-primary btn-block">
+            Actualizar Datos
+        </button>
+    </form>
+    
+</ng-template>
 
 
-
+<!-- 
  <div class="modal-header">
     <h4 class="modal-title">Editar Información</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.close('Ok click')">
+    <button type="button" class="close" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -77,7 +74,7 @@
 
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-light" (click)="modal.close('Ok click')">Cerrar</button>
+    <button type="button" class="btn btn-light">Cerrar</button>
   </div>
-    
+     -->
 

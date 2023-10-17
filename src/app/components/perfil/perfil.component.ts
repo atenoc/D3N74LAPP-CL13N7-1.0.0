@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { NgbModal, NgbModalConfig, NgbModalRef  } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal, NgbModalConfig  } from '@ng-bootstrap/ng-bootstrap';
 import { Centro } from 'src/app/models/Centro.model';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { CentroService } from 'src/app/services/centro.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
-import { CentroDetalleComponent } from '../centros/centro-detalle/centro-detalle.component';
 
 @Component({
   selector: 'app-perfil',
@@ -15,15 +14,17 @@ import { CentroDetalleComponent } from '../centros/centro-detalle/centro-detalle
 })
 export class PerfilComponent implements OnInit {
 
-  modalRef: NgbModalRef; // Declara una variable para guardar la referencia al modal
-
   usuario: Usuario = {} as Usuario;
   centro: Centro = {} as Centro;
 
   existeCentro:boolean
 
-  constructor(private usuarioService:UsuarioService, private centroService:CentroService, private router:Router,
-    private modalService: NgbModal, config: NgbModalConfig) {
+  constructor(
+    private usuarioService:UsuarioService, 
+    private centroService:CentroService, 
+    private router:Router,
+    private modalService: NgbModal, 
+    config: NgbModalConfig) {
       config.backdrop = 'static';
 		  config.keyboard = false;
     }
@@ -38,32 +39,45 @@ export class PerfilComponent implements OnInit {
           this.usuario = res;
           console.log(this.usuario )
           // Consulta Centro del usuario
-          this.centroService.getCentroByIdUser$(this.usuario.id).subscribe(
-            res => {
-              this.centro = res;
-              this.existeCentro = true
-              console.log("Existe centro: "+this.existeCentro)
-            },
-            err => {
-              console.log("error: " + err)
-              this.existeCentro = false
-              console.log("Existe False: "+this.existeCentro)
-            }
-          )
+          this.cargarCentroPorIdUsuario()
         },
         err => console.log("error: " + err)
       )  
 
     }  
     console.log("Existe Final: "+this.existeCentro)
+
+    this.centroService.currentCentroId.subscribe((respuesta) => {
+      console.log("Valor idCentro: "+ respuesta);
+      // Utiliza this.centroId para cargar los datos del centro
+      if(respuesta === "success"){
+        console.log("Reload")
+        this.centroService.changeCentroId('')
+        this.cargarCentroPorIdUsuario()
+      }
+    });
   }
 
-  openVerticallyCentered() {
-		//this.modalService.open(content, { centered: true });
-    this.modalRef = this.modalService.open(CentroDetalleComponent, { centered: true });
-    console.log("Enviando id centro:: "+this.centro.id)
-    this.modalRef.componentInstance.idCentroModal = this.centro.id; // Pasar el UUID al componente CentroDetalleComponent
-	}
+  cargarCentroPorIdUsuario(){
+    this.centroService.getCentroByIdUser$(this.usuario.id).subscribe(
+      res => {
+        this.centro = res;
+        this.existeCentro = true
+        console.log("Existe centro: "+this.existeCentro)
+      },
+      err => {
+        console.log("error: " + err)
+        this.existeCentro = false
+        console.log("Existe False: "+this.existeCentro)
+      }
+    )
+  }
+
+  openVerticallyCentered(content) {
+    this.centroService.changeCentroId(this.centro.id); // Cambia el id en el servicio
+    this.modalService.open(content, { centered: true });
+
+  }
 
   selectedIdUser(id: string) {
     console.log("id seleccionado: "+id)
