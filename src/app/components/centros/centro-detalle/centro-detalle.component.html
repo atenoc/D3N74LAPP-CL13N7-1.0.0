@@ -3,78 +3,47 @@
 </div>
 <ng-template #main_content>
 
-    <form class="card-body" (submit)="updateCentro(nombre, telefono, correo, direccion)">
+    <form [formGroup]="formularioCentro" class="card-body" >
 
         <div class="form-group">
-            <small class="form-text text-muted">Nombre de tu centro o consultorio dental</small>
-            <input type="text" class="form-control" maxlength="100" [value]="centro.nombre" #nombre >
+            <small class="form-text text-muted">Nombre *</small>
+            <input type="email" class="form-control" formControlName="nombre" [ngClass]="getInputClass('nombre')" placeholder="Ingresa el nombre de tu consultorio">
+            <div *ngIf="formularioCentro.controls['nombre'].invalid && formularioCentro.controls['nombre'].dirty" class="invalid-input-message">
+              <span *ngIf="formularioCentro.controls['nombre'].errors.required">{{ campoRequerido }}</span>
+            </div>
         </div>
         <div class="form-group">
-            <small class="form-text text-muted">Teléfono de contacto</small>
-            <input type="text" class="form-control" maxlength="10" [value]="centro.telefono" #telefono >
+            <small class="text-muted">Teléfono *</small>
+            <input type="text" class="form-control" formControlName="telefono" [ngClass]="getInputClass('telefono')" placeholder="Ingresa 10 dígitos" maxlength="10">
+            <div *ngIf="formularioCentro.controls['telefono'].invalid && formularioCentro.controls['telefono'].dirty" class="invalid-input-message">
+                <span *ngIf="formularioCentro.controls['telefono'].errors.pattern && !formularioCentro.controls['telefono'].errors.required">{{ soloNumeros }}</span> 
+                <span *ngIf="formularioCentro.controls['telefono'].errors.required">{{ campoRequerido }}</span> 
+                <span *ngIf="formularioCentro.controls['telefono'].errors.minlength">{{ telefonoLongitud }}</span> 
+            </div>   
         </div>
         <div class="form-group">
-            <small class="form-text text-muted">Correo de contacto</small>
-            <input type="text" class="form-control" maxlength="30" [value]="centro.correo" #correo>
+            <small class="text-muted">Correo (opcional)</small>
+            <input type="email" class="form-control" formControlName="correo" [ngClass]="getInputClass('correo')" placeholder="Ingresa un correo electrónico">
+            <div *ngIf="formularioCentro.controls['correo'].invalid && formularioCentro.controls['correo'].dirty" class="invalid-input-message">
+                <span *ngIf="formularioCentro.controls['correo'].errors.email">{{ correoValido }}</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <small class="text-muted">Dirección / Domicilio *</small>
+            <textarea class="form-control" formControlName="direccion" [ngClass]="getInputClass('direccion')" rows="2" maxlength="130"></textarea>
+            <div *ngIf="formularioCentro.controls['direccion'].invalid && formularioCentro.controls['direccion'].dirty" class="invalid-input-message">
+                <span *ngIf="formularioCentro.controls['direccion'].errors.required">{{ campoRequerido }}</span> 
+            </div>
         </div>
 
-        <div class="form-group">
-            <small class="form-text text-muted">Dirección o Domicilio</small>
-            <textarea class="form-control" rows="2" maxlength="130" [value]="centro.direccion" #direccion></textarea>
+        <div class="d-flex mt-2 ">
+            <div></div>
+            <div class="ml-auto">
+                <small class="text-muted">Los campos marcados con (*) son obligatorios</small>
+            </div>
         </div>
                         
-        <button class="btn btn-primary btn-block">
-            Actualizar Datos
-        </button>
+        <button type="submit" class="btn btn-primary btn-block mt-2" (click)="updateCentro()" [disabled]="formularioCentro.invalid">Guardar</button>
     </form>
     
 </ng-template>
-
-
-<!-- 
- <div class="modal-header">
-    <h4 class="modal-title">Editar Información</h4>
-    <button type="button" class="close" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-
-    <div *ngIf="!centro; else main_content">
-        <h5>Cargando...</h5>
-    </div>
-    <ng-template #main_content>
-        <div class="container">
-            <form class="card-body" (submit)="updateCentro(nombre, telefono, correo, direccion)">
-    
-                <div class="form-group">
-                    <small class="form-text text-muted">Nombre de tu centro o consultorio dental</small>
-                    <input type="text" class="form-control" maxlength="100" [value]="centro.nombre" #nombre >
-                </div>
-                <div class="form-group">
-                    <small class="form-text text-muted">Teléfono de contacto</small>
-                    <input type="text" class="form-control" maxlength="10" [value]="centro.telefono" #telefono >
-                </div>
-                <div class="form-group">
-                    <small class="form-text text-muted">Correo de contacto</small>
-                    <input type="text" class="form-control" maxlength="30" [value]="centro.correo" #correo>
-                </div>
-    
-                <div class="form-group">
-                    <small class="form-text text-muted">Dirección o Domicilio</small>
-                    <textarea class="form-control" rows="2" maxlength="130" [value]="centro.direccion" #direccion></textarea>
-                </div>
-                                
-                <button class="btn btn-primary btn-block">
-                    Guardar
-                </button>
-            </form>
-        </div>     
-    </ng-template>
-
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-light">Cerrar</button>
-  </div>
-     -->
-
