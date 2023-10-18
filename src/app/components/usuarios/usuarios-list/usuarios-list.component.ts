@@ -112,7 +112,6 @@ export class UsuariosListComponent implements OnInit {
 
   getUsuariosPaginados() {
     this.usuarioService
-      //.getUsuariosPaginados$(this.currentPage, this.pageSize, this.orderBy, this.way)
       .getUsuariosByUsuarioPaginados$(this.usuario.id, this.currentPage, this.pageSize, this.orderBy, this.way)
       .subscribe((res) => {
         this.usuarios = res.data

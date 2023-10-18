@@ -148,7 +148,7 @@ export class UsuarioFormComponent implements OnInit {
       err => {
         this.spinner.hide();
         console.log("error: " + err.error.message)
-        if(err.error.message=="200"){
+        if(err.error.message=="400"){
           // Ya existe usuario
           this.el.nativeElement.querySelector('input').focus();
           Swal.fire({
