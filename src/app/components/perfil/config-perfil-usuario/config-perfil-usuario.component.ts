@@ -108,7 +108,7 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
             })
             console.log("Usuario actualizado")
             this.sharedService.setNombreUsuario(this.nombre +" "+this.apellido)
-            this.sharedService.setDataString(this.nombreClinica);
+            this.sharedService.setNombreClinica(this.nombreClinica);
           },
           err =>{
             console.log("Error al actualizar el usuario")

@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Centro } from 'src/app/models/Centro.model';
 import { CentroService } from 'src/app/services/centro.service';
+import { SharedService } from 'src/app/services/shared.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
 import Swal from 'sweetalert2';
 
@@ -30,7 +31,8 @@ export class CentroDetalleComponent implements OnInit {
     private formBuilder:FormBuilder, 
     //private activatedRoute: ActivatedRoute,
     private centroService:CentroService, 
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private sharedService:SharedService 
     ) {
       this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
       this.correoValido = Mensajes.CORREO_VALIDO;
@@ -102,6 +104,7 @@ export class CentroDetalleComponent implements OnInit {
 
         this.modalService.dismissAll()
         this.centroService.changeCentroId('success') //Regresamos el idCentro
+        this.sharedService.setNombreClinica(this.formularioCentro.value.nombre);
         Swal.fire({
           icon: 'success',
           html:

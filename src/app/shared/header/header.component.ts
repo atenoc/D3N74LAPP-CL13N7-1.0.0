@@ -31,11 +31,11 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     console.log("HEADER Component")
 
-    this.sharedService.getData().subscribe(data => {
+    this.sharedService.getCambiarContrasena().subscribe(data => {
       this.mostrarCambiarContrasena = data;
     });
 
-    this.sharedService.getDataString().subscribe(nombreCentro => {
+    this.sharedService.getNombreClinica().subscribe(nombreCentro => {
       this.nombreCentro = nombreCentro;
     });
 

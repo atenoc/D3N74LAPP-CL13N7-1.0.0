@@ -7,6 +7,7 @@ import { Usuario } from 'src/app/models/Usuario.model';
 import { CatEspecialidadService } from 'src/app/services/cat-especialidad.service';
 import { CatRolService } from 'src/app/services/cat-rol.service';
 import { CatTituloService } from 'src/app/services/cat-titulo.service';
+import { SharedService } from 'src/app/services/shared.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
 import Swal from 'sweetalert2';
@@ -47,6 +48,7 @@ export class UsuarioDetalleComponent implements OnInit {
     private catTituloService:CatTituloService,
     private catEspecialidadService:CatEspecialidadService,
     private spinner: NgxSpinnerService, 
+    private sharedService:SharedService
     ) {
       this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
       this.correoValido = Mensajes.CORREO_VALIDO;
@@ -138,7 +140,7 @@ export class UsuarioDetalleComponent implements OnInit {
       this.formularioUsuario.value.telefono,
       ).subscribe(res => {
         console.log("Usuario actualizado: "+res);
-        //this.router.navigate(['/usuarios']);
+        this.sharedService.setNombreUsuario(this.formularioUsuario.value.nombre);
         this.editando=false
         this.ngOnInit()
         this.spinner.hide();
