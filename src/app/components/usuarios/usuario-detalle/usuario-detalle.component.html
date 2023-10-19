@@ -5,7 +5,7 @@
       <div class="row mb-2">
         <div class="col-sm-6">
           <h5>
-            Información de usuario
+            Información del usuario
           </h5>
         </div>
         <div class="col-sm-6">
@@ -35,11 +35,12 @@
 
                 <div class="row">
                     <div class="col-sm">
-                        <small>Id de usuario:</small>
-                        <small class="text-muted"> {{ idUsuario }} </small>
+                        <small class="text-muted">Id de usuario:</small>
+                        <small class="text-muted"> {{ idUsuario }} </small> <br>
+                        <small class="text-muted">Fecha de creación:</small>
+                        <small class="text-muted"> {{ fecha_creacion }} </small>
                         <hr/> 
-                    </div> 
-                    
+                    </div>
                 </div>
 
                 <div class="container">
@@ -63,14 +64,10 @@
                     
                             <div class="col-sm">
                                 <div class="form-group">
-                                    <small class="text-muted">Rol</small>
+                                    <small class="text-muted"><strong> Rol * </strong></small>
                                     <select class="form-select sin-borde" formControlName="rol" disabled>
-                                      <option selected>Selecciona una opción:</option>
-                                        <option value="admin">Administrador</option>
-                                        <option value="asistente">Asistente</option>
-                                        <option value="recepcionista">Recepcionista</option>
-                                        <option value="cajero">Cajero</option>
-                                        <option value="invitado">Invitado</option>
+                                        <option selected disabled [value]="null">Selecciona una opción:</option>
+                                        <option *ngFor="let item of catRoles" [value]="item.id">{{ item.descripcion }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -142,6 +139,10 @@
     </div>
 </section>
 
+
+
+
+
 <section class="content" *ngIf="editando">
     <div class="container-fluid">
       <div class="row">
@@ -159,11 +160,12 @@
 
                 <div class="row">
                     <div class="col-sm">
-                        <small>Id de usuario:</small>
-                        <small class="text-muted"> {{ idUsuario }} </small>
+                        <small class="text-muted">Id de usuario:</small>
+                        <small class="text-muted"> {{ idUsuario }} </small> <br>
+                        <small class="text-muted">Fecha de creación:</small>
+                        <small class="text-muted"> {{ fecha_creacion }} </small>
                         <hr/> 
-                    </div> 
-                    
+                    </div>
                 </div>
 
                 <div class="container">
@@ -188,15 +190,13 @@
                     
                             <div class="col-sm">
                                 <div class="form-group">
-                                    <small class="text-muted"><strong> Rol * </strong></small>
-                                    <select class="form-select" formControlName="rol" [ngClass]="getInputClass('rol')">
-                                      <option selected>Selecciona una opción:</option>
-                                        <option value="admin">Administrador</option>
-                                        <option value="asistente">Asistente</option>
-                                        <option value="recepcionista">Recepcionista</option>
-                                        <option value="cajero">Cajero</option>
-                                        <option value="invitado">Invitado</option>
-                                    </select>
+                                    <div class="form-group">
+                                        <small class="text-muted"><strong> Rol * </strong></small>
+                                        <select class="form-select" formControlName="rol">
+                                            <option selected disabled [value]="0">Selecciona una opción:</option>
+                                            <option *ngFor="let item of catRoles" [value]="item.id">{{ item.descripcion }}</option>
+                                        </select>
+                                    </div>
                     
                                     <div *ngIf="formularioUsuario.controls['rol'].invalid && formularioUsuario.controls['rol'].dirty" class="invalid-input-message">
                                       <span *ngIf="formularioUsuario.controls['rol'].errors.required">{{ campoRequerido }}</span>
@@ -275,13 +275,20 @@
                             </div>
                     
                             <div class="d-flex mt-2 ">
-                                <div></div>
+                                <div>
+                                    <small class="text-muted">Eliminar usuario</small>
+                                </div>
                                 <div class="ml-auto">
                                     <small class="text-muted">Los campos marcados con (*) son obligatorios</small>
                                 </div>
                             </div>
                         
                             <div class="d-flex mt-2 ">
+                                <div>
+                                    <button class="btn btn-outline-secondary my-2 my-sm-0 btn-sm ml-2" (click)="deleteUser(usuario.id, usuario.correo)"
+                                        ngbTooltip="Eliminar usuario de forma permanente"><i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
                                 <div class="ml-auto">
                                    <button type="submit" class="btn btn-primary btn-block" (click)="actualizarUsuario()" [disabled]="formularioUsuario.invalid">Guardar</button>
                                 </div>
@@ -298,196 +305,4 @@
     </div>
 </section> 
   
-
-
-
-
-<!-- <div class="container">
-
-    <div *ngIf="!usuario; else main_content">
-        <h5>Loading...</h5>
-    </div>
-    <ng-template #main_content>
-
-        <div class="card mt-5" *ngIf="!editando">
-            <div class="card-header bg-dark text-white"> 
-                <div class="d-flex mt-2 ">
-                    <div>
-                        Información del usuario
-                    </div>
-                    <div class="ml-auto">
-                       <button class="btn btn-light btn-sm" (click)="editando = true">Editar</button>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body">
-
-                <div class="row">
-                    <div class="col-sm">
-                        <small>Id de usuario:</small>
-                        <small class="text-muted"> {{ usuario.id }} </small>
-                        
-                    </div> 
-                    <hr/> 
-                </div>
-
-                
-              
-            </div>
-        </div>  
-
-
-
-        <div class="card mt-5" *ngIf="editando">
-            <div class="card-header bg-primary text-white"> 
-                <div class="d-flex mt-2 ">
-                    <div>
-                        Editar información del usuario
-                    </div>
-                    <div class="ml-auto">
-                       <button class="btn btn-light btn-sm" (click)="editando = false">Cancelar</button>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body">
-
-                <div class="row">
-                    <div class="col-sm">
-                        <small>Id de usuario:</small>
-                        <small class="text-muted"> {{ usuario.id }} </small>
-                        
-                    </div>  
-                </div>
-
-                <hr/>
-
-                <form [formGroup]="formularioUsuario">
-     
-                    <div class="row">
-                
-                        <div class="col-sm">
-                            <div class="form-group">
-                                <small class="text-muted"><strong> Correo * </strong></small>
-                                <input type="email" class="form-control" formControlName="correo" [ngClass]="getInputClass('correo')" placeholder="ejemplo@correo.com">
-                                <div *ngIf="formularioUsuario.controls['correo'].invalid && formularioUsuario.controls['correo'].dirty" class="invalid-input-message">
-                                    <span *ngIf="formularioUsuario.controls['correo'].errors.required" >{{ campoRequerido }}</span>
-                                    <span *ngIf="formularioUsuario.controls['correo'].errors.email">{{ correoValido }}</span>
-                                </div>
-                            </div>
-                        </div>
-                
-                        <div class="col-sm">
-                            <div class="form-group">
-                                <small class="text-muted"><strong> Contraseña * </strong></small>
-                                <input type="password" class="form-control" formControlName="llave" [ngClass]="getInputClass('llave')" placeholder="Ingrese una contraseña">
-                                <div *ngIf="formularioUsuario.controls['llave'].invalid && formularioUsuario.controls['llave'].dirty" class="invalid-input-message">
-                                    <span *ngIf="formularioUsuario.controls['llave'].errors.required">{{ campoRequerido }}</span>
-                                    <span *ngIf="formularioUsuario.controls['llave'].errors.minlength">{{ contrasenaLongitud }}</span>  
-                                </div>
-                            </div>
-                        </div>
-                
-                        <div class="col-sm">
-                            <div class="form-group">
-                                <small class="text-muted"><strong> Rol * </strong></small>
-                                <select class="form-select" formControlName="rol" [ngClass]="getInputClass('rol')">
-                                  <option selected>Selecciona una opción:</option>
-                                    <option value="admin">Administrador</option>
-                                    <option value="asistente">Asistente</option>
-                                    <option value="recepcionista">Recepcionista</option>
-                                    <option value="cajero">Cajero</option>
-                                    <option value="invitado">Invitado</option>
-                                </select>
-                
-                                <div *ngIf="formularioUsuario.controls['rol'].invalid && formularioUsuario.controls['rol'].dirty" class="invalid-input-message">
-                                  <span *ngIf="formularioUsuario.controls['rol'].errors.required">{{ campoRequerido }}</span>
-                                </div>
-                            </div>
-                        </div>
-                
-                        <hr/>
-                
-                        <div class="col-sm">
-                            <div class="form-group">
-                                <small class="text-muted"> Título </small>
-                                <select class="form-select" formControlName="titulo">
-                                    <option selected disabled [value]="0">Selecciona una opción:</option>
-                                    <option *ngFor="let item of catTitulos" [value]="item.id">{{ item.descripcion }}</option>
-                                </select>
-                            </div>
-                        </div>
-                
-                        <div class="col-sm">
-                            <div class="form-group">
-                                <small class="text-muted"><strong> Nombre(s) * </strong></small>
-                                <input type="text" class="form-control" formControlName="nombre" [ngClass]="getInputClass('nombre')" placeholder="">
-                                <div *ngIf="formularioUsuario.controls['nombre'].invalid && formularioUsuario.controls['nombre'].dirty" class="invalid-input-message">
-                                    <span *ngIf="formularioUsuario.controls['nombre'].errors.required">{{ campoRequerido }}</span> 
-                                </div>
-                            </div>
-                        </div>
-                
-                        <div class="col-sm">
-                            <div class="form-group">
-                                <small class="text-muted"><strong> Apellido Paterno * </strong></small>
-                                <input type="text" class="form-control" formControlName="apellidop" [ngClass]="getInputClass('apellidop')" placeholder="">
-                                <div *ngIf="formularioUsuario.controls['apellidop'].invalid && formularioUsuario.controls['apellidop'].dirty" class="invalid-input-message">
-                                    <span *ngIf="formularioUsuario.controls['apellidop'].errors.required">{{ campoRequerido }}</span> 
-                                </div>
-                            </div>
-                        </div>
-                
-                        <div class="col-sm">
-                            <div class="form-group">
-                                <small class="text-muted"> Apellido Materno </small>
-                                <input type="text" class="form-control" formControlName="apellidom" placeholder="">
-                            </div>
-                        </div>
-                
-                        <div class="col-sm">
-                            <div class="form-group">
-                                <small class="text-muted"> Especialidad </small>
-                                <select class="form-select" formControlName="especialidad">
-                                    <option selected disabled [value]="0">Selecciona una opción:</option>
-                                    <option *ngFor="let item of catEspecialidades" [value]="item.id">{{ item.descripcion }}</option>
-                                </select>
-                            </div>
-                        </div>
-                
-                        <div class="col-sm">
-                            <div class="form-group">
-                                <small class="text-muted"> Teléfono</small>
-                                <input type="text" class="form-control" formControlName="telefono" [ngClass]="getInputClass('telefono')" placeholder="10 dígitos" maxlength="10">
-                                <div *ngIf="formularioUsuario.controls['telefono'].invalid && formularioUsuario.controls['telefono'].dirty" class="invalid-input-message">
-                                    <div>
-                                        <span *ngIf="formularioUsuario.controls['telefono'].errors.pattern && !formularioUsuario.controls['telefono'].errors.required">{{ soloNumeros }}</span> 
-                                    </div>
-                                    <div>
-                                        <span *ngIf="formularioUsuario.controls['telefono'].errors.minlength">{{ telefonoLongitud }}</span> 
-                                    </div>
-                                </div> 
-                            </div>
-                        </div>
-                
-                        <div class="d-flex mt-2 ">
-                            <div></div>
-                            <div class="ml-auto">
-                                <small class="text-muted">Los campos marcados con (*) son obligatorios</small>
-                            </div>
-                        </div>
-                    
-                        <div class="d-flex mt-2 ">
-                            <div class="ml-auto">
-                               <button type="submit" class="btn btn-primary btn-block" (click)="actualizarUsuario()" [disabled]="formularioUsuario.invalid">Guardar</button>
-                            </div>
-                        </div>
-                
-                    </div>
-                </form>
-   
-            </div>
-        </div>  
-
-    </ng-template>
-
-</div> -->
+<ngx-spinner bdColor = "rgba(0,0,0,0.7)" size = "large" color = "#ffffff" type = "ball-scale-multiple" [fullScreen] = "false"><p style="color: white" > Cargando, por favor espere... </p></ngx-spinner>

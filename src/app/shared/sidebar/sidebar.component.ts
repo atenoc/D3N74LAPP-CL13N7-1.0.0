@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from 'src/app/services/auth.service';
-import { CentroService } from 'src/app/services/centro.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-sidebar',
@@ -15,74 +15,34 @@ export class SidebarComponent implements OnInit {
 
   usuario:Usuario
   idUsuario:string
-  correoUsuario: string
   rolUsuario:string
   nombreUsuario:string
-  llaveStatus:number
-  nombreCentro:string="Dental App"
-  mostrarTitulo:boolean=true
-  mostrarBotonIngresar:boolean=true
-  mostrarCambiarContrasena:boolean=true
 
   constructor(
     private sharedService:SharedService, 
     public authService: AuthService, 
     public usuarioService: UsuarioService, 
-    private centroService:CentroService,
     private router: Router) { }
 
   ngOnInit(): void {
-    console.log("NAVIGATE COMP")
+    console.log("SIDEBAR Component")
+    this.inicializarAccordion()
 
-    this.sharedService.getData().subscribe(data => {
-      this.mostrarCambiarContrasena = data;
-      console.log("Actualizar Navigate")
-      console.log("Mostrar Cambiar contraeña: "+ this.mostrarCambiarContrasena)
-    });
-
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        if (event.url.includes('/login')) {
-          console.log('Estoy en LoginComponent');
-          this.mostrarBotonIngresar=false
-        } else {
-          console.log('Estoy en otra ruta');
-          this.mostrarBotonIngresar=true
-        }
-      }
-    });
-
-
-    this.usuarioService.getUsuarioByCorreo$(localStorage.getItem('correo_us')).subscribe(
+    this.usuarioService.validarUsuarioActivo$(localStorage.getItem('_us'), localStorage.getItem('_em')).subscribe(
       res => {
         this.usuario = res;
         this.idUsuario=this.usuario.id
-        this.correoUsuario=this.usuario.correo
-        this.rolUsuario=this.usuario.rol
-        this.nombreUsuario=this.usuario.nombre
-        this.llaveStatus=this.usuario.llave_status
-        console.log("Rol Navigate: " + this.usuario.rol)
-        console.log("Llave status Navigate: " + this.usuario.llave_status)
-        if(this.usuario.llave_status == 0){
-          this.mostrarCambiarContrasena=true
-        }else{
-          this.mostrarCambiarContrasena=false
-        }
-
-        this.centroService.getCentroByIdUser$(this.idUsuario).subscribe(
-          res=>{
-            if(res.nombre){
-              this.nombreCentro=res.nombre
-              this.mostrarTitulo=true
-            }else{
-              this.mostrarTitulo=false
-            }
-          },
-          err => console.log("error: " + err)
-        )
+        this.rolUsuario=this.usuario.desc_rol
+        this.nombreUsuario=this.usuario.nombre +" "+this.usuario.apellidop
+        console.log("Usuario sidebar:: ")
+        console.log(this.usuario)
       },
       err => console.log("error: " + err)
     )
+
+    this.sharedService.getNombreUsuario().subscribe(datoRecibido => {
+      this.nombreUsuario = datoRecibido;
+    });
   }
 
   selectedIdUser(){
@@ -95,18 +55,44 @@ export class SidebarComponent implements OnInit {
     this.sharedService.mensajeActual.subscribe(
       res => {
         if(res){
+          this.rolUsuario=""
           this.sharedService.notifyApp.emit();
           console.log("Voy a mandar una notificación a App Component")
-          this.reload()
+
         }
       }
     )
   }
 
-  reload(){
-    this.rolUsuario=""
-    this.nombreCentro="Dental App"
-    this.ngOnInit()
-    console.log("reload navigate <-")
+  inicializarAccordion(): void {
+    $(function() {
+      var Accordion = function(el, multiple) {
+        this.el = el || {};
+        this.multiple = multiple || false;
+    
+        // Variables privadas
+        var links = this.el.find('.link');
+        // Evento
+        links.on('click', { el: this.el, multiple: this.multiple }, this.dropdown);
+      };
+    
+      Accordion.prototype.dropdown = function(e) {
+        var $el = e.data.el;
+        var $this = $(this),
+          $next = $this.next();
+    
+        // Personaliza la velocidad de la animación aquí (ejemplo: 200 milisegundos)
+        var animationSpeed = 200;
+    
+        $next.slideToggle(animationSpeed);
+        $this.parent().toggleClass('open');
+    
+        if (!e.data.multiple) {
+          $el.find('.submenu').not($next).slideUp().parent().removeClass('open');
+        }
+      };
+    
+      var accordion = new Accordion($('#accordion'), false);
+    });
   }
 }

@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine">
+
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
@@ -6,7 +8,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a class="nav-link"><h5> {{ nombreCentro }} </h5> </a> 
+        <span class="nav-link font_titulo">{{ nombreCentro }} </span> 
       </li>
       <!-- <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Contact</a>
@@ -123,7 +125,7 @@
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+        <a class="nav-link" data-widget="fullscreen" role="button">
           <i class="fas fa-expand-arrows-alt"></i>
         </a>
       </li>
@@ -135,3 +137,7 @@
     </ul>
   </nav>
   <!-- /.navbar -->
+
+  <div *ngIf="mostrarCambiarContrasena" class="text-center bg-warning" >
+    <a> <small class="text-primary mr-3" style="cursor: pointer;" (click)="selectedIdUser()" ngbTooltip="cambiar contraseña"> {{ mensajeContrasena }}</small> </a>
+  </div>

@@ -1,106 +1,128 @@
-<div class="container mt-4">
-
-    <div class="row">
-        
-        <div class="col-sm">
-            <div *ngIf="!usuario; else content_usuario">
-                <label>Cargando información...</label>
-            </div>
-            <ng-template #content_usuario>
-                <div class="card">
-                    <div class="card-header bg-primary text-white"> <strong>Información de usuario </strong> </div>
-                    <div class="card-body bg-light" >
-        
-                        <div class="form-group">
-                            <small class="form-text text-muted">Correo</small>
-                            <strong class="text-primary">{{ usuario.correo }}</strong>
-                        </div>
-                        <div class="form-group">
-                            <small class="form-text text-muted">Nombre</small>
-                            <label>{{ usuario.desc_titulo }} {{ usuario.nombre }} {{ usuario.apellidop }} {{ usuario.apellidom }}</label>
-                        </div> 
-                        <div class="form-group">
-                            <small class="form-text text-muted">Especialidad</small>
-                            <label>{{ usuario.desc_especialidad }}</label>
-                        </div> 
-                        <div class="form-group">
-                            <small class="form-text text-muted">Teléfono</small>
-                            <label>{{ usuario.telefono }}</label>
-                        </div> 
-                        
-                    </div>
-                    <div class="card-footer text-right bg-white">
-                        <a> <small class="text-primary cursor-pointer mr-3" (click)="selectedIdUser(usuario.id)">Más detalle...</small> </a>
-                    </div> 
-                </div>      
-            </ng-template>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Mi perfil</h1>
         </div>
-        <div class="col-sm">
-            <div *ngIf="!centro; else content_centro">
-                <label>Cargando Información...</label>
-            </div>
-            <ng-template #content_centro>
-                <div *ngIf="!existeCentro; else datos_centro" class="text-center">
-                    <!-- <button class="btn btn-outline-primary my-2 my-sm-0" routerLink="/centro-form">Registrar mi centro dental</button> -->
-                    <!-- <button class="btn btn-outline-primary mb-2 me-2" (click)="openVerticallyCentered(content)"> Registrar centro dental </button> -->
-                    <button class="btn btn-outline-primary mb-2 me-2" (click)="openVerticallyCentered(content)"
-                        placement="bottom" ngbTooltip="Es necesario para comenzar a registrar tus usuarios, gestionar citas, y más...">
-                        Registrar centro dental 
-                    </button>
-                </div>
-                <ng-template #datos_centro>
-
-                    <div class="card">
-                        <div class="card-header bg-primary text-white"> <strong>Información del centro dental </strong> </div>
-                        <div class="card-body" >
-                            <div class="form-group">
-                                <small class="form-text text-muted">Nombre del centro / consultorio</small>
-                                <strong class="text-primary">{{ centro.nombre }}</strong>
-                            </div>
-                            <div class="form-group">
-                                <small class="form-text text-muted">Teléfono</small>
-                                <label>{{ centro.telefono }}</label>
-                            </div> 
-                            <div class="form-group">
-                                <small class="form-text text-muted">Correo de contacto</small>
-                                <label>{{ centro.correo }}</label>
-                            </div> 
-                            <div class="form-group">
-                                <small class="form-text text-muted">Dirección</small>
-                                <label>{{ centro.direccion }}</label>
-                            </div> 
-                            <div class="form-group">
-                                <small class="form-text text-muted">Fecha y hora de creación</small>
-                                <label>{{ centro.fecha_creacion }}</label>
-                            </div> 
-                        </div>
-                        <div class="card-footer text-right bg-white" >
-                            <a> <small class="text-primary cursor-pointer mr-3" (click)="selectedIdCentro(centro.id)"> Editar...</small> </a>
-                            <a> <small class="text-danger cursor-pointer" (click)="deleteCentro(centro.id, centro.nombre)"> Eliminar</small> </a>
-                        </div>
-                    </div> 
-                </ng-template>
-                     
-            </ng-template>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a routerLink="/agenda">Inicio</a></li>
+            <li class="breadcrumb-item active">Mi perfil</li>
+          </ol>
         </div>
-
-        <div class="col-sm">
-            <img src="https://res.cloudinary.com/dnblt4j16/image/upload/v1677808769/dentalapp/images/dentalapp-01-example_vcuf3h.png" alt="..." class="img-thumbnail">
-        </div>
-
       </div>
+    </div><!-- /.container-fluid -->
+  </section>
 
-  <!-- Nuevo Modal Crear Usuario -->
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-3">
+
+          <!-- Profile Image -->
+          <div class="card card-primary card-outline">
+            <div class="card-body box-profile">
+              <div class="text-center">
+                <i class="fas fa-user size"></i>
+              </div>
+
+              <h3 class="profile-username text-center">{{ usuario.desc_titulo }} {{ usuario.nombre }} {{ usuario.apellidop }} {{ usuario.apellidom }}</h3>
+              <p class="text-muted text-center">{{ usuario.desc_rol }}</p>
+
+              <ul class="list-group list-group-unbordered mb-3">
+                <li class="list-group-item">
+                  <b>Especialidad</b> <a class="float-right">{{ usuario.desc_especialidad }}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Correo</b> <a class="float-right">{{ usuario.correo }}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Teléfono</b> <a class="float-right">{{ usuario.telefono }}</a>
+                </li>
+              </ul>
+
+              <div class="text-right">
+                <a> <small class="text-primary cursor-pointer" (click)="selectedIdUser(usuario.id)">Más detalle...</small> </a>
+              </div>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+
+          <!-- About Me Box -->
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Mi cuenta</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <a> <small class="text-danger cursor-pointer" (click)="deleteCentro(centro.id, centro.nombre)"> Eliminar</small> </a>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+          <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Mi consultorio dental</h3>
+            </div><!-- /.card-header -->
+            <div class="card-body">
+
+                <strong><i class="fas fa-tooth"></i> Nombre</strong>
+                <p class="text-muted">{{ centro.nombre }}</p>
+                <hr>
+
+                <strong><i class="fas fa-phone"></i> Teléfono</strong>
+                <p class="text-muted">{{ centro.telefono }}</p>
+                <hr>
+
+                <strong><i class="fas fa-map-marker-alt mr-1"></i> Dirección</strong>
+                <p class="text-muted">{{ centro.direccion }}</p>
+                <hr>
+
+                <strong><i class="fas fa-envelope"></i> Correo</strong>
+                <p class="text-muted">{{ centro.correo }}</p>
+                <hr>
+
+                <strong><i class="fas fa-calendar"></i> Fecha / Hora de creación</strong>
+                <p class="text-muted">{{ centro.fecha_creacion }}</p>
+                <hr>
+
+                <div class="card-footer text-right bg-white" >
+                    <button class="btn btn-outline-primary mb-2 me-2" (click)="openVerticallyCentered(content)"
+                          placement="bottom" ngbTooltip="Editar información">
+                          <i class="fas fa-pencil-alt mr-1"></i> Editar
+                    </button>
+                    <!-- <a> <small class="text-primary cursor-pointer mr-3" (click)="selectedIdCentro(centro.id)"> <i class="fas fa-pencil-alt mr-1"></i> Editar...</small> </a> -->
+                    <a> <small class="text-danger cursor-pointer" (click)="deleteCentro(centro.id, centro.nombre)"> Eliminar</small> </a>
+                </div>
+
+            </div><!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+
+
   <ng-template #content let-c="close" let-d="dismiss">
     <div class="modal-header">
-      <h4 class="modal-title">Datos del consultorio</h4>
+      <h4 class="modal-title">Modificar Información</h4>
       <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
 
-      <app-centro-form></app-centro-form>
+      <app-centro-detalle></app-centro-detalle>
 
     </div>
     <div class="modal-footer">
@@ -108,5 +130,3 @@
       <button type="button" class="btn btn-light" (click)="c('Cerrar')">Cerrar</button>
     </div>
   </ng-template>
-
-</div>

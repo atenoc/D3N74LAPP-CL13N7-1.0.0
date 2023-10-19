@@ -35,15 +35,17 @@ export class CatRolService {
     );
   }
 
-  getRoles$(): Observable<Catalogo[]>{
-    this.http.get<Catalogo[]>(this.URI).subscribe(
-      res=>{
-        this.roles.next(res)
+  getRoles$(id_us: string): Observable<Catalogo[]> {
+    const url = `${this.URI}?id_us=${id_us}`;
+    this.http.get<Catalogo[]>(url).subscribe(
+      res => {
+        this.roles.next(res);
       },
       err => console.log(err)
-    )
+    );
     return this.roles.asObservable();
   }
+  
 
   getRol$(id: string){
     return this.http.get<Catalogo>(`${this.URI}/${id}`)

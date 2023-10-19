@@ -3,9 +3,9 @@ import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
-import Swal from 'sweetalert2';
 import { NgbModal, NgbModalConfig, NgbPaginationConfig } from '@ng-bootstrap/ng-bootstrap';
 import { CentroService } from 'src/app/services/centro.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-usuarios',
@@ -29,6 +29,7 @@ export class UsuariosListComponent implements OnInit {
   totalElements:number  // total 
 
   constructor(
+    private authService:AuthService,
     private usuarioService:UsuarioService, 
     private router: Router, 
     private centroService:CentroService,
@@ -37,14 +38,13 @@ export class UsuariosListComponent implements OnInit {
     config: NgbModalConfig) {
       config.backdrop = 'static';
 		  config.keyboard = false;
-      paginationConfig.pageSize = this.pageSize;
-      
-     }
+      paginationConfig.pageSize = this.pageSize;  
+    }
 
   ngOnInit() {
 
     console.log("USUARIOS LIST COMP")
-    if(localStorage.getItem('_us')){
+    if(this.authService.validarSesionActiva()){
 
       // Consultar si existe centro
       this.centroService.getCentroByIdUser$(localStorage.getItem('_us')).subscribe(
@@ -63,20 +63,20 @@ export class UsuariosListComponent implements OnInit {
         res => {
   
           this.usuario = res;
-          console.log("Rol Usuarios: "+this.usuario.rol)
+          console.log("Rol Usuarios: "+this.usuario.desc_rol)
   
-          if(this.usuario.rol != "sop" && this.usuario.rol != "admin"){ // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
+          if(this.usuario.desc_rol != "sop" && this.usuario.desc_rol != "admin"){ // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
             this.router.navigate(['/agenda']);
             console.log("No tienes Acceso a esta página!")
           }else{
   
-            if(this.usuario.rol == "sop"){  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
+            if(this.usuario.desc_rol == "sop"){  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
               
               this.getUsuariosPaginados();
 
             }
     
-            if(this.usuario.rol == "admin"){ // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
+            if(this.usuario.desc_rol == "admin"){ // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
               
               this.getUsuariosPaginados();
 
@@ -87,8 +87,10 @@ export class UsuariosListComponent implements OnInit {
         },
         err => console.log("error: " + err)
       )
-
+    }else{
+      this.router.navigate(['/pagina/404/no-encontrada'])
     }
+    
   }
 
   openVerticallyCentered(content) {
@@ -102,57 +104,12 @@ export class UsuariosListComponent implements OnInit {
     this.router.navigate(['/usuario-detalle', id]);
   }
 
-  deleteUser(id: string, correo:string) {
-
-    Swal.fire({
-      html:
-        `¿ Estás seguro de eliminar el usuario: <br/> ` +
-        `<strong> ${ correo } </strong> ? `,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#dc3545',
-      cancelButtonColor: '#aeaeae',
-      confirmButtonText: 'Si, eliminar',
-      cancelButtonText: 'No, cancelar'
-    }).then((result) => {
-      if (result.value) {
-        // Confirm
-        this.usuarioService.deleteUsuario(id).subscribe(res => {
-          console.log("Usuario eliminado:" + JSON.stringify(res))
-
-          Swal.fire({
-            icon: 'success',
-            showConfirmButton: false,
-            text:'¡El usuario ha sido eliminado!',
-            timer: 1500
-          })
-
-        },
-          err => { 
-            console.log("error: " + err)
-            Swal.fire({
-              icon: 'error',
-              html:
-                `<strong>¡${ err.error.message }!</strong>`,
-              showConfirmButton: true,
-              confirmButtonColor: '#28a745',
-              timer: 4000
-            }) 
-          }
-        )
-    
-      }
-    })
-
-  }
-
   irUsuarioForm(){
     this.router.navigate(['/usuario-form']);
   }
 
   getUsuariosPaginados() {
     this.usuarioService
-      //.getUsuariosPaginados$(this.currentPage, this.pageSize, this.orderBy, this.way)
       .getUsuariosByUsuarioPaginados$(this.usuario.id, this.currentPage, this.pageSize, this.orderBy, this.way)
       .subscribe((res) => {
         this.usuarios = res.data
@@ -188,5 +145,4 @@ export class UsuariosListComponent implements OnInit {
     this.getUsuariosPaginados();
   }
   
-
 }

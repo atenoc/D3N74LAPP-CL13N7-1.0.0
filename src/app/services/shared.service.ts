@@ -10,7 +10,9 @@ export class SharedService {
   private messageSource = new BehaviorSubject<string>('') 
   mensajeActual = this.messageSource.asObservable()
 
-  private data = new BehaviorSubject<boolean>(true);
+  private cambiarContrasena = new BehaviorSubject<boolean>(true);
+  private nombreClinica = new BehaviorSubject<string>('');
+  private nombreUsuario = new BehaviorSubject<string>('');
 
   constructor() { }
 
@@ -18,11 +20,24 @@ export class SharedService {
     this.messageSource.next(message)
   }
 
-  setData(data: boolean) {
-    this.data.next(data);
+  getCambiarContrasena() {
+    return this.cambiarContrasena.asObservable();
+  }
+  setData(valor: boolean) {
+    this.cambiarContrasena.next(valor);
   }
 
-  getData() {
-    return this.data.asObservable();
+  getNombreClinica() {
+    return this.nombreClinica.asObservable();
+  }
+  setNombreClinica(nombre: string) {
+    this.nombreClinica.next(nombre);
+  }
+
+  getNombreUsuario() {
+    return this.nombreUsuario.asObservable();
+  }
+  setNombreUsuario(nombreUsuario: string) {
+    this.nombreUsuario.next(nombreUsuario);
   }
 }

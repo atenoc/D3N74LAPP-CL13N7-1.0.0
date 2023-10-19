@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal, NgbModalConfig  } from '@ng-bootstrap/ng-bootstrap';
 import { Centro } from 'src/app/models/Centro.model';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { CentroService } from 'src/app/services/centro.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { Mensajes } from 'src/app/shared/mensajes.config';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -14,17 +15,23 @@ import Swal from 'sweetalert2';
 })
 export class PerfilComponent implements OnInit {
 
-  usuario: Usuario
-  centro: Centro
+  usuario: Usuario = {} as Usuario;
+  centro: Centro = {} as Centro;
+
   existeCentro:boolean
 
-  constructor(private usuarioService:UsuarioService, private centroService:CentroService, private router:Router,
-    private modalService: NgbModal, config: NgbModalConfig) {
+  constructor(
+    private usuarioService:UsuarioService, 
+    private centroService:CentroService, 
+    private router:Router,
+    private modalService: NgbModal, 
+    config: NgbModalConfig) {
       config.backdrop = 'static';
 		  config.keyboard = false;
     }
 
   ngOnInit() {
+    console.log("PERFIL Component")
     if(localStorage.getItem('_us')){
 
       // Consulta de Usuario por Correo
@@ -33,38 +40,45 @@ export class PerfilComponent implements OnInit {
           this.usuario = res;
           console.log(this.usuario )
           // Consulta Centro del usuario
-          this.centroService.getCentroByIdUser$(this.usuario.id).subscribe(
-            res => {
-              this.centro = res;
-              if(this.centro.id.length > 0){
-                this.existeCentro = true
-              }else{
-                this.existeCentro = false
-              }
-              console.log("Existe centro: "+this.existeCentro)
-            },
-            err => console.log("error: " + err)
-          )
-          
-          // Suscribirse al Subject del centro recién creado
-          this.centroService.getCentroCreado$.subscribe(
-            res => {
-              // Actualizar el valor del centro
-              this.centro = res;
-            },
-            err => console.log("error: " + err)
-          );
-
+          this.cargarCentroPorIdUsuario()
         },
         err => console.log("error: " + err)
       )  
 
     }  
+    console.log("Existe Final: "+this.existeCentro)
+
+    this.centroService.currentCentroId.subscribe((respuesta) => {
+      console.log("Valor idCentro: "+ respuesta);
+      // Utiliza this.centroId para cargar los datos del centro
+      if(respuesta === "success"){
+        console.log("Reload")
+        this.centroService.changeCentroId('')
+        this.cargarCentroPorIdUsuario()
+      }
+    });
+  }
+
+  cargarCentroPorIdUsuario(){
+    this.centroService.getCentroByIdUser$(this.usuario.id).subscribe(
+      res => {
+        this.centro = res;
+        this.existeCentro = true
+        console.log("Existe centro: "+this.existeCentro)
+      },
+      err => {
+        console.log("error: " + err)
+        this.existeCentro = false
+        console.log("Existe False: "+this.existeCentro)
+      }
+    )
   }
 
   openVerticallyCentered(content) {
-		this.modalService.open(content, { centered: true });
-	}
+    this.centroService.changeCentroId(this.centro.id); // Cambia el id en el servicio
+    this.modalService.open(content, { centered: true });
+
+  }
 
   selectedIdUser(id: string) {
     console.log("id seleccionado: "+id)
@@ -80,8 +94,8 @@ export class PerfilComponent implements OnInit {
 
     Swal.fire({
       html:
-        `¿ Estás seguro de eliminar el centro dental: <br/> ` +
-        `<strong> ${ nombre } </strong> ? `,
+        `<h5>${ Mensajes.CLINICA_ELIMINAR_QUESTION }</h5> <br/> ` +
+        `<strong> ${ nombre } </strong>`,
       icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#dc3545',
@@ -98,8 +112,9 @@ export class PerfilComponent implements OnInit {
           Swal.fire({
             icon: 'success',
             showConfirmButton: false,
-            text:'¡El centro dental ha sido eliminado!',
-            timer: 1500
+            html:
+                `<strong>${ Mensajes.CLINICA_ELIMINADA }</strong>`,
+            timer: 2000
           })
         },
           err => { 
@@ -107,10 +122,11 @@ export class PerfilComponent implements OnInit {
             Swal.fire({
               icon: 'error',
               html:
-                `<strong>¡${ err.error.message }!</strong>`,
-              showConfirmButton: true,
-              confirmButtonColor: '#28a745',
-              timer: 4000
+                `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
+                `<span>${ Mensajes.CLINICA_NO_ELIMINADA }</span></br>`+
+                `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
+              showConfirmButton: false,
+              timer: 3000
             }) 
           }
         )

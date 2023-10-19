@@ -59,22 +59,6 @@ export class UsuarioService {
     return this.usuarios.asObservable();
   }
 
-  // GET Usuarios Paginado
-  getUsuariosPaginados$(
-    page: number,
-    size: number,
-    orderBy: string,
-    way: string
-  ): Observable<UsuariosPaginados> {
-    let params = new HttpParams()
-      .set('page', String(page))
-      .set('size', String(size))
-      .set('orderBy', String(orderBy))
-      .set('way', String(way));
-  
-    return this.http.get<UsuariosPaginados>(`${this.URI}/pagination`, { params });
-  }
-
   // GET
   getUsuario$(id: string){
     return this.http.get<Usuario>(`${this.URI}/${id}`)
@@ -83,6 +67,10 @@ export class UsuarioService {
   // PATCH
   updateUsuario(id: string, correo: string, llave: string, rol:string, titulo:string, nombre:string, apellidop:string, apellidom:string, especialidad:string, telefono:string) {
     return this.http.patch(`${this.URI}/${id}`, {correo, llave, rol, titulo, nombre, apellidop, apellidom, especialidad, telefono});
+  }
+
+  updateUsuarioRegister(id: string, nombre:string, apellidop:string) {
+    return this.http.patch(`${this.URI}/usuario/${id}`, {nombre, apellidop});
   }
 
   // DELETE
@@ -99,10 +87,10 @@ export class UsuarioService {
     );
   }
   
-  // GET One by - Login / Navigate
+  // getUserByCorreo - After Login
   getUsuarioByCorreo$(correo: string) {
     if(correo){
-      this.http.get<Usuario>(`${this.URI}/usuarioxcorreo/${correo}`).subscribe(
+      this.http.get<Usuario>(`${this.URI}/usuario/correo/${correo}`).subscribe(
         res=>{
           this.usuario$.next(res)
         },
@@ -114,18 +102,21 @@ export class UsuarioService {
     }
   }
 
-  // GET All by
-  getUsuariosByUsuario$(id:string): Observable<Usuario[]>{
-    this.http.get<Usuario[]>(`${this.URI}/usuario/${id}`).subscribe(
-      res=>{
-        this.usuarios.next(res)
-      },
-      err => console.log(err)
-    )
-    return this.usuarios.asObservable();
+  // getUserByIdUserAndCorreo - After Login 2
+  validarUsuarioActivo$(id: string, correo: string) {
+    if (id && correo) {
+      return this.http.get<Usuario>(`${this.URI}/usuario/${id}/correo/${correo}`).pipe(
+        catchError((err) => {
+          //console.log(err); 
+          return throwError(err); // Lanzar el error nuevamente para que lo maneje el componente
+        })
+      );
+    } else {
+      return this.usuario$;
+    }
   }
 
-  // GET Usuarios Paginado
+  // getUserByIdUserAndCorreo
   getUsuariosByUsuarioPaginados$(
     id:string,
     page: number,
@@ -139,11 +130,12 @@ export class UsuarioService {
       .set('orderBy', String(orderBy))
       .set('way', String(way));
   
-    return this.http.get<UsuariosPaginados>(`${this.URI}/usuario/${id}`, { params });
+    return this.http.get<UsuariosPaginados>(`${this.URI}/paginacion/usuario/${id}`, { params });
   }
 
+  // updateUserPassword
   updateUsuarioLlave(id: string, llave: string){
-    return this.http.patch(`${this.URI}/passwordusuario/${id}`, { llave });
+    return this.http.patch(`${this.URI}/password/usuario/${id}`, { llave });
   }
 
 }

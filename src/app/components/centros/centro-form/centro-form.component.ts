@@ -66,13 +66,17 @@ export class CentroFormComponent implements OnInit {
         this.modalService.dismissAll()
 
         Swal.fire({
-          icon: 'success',
+          position: 'top-end',
           html:
-            `<strong>${ this.centroRes.nombre }</strong><br/>` +
-            '¡Registrado con éxito!',
-          showConfirmButton: true,
-          confirmButtonColor: '#28a745',
-          timer: 1500
+            `<h5>${ Mensajes.CLINICA_REGISTRADA }</h5>`+
+            `<span>${ this.centroRes.nombre }</span>`, 
+          showConfirmButton: false,
+          backdrop: false, 
+          width: 400,
+          background: 'rgb(40, 167, 69, .90)',
+          color:'white',
+          timerProgressBar:true,
+          timer: 3000,
         })
 
       },
@@ -81,10 +85,12 @@ export class CentroFormComponent implements OnInit {
         Swal.fire({
           icon: 'error',
           html:
-            `<strong>¡${ err.error.message }!</strong>`,
-          showConfirmButton: true,
-          confirmButtonColor: '#28a745',
-          timer: 4000
+            `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
+            `<span>${ Mensajes.CLINICA_NO_REGISTRADA }</span></br>`+
+            `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
+          showConfirmButton: false,
+          //confirmButtonColor: '#28a745',
+          timer: 3000
         })
       }
     )

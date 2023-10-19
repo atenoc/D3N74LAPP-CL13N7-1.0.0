@@ -56,17 +56,12 @@
                             </div>
                         </div>
                 
-                        <div class="col-sm">
-                          
+                        <div class="col-sm">                         
                             <div class="form-group">
                                 <small class="text-muted"><strong> Rol * </strong></small>
-                                <select class="form-select" formControlName="rol" [ngClass]="getInputClass('rol')">
-                                  <option selected>Selecciona una opción:</option>
-                                    <option value="admin">Administrador</option>
-                                    <option value="asistente">Asistente</option>
-                                    <option value="recepcionista">Recepcionista</option>
-                                    <option value="cajero">Cajero</option>
-                                    <option value="invitado">Invitado</option>
+                                <select class="form-select" formControlName="rol">
+                                    <option selected disabled [value]="0">Selecciona una opción:</option>
+                                    <option *ngFor="let item of catRoles" [value]="item.id">{{ item.descripcion }}</option>
                                 </select>
                 
                                 <div *ngIf="formularioUsuario.controls['rol'].invalid && formularioUsuario.controls['rol'].dirty" class="invalid-input-message">
@@ -169,5 +164,7 @@
       </div>
     </div>
   </section>
+
+  <ngx-spinner bdColor = "rgba(0,0,0,0.7)" size = "large" color = "#ffffff" type = "ball-scale-multiple" [fullScreen] = "false"><p style="color: white" > Cargando, por favor espere... </p></ngx-spinner>
 
 

@@ -3,7 +3,8 @@ export interface Usuario{
     id:string;
     correo:string;
     llave:string;
-    rol:string;
+    id_rol:string;
+    desc_rol:string
     id_titulo:string,
     desc_titulo:string,  
     nombre:string, 

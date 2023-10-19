@@ -1,19 +1,20 @@
 import { HttpInterceptor } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
+import { CifradoService } from './shared/cifrado.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenInterceptorService implements HttpInterceptor{
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private cifradoService:CifradoService) { }
 
   intercept(req, next){
-    console.log("obteniendo token: " +this.authService.getToken())
+    //console.log("obteniendo token: " +this.authService.getToken())
     const tokenizeReq = req.clone({
       setHeaders: {
-        Authorization: `Bearer ${this.authService.getToken()}`
+        Authorization: `Bearer ${this.cifradoService.getDecryptedToken()}`
       }
     })
     return next.handle(tokenizeReq)

@@ -1,0 +1,15 @@
+.offline-message{
+    background: #ff4f60;
+    z-index: 1045;
+    position: fixed;
+    color: white;
+    width: 100%;
+}
+
+.online-message{
+    background: #4caf50;
+    z-index: 1045;
+    position: fixed;
+    color: white;
+    width: 100%;
+}

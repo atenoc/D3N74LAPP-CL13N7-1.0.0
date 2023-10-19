@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Usuario } from '../models/Usuario.model';
-import { BehaviorSubject, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
 import Swal from 'sweetalert2';
 import { SharedService } from './shared.service';
@@ -15,10 +13,11 @@ export class AuthService {
   //URI = 'http://localhost:4000/api/seguridad';
   URI = environment.urlApiSeguridad
 
-  //private usuario$: Subject<Usuario>;
-
-  constructor(private http: HttpClient, private router:Router, private sharedService:SharedService) {
-    //this.usuario$ = new Subject();
+  constructor(
+    private http: HttpClient, 
+    private router:Router, 
+    private sharedService:SharedService
+    ) {
   }
 
   login(user){
@@ -27,12 +26,21 @@ export class AuthService {
   }
 
   estaLogueado(){
-    return !!localStorage.getItem('token')  // comprobamos si existe el token para retornar true:false
+    // comprobamos si existe el token para retornar true:false
+    return !!localStorage.getItem('_enc_t')
   }
 
-  getToken(){
-    return localStorage.getItem('token')
+  validarSesionActiva(){
+    return !!localStorage.getItem('_enc_t') 
+        && !!localStorage.getItem('_us')
+        && !!localStorage.getItem('_lor_')
+        && !!localStorage.getItem('_em')
   }
+
+  /*
+  getToken(){
+    return localStorage.getItem('__tooqn')
+  }*/
 
   logout(){
 
@@ -47,12 +55,11 @@ export class AuthService {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        // Confirm
 
-        localStorage.removeItem('token')
+        localStorage.removeItem('_enc_t')
+        localStorage.removeItem('_lor_')
         localStorage.removeItem('_us')
-        localStorage.removeItem('correo_us')
-
+        localStorage.removeItem('_em')
         this.router.navigate(['/login'])
 
         // Se manda un mensaje para validar el cierre de sesion y refrescar el menu 
@@ -66,9 +73,7 @@ export class AuthService {
           timer: 1500
         }) 
       }
-    }) //end Swal
-
+    })
   }
-
 }
 

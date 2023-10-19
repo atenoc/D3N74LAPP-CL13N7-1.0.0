@@ -1,20 +1,16 @@
 .full-height {
-    height: 92.9vh
+    background: #00c4ff;
+    position: fixed;
+    left: 0px;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1040;
 }
 
-.fondo{
-    background-image: linear-gradient(to right top, #bc3369, #b053a0, #8c74ca, #5791df, #0aa8e0);
-}
-
-.my-alert {
-    font-size: 15px;
-    padding: 0px;
-    border-radius: 15px;
-    color: #c16e6e
-    /* Añade otros estilos personalizados aquí */
-  }
-
-.my-card {
-    border: 0px solid;
-    box-shadow: 5px 5px 10px #121212;
+.sin-borde-login{
+    border: 0 !important;
+    background: #fff !important;
+    border-radius: 1px !important;
+    color: #007eff !important;
 }

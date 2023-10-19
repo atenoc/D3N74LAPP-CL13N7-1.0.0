@@ -25,6 +25,8 @@ import { ContrasenaComponent } from './components/usuarios/usuario-detalle/contr
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HeaderComponent } from './shared/header/header.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
+import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
+import { ConfigPerfilUsuarioComponent } from './components/perfil/config-perfil-usuario/config-perfil-usuario.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,9 @@ import { SidebarComponent } from './shared/sidebar/sidebar.component';
     FooterComponent,
     ContrasenaComponent,
     HeaderComponent,
-    SidebarComponent
+    SidebarComponent,
+    PageNotFoundComponent,
+    ConfigPerfilUsuarioComponent
   ],
   imports: [
     BrowserModule,
