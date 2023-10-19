@@ -146,35 +146,32 @@ export class UsuarioDetalleComponent implements OnInit {
         this.spinner.hide();
         Swal.fire({
           position: 'top-end',
-          //icon: 'success',
           html:
-            `<h5>Información actualizada</h5>`+
-            `<span>Usuario: ${ this.usuario.correo }</span>`, 
+            `<h5>${ Mensajes.USUARIO_ACTUALIZADO }</h5>`+
+            `<span>${ this.usuario.correo }</span>`, 
             
           showConfirmButton: false,
-          //confirmButtonColor: '#28a745',
-          timer: 3000,
-          backdrop: false, // Deshabilita el fondo oscuro
+          backdrop: false, 
           width: 400,
           background: 'rgb(40, 167, 69, .90)',
           color:'white',
-          //iconColor: 'white',
-          timerProgressBar:true
+          timerProgressBar:true,
+          timer: 3000,
         })
 
       },
         err => {
           this.spinner.hide();
           console.log("error: " + err)
+          //err.error.message
           Swal.fire({
             icon: 'error',
             html:
-              `<strong>${ err.error.message }</strong></br>`+
-              `<span>¡Por favor intente más tarde!</span></br>`+
-              `<small>Si el problema persiste, coctacte a su administrador.</small>`,
+              `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
+              `<span>${ Mensajes.USUARIO_NO_ACTUALIZADO }</span></br>`+
+              `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
             showConfirmButton: false,
-            //confirmButtonColor: '#28a745',
-            timer: 10000
+            timer: 3000
           })
         }
       );
@@ -213,8 +210,8 @@ export class UsuarioDetalleComponent implements OnInit {
 
     Swal.fire({
       html:
-        `¿ Estás seguro de eliminar el usuario: <br/> ` +
-        `<strong> ${ correo } </strong> ? `,
+        `<h5>${ Mensajes.USUARIO_ELIMINAR_QUESTION }</h5> <br/> ` +
+        `<strong> ${ correo } </strong>`,
       icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#dc3545',
@@ -228,11 +225,19 @@ export class UsuarioDetalleComponent implements OnInit {
           console.log("Usuario eliminado:" + JSON.stringify(res))
 
           Swal.fire({
-            icon: 'success',
+            position: 'top-end',
+            html:
+              `<h5>${ Mensajes.USUARIO_ELIMINADO }</h5>`+
+              `<span>${ this.usuario.correo }</span>`, 
             showConfirmButton: false,
-            text:'¡El usuario ha sido eliminado!',
-            timer: 1500
+            backdrop: false, 
+            width: 400,
+            background: 'rgb(40, 167, 69, .90)',
+            color:'white',
+            timerProgressBar:true,
+            timer: 3000,
           })
+
           this.router.navigate(['/usuarios']);
         },
           err => { 
@@ -240,10 +245,11 @@ export class UsuarioDetalleComponent implements OnInit {
             Swal.fire({
               icon: 'error',
               html:
-                `<strong>¡${ err.error.message }!</strong>`,
-              showConfirmButton: true,
-              confirmButtonColor: '#28a745',
-              timer: 4000
+                `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
+                `<span>${ Mensajes.USUARIO_NO_ELIMINADO }</span></br>`+
+                `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
+              showConfirmButton: false,
+              timer: 3000
             }) 
           }
         )

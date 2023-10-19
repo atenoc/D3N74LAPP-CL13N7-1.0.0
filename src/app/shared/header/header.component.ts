@@ -46,7 +46,7 @@ export class HeaderComponent implements OnInit {
         this.idUsuario=this.usuario.id
         if(this.usuario.llave_status == 0){
           this.mostrarCambiarContrasena=true
-          this.mensajeContrasena=Mensajes.CAMBIAR_CONTRASENA;
+          this.mensajeContrasena=Mensajes.CONTRASENA_ACTUALIZAR;
         }else{
           this.mostrarCambiarContrasena=false
         }

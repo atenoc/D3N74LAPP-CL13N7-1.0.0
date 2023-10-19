@@ -5,6 +5,7 @@ import { Centro } from 'src/app/models/Centro.model';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { CentroService } from 'src/app/services/centro.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { Mensajes } from 'src/app/shared/mensajes.config';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -93,8 +94,8 @@ export class PerfilComponent implements OnInit {
 
     Swal.fire({
       html:
-        `¿ Estás seguro de eliminar el centro dental: <br/> ` +
-        `<strong> ${ nombre } </strong> ? `,
+        `<h5>${ Mensajes.CLINICA_ELIMINAR_QUESTION }</h5> <br/> ` +
+        `<strong> ${ nombre } </strong>`,
       icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#dc3545',
@@ -111,8 +112,9 @@ export class PerfilComponent implements OnInit {
           Swal.fire({
             icon: 'success',
             showConfirmButton: false,
-            text:'¡El centro dental ha sido eliminado!',
-            timer: 1500
+            html:
+                `<strong>${ Mensajes.CLINICA_ELIMINADA }</strong>`,
+            timer: 2000
           })
         },
           err => { 
@@ -120,10 +122,11 @@ export class PerfilComponent implements OnInit {
             Swal.fire({
               icon: 'error',
               html:
-                `<strong>¡${ err.error.message }!</strong>`,
-              showConfirmButton: true,
-              confirmButtonColor: '#28a745',
-              timer: 4000
+                `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
+                `<span>${ Mensajes.CLINICA_NO_ELIMINADA }</span></br>`+
+                `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
+              showConfirmButton: false,
+              timer: 3000
             }) 
           }
         )

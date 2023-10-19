@@ -18,8 +18,7 @@ import { CentroService } from 'src/app/services/centro.service';
 export class LoginComponent implements OnInit {
 
   //user = { }
-  mensajeError: String
-  mostrarError: Boolean
+  
   correoUsuario: string
   usuario: Usuario
   formularioLogin:FormGroup
@@ -27,6 +26,9 @@ export class LoginComponent implements OnInit {
   //mensajes
   campoRequerido: string;
   correoValido: string;
+  mensajeError: String
+  mostrarError: Boolean
+  mensajeDetalleError: String
 
   constructor(
     private centroService:CentroService,
@@ -107,32 +109,33 @@ export class LoginComponent implements OnInit {
         console.log(err.error.message)
         console.log(err)
 
-        Swal.fire({
-          icon: 'warning',
-          html:
-            `<strong> ${ err.error.message  } </strong><br/>` +
-            '<small> ¡Por favor verifica el correo y/o contraseña! </small> ',
-          showConfirmButton: false,
-          timer: 3000
-        }) 
+        if(err.error.message === undefined){
+          this.mensajeDetalleError = Mensajes.SIN_CONEXION_RED
+          Swal.fire({
+            icon: 'error',
+            html:
+              `<strong> ${ Mensajes.ERROR_500 } </strong><br/>` +
+              `<small> ${ Mensajes.SIN_CONEXION_RED } </small> `,
+            showConfirmButton: false,
+            timer: 3000
+          }) 
+        }else{
+          this.mensajeDetalleError = Mensajes.CONTRASENA_VERIFICAR
+          Swal.fire({
+            icon: 'warning',
+            html:
+              `<strong> ${ Mensajes.WARNING } </strong><br/>` +
+              `<small> ${ Mensajes.CONTRASENA_VERIFICAR } </small> `,
+            showConfirmButton: false,
+            timer: 3000
+          }) 
+        }
 
-        this.mensajeError = err.error.message + ". ¡Por favor verifica el correo y/o contraseña!"
+        this.mensajeError = this.mensajeDetalleError
         this.mostrarError = true
       }
     ) 
 
   }
 
-  
-
-  validaExisteCentro(){
-    console.log("Validando Centro")
-    console.log("Id_Usuario: "+localStorage.getItem('_us'))
-    
-  }
-
-  /*
-  actualizarUsuarioLogueado(correo){
-    this.authService.cambiarUsuario(correo)
-  }*/
 }

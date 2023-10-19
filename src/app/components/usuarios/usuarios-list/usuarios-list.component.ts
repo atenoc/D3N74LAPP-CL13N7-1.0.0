@@ -3,7 +3,6 @@ import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
-import Swal from 'sweetalert2';
 import { NgbModal, NgbModalConfig, NgbPaginationConfig } from '@ng-bootstrap/ng-bootstrap';
 import { CentroService } from 'src/app/services/centro.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -39,9 +38,8 @@ export class UsuariosListComponent implements OnInit {
     config: NgbModalConfig) {
       config.backdrop = 'static';
 		  config.keyboard = false;
-      paginationConfig.pageSize = this.pageSize;
-      
-     }
+      paginationConfig.pageSize = this.pageSize;  
+    }
 
   ngOnInit() {
 
@@ -147,5 +145,4 @@ export class UsuariosListComponent implements OnInit {
     this.getUsuariosPaginados();
   }
   
-
 }

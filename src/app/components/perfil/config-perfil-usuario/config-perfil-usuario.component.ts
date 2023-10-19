@@ -5,6 +5,7 @@ import { Centro } from 'src/app/models/Centro.model';
 import { CentroService } from 'src/app/services/centro.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { Mensajes } from 'src/app/shared/mensajes.config';
 import Swal from 'sweetalert2';
 declare var require: any;
 
@@ -62,9 +63,9 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
       Swal.fire({
         icon: 'warning',
         html:
-          '¡Por favor, rellena todos los campos!',
-        showConfirmButton: true,
-        confirmButtonColor: '#28a745',
+          `<strong> ${ Mensajes.WARNING } </strong><br/>` +
+          `<span>${ Mensajes.REGISTRO_VALIDACION }</span>`,
+        showConfirmButton: false,
         timer: 2000
       })
       return
@@ -98,13 +99,13 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
 
             this.router.navigate(['/perfil'])
             Swal.fire({
-              title: 'Genial',
+              title: `${ Mensajes.SUCCESS }`,
               icon: 'success',
               html:
-                'Todo listo para administrar tu consultorio dental',
+                `<strong>${ Mensajes.REGISTRO_EXITOSO }</strong></br>`,
               showConfirmButton: true,
               confirmButtonColor: '#28a745',
-              timer: 5000
+              timer: 4000
             })
             console.log("Usuario actualizado")
             this.sharedService.setNombreUsuario(this.nombre +" "+this.apellido)
@@ -119,14 +120,14 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
       },
       err =>{
         Swal.fire({
-          title: 'Oopss',
           icon: 'error',
           html:
-            'No pudimos registrar tus datos, por favor intentalo más tarde.',
-          showConfirmButton: true,
-          confirmButtonColor: '#28a745',
+            `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
+            `<span>${ Mensajes.REGISTRO_ERROR }</span></br>`+
+            `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
+          showConfirmButton: false,
           timer: 3000
-        })
+        }) 
         console.log("Ocurrió un error al registrar la clínica")
         console.log(err)
       }

@@ -56,10 +56,9 @@
                             </div>
                         </div>
                 
-                        <div class="col-sm">
-                          
+                        <div class="col-sm">                         
                             <div class="form-group">
-                                <small class="text-muted"> Rol *</small>
+                                <small class="text-muted"><strong> Rol * </strong></small>
                                 <select class="form-select" formControlName="rol">
                                     <option selected disabled [value]="0">Selecciona una opción:</option>
                                     <option *ngFor="let item of catRoles" [value]="item.id">{{ item.descripcion }}</option>
