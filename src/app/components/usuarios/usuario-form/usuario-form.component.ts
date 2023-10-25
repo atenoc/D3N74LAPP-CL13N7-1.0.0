@@ -4,12 +4,10 @@ import { Usuario } from 'src/app/models/Usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
 import { Mensajes } from 'src/app/shared/mensajes.config';
-import { CatRolService } from 'src/app/services/cat-rol.service';
 import { Catalogo } from 'src/app/models/Catalogo.model';
-import { CatTituloService } from 'src/app/services/cat-titulo.service';
-import { CatEspecialidadService } from 'src/app/services/cat-especialidad.service';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { CatalogoService } from 'src/app/services/catalogo.service';
 
 @Component({
   selector: 'app-usuario-form',
@@ -38,9 +36,7 @@ export class UsuarioFormComponent implements OnInit {
     private usuarioService:UsuarioService, 
     private router: Router, 
     private el: ElementRef,
-    private catRolService:CatRolService,
-    private catTituloService:CatTituloService,
-    private catEspecialidadService:CatEspecialidadService,
+    private catalogoService:CatalogoService,
     private spinner: NgxSpinnerService, 
     ) {
       this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
@@ -68,19 +64,19 @@ export class UsuarioFormComponent implements OnInit {
     })
 
     // carga Catálogos
-    this.catRolService.getRoles$(localStorage.getItem('_us')).subscribe(res => { 
+    this.catalogoService.getRoles$(localStorage.getItem('_us')).subscribe(res => { 
         this.catRoles = res
         console.log("Roles: "+res.length)
       },
       err => console.log("error: " + err)
     )
-    this.catTituloService.getTitulos$().subscribe(res => { 
+    this.catalogoService.getTitulos$().subscribe(res => { 
         this.catTitulos = res
         console.log("Titulos: "+res.length)
       },
       err => console.log("error: " + err)
     )
-    this.catEspecialidadService.getEspecialidades$().subscribe(res => { 
+    this.catalogoService.getEspecialidades$().subscribe(res => { 
         this.catEspecialidades = res
         console.log("Especialidades: "+res.length)
       },

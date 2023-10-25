@@ -30,9 +30,9 @@ export class CentroListComponent implements OnInit {
         res => {
 
           this.usuario = res;
-          console.log("Rol Centros: "+this.usuario.desc_rol)
+          console.log("Rol Centros: "+this.usuario.rol)
   
-          if(this.usuario.desc_rol != "sop"){  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
+          if(this.usuario.rol != "sop"){  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
             this.router.navigate(['/agenda']);
           }else{
             this.centroService.getCentros$().subscribe(

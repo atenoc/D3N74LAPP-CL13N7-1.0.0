@@ -32,7 +32,7 @@ export class SidebarComponent implements OnInit {
       res => {
         this.usuario = res;
         this.idUsuario=this.usuario.id
-        this.rolUsuario=this.usuario.desc_rol
+        this.rolUsuario=this.usuario.rol
         this.nombreUsuario=this.usuario.nombre +" "+this.usuario.apellidop
         console.log("Usuario sidebar:: ")
         console.log(this.usuario)

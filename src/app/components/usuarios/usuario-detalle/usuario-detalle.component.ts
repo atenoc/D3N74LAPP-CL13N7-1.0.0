@@ -4,9 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Catalogo } from 'src/app/models/Catalogo.model';
 import { Usuario } from 'src/app/models/Usuario.model';
-import { CatEspecialidadService } from 'src/app/services/cat-especialidad.service';
-import { CatRolService } from 'src/app/services/cat-rol.service';
-import { CatTituloService } from 'src/app/services/cat-titulo.service';
+import { CatalogoService } from 'src/app/services/catalogo.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
@@ -44,9 +42,7 @@ export class UsuarioDetalleComponent implements OnInit {
     private usuarioService:UsuarioService, 
     private router: Router,
     private el: ElementRef,
-    private catRolService:CatRolService,
-    private catTituloService:CatTituloService,
-    private catEspecialidadService:CatEspecialidadService,
+    private catalogoService:CatalogoService,
     private spinner: NgxSpinnerService, 
     private sharedService:SharedService
     ) {
@@ -79,7 +75,7 @@ export class UsuarioDetalleComponent implements OnInit {
         this.usuario = res;
         console.log(res)
         console.log("id Especialidad:" + res.id_especialidad)
-        console.log("usuario obtenido:" + JSON.stringify(res))
+        //console.log("usuario obtenido:" + JSON.stringify(res))
         this.tituloCard = this.usuario.nombre+' '+this.usuario.apellidop+' '+this.usuario.apellidom
         this.idUsuario=this.usuario.id
         this.fecha_creacion=this.usuario.fecha_creacion
@@ -180,7 +176,7 @@ export class UsuarioDetalleComponent implements OnInit {
   }
 
   cargarRoles(){
-    this.catRolService.getRoles$(localStorage.getItem('_us')).subscribe(res => { 
+    this.catalogoService.getRoles$(localStorage.getItem('_us')).subscribe(res => { 
       this.catRoles = res
       console.log("Roles: "+res.length)
     },
@@ -189,7 +185,7 @@ export class UsuarioDetalleComponent implements OnInit {
   }
 
   cargarTitulos(){
-    this.catTituloService.getTitulos$().subscribe(res => { 
+    this.catalogoService.getTitulos$().subscribe(res => { 
       this.catTitulos = res
       console.log("Titulos: "+res.length)
     },
@@ -198,7 +194,7 @@ export class UsuarioDetalleComponent implements OnInit {
   }
 
   cargarEspecialidades(){
-    this.catEspecialidadService.getEspecialidades$().subscribe(res => { 
+    this.catalogoService.getEspecialidades$().subscribe(res => { 
       this.catEspecialidades = res
       console.log("Especialidades: "+res.length)
     },

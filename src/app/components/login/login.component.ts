@@ -76,7 +76,7 @@ export class LoginComponent implements OnInit {
           res => {
     
             localStorage.setItem('_us', res.id)
-            this.cifrado.setEncryptedRol(res.desc_rol)
+            this.cifrado.setEncryptedRol(res.rol)
 
             this.centroService.getCentroByIdUser$(res.id).subscribe(
               res => {
