@@ -65,8 +65,8 @@ export class UsuarioService {
   }
 
   // PATCH
-  updateUsuario(id: string, correo: string, llave: string, rol:string, titulo:string, nombre:string, apellidop:string, apellidom:string, especialidad:string, telefono:string) {
-    return this.http.patch(`${this.URI}/${id}`, {correo, llave, rol, titulo, nombre, apellidop, apellidom, especialidad, telefono});
+  updateUsuario(id: string, correo: string, rol:string, titulo:string, nombre:string, apellidop:string, apellidom:string, especialidad:string, telefono:string) {
+    return this.http.patch(`${this.URI}/${id}`, {correo, rol, titulo, nombre, apellidop, apellidom, especialidad, telefono});
   }
 
   updateUsuarioRegister(id: string, nombre:string, apellidop:string) {

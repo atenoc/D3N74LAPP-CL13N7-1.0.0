@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Catalogo } from 'src/app/models/Catalogo.model';
+import { CatalogoEspecialidad, CatalogoRol, CatalogoTitulo } from 'src/app/models/Catalogo.model';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { CatalogoService } from 'src/app/services/catalogo.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -25,9 +25,9 @@ export class UsuarioDetalleComponent implements OnInit {
   idUsuario:string;
   fecha_creacion:Date;
 
-  catRoles:Catalogo[] = [];
-  catTitulos:Catalogo[] = [];
-  catEspecialidades:Catalogo[] = [];
+  catRoles:CatalogoRol[] = [];
+  catTitulos:CatalogoTitulo[] = [];
+  catEspecialidades:CatalogoEspecialidad[] = [];
 
   //mensajes
   campoRequerido: string;
@@ -41,7 +41,7 @@ export class UsuarioDetalleComponent implements OnInit {
     private activatedRoute: ActivatedRoute, 
     private usuarioService:UsuarioService, 
     private router: Router,
-    private el: ElementRef,
+    //private el: ElementRef,
     private catalogoService:CatalogoService,
     private spinner: NgxSpinnerService, 
     private sharedService:SharedService
@@ -126,7 +126,6 @@ export class UsuarioDetalleComponent implements OnInit {
     this.usuarioService.updateUsuario(
       this.usuario.id, 
       this.formularioUsuario.value.correo,
-      this.formularioUsuario.value.llave,
       this.formularioUsuario.value.rol,
       this.formularioUsuario.value.titulo,
       this.formularioUsuario.value.nombre,

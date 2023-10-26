@@ -67,7 +67,7 @@
                                     <small class="text-muted"><strong> Rol * </strong></small>
                                     <select class="form-select sin-borde" formControlName="rol" disabled>
                                         <option selected disabled [value]="null">Selecciona una opción:</option>
-                                        <option *ngFor="let item of catRoles" [value]="item.id">{{ item.descripcion2 }}</option>
+                                        <option *ngFor="let item of catRoles" [value]="item.id">{{ item.descripcion }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -82,7 +82,7 @@
                                     <small class="text-muted"> Título </small>
                                     <select class="form-select sin-borde" formControlName="titulo" disabled>
                                         <option selected disabled [value]="0">Selecciona una opción:</option>
-                                        <option *ngFor="let item of catTitulos" [value]="item.id">{{ item.descripcion }} - {{ item.descripcion2 }}</option>
+                                        <option *ngFor="let item of catTitulos" [value]="item.id">{{ item.titulo }} - {{ item.descripcion }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -116,7 +116,7 @@
                                     <small class="text-muted"> Especialidad </small>
                                     <select class="form-select sin-borde" formControlName="especialidad" disabled>
                                         <option selected disabled [value]="0">Selecciona una opción:</option>
-                                        <option *ngFor="let item of catEspecialidades" [value]="item.id">{{ item.descripcion }}</option>
+                                        <option *ngFor="let item of catEspecialidades" [value]="item.id">{{ item.especialidad }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -194,7 +194,7 @@
                                         <small class="text-muted"><strong> Rol * </strong></small>
                                         <select class="form-select" formControlName="rol">
                                             <option selected disabled [value]="0">Selecciona una opción:</option>
-                                            <option *ngFor="let item of catRoles" [value]="item.id">{{ item.descripcion2 }}</option>
+                                            <option *ngFor="let item of catRoles" [value]="item.id">{{ item.descripcion }}</option>
                                         </select>
                                     </div>
                     
@@ -214,7 +214,7 @@
                                     <small class="text-muted"> Título </small>
                                     <select class="form-select" formControlName="titulo">
                                         <option selected disabled [value]="0">Selecciona una opción:</option>
-                                        <option *ngFor="let item of catTitulos" [value]="item.id">{{ item.descripcion }} - {{ item.descripcion2 }}</option>
+                                        <option *ngFor="let item of catTitulos" [value]="item.id">{{ item.titulo }} - {{ item.descripcion }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -254,7 +254,7 @@
                                     <small class="text-muted"> Especialidad </small>
                                     <select class="form-select" formControlName="especialidad">
                                         <option selected disabled [value]="0">Selecciona una opción:</option>
-                                        <option *ngFor="let item of catEspecialidades" [value]="item.id">{{ item.descripcion }}</option>
+                                        <option *ngFor="let item of catEspecialidades" [value]="item.id">{{ item.especialidad }}</option>
                                     </select>
                                 </div>
                             </div>

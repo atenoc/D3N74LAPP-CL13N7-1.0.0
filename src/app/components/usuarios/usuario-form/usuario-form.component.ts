@@ -4,7 +4,7 @@ import { Usuario } from 'src/app/models/Usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
 import { Mensajes } from 'src/app/shared/mensajes.config';
-import { Catalogo } from 'src/app/models/Catalogo.model';
+import { CatalogoEspecialidad, CatalogoRol, CatalogoTitulo } from 'src/app/models/Catalogo.model';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CatalogoService } from 'src/app/services/catalogo.service';
@@ -20,9 +20,9 @@ export class UsuarioFormComponent implements OnInit {
   formularioUsuario:FormGroup
   //idCentroUsuarioActivo:string
 
-  catRoles:Catalogo[] = [];
-  catTitulos:Catalogo[] = [];
-  catEspecialidades:Catalogo[] = [];
+  catRoles:CatalogoRol[] = [];
+  catTitulos:CatalogoTitulo[] = [];
+  catEspecialidades:CatalogoEspecialidad[] = [];
 
   //mensajes
   campoRequerido: string;
@@ -66,19 +66,19 @@ export class UsuarioFormComponent implements OnInit {
     // carga Catálogos
     this.catalogoService.getRoles$(localStorage.getItem('_us')).subscribe(res => { 
         this.catRoles = res
-        console.log("Roles: "+res.length)
+        console.log("Roles: "+this.catRoles.length)
       },
       err => console.log("error: " + err)
     )
     this.catalogoService.getTitulos$().subscribe(res => { 
         this.catTitulos = res
-        console.log("Titulos: "+res.length)
+        console.log("Titulos: "+this.catTitulos.length)
       },
       err => console.log("error: " + err)
     )
     this.catalogoService.getEspecialidades$().subscribe(res => { 
         this.catEspecialidades = res
-        console.log("Especialidades: "+res.length)
+        console.log("Especialidades: "+this.catEspecialidades.length)
       },
       err => console.log("error: " + err)
     )
