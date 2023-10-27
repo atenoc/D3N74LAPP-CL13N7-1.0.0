@@ -66,19 +66,19 @@ export class UsuarioFormComponent implements OnInit {
     // carga Catálogos
     this.catalogoService.getRoles$(localStorage.getItem('_us')).subscribe(res => { 
         this.catRoles = res
-        console.log("Roles: "+this.catRoles.length)
+        //console.log("Roles: "+this.catRoles.length)
       },
       err => console.log("error: " + err)
     )
     this.catalogoService.getTitulos$().subscribe(res => { 
         this.catTitulos = res
-        console.log("Titulos: "+this.catTitulos.length)
+        //console.log("Titulos: "+this.catTitulos.length)
       },
       err => console.log("error: " + err)
     )
     this.catalogoService.getEspecialidades$().subscribe(res => { 
         this.catEspecialidades = res
-        console.log("Especialidades: "+this.catEspecialidades.length)
+        //console.log("Especialidades: "+this.catEspecialidades.length)
       },
       err => console.log("error: " + err)
     )

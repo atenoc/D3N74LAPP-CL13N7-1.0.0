@@ -65,7 +65,7 @@ export class UsuariosListComponent implements OnInit {
           this.usuario = res;
           console.log("Rol Usuarios: "+this.usuario.rol)
   
-          if(this.usuario.rol != "sop" && this.usuario.rol != "admin"){ // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
+          if(this.usuario.rol != "sop" && this.usuario.rol != "suadmin"){ // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
             this.router.navigate(['/agenda']);
             console.log("No tienes Acceso a esta página!")
           }else{
@@ -76,7 +76,7 @@ export class UsuariosListComponent implements OnInit {
 
             }
     
-            if(this.usuario.rol == "admin"){ // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
+            if(this.usuario.rol == "suadmin"){ // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
               
               this.getUsuariosPaginados();
 
