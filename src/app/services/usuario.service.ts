@@ -116,7 +116,7 @@ export class UsuarioService {
     }
   }
 
-  // getUserByIdUserAndCorreo
+  // getUsusuario Paginados por id_usuario
   getUsuariosByUsuarioPaginados$(
     id:string,
     page: number,
@@ -131,6 +131,23 @@ export class UsuarioService {
       .set('way', String(way));
   
     return this.http.get<UsuariosPaginados>(`${this.URI}/paginacion/usuario/${id}`, { params });
+  }
+
+  // getUsusuario Paginados por id_clinica
+  getUsuariosByIdClinicaPaginados$(
+    id_clinica:string,
+    page: number,
+    size: number,
+    orderBy: string,
+    way: string
+  ): Observable<UsuariosPaginados> {
+    let params = new HttpParams()
+      .set('page', String(page))
+      .set('size', String(size))
+      .set('orderBy', String(orderBy))
+      .set('way', String(way));
+  
+    return this.http.get<UsuariosPaginados>(`${this.URI}/paginacion/clinica/${id_clinica}`, { params });
   }
 
   // updateUserPassword

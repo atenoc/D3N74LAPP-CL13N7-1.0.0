@@ -8,6 +8,7 @@ import { CatalogoEspecialidad, CatalogoRol, CatalogoTitulo } from 'src/app/model
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CatalogoService } from 'src/app/services/catalogo.service';
+import { CifradoService } from 'src/app/services/shared/cifrado.service';
 
 @Component({
   selector: 'app-usuario-form',
@@ -31,6 +32,8 @@ export class UsuarioFormComponent implements OnInit {
   telefonoLongitud: string;
   soloNumeros: string;
 
+  rol:string
+
   constructor(
     private formBuilder:FormBuilder, 
     private usuarioService:UsuarioService, 
@@ -38,6 +41,7 @@ export class UsuarioFormComponent implements OnInit {
     private el: ElementRef,
     private catalogoService:CatalogoService,
     private spinner: NgxSpinnerService, 
+    private cifradoService: CifradoService,
     ) {
       this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
       this.correoValido = Mensajes.CORREO_VALIDO;
@@ -48,6 +52,7 @@ export class UsuarioFormComponent implements OnInit {
 
   ngOnInit() {
     console.log("USUARIO FORM")
+    this.rol = this.cifradoService.getDecryptedRol();
     this.el.nativeElement.querySelector('input').focus();
     this.formularioUsuario = this.formBuilder.group({
       correo: ['', Validators.compose([
@@ -97,6 +102,10 @@ export class UsuarioFormComponent implements OnInit {
 
     var nuevoUsuarioJson = JSON.parse(JSON.stringify(this.formularioUsuario.value))
     nuevoUsuarioJson.id_usuario=localStorage.getItem('_us') 
+    
+    if(this.rol != "sop"){
+      nuevoUsuarioJson.id_clinica=localStorage.getItem('_cli') 
+    }
 
     console.log("Usuario a registrar: "+ nuevoUsuarioJson)
     console.log(nuevoUsuarioJson)

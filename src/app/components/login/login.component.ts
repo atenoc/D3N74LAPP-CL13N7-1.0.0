@@ -75,6 +75,9 @@ export class LoginComponent implements OnInit {
         this.usuarioService.getUsuarioByCorreo$(this.correoUsuario).subscribe(
           res => {
     
+            console.log("Cli:: "+JSON.stringify(res.id_clinica))
+            localStorage.setItem('_cli', res.id_clinica)
+
             console.log("Rol:: "+res.rol)
             localStorage.setItem('_us', res.id)
             this.cifrado.setEncryptedRol(res.rol)
