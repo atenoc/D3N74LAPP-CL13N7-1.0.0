@@ -35,6 +35,7 @@ export class AuthService {
         && !!localStorage.getItem('_us')
         && !!localStorage.getItem('_lor_')
         && !!localStorage.getItem('_em')
+        && !!localStorage.getItem('_cli')
   }
 
   /*
@@ -60,6 +61,7 @@ export class AuthService {
         localStorage.removeItem('_lor_')
         localStorage.removeItem('_us')
         localStorage.removeItem('_em')
+        localStorage.removeItem('_cli')
         this.router.navigate(['/login'])
 
         // Se manda un mensaje para validar el cierre de sesion y refrescar el menu 

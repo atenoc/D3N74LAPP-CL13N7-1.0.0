@@ -4,14 +4,16 @@ export interface Usuario{
     correo:string;
     llave:string;
     id_rol:string;
+    rol:string
     desc_rol:string
     id_titulo:string,
+    titulo:string
     desc_titulo:string,  
     nombre:string, 
     apellidop:string, 
     apellidom:string, 
     id_especialidad:string,
-    desc_especialidad:string, 
+    especialidad:string, 
     telefono:string,
     fecha_creacion:Date;
     llave_status:number

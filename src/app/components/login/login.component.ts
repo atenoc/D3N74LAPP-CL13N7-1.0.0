@@ -75,21 +75,28 @@ export class LoginComponent implements OnInit {
         this.usuarioService.getUsuarioByCorreo$(this.correoUsuario).subscribe(
           res => {
     
-            localStorage.setItem('_us', res.id)
-            this.cifrado.setEncryptedRol(res.desc_rol)
+            console.log("Cli:: "+JSON.stringify(res.id_clinica))
+            localStorage.setItem('_cli', res.id_clinica)
 
-            this.centroService.getCentroByIdUser$(res.id).subscribe(
-              res => {
-                console.log("Si existe Centro")
-                this.router.navigate(['/agenda'])
-              },
-              err => {
-                console.log("No existe Centro")
-                console.log(err)
-                this.router.navigate(['/configuracion/perfil/usuario'])
-              }
-            )
-    
+            console.log("Rol:: "+res.rol)
+            localStorage.setItem('_us', res.id)
+            this.cifrado.setEncryptedRol(res.rol)
+
+            if(res.rol =="suadmin" || res.rol =="sop"){
+              this.centroService.getCentroByIdUser$(res.id).subscribe(
+                res => {
+                  console.log("Si existe Centro")
+                  this.router.navigate(['/agenda'])
+                },
+                err => {
+                  console.log("No existe Centro")
+                  console.log(err)
+                  this.router.navigate(['/configuracion/perfil/usuario'])
+                }
+              )
+            }else{
+              this.router.navigate(['/agenda'])
+            }
           },
           err => {
             console.log(err.error.message)

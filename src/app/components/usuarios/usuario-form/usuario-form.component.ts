@@ -4,12 +4,11 @@ import { Usuario } from 'src/app/models/Usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
 import { Mensajes } from 'src/app/shared/mensajes.config';
-import { CatRolService } from 'src/app/services/cat-rol.service';
-import { Catalogo } from 'src/app/models/Catalogo.model';
-import { CatTituloService } from 'src/app/services/cat-titulo.service';
-import { CatEspecialidadService } from 'src/app/services/cat-especialidad.service';
+import { CatalogoEspecialidad, CatalogoRol, CatalogoTitulo } from 'src/app/models/Catalogo.model';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { CatalogoService } from 'src/app/services/catalogo.service';
+import { CifradoService } from 'src/app/services/shared/cifrado.service';
 
 @Component({
   selector: 'app-usuario-form',
@@ -22,9 +21,9 @@ export class UsuarioFormComponent implements OnInit {
   formularioUsuario:FormGroup
   //idCentroUsuarioActivo:string
 
-  catRoles:Catalogo[] = [];
-  catTitulos:Catalogo[] = [];
-  catEspecialidades:Catalogo[] = [];
+  catRoles:CatalogoRol[] = [];
+  catTitulos:CatalogoTitulo[] = [];
+  catEspecialidades:CatalogoEspecialidad[] = [];
 
   //mensajes
   campoRequerido: string;
@@ -33,15 +32,16 @@ export class UsuarioFormComponent implements OnInit {
   telefonoLongitud: string;
   soloNumeros: string;
 
+  rol:string
+
   constructor(
     private formBuilder:FormBuilder, 
     private usuarioService:UsuarioService, 
     private router: Router, 
     private el: ElementRef,
-    private catRolService:CatRolService,
-    private catTituloService:CatTituloService,
-    private catEspecialidadService:CatEspecialidadService,
+    private catalogoService:CatalogoService,
     private spinner: NgxSpinnerService, 
+    private cifradoService: CifradoService,
     ) {
       this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
       this.correoValido = Mensajes.CORREO_VALIDO;
@@ -52,40 +52,46 @@ export class UsuarioFormComponent implements OnInit {
 
   ngOnInit() {
     console.log("USUARIO FORM")
-    this.el.nativeElement.querySelector('input').focus();
-    this.formularioUsuario = this.formBuilder.group({
-      correo: ['', Validators.compose([
-        Validators.required, Validators.email
-      ])],
-      llave: ['', [Validators.required, Validators.minLength(6)]],
-      rol: ['', Validators.required],
-      titulo: [''],
-      nombre: ['', [Validators.required, Validators.minLength(3)]],
-      apellidop: ['', [Validators.required, Validators.minLength(3)]],
-      apellidom: [''],
-      especialidad: [''],
-      telefono: ['', [Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
-    })
+    this.rol = this.cifradoService.getDecryptedRol();
 
-    // carga Catálogos
-    this.catRolService.getRoles$(localStorage.getItem('_us')).subscribe(res => { 
-        this.catRoles = res
-        console.log("Roles: "+res.length)
-      },
-      err => console.log("error: " + err)
-    )
-    this.catTituloService.getTitulos$().subscribe(res => { 
-        this.catTitulos = res
-        console.log("Titulos: "+res.length)
-      },
-      err => console.log("error: " + err)
-    )
-    this.catEspecialidadService.getEspecialidades$().subscribe(res => { 
-        this.catEspecialidades = res
-        console.log("Especialidades: "+res.length)
-      },
-      err => console.log("error: " + err)
-    )
+    if(this.rol == "sop" || this.rol == "suadmin" || this.rol == "adminn1"){
+      this.el.nativeElement.querySelector('input').focus();
+      this.formularioUsuario = this.formBuilder.group({
+        correo: ['', Validators.compose([
+          Validators.required, Validators.email
+        ])],
+        llave: ['', [Validators.required, Validators.minLength(6)]],
+        rol: ['', Validators.required],
+        titulo: [''],
+        nombre: ['', [Validators.required, Validators.minLength(3)]],
+        apellidop: ['', [Validators.required, Validators.minLength(3)]],
+        apellidom: [''],
+        especialidad: [''],
+        telefono: ['', [Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
+      })
+
+      // carga Catálogos
+      this.catalogoService.getRoles$(localStorage.getItem('_us')).subscribe(res => { 
+          this.catRoles = res
+          //console.log("Roles: "+this.catRoles.length)
+        },
+        err => console.log("error: " + err)
+      )
+      this.catalogoService.getTitulos$().subscribe(res => { 
+          this.catTitulos = res
+          //console.log("Titulos: "+this.catTitulos.length)
+        },
+        err => console.log("error: " + err)
+      )
+      this.catalogoService.getEspecialidades$().subscribe(res => { 
+          this.catEspecialidades = res
+          //console.log("Especialidades: "+this.catEspecialidades.length)
+        },
+        err => console.log("error: " + err)
+      )
+    }else{
+      this.router.navigate(['/pagina/404/no-encontrada'])
+    }
   }
 
   getInputClass(controlName: string) {
@@ -101,6 +107,10 @@ export class UsuarioFormComponent implements OnInit {
 
     var nuevoUsuarioJson = JSON.parse(JSON.stringify(this.formularioUsuario.value))
     nuevoUsuarioJson.id_usuario=localStorage.getItem('_us') 
+    
+    if(this.rol == "suadmin" || this.rol == "adminn1"){
+      nuevoUsuarioJson.id_clinica=localStorage.getItem('_cli') 
+    }
 
     console.log("Usuario a registrar: "+ nuevoUsuarioJson)
     console.log(nuevoUsuarioJson)

@@ -92,7 +92,8 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
 
     this.centroService.createCentro(centroJson).subscribe(
       res =>{
-        console.log("Clínica registrada correctamente")
+        console.log("Clínica registrada correctamente, id:: "+res.id)
+        localStorage.setItem('_cli', res.id)
 
         this.usuarioService.updateUsuarioRegister(localStorage.getItem('_us'), this.nombre, this.apellido).subscribe(
           res=>{

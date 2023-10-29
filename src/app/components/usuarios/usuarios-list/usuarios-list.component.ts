@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { NgbModal, NgbModalConfig, NgbPaginationConfig } from '@ng-bootstrap/ng-bootstrap';
-import { CentroService } from 'src/app/services/centro.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { CifradoService } from 'src/app/services/shared/cifrado.service';
 
 @Component({
   selector: 'app-usuarios',
@@ -16,10 +16,10 @@ export class UsuariosListComponent implements OnInit {
 
   usuarios: Usuario[] = [];
   usuario:Usuario
-  existeCentro:boolean
   formularioDetalleUsuario:FormGroup
   existenUsuarios:boolean=false
-  mensajeRegistrarCentro:string
+  mensaje:string
+  rol:string
  
   // Paginación
   currentPage = 1;      // actual
@@ -32,9 +32,9 @@ export class UsuariosListComponent implements OnInit {
     private authService:AuthService,
     private usuarioService:UsuarioService, 
     private router: Router, 
-    private centroService:CentroService,
     private modalService: NgbModal,
     private paginationConfig: NgbPaginationConfig, 
+    private cifradoService: CifradoService,
     config: NgbModalConfig) {
       config.backdrop = 'static';
 		  config.keyboard = false;
@@ -46,47 +46,25 @@ export class UsuariosListComponent implements OnInit {
     console.log("USUARIOS LIST COMP")
     if(this.authService.validarSesionActiva()){
 
-      // Consultar si existe centro
-      this.centroService.getCentroByIdUser$(localStorage.getItem('_us')).subscribe(
-        res => {
-          if(res.id.length > 0){
-            this.existeCentro = true
-          }else{
-            this.existeCentro = false
-          }
-        },
-        err => console.log("error: " + err)
-      )
+      this.rol = this.cifradoService.getDecryptedRol();
+      console.log("Rol Des:: "+this.rol)
 
-      //Consultar rol
-      this.usuarioService.getUsuario$(localStorage.getItem('_us')).subscribe(
-        res => {
-  
-          this.usuario = res;
-          console.log("Rol Usuarios: "+this.usuario.desc_rol)
-  
-          if(this.usuario.desc_rol != "sop" && this.usuario.desc_rol != "admin"){ // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
-            this.router.navigate(['/agenda']);
-            console.log("No tienes Acceso a esta página!")
-          }else{
-  
-            if(this.usuario.desc_rol == "sop"){  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
-              
-              this.getUsuariosPaginados();
+      if(this.rol == "sop"){
+        // Falta validar si tiene centro agregado
+        this.getUsuariosPaginados();
+      }
 
-            }
-    
-            if(this.usuario.desc_rol == "admin"){ // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
-              
-              this.getUsuariosPaginados();
+      else if(this.rol == "suadmin"){ 
+        // Falta validar si tiene centro agregado
+        this.getUsuariosByIdClinicaPaginados();
+      }
 
-            }
-  
-          }
-  
-        },
-        err => console.log("error: " + err)
-      )
+      else if(this.rol == "adminn1"){ 
+        this.getUsuariosByIdClinicaPaginados();
+      }else{
+        this.router.navigate(['/pagina/404/no-encontrada'])
+      }
+
     }else{
       this.router.navigate(['/pagina/404/no-encontrada'])
     }
@@ -109,27 +87,47 @@ export class UsuariosListComponent implements OnInit {
   }
 
   getUsuariosPaginados() {
+    console.log("Users by Sop")
     this.usuarioService
-      .getUsuariosByUsuarioPaginados$(this.usuario.id, this.currentPage, this.pageSize, this.orderBy, this.way)
+      .getUsuariosByUsuarioPaginados$(localStorage.getItem('_us'), this.currentPage, this.pageSize, this.orderBy, this.way)
       .subscribe((res) => {
         this.usuarios = res.data
         this.totalElements = res.pagination.totalElements
         console.log(res)
+        
+        if(this.usuarios.length <= 0){
+          this.mensaje='¡No hay usuarios!'
+        }else{
+          this.existenUsuarios = true;
+        }
+      });
+  }
 
-        this.existenUsuarios = this.usuarios.length > 0;
-        if(!this.existenUsuarios){
-          this.mensajeRegistrarCentro='¡Registra un centro dental!'
+  getUsuariosByIdClinicaPaginados(){
+    console.log("Users by Cli")
+    this.usuarioService
+      .getUsuariosByIdClinicaPaginados$(localStorage.getItem('_cli'), this.currentPage, this.pageSize, this.orderBy, this.way)
+      .subscribe((res) => {
+        this.usuarios = res.data
+        this.totalElements = res.pagination.totalElements
+        console.log(res)
+        if(this.usuarios.length <= 0){
+          this.mensaje='¡No hay usuarios!'
+        }else{
+          this.existenUsuarios = true;
         }
       });
   }
 
   onPageChange(event: any) {
     this.currentPage = event;
-    this.getUsuariosPaginados();
+    //this.getUsuariosPaginados();
+    this.getUsuariosByIdClinicaPaginados();
   }
 
   onPageSizeChange() {
-    this.getUsuariosPaginados();
+    //this.getUsuariosPaginados();
+    this.getUsuariosByIdClinicaPaginados();
   }
 
   onSortChange(campo: string) {
@@ -142,7 +140,8 @@ export class UsuariosListComponent implements OnInit {
   
     console.log("Ordenar por: " + this.orderBy);
     console.log("Modo: " + this.way);
-    this.getUsuariosPaginados();
+    //this.getUsuariosPaginados();
+    this.getUsuariosByIdClinicaPaginados();
   }
   
 }

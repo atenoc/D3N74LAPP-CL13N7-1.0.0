@@ -65,12 +65,12 @@ export class UsuarioService {
   }
 
   // PATCH
-  updateUsuario(id: string, correo: string, llave: string, rol:string, titulo:string, nombre:string, apellidop:string, apellidom:string, especialidad:string, telefono:string) {
-    return this.http.patch(`${this.URI}/${id}`, {correo, llave, rol, titulo, nombre, apellidop, apellidom, especialidad, telefono});
+  updateUsuario(id: string, correo: string, rol:string, titulo:string, nombre:string, apellidop:string, apellidom:string, especialidad:string, telefono:string) {
+    return this.http.patch(`${this.URI}/${id}`, {correo, rol, titulo, nombre, apellidop, apellidom, especialidad, telefono});
   }
 
   updateUsuarioRegister(id: string, nombre:string, apellidop:string) {
-    return this.http.patch(`${this.URI}/usuario/${id}`, {nombre, apellidop});
+    return this.http.patch(`${this.URI}/usuario/${id}/registro`, {nombre, apellidop});
   }
 
   // DELETE
@@ -116,7 +116,7 @@ export class UsuarioService {
     }
   }
 
-  // getUserByIdUserAndCorreo
+  // getUsusuario Paginados por id_usuario
   getUsuariosByUsuarioPaginados$(
     id:string,
     page: number,
@@ -131,6 +131,23 @@ export class UsuarioService {
       .set('way', String(way));
   
     return this.http.get<UsuariosPaginados>(`${this.URI}/paginacion/usuario/${id}`, { params });
+  }
+
+  // getUsusuario Paginados por id_clinica
+  getUsuariosByIdClinicaPaginados$(
+    id_clinica:string,
+    page: number,
+    size: number,
+    orderBy: string,
+    way: string
+  ): Observable<UsuariosPaginados> {
+    let params = new HttpParams()
+      .set('page', String(page))
+      .set('size', String(size))
+      .set('orderBy', String(orderBy))
+      .set('way', String(way));
+  
+    return this.http.get<UsuariosPaginados>(`${this.URI}/paginacion/clinica/${id_clinica}`, { params });
   }
 
   // updateUserPassword

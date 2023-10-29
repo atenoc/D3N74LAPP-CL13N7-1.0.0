@@ -17,6 +17,8 @@ export class SidebarComponent implements OnInit {
   idUsuario:string
   rolUsuario:string
   nombreUsuario:string
+  mostrarClinicas:boolean=false;
+  mostrarUsuarios:boolean=false;
 
   constructor(
     private sharedService:SharedService, 
@@ -26,16 +28,27 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
     console.log("SIDEBAR Component")
-    this.inicializarAccordion()
+    //this.inicializarAccordion()
 
     this.usuarioService.validarUsuarioActivo$(localStorage.getItem('_us'), localStorage.getItem('_em')).subscribe(
       res => {
         this.usuario = res;
         this.idUsuario=this.usuario.id
-        this.rolUsuario=this.usuario.desc_rol
+        this.rolUsuario=this.usuario.rol
         this.nombreUsuario=this.usuario.nombre +" "+this.usuario.apellidop
+        if(this.rolUsuario=="sop"){
+          this.mostrarClinicas=true
+          this.mostrarUsuarios=true
+        }
+        if(this.rolUsuario=="suadmin"){
+          this.mostrarUsuarios=true
+        }
+        if(this.rolUsuario=="adminn1"){
+          this.mostrarUsuarios=true
+        }
         console.log("Usuario sidebar:: ")
         console.log(this.usuario)
+        this.inicializarAccordion()
       },
       err => console.log("error: " + err)
     )
