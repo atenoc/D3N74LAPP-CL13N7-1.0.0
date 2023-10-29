@@ -42,7 +42,6 @@ export class HeaderComponent implements OnInit {
     this.usuarioService.getUsuario$(localStorage.getItem('_us')).subscribe(
       res => {
         this.usuario = res;
-        //console.log("Header:: "+ JSON.stringify(this.usuario))
         this.idUsuario=this.usuario.id
         if(this.usuario.llave_status == 0){
           this.mostrarCambiarContrasena=true
@@ -51,7 +50,7 @@ export class HeaderComponent implements OnInit {
           this.mostrarCambiarContrasena=false
         }
 
-        this.centroService.getCentroByIdUser$(this.idUsuario).subscribe(
+        this.centroService.getCentro$(localStorage.getItem('_cli')).subscribe(
           res=>{
             if(res.nombre){
               this.nombreCentro=res.nombre

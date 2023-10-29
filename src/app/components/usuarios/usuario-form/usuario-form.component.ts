@@ -53,40 +53,45 @@ export class UsuarioFormComponent implements OnInit {
   ngOnInit() {
     console.log("USUARIO FORM")
     this.rol = this.cifradoService.getDecryptedRol();
-    this.el.nativeElement.querySelector('input').focus();
-    this.formularioUsuario = this.formBuilder.group({
-      correo: ['', Validators.compose([
-        Validators.required, Validators.email
-      ])],
-      llave: ['', [Validators.required, Validators.minLength(6)]],
-      rol: ['', Validators.required],
-      titulo: [''],
-      nombre: ['', [Validators.required, Validators.minLength(3)]],
-      apellidop: ['', [Validators.required, Validators.minLength(3)]],
-      apellidom: [''],
-      especialidad: [''],
-      telefono: ['', [Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
-    })
 
-    // carga Catálogos
-    this.catalogoService.getRoles$(localStorage.getItem('_us')).subscribe(res => { 
-        this.catRoles = res
-        //console.log("Roles: "+this.catRoles.length)
-      },
-      err => console.log("error: " + err)
-    )
-    this.catalogoService.getTitulos$().subscribe(res => { 
-        this.catTitulos = res
-        //console.log("Titulos: "+this.catTitulos.length)
-      },
-      err => console.log("error: " + err)
-    )
-    this.catalogoService.getEspecialidades$().subscribe(res => { 
-        this.catEspecialidades = res
-        //console.log("Especialidades: "+this.catEspecialidades.length)
-      },
-      err => console.log("error: " + err)
-    )
+    if(this.rol == "sop" || this.rol == "suadmin" || this.rol == "adminn1"){
+      this.el.nativeElement.querySelector('input').focus();
+      this.formularioUsuario = this.formBuilder.group({
+        correo: ['', Validators.compose([
+          Validators.required, Validators.email
+        ])],
+        llave: ['', [Validators.required, Validators.minLength(6)]],
+        rol: ['', Validators.required],
+        titulo: [''],
+        nombre: ['', [Validators.required, Validators.minLength(3)]],
+        apellidop: ['', [Validators.required, Validators.minLength(3)]],
+        apellidom: [''],
+        especialidad: [''],
+        telefono: ['', [Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
+      })
+
+      // carga Catálogos
+      this.catalogoService.getRoles$(localStorage.getItem('_us')).subscribe(res => { 
+          this.catRoles = res
+          //console.log("Roles: "+this.catRoles.length)
+        },
+        err => console.log("error: " + err)
+      )
+      this.catalogoService.getTitulos$().subscribe(res => { 
+          this.catTitulos = res
+          //console.log("Titulos: "+this.catTitulos.length)
+        },
+        err => console.log("error: " + err)
+      )
+      this.catalogoService.getEspecialidades$().subscribe(res => { 
+          this.catEspecialidades = res
+          //console.log("Especialidades: "+this.catEspecialidades.length)
+        },
+        err => console.log("error: " + err)
+      )
+    }else{
+      this.router.navigate(['/pagina/404/no-encontrada'])
+    }
   }
 
   getInputClass(controlName: string) {
@@ -103,7 +108,7 @@ export class UsuarioFormComponent implements OnInit {
     var nuevoUsuarioJson = JSON.parse(JSON.stringify(this.formularioUsuario.value))
     nuevoUsuarioJson.id_usuario=localStorage.getItem('_us') 
     
-    if(this.rol != "sop"){
+    if(this.rol == "suadmin" || this.rol == "adminn1"){
       nuevoUsuarioJson.id_clinica=localStorage.getItem('_cli') 
     }
 

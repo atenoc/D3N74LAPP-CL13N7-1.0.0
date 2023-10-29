@@ -274,9 +274,9 @@
                                 </div>
                             </div>
                     
-                            <div class="d-flex mt-2 ">
+                            <div class="d-flex mt-2">
                                 <div>
-                                    <small class="text-muted">Eliminar usuario</small>
+                                    <small *ngIf="rol=='suadmin' || rol=='sop'" class="text-muted">Eliminar usuario</small>
                                 </div>
                                 <div class="ml-auto">
                                     <small class="text-muted">Los campos marcados con (*) son obligatorios</small>
@@ -285,7 +285,7 @@
                         
                             <div class="d-flex mt-2 ">
                                 <div>
-                                    <button class="btn btn-outline-secondary my-2 my-sm-0 btn-sm ml-2" (click)="deleteUser(usuario.id, usuario.correo)"
+                                    <button *ngIf="rol=='suadmin' || rol=='sop'" class="btn btn-outline-secondary my-2 my-sm-0 btn-sm ml-2" (click)="deleteUser(usuario.id, usuario.correo)"
                                         ngbTooltip="Eliminar usuario de forma permanente"><i class="fas fa-trash-alt"></i>
                                     </button>
                                 </div>

@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { NgbModal, NgbModalConfig, NgbPaginationConfig } from '@ng-bootstrap/ng-bootstrap';
-import { CentroService } from 'src/app/services/centro.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { CifradoService } from 'src/app/services/shared/cifrado.service';
 
@@ -17,7 +16,6 @@ export class UsuariosListComponent implements OnInit {
 
   usuarios: Usuario[] = [];
   usuario:Usuario
-  //existeCentro:boolean
   formularioDetalleUsuario:FormGroup
   existenUsuarios:boolean=false
   mensaje:string

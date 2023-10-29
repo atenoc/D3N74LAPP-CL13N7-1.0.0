@@ -69,8 +69,8 @@ export class UsuarioService {
     return this.http.patch(`${this.URI}/${id}`, {correo, rol, titulo, nombre, apellidop, apellidom, especialidad, telefono});
   }
 
-  updateUsuarioRegister(id: string, nombre:string, apellidop:string) {
-    return this.http.patch(`${this.URI}/usuario/${id}`, {nombre, apellidop});
+  updateUsuarioRegister(id: string, nombre:string, apellidop:string, id_clinica:string) {
+    return this.http.patch(`${this.URI}/usuario/${id}`, {nombre, apellidop, id_clinica});
   }
 
   // DELETE

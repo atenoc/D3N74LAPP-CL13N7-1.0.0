@@ -3,7 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalConfig  } from '@ng-bootstrap/ng-bootstrap';
 import { Centro } from 'src/app/models/Centro.model';
 import { Usuario } from 'src/app/models/Usuario.model';
+import { AuthService } from 'src/app/services/auth.service';
 import { CentroService } from 'src/app/services/centro.service';
+import { CifradoService } from 'src/app/services/shared/cifrado.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
 import Swal from 'sweetalert2';
@@ -18,13 +20,15 @@ export class PerfilComponent implements OnInit {
   usuario: Usuario = {} as Usuario;
   centro: Centro = {} as Centro;
 
-  existeCentro:boolean
+  rol:string
 
   constructor(
+    private authService:AuthService,
     private usuarioService:UsuarioService, 
     private centroService:CentroService, 
     private router:Router,
     private modalService: NgbModal, 
+    private cifradoService: CifradoService,
     config: NgbModalConfig) {
       config.backdrop = 'static';
 		  config.keyboard = false;
@@ -32,7 +36,9 @@ export class PerfilComponent implements OnInit {
 
   ngOnInit() {
     console.log("PERFIL Component")
-    if(localStorage.getItem('_us')){
+    if(this.authService.validarSesionActiva()){
+
+      this.rol = this.cifradoService.getDecryptedRol();
 
       // Consulta de Usuario por Correo
       this.usuarioService.getUsuario$(localStorage.getItem('_us')).subscribe(
@@ -40,36 +46,32 @@ export class PerfilComponent implements OnInit {
           this.usuario = res;
           console.log(this.usuario )
           // Consulta Centro del usuario
-          this.cargarCentroPorIdUsuario()
+          this.cargarClinicaAsociada()
         },
         err => console.log("error: " + err)
       )  
 
-    }  
-    console.log("Existe Final: "+this.existeCentro)
+    }
 
+    //Este método debe quedar a nivel de ngOnInit
     this.centroService.currentCentroId.subscribe((respuesta) => {
       console.log("Valor idCentro: "+ respuesta);
       // Utiliza this.centroId para cargar los datos del centro
       if(respuesta === "success"){
         console.log("Reload")
         this.centroService.changeCentroId('')
-        this.cargarCentroPorIdUsuario()
+        this.cargarClinicaAsociada()
       }
     });
   }
 
-  cargarCentroPorIdUsuario(){
-    this.centroService.getCentroByIdUser$(this.usuario.id).subscribe(
+  cargarClinicaAsociada(){
+    this.centroService.getCentro$(localStorage.getItem('_cli')).subscribe(
       res => {
         this.centro = res;
-        this.existeCentro = true
-        console.log("Existe centro: "+this.existeCentro)
       },
       err => {
         console.log("error: " + err)
-        this.existeCentro = false
-        console.log("Existe False: "+this.existeCentro)
       }
     )
   }
