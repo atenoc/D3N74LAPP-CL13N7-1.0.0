@@ -27,6 +27,8 @@ import { HeaderComponent } from './shared/header/header.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
 import { ConfigPerfilUsuarioComponent } from './components/perfil/config-perfil-usuario/config-perfil-usuario.component';
+import { CalendarioComponent } from './components/calendario/calendario.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,8 @@ import { ConfigPerfilUsuarioComponent } from './components/perfil/config-perfil-
     HeaderComponent,
     SidebarComponent,
     PageNotFoundComponent,
-    ConfigPerfilUsuarioComponent
+    ConfigPerfilUsuarioComponent,
+    CalendarioComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +60,8 @@ import { ConfigPerfilUsuarioComponent } from './components/perfil/config-perfil-
     HttpClientModule,
     NgbModule,
     NgxSpinnerModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    FullCalendarModule
   ],
   providers: [
     AuthGuard,
