@@ -29,6 +29,7 @@ import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.co
 import { ConfigPerfilUsuarioComponent } from './components/perfil/config-perfil-usuario/config-perfil-usuario.component';
 import { CalendarioComponent } from './components/calendario/calendario.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { DetalleEventoComponent } from './components/calendario/detalle-evento/detalle-evento.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     SidebarComponent,
     PageNotFoundComponent,
     ConfigPerfilUsuarioComponent,
-    CalendarioComponent
+    CalendarioComponent,
+    DetalleEventoComponent
   ],
   imports: [
     BrowserModule,
