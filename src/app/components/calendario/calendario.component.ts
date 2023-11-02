@@ -23,9 +23,7 @@ export class CalendarioComponent implements OnInit {
 
   calendarOptions: CalendarOptions = {};
 
-  constructor(private modalService: NgbModal, config: NgbModalConfig) {
-    //config.backdrop = 'static';
-    //config.keyboard = false;
+  constructor(private modalService: NgbModal) {
   }
 
   ngOnInit(): void {
@@ -55,12 +53,25 @@ export class CalendarioComponent implements OnInit {
           borderColor    : '#f39c12' //yellow
         },
         {
-          title          : 'Consulta - Roni Juarez',
+          title          : 'Consulta - Roni Juarez 1',
           start          : new Date(this.y, this.m, this.d, 10, 30),
           end            : new Date(this.y, this.m, this.d, 10, 59),
           allDay         : false,
           backgroundColor: '#0073b7', //Blue
-          borderColor    : '#0073b7' //Blue
+          borderColor    : '#ff0000', //Red
+          data: {
+            id                : '32131221',
+            motivo            : 'Consulta',
+            comentarios       : 'Sin comenatarios',
+            id_estatus_cita   : 'CITA_01',
+            id_estatus_pago   : 'EST_PAG_05',
+            id_tipo_pago      : 'T_PAG_03',
+            id_medico         : '2321321',
+            id_paciente       : '123123123',
+            id_clinica        : '34567567',
+            id_usuario        : '789789789',
+            fecha_creacion    : '10/10/2023',
+          }
         },
         {
           title          : 'Consulta - Roni Juarez',
@@ -109,16 +120,38 @@ export class CalendarioComponent implements OnInit {
         }
       ],
       eventClick: (info)=> {
-        const title = info.event.title;
-        const inicio = info.event.start;
-        const fin = info.event.end;
-        //alert('Evento clickeadoss: ' + title);
+        
         this.modalRef = this.modalService.open(DetalleEventoComponent, { centered: true, size: 'sm' });
-        this.modalRef.componentInstance.title = title;
-        this.modalRef.componentInstance.inicio = inicio;
-        this.modalRef.componentInstance.fin = fin;
+        this.modalRef.componentInstance.title = info.event.title;
+
+        const inicioFormateado = this.formatDate(info.event.start);
+        this.modalRef.componentInstance.inicio = inicioFormateado;
+
+        if(info.event.end){
+          const finFormateado = this.formatDate(info.event.end);
+          this.modalRef.componentInstance.fin = finFormateado;
+        }
+
+        this.modalRef.componentInstance.data = info.event.extendedProps.data;
+
+        this.modalRef.result.finally(() => {
+          console.log("Secerró el modal")
+        });
       },
     };
 
+    ///
+
   }
+
+  formatDate(date){
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Meses en JavaScript se cuentan desde 0
+    const year = date.getFullYear();
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    //const seconds = date.getSeconds().toString().padStart(2, '0');
+    
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
+  };
 }
