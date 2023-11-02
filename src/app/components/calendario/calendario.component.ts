@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timegridPlugin from '@fullcalendar/timegrid';
+import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 import esLocale from '@fullcalendar/core/locales/es';
-import { NgbModal, NgbModalConfig, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DetalleEventoComponent } from './detalle-evento/detalle-evento.component';
 
 @Component({
@@ -30,12 +31,12 @@ export class CalendarioComponent implements OnInit {
 
     this.calendarOptions = {
       initialView: 'dayGridMonth',
-      plugins: [dayGridPlugin, timegridPlugin, interactionPlugin],
+      plugins: [dayGridPlugin, timegridPlugin, listPlugin, interactionPlugin],
       locale: esLocale,
       headerToolbar:{
         left:'prev,today,next',
         center:'title',
-        right:'dayGridMonth,timeGridWeek,timeGridDay'
+        right:'dayGridMonth,timeGridWeek,timeGridDay,list'
       },
       events: [
         {
