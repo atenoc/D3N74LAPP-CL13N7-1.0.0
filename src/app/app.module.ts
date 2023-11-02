@@ -30,6 +30,7 @@ import { ConfigPerfilUsuarioComponent } from './components/perfil/config-perfil-
 import { CalendarioComponent } from './components/calendario/calendario.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { DetalleEventoComponent } from './components/calendario/detalle-evento/detalle-evento.component';
+import { FormEventoComponent } from './components/calendario/form-evento/form-evento.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { DetalleEventoComponent } from './components/calendario/detalle-evento/d
     PageNotFoundComponent,
     ConfigPerfilUsuarioComponent,
     CalendarioComponent,
-    DetalleEventoComponent
+    DetalleEventoComponent,
+    FormEventoComponent
   ],
   imports: [
     BrowserModule,

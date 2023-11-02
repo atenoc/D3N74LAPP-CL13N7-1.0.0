@@ -7,6 +7,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import esLocale from '@fullcalendar/core/locales/es';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DetalleEventoComponent } from './detalle-evento/detalle-evento.component';
+import { FormEventoComponent } from './form-evento/form-evento.component';
 
 @Component({
   selector: 'app-calendario',
@@ -14,6 +15,8 @@ import { DetalleEventoComponent } from './detalle-evento/detalle-evento.componen
   styleUrls: ['./calendario.component.css']
 })
 export class CalendarioComponent implements OnInit {
+
+  private calendarComponent: CalendarioComponent;
 
   modalRef: NgbModalRef;
 
@@ -24,42 +27,56 @@ export class CalendarioComponent implements OnInit {
 
   calendarOptions: CalendarOptions = {};
 
-  constructor(private modalService: NgbModal) {
+  constructor(
+    private modalService: NgbModal,
+    ) {
+      this.calendarComponent = this; // Captura la instancia del componente en la variable
   }
 
   ngOnInit(): void {
 
     this.calendarOptions = {
+      customButtons: {
+        myCustomButton: {
+          text: 'Agregar cita',
+          click: () => {
+            //alert('clicked the custom button!');
+            this.calendarComponent.openVerticallyCentered()
+          }
+        }
+      },
       initialView: 'dayGridMonth',
       plugins: [dayGridPlugin, timegridPlugin, listPlugin, interactionPlugin],
       locale: esLocale,
       headerToolbar:{
-        left:'prev,today,next',
+        left:'prev,today,next myCustomButton',
         center:'title',
         right:'dayGridMonth,timeGridWeek,timeGridDay,list'
       },
       events: [
         {
-          title          : 'All Day Event',
+          title          : 'Evento de todo el día',
           start          : new Date(this.y, this.m, 1),
           backgroundColor: '#f56954', //red
           borderColor    : '#f56954', //red
           allDay         : true
         },
         {
-          title          : 'Long Event',
+          title          : 'Evento Largo',
           start          : new Date(this.y, this.m, this.d - 5),
           end            : new Date(this.y, this.m, this.d - 2),
           backgroundColor: '#f39c12', //yellow
-          borderColor    : '#f39c12' //yellow
+          borderColor    : '#f39c12', //yellow
+          editable       : true
         },
         {
-          title          : 'Consulta - Roni Juarez 1',
+          title          : 'Consulta - Uriel J',
           start          : new Date(this.y, this.m, this.d, 10, 30),
           end            : new Date(this.y, this.m, this.d, 10, 59),
           allDay         : false,
-          backgroundColor: '#0073b7', //Blue
+          backgroundColor: '#000000', //Blue
           borderColor    : '#ff0000', //Red
+          editable       : true,
           data: {
             id                : '32131221',
             motivo            : 'Consulta',
@@ -75,21 +92,21 @@ export class CalendarioComponent implements OnInit {
           }
         },
         {
-          title          : 'Consulta - Roni Juarez',
+          title          : 'Consulta - Victor Z',
           start          : new Date(this.y, this.m, this.d, 11, 30),
           allDay         : false,
           backgroundColor: '#0073b7', //Blue
           borderColor    : '#0073b7' //Blue
         },
         {
-          title          : 'Consulta - Roni Juarez',
+          title          : 'Consulta - Maria Fer',
           start          : new Date(this.y, this.m, this.d, 12, 30),
           allDay         : false,
           backgroundColor: '#0073b7', //Blue
           borderColor    : '#0073b7' //Blue
         },
         {
-          title          : 'Consulta - Roni Juarez',
+          title          : 'Consulta - Chicharito',
           start          : new Date(this.y, this.m, this.d, 13, 30),
           allDay         : false,
           backgroundColor: '#0073b7', //Blue
@@ -155,4 +172,8 @@ export class CalendarioComponent implements OnInit {
     
     return `${day}/${month}/${year} ${hours}:${minutes}`;
   };
+
+  openVerticallyCentered() {
+    this.modalService.open(FormEventoComponent, { centered: true });
+  }
 }

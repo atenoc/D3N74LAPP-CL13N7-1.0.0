@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DetalleEvento } from 'src/app/models/DetalleEvento.model';
 
 @Component({
@@ -13,9 +14,13 @@ export class DetalleEventoComponent implements OnInit {
   @Input() fin: string;
   @Input() data: DetalleEvento;
 
-  constructor() { }
+  constructor(private activeModal: NgbActiveModal) { }
 
   ngOnInit(): void {
+  }
+
+  closeModal() {
+    this.activeModal.close('Modal cerrado');
   }
 
 }
