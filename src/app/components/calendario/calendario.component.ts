@@ -8,6 +8,7 @@ import esLocale from '@fullcalendar/core/locales/es';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DetalleEventoComponent } from './detalle-evento/detalle-evento.component';
 import { FormEventoComponent } from './form-evento/form-evento.component';
+import { CitaFormComponent } from './cita-form/cita-form.component';
 
 @Component({
   selector: 'app-calendario',
@@ -174,6 +175,6 @@ export class CalendarioComponent implements OnInit {
   };
 
   openVerticallyCentered() {
-    this.modalService.open(FormEventoComponent, { centered: true });
+    this.modalService.open(CitaFormComponent, { centered: true });
   }
 }

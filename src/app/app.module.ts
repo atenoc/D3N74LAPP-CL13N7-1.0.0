@@ -31,6 +31,7 @@ import { CalendarioComponent } from './components/calendario/calendario.componen
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { DetalleEventoComponent } from './components/calendario/detalle-evento/detalle-evento.component';
 import { FormEventoComponent } from './components/calendario/form-evento/form-evento.component';
+import { CitaFormComponent } from './components/calendario/cita-form/cita-form.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { FormEventoComponent } from './components/calendario/form-evento/form-ev
     ConfigPerfilUsuarioComponent,
     CalendarioComponent,
     DetalleEventoComponent,
-    FormEventoComponent
+    FormEventoComponent,
+    CitaFormComponent
   ],
   imports: [
     BrowserModule,
