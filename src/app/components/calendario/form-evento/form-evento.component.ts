@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Mensajes } from 'src/app/shared/mensajes.config';
 
 @Component({
@@ -11,6 +11,7 @@ import { Mensajes } from 'src/app/shared/mensajes.config';
 export class FormEventoComponent implements OnInit {
 
   formularioEvento:FormGroup
+  model: NgbDateStruct;
 
   //mensajes
   campoRequerido: string;

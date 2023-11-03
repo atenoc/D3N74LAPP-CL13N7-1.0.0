@@ -21,12 +21,31 @@
             </div>
         </div>
     
-        <hr/>
-    
         <div class="row">
-    
+            <div class="col-sm">
+                <small class="text-muted"><strong> Fecha inicio * </strong></small>
+                <div class="input-group">
+                    <input
+                        class="form-control"
+                        placeholder="yyyy-mm-dd"
+                        name="dp"
+                        [(ngModel)]="model"
+                        ngbDatepicker
+                        #d="ngbDatepicker"
+                    />
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button">
+                        <i class="far fa-calendar-alt"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-sm">
+                
+            </div>
+            
     
         </div>
+
+        <hr/>
     
         <div class="row">
     

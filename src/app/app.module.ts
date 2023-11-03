@@ -18,7 +18,7 @@ import { CentroListComponent } from './components/centros/centro-list/centro-lis
 import { CentroFormComponent } from './components/centros/centro-form/centro-form.component';
 import { CentroDetalleComponent } from './components/centros/centro-detalle/centro-detalle.component';
 import { PerfilComponent } from './components/perfil/perfil.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { FooterComponent } from './shared/footer/footer.component';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { ContrasenaComponent } from './components/usuarios/usuario-detalle/contrasena/contrasena.component';
@@ -65,7 +65,8 @@ import { FormEventoComponent } from './components/calendario/form-evento/form-ev
     NgbModule,
     NgxSpinnerModule,
     FontAwesomeModule,
-    FullCalendarModule
+    FullCalendarModule,
+    NgbTimepickerModule
   ],
   providers: [
     AuthGuard,
