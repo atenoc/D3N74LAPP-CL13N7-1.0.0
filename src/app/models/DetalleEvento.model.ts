@@ -1,7 +1,7 @@
 export interface DetalleEvento{
     id:string;
     motivo:string;
-    comentarios:string;
+    notas:string;
     id_estatus_cita:string;
     id_estatus_pago:string;
     id_tipo_pago:string;

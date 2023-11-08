@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { JsonPipe } from '@angular/common';
 
 @Component({
@@ -14,10 +14,14 @@ export class CitaFormComponent implements OnInit {
   selectedTimeInicio: { hour: number, minute: number } = { hour: 0, minute: 0 };
   selectedTimeFin: { hour: number, minute: number } = { hour: 0, minute: 0 };
 
-  constructor() { 
+  constructor(private activeModal: NgbActiveModal) { 
   }
 
   ngOnInit(): void {
+  }
+
+  closeModal() {
+    this.activeModal.close('Modal cerrado');
   }
 
 }

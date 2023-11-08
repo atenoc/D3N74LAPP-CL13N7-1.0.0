@@ -5,7 +5,7 @@ import timegridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 import esLocale from '@fullcalendar/core/locales/es';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalConfig, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DetalleEventoComponent } from './detalle-evento/detalle-evento.component';
 import { FormEventoComponent } from './form-evento/form-evento.component';
 import { CitaFormComponent } from './cita-form/cita-form.component';
@@ -30,7 +30,10 @@ export class CalendarioComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
+    config: NgbModalConfig
     ) {
+      config.backdrop = 'static';
+		  config.keyboard = false;
       this.calendarComponent = this; // Captura la instancia del componente en la variable
   }
 
@@ -81,7 +84,7 @@ export class CalendarioComponent implements OnInit {
           data: {
             id                : '32131221',
             motivo            : 'Consulta',
-            comentarios       : 'Sin comenatarios',
+            notas       : 'Sin comenatarios',
             id_estatus_cita   : 'CITA_01',
             id_estatus_pago   : 'EST_PAG_05',
             id_tipo_pago      : 'T_PAG_03',
