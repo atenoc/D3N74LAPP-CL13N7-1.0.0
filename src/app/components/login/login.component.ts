@@ -17,8 +17,6 @@ import { CentroService } from 'src/app/services/centro.service';
 })
 export class LoginComponent implements OnInit {
 
-  //user = { }
-  
   correoUsuario: string
   usuario: Usuario
   formularioLogin:FormGroup
@@ -38,7 +36,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private spinner: NgxSpinnerService, 
     private el: ElementRef,
-    private cifrado: CifradoService
+    private cifradoService: CifradoService
     ) {
       this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
       this.correoValido = Mensajes.CORREO_VALIDO;
@@ -56,18 +54,24 @@ export class LoginComponent implements OnInit {
 
   login(){
     this.spinner.show();
-    this.authService.login(this.formularioLogin.value).subscribe(
+
+    var userObject = JSON.parse(JSON.stringify(this.formularioLogin.value))
+    this.correoUsuario = userObject.correo
+    const llaveEncripted = this.cifradoService.getEncryptedPassword(userObject.llave); 
+
+    const newUserJson = {
+      correo: userObject.correo,
+      llave: llaveEncripted
+    };
+
+    this.authService.login(newUserJson).subscribe(
       res => {
         //Obtenemos el token de la sesion
-        console.log("Respuesta token <-")
         console.log(res)
 
         //Almacenamos token
-        //localStorage.setItem('__tooqn', res.token)
-        this.cifrado.setEncryptedToken(res.token)
+        this.cifradoService.setEncryptedToken(res.token)
 
-        var userObject = JSON.parse(JSON.stringify(this.formularioLogin.value))
-        this.correoUsuario = userObject.correo
         //Almacenamos el correo 
         localStorage.setItem('_em', this.correoUsuario)
 
@@ -80,7 +84,7 @@ export class LoginComponent implements OnInit {
 
             console.log("Rol:: "+res.rol)
             localStorage.setItem('_us', res.id)
-            this.cifrado.setEncryptedRol(res.rol)
+            this.cifradoService.setEncryptedRol(res.rol)
 
             if(res.rol =="suadmin" || res.rol =="sop"){
               this.centroService.getCentroByIdUser$(res.id).subscribe(
