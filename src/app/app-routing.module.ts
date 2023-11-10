@@ -14,6 +14,8 @@ import { PerfilComponent } from './components/perfil/perfil.component';
 import { ContrasenaComponent } from './components/usuarios/usuario-detalle/contrasena/contrasena.component';
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
 import { ConfigPerfilUsuarioComponent } from './components/perfil/config-perfil-usuario/config-perfil-usuario.component';
+import { CalendarioComponent } from './components/calendario/calendario.component';
+import { CitaFormComponent } from './components/calendario/cita-form/cita-form.component';
 
 
 const routes: Routes = [
@@ -25,6 +27,8 @@ const routes: Routes = [
   {path:'usuario-form', component: UsuarioFormComponent, canActivate:[AuthGuard]},
   {path:'usuario-detalle/:id', component: UsuarioDetalleComponent, canActivate:[AuthGuard]},
   {path:'agenda', component: AgendaComponent, canActivate:[AuthGuard]},
+  {path:'calendario', component: CalendarioComponent, canActivate:[AuthGuard]},
+  {path:'cita-form', component: CitaFormComponent, canActivate:[AuthGuard]},
   {path:'centros', component: CentroListComponent, canActivate:[AuthGuard]},
   {path:'centro-form', component: CentroFormComponent, canActivate:[AuthGuard]},
   {path:'centro-detalle/:id', component: CentroDetalleComponent, canActivate:[AuthGuard]},

@@ -44,4 +44,9 @@ export class CifradoService {
     }
     return null;
   }
+
+  getEncryptedPassword(llave: string): string | null {
+    const encryptedLlave = CryptoJS.AES.encrypt(llave, this.secretKey).toString();
+    return encryptedLlave;
+  }
 }

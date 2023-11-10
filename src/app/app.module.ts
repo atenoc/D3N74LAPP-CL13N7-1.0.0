@@ -18,7 +18,7 @@ import { CentroListComponent } from './components/centros/centro-list/centro-lis
 import { CentroFormComponent } from './components/centros/centro-form/centro-form.component';
 import { CentroDetalleComponent } from './components/centros/centro-detalle/centro-detalle.component';
 import { PerfilComponent } from './components/perfil/perfil.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { FooterComponent } from './shared/footer/footer.component';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { ContrasenaComponent } from './components/usuarios/usuario-detalle/contrasena/contrasena.component';
@@ -27,6 +27,11 @@ import { HeaderComponent } from './shared/header/header.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
 import { ConfigPerfilUsuarioComponent } from './components/perfil/config-perfil-usuario/config-perfil-usuario.component';
+import { CalendarioComponent } from './components/calendario/calendario.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { DetalleEventoComponent } from './components/calendario/detalle-evento/detalle-evento.component';
+import { FormEventoComponent } from './components/calendario/form-evento/form-evento.component';
+import { CitaFormComponent } from './components/calendario/cita-form/cita-form.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +52,11 @@ import { ConfigPerfilUsuarioComponent } from './components/perfil/config-perfil-
     HeaderComponent,
     SidebarComponent,
     PageNotFoundComponent,
-    ConfigPerfilUsuarioComponent
+    ConfigPerfilUsuarioComponent,
+    CalendarioComponent,
+    DetalleEventoComponent,
+    FormEventoComponent,
+    CitaFormComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +66,9 @@ import { ConfigPerfilUsuarioComponent } from './components/perfil/config-perfil-
     HttpClientModule,
     NgbModule,
     NgxSpinnerModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    FullCalendarModule,
+    NgbTimepickerModule
   ],
   providers: [
     AuthGuard,

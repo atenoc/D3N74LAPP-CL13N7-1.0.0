@@ -1,0 +1,84 @@
+<div class="modal-header my-bg">
+  <h5><strong> Nueva cita </strong></h5>
+  <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body my-bg">
+
+    <div class="row">
+      <div class="col-sm">
+        <div class="form-group">
+            <span class="text-muted"><strong> Título de cita * </strong></span>
+            <input type="text" class="form-control" placeholder="Ej. Cita Mario Perez">
+        </div>
+      </div>
+      <div class="col-sm">
+        <div class="form-group">
+            <span class="text-muted">Motivo</span>
+            <input type="text" class="form-control" placeholder="Ej. Colsulta">
+        </div>
+      </div>
+      <!-- <div class="col-sm"></div> -->
+    </div>
+    <div class="row">
+        <div class="col-sm my-mt">
+            <span class="text-muted"><strong> Fecha y hora de inicio * </strong></span>
+            <div class="input-group">
+                <input
+                  class="form-control"
+                  placeholder="yyyy-mm-dd"
+                  name="dp1"
+                  [(ngModel)]="model1"
+                  ngbDatepicker
+                  #d1="ngbDatepicker"
+                />
+                <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d1.toggle()" type="button">
+                  <i class="far fa-calendar-alt"></i>
+                </button>
+              </div>
+        </div>
+        <div class="col-sm">
+    
+            <div class="form-group">
+                <ngb-timepicker [(ngModel)]="selectedTimeInicio" [meridian]="true"></ngb-timepicker>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm my-mt">
+            <span>Finaliza (opcional)</span>
+            <div class="input-group">
+                <input
+                  class="form-control"
+                  placeholder="yyyy-mm-dd"
+                  name="dp2"
+                  [(ngModel)]="model2"
+                  ngbDatepicker
+                  #d2="ngbDatepicker"
+                />
+                <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()" type="button">
+                  <i class="far fa-calendar-alt"></i>
+                </button>
+              </div>
+        </div>
+        <div class="col-sm">
+    
+            <div class="form-group">
+                <ngb-timepicker [(ngModel)]="selectedTimeFin" [meridian]="true"></ngb-timepicker>
+            </div>
+            <pre>Selected time: {{selectedTimeFin | json}}</pre>
+            
+        </div>
+        <div class="form-group">
+          <span class="text-muted">Nota (opcional)</span>
+          <textarea class="form-control"  rows="3" maxlength="130"></textarea>
+      </div>
+    </div>
+    <div class="row">
+      <button type="submit" class="btn btn-primary btn-block">Guardar</button>
+    </div>
+
+</div>

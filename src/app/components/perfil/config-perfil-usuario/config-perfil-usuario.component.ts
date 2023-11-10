@@ -95,7 +95,7 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
         console.log("Clínica registrada correctamente, id:: "+res.id)
         localStorage.setItem('_cli', res.id)
 
-        this.usuarioService.updateUsuarioRegister(localStorage.getItem('_us'), this.nombre, this.apellido).subscribe(
+        this.usuarioService.updateUsuarioRegister(localStorage.getItem('_us'), this.nombre, this.apellido, res.id).subscribe(
           res=>{
 
             this.router.navigate(['/perfil'])

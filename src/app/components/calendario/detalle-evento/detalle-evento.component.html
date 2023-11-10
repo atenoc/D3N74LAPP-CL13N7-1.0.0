@@ -1,0 +1,22 @@
+<div class="modal-header my-bg">
+    <strong> {{ title }}</strong>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body my-bg">
+
+    <div class="card-body">
+        <p><strong>Inicio:</strong> {{ inicio }}</p>
+        <p><strong>Fin:</strong> {{ fin }}</p>
+        <hr/>
+        <p><strong>Motivo:</strong> {{ data.motivo }}</p>
+        <p><strong>Comentarios:</strong> {{ data.notas }}</p>
+        <p><strong>Fecha creación:</strong> {{ data.fecha_creacion }}</p>
+    </div>
+
+   </div>
+
+
+    
+
