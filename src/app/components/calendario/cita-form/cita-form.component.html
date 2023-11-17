@@ -9,27 +9,31 @@
     <div class="row">
       <div class="col-sm">
         <div class="form-group">
-            <span class="text-muted"><strong> Título de cita * </strong></span>
-            <input type="text" class="form-control" placeholder="Ej. Cita Mario Perez">
+            <span><strong> Título de cita * </strong></span>
+            <input type="text" class="form-control" placeholder="Ej. Cita Mario Perez" [(ngModel)]="titulo" (ngModelChange)="validaTitulo()">
+            <div *ngIf="mostrarMensajeTitulo" class="invalid-input-message">{{ campoRequerido }}</div>
         </div>
+        
       </div>
       <div class="col-sm">
         <div class="form-group">
-            <span class="text-muted">Motivo</span>
-            <input type="text" class="form-control" placeholder="Ej. Colsulta">
+          <span><strong> Motivo * </strong></span>
+            <input type="text" class="form-control" placeholder="Ej. Colsulta" [(ngModel)]="motivo" (ngModelChange)="validaMotivo()">
+            <div *ngIf="mostrarMensajeMotivo" class="invalid-input-message">{{ campoRequerido }}</div>
         </div>
       </div>
       <!-- <div class="col-sm"></div> -->
     </div>
     <div class="row">
         <div class="col-sm my-mt">
-            <span class="text-muted"><strong> Fecha y hora de inicio * </strong></span>
+            <span><strong> Fecha y hora de inicio * </strong></span>
             <div class="input-group">
                 <input
                   class="form-control"
-                  placeholder="yyyy-mm-dd"
+                  placeholder="aaaa-mm-dd"
                   name="dp1"
-                  [(ngModel)]="model1"
+                  [(ngModel)]="fechaModelInicio"
+                  (ngModelChange)="validarFechaInicio()"
                   ngbDatepicker
                   #d1="ngbDatepicker"
                 />
@@ -37,25 +41,31 @@
                   <i class="far fa-calendar-alt"></i>
                 </button>
               </div>
+              <div *ngIf="mostrarMensajeFechaInicio" class="invalid-input-message">{{ fechaRequerida }}</div>
+              
         </div>
         <div class="col-sm">
     
             <div class="form-group">
-                <ngb-timepicker [(ngModel)]="selectedTimeInicio" [meridian]="true"></ngb-timepicker>
+                <ngb-timepicker [(ngModel)]="selectedTimeInicio" [meridian]="true" (ngModelChange)="validaHoraInicio()"></ngb-timepicker>
+                <div *ngIf="mostrarMensajeHoraInicio" class="invalid-input-message">{{ horarioValido }}</div>
             </div>
             
         </div>
     </div>
 
+    <hr/>
+    <small class="text-muted">Opcional</small>
+
     <div class="row">
         <div class="col-sm my-mt">
-            <span>Finaliza (opcional)</span>
+            <small>Fecha y hora de termino</small>
             <div class="input-group">
                 <input
                   class="form-control"
-                  placeholder="yyyy-mm-dd"
+                  placeholder="aaaa-mm-dd"
                   name="dp2"
-                  [(ngModel)]="model2"
+                  [(ngModel)]="fechaModelFin"
                   ngbDatepicker
                   #d2="ngbDatepicker"
                 />
@@ -69,16 +79,16 @@
             <div class="form-group">
                 <ngb-timepicker [(ngModel)]="selectedTimeFin" [meridian]="true"></ngb-timepicker>
             </div>
-            <pre>Selected time: {{selectedTimeFin | json}}</pre>
+            <!-- <pre>Selected time: {{selectedTimeFin | json}}</pre> -->
             
         </div>
         <div class="form-group">
-          <span class="text-muted">Nota (opcional)</span>
-          <textarea class="form-control"  rows="3" maxlength="130"></textarea>
+          <small>Nota / comentarios</small>
+          <textarea class="form-control"  rows="2" maxlength="130" [(ngModel)]="nota"></textarea>
       </div>
     </div>
     <div class="row">
-      <button type="submit" class="btn btn-primary btn-block">Guardar</button>
+      <button type="submit" class="btn btn-primary btn-block" (click)="crearCita()">Guardar</button>
     </div>
 
 </div>

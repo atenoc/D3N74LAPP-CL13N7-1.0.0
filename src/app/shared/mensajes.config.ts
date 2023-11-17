@@ -41,5 +41,9 @@ export const Mensajes = {
     CLINICA_ELIMINAR_QUESTION: '¿Estás seguro que quieres eliminar tu clínica/consultorio?',
     CLINICA_ELIMINADA: 'La clínica/consultorio se eliminó correctamente ',
     CLINICA_NO_ELIMINADA: 'No se pudo eliminar tu clínica/consultorio ',
-    
+
+    //Citas
+    FECHA_INICIO_REQUERIDA: 'Esta fecha es obligatoria ',
+    HORARIO_INICIO_REQUERIDO: 'El horario de inicio es obligatorio ',
+    HORARIO_INICIO_VALIDO: 'Elije un horario válido ',
 };

@@ -1,3 +1,12 @@
+export interface Evento{
+    titulo:string;
+    fecha_inicio:string;
+    hora_inicio:string;
+    fecha_fin:string;
+    hora_fin:string;
+    detalle:DetalleEvento
+}
+
 export interface DetalleEvento{
     id:string;
     motivo:string;
