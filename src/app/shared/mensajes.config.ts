@@ -46,4 +46,5 @@ export const Mensajes = {
     FECHA_INICIO_REQUERIDA: 'Esta fecha es obligatoria ',
     HORARIO_INICIO_REQUERIDO: 'El horario de inicio es obligatorio ',
     HORARIO_INICIO_VALIDO: 'Elije un horario válido ',
+    CITA_REGISTRADA: 'La cita se registró correctamente ',
 };

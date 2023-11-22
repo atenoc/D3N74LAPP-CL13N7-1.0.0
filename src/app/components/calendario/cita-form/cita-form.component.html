@@ -9,16 +9,48 @@
     <div class="row">
       <div class="col-sm">
         <div class="form-group">
+            <span><strong> Nombre(s) * </strong></span>
+            <input type="text" class="form-control" placeholder="Nombre" [(ngModel)]="nombrePaciente" (ngModelChange)="validaNombre()">
+            <div *ngIf="mostrarMensajeNombre" class="invalid-input-message">{{ campoRequerido }}</div>
+        </div>
+      </div>
+      <div class="col-sm">
+        <div class="form-group">
+          <span><strong> Apellido Paterno * </strong></span>
+            <input type="text" class="form-control" [(ngModel)]="apellidoPaternoPaciente" (ngModelChange)="validaApPaterno()">
+            <div *ngIf="mostrarMensajeApPaterno" class="invalid-input-message">{{ campoRequerido }}</div>
+        </div>
+      </div>
+      
+    </div>
+
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="form-group">
+          <span> <small>Ap. Materno (opcional)</small></span>
+            <input type="text" class="form-control" [(ngModel)]="apellidoMaternoPaciente" >
+            
+        </div>
+      </div>
+
+      <!-- <div class="col-sm">
+        <div class="form-group">
             <span><strong> Título de cita * </strong></span>
             <input type="text" class="form-control" placeholder="Ej. Cita Mario Perez" [(ngModel)]="titulo" (ngModelChange)="validaTitulo()">
             <div *ngIf="mostrarMensajeTitulo" class="invalid-input-message">{{ campoRequerido }}</div>
         </div>
-        
+      </div> -->
+
+      <div class="col-2">
+        <div class="form-group">
+          <span>Edad</span>
+            <input type="number" class="form-control" [(ngModel)]="edad">
+        </div>
       </div>
-      <div class="col-sm">
+      <div class="col-6">
         <div class="form-group">
           <span><strong> Motivo * </strong></span>
-            <input type="text" class="form-control" placeholder="Ej. Colsulta" [(ngModel)]="motivo" (ngModelChange)="validaMotivo()">
+            <input type="text" class="form-control" placeholder="Ej. Consulta" [(ngModel)]="motivo" (ngModelChange)="validaMotivo()">
             <div *ngIf="mostrarMensajeMotivo" class="invalid-input-message">{{ campoRequerido }}</div>
         </div>
       </div>
@@ -82,10 +114,10 @@
             <!-- <pre>Selected time: {{selectedTimeFin | json}}</pre> -->
             
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
           <small>Nota / comentarios</small>
           <textarea class="form-control"  rows="2" maxlength="130" [(ngModel)]="nota"></textarea>
-      </div>
+        </div> -->
     </div>
     <div class="row">
       <button type="submit" class="btn btn-primary btn-block" (click)="crearCita()">Guardar</button>

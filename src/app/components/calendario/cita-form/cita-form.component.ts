@@ -3,6 +3,8 @@ import { NgbActiveModal, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { JsonPipe } from '@angular/common';
 import { CitaService } from 'src/app/services/citas/cita.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
+import { PacienteService } from 'src/app/services/pacientes/paciente.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cita-form',
@@ -19,12 +21,18 @@ export class CitaFormComponent implements OnInit {
   selectedTimeInicio: { hour: number, minute: number } = { hour: 0, minute: 0 };
   selectedTimeFin: { hour: number, minute: number } = { hour: 0, minute: 0 };
 
+  nombrePaciente:string=""
+  apellidoPaternoPaciente:string=""
+  apellidoMaternoPaciente:string=""
+  edad:number=0
   titulo:string=""
   motivo:string=""
   fecha_hora_inicio:string
   fecha_hora_fin:string
   nota:string=""
 
+  mostrarMensajeNombre:boolean = true
+  mostrarMensajeApPaterno:boolean = true
   mostrarMensajeTitulo:boolean = true
   mostrarMensajeMotivo:boolean = true
   mostrarMensajeFechaInicio:boolean = true
@@ -35,7 +43,7 @@ export class CitaFormComponent implements OnInit {
   fechaRequerida: string;
   horarioValido: string;
 
-  constructor(private activeModal: NgbActiveModal, private citaService:CitaService) { 
+  constructor(private activeModal: NgbActiveModal, private pacienteService:PacienteService, private citaService:CitaService) { 
     this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
     this.fechaRequerida = Mensajes.FECHA_INICIO_REQUERIDA;
     this.horarioValido = Mensajes.HORARIO_INICIO_VALIDO;
@@ -74,26 +82,83 @@ export class CitaFormComponent implements OnInit {
       this.fecha_creacion = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
       console.log("Fecha creación:: "+this.fecha_creacion)
 
-      const citaJson = {
-        titulo: this.titulo,
-        motivo: this.motivo,
-        fecha_hora_inicio: this.fecha_hora_inicio,
-        fecha_hora_fin: this.fecha_hora_fin,
-        nota:this.nota,
+
+      const pacienteJson = {
+        nombre: this.nombrePaciente,
+        apellidop: this.apellidoPaternoPaciente,
+        apellidom: this.apellidoMaternoPaciente,
+        edad: this.edad,
         fecha_creacion: this.fecha_creacion,
         id_clinica: localStorage.getItem('_cli'),
         id_usuario: localStorage.getItem('_us')
       };
 
-      console.log(citaJson)
-
-      this.citaService.createCita(citaJson).subscribe(
+      this.pacienteService.createPaciente(pacienteJson).subscribe(
         res=>{
-        console.log("Enviado")
-        console.log(res)
+        
+        if(res){
+          console.log("Paciente Enviado")
+          console.log(res)
+
+          const citaJson = {
+            titulo: "Cita: "+this.nombrePaciente+" "+this.apellidoMaternoPaciente,
+            motivo: this.motivo,
+            fecha_hora_inicio: this.fecha_hora_inicio,
+            fecha_hora_fin: this.fecha_hora_fin,
+            fecha_creacion: this.fecha_creacion,
+            id_paciente: res.id,
+            id_clinica: localStorage.getItem('_cli'),
+            id_usuario: localStorage.getItem('_us')
+          };
+    
+          console.log(citaJson)
+    
+          this.citaService.createCita(citaJson).subscribe(
+            res=>{
+            console.log("Cita Enviada")
+            console.log(res)
+
+            Swal.fire({
+              position: 'top-end',
+              html:
+                `<h5>${ Mensajes.CITA_REGISTRADA }</h5>`+
+                `<span>${ res.titulo }</span>`, 
+              showConfirmButton: false,
+              backdrop: false,
+              width: 400,
+              background: 'rgb(40, 167, 69, .90)',
+              color:'white',
+              timerProgressBar:true,
+              timer: 3000,
+            })
+
+            this.closeModal()
+
+          })
+
+          
+        }
       })
+
+      
     }
 
+  }
+
+  validaNombre(){
+    if(this.nombrePaciente==""){
+      this.mostrarMensajeNombre = true
+    }else{
+      this.mostrarMensajeNombre = false
+    }
+  }
+
+  validaApPaterno(){
+    if(this.apellidoPaternoPaciente==""){
+      this.mostrarMensajeApPaterno = true
+    }else{
+      this.mostrarMensajeApPaterno = false
+    }
   }
 
   validaTitulo(){
