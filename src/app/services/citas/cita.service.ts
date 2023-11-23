@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, catchError, map, throwError } from 'rxjs';
-import { Evento } from 'src/app/models/DetalleEvento.model';
+import { Cita } from 'src/app/models/Cita.model';
 import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
@@ -11,18 +11,18 @@ export class CitaService {
 
   URI = environment.urlApiCitas
 
-  private cita = new BehaviorSubject<Evento>(null);
-  private citas = new BehaviorSubject<Evento[]>([]);
-  private citaCreada:Evento
-  private cita$: Subject<Evento>;
+  private cita = new BehaviorSubject<Cita>(null);
+  private citas = new BehaviorSubject<Cita[]>([]);
+  private citaCreada:Cita
+  private cita$: Subject<Cita>;
 
   constructor(private http: HttpClient) { }
 
-  createCita(cita): Observable<Evento> {
-    return this.http.post<Evento>(this.URI, cita).pipe(
+  createCita(cita): Observable<Cita> {
+    return this.http.post<Cita>(this.URI, cita).pipe(
       map(response => {
         this.citaCreada = response
-        const newCitas = [this.citaCreada, ...this.citas.getValue()];
+        const newCitas = [this.citaCreada, ...this.citas.value];
         this.citas.next(newCitas);
         this.cita.next(this.citaCreada);
         return this.citaCreada;
@@ -33,4 +33,16 @@ export class CitaService {
       })
     );
   }
+  
+
+  getCitas$(): Observable<Cita[]>{
+    this.http.get<Cita[]>(this.URI).subscribe(
+      res=>{
+        this.citas.next(res)
+      },
+      err => console.log(err)
+    )
+    return this.citas.asObservable();
+  }
+
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { DetalleEvento } from 'src/app/models/DetalleEvento.model';
+import { DetalleCita } from 'src/app/models/Cita.model';
 
 @Component({
   selector: 'app-detalle-evento',
@@ -12,7 +12,7 @@ export class DetalleEventoComponent implements OnInit {
   @Input() title: string;
   @Input() inicio: string;
   @Input() fin: string;
-  @Input() data: DetalleEvento;
+  @Input() data: DetalleCita;
 
   constructor(private activeModal: NgbActiveModal) { }
 

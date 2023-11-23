@@ -115,34 +115,51 @@ export class CitaFormComponent implements OnInit {
     
           this.citaService.createCita(citaJson).subscribe(
             res=>{
-            console.log("Cita Enviada")
-            console.log(res)
+              console.log("Cita Enviada")
+              console.log(res)
 
-            Swal.fire({
-              position: 'top-end',
-              html:
-                `<h5>${ Mensajes.CITA_REGISTRADA }</h5>`+
-                `<span>${ res.titulo }</span>`, 
-              showConfirmButton: false,
-              backdrop: false,
-              width: 400,
-              background: 'rgb(40, 167, 69, .90)',
-              color:'white',
-              timerProgressBar:true,
-              timer: 3000,
+              Swal.fire({
+                position: 'top-end',
+                html:
+                  `<h5>${ Mensajes.CITA_REGISTRADA }</h5>`+
+                  `<span>${ res.title }</span>`, 
+                showConfirmButton: false,
+                backdrop: false,
+                width: 400,
+                background: 'rgb(40, 167, 69, .90)',
+                color:'white',
+                timerProgressBar:true,
+                timer: 3000,
+              })
+
+              this.closeModal()
+
+            },
+            err =>{
+              Swal.fire({
+                icon: 'error',
+                html:
+                  `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
+                  `<span>${ Mensajes.CITA_NO_REGISTRADA }</span></br>`+
+                  `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
+                showConfirmButton: false,
+                timer: 3000
+              })
             })
-
-            this.closeModal()
-
-          })
-
-          
         }
+      },
+      err =>{
+        Swal.fire({
+          icon: 'error',
+          html:
+            `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
+            `<span>${ Mensajes.PACIENTE_NO_REGISTRADO }</span></br>`+
+            `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
+          showConfirmButton: false,
+          timer: 3000
+        })
       })
-
-      
     }
-
   }
 
   validaNombre(){

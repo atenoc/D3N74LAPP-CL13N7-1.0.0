@@ -9,6 +9,8 @@ import { NgbModal, NgbModalConfig, NgbModalRef } from '@ng-bootstrap/ng-bootstra
 import { DetalleEventoComponent } from './detalle-evento/detalle-evento.component';
 import { FormEventoComponent } from './form-evento/form-evento.component';
 import { CitaFormComponent } from './cita-form/cita-form.component';
+import { CitaService } from 'src/app/services/citas/cita.service';
+import { Cita } from 'src/app/models/Cita.model';
 
 @Component({
   selector: 'app-calendario',
@@ -20,17 +22,21 @@ export class CalendarioComponent implements OnInit {
   private calendarComponent: CalendarioComponent;
 
   modalRef: NgbModalRef;
-
+/*
   date = new Date()
   d = this.date.getDate()
   m = this.date.getMonth()
   y = this.date.getFullYear()
+  */
 
   calendarOptions: CalendarOptions = {};
 
+  citas:Cita[] = []
+
   constructor(
     private modalService: NgbModal,
-    config: NgbModalConfig
+    config: NgbModalConfig,
+    private citaService:CitaService
     ) {
       config.backdrop = 'static';
 		  config.keyboard = false;
@@ -39,6 +45,19 @@ export class CalendarioComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.citas = []
+
+    this.citaService.getCitas$().subscribe(res=>{
+      console.log("Res cita::")
+      if(res){
+        this.citas = res;
+        this.actualizarCalendario()
+      }
+    })
+
+  }
+
+  actualizarCalendario(){
     this.calendarOptions = {
       customButtons: {
         myCustomButton: {
@@ -57,90 +76,7 @@ export class CalendarioComponent implements OnInit {
         center:'title',
         right:'dayGridMonth,timeGridWeek,timeGridDay,list'
       },
-      events: [
-        {
-          title          : 'Evento de todo el día',
-          start          : new Date(this.y, this.m, 1),
-          backgroundColor: '#f56954', //red
-          borderColor    : '#f56954', //red
-          allDay         : true
-        },
-        {
-          title          : 'Evento Largo',
-          start          : new Date(this.y, this.m, this.d - 5),
-          end            : new Date(this.y, this.m, this.d - 2),
-          backgroundColor: '#f39c12', //yellow
-          borderColor    : '#f39c12', //yellow
-          editable       : true
-        },
-        {
-          title          : 'Consulta - Uriel J',
-          start          : new Date(this.y, this.m, this.d, 10, 30),
-          end            : new Date(this.y, this.m, this.d, 10, 59),
-          allDay         : false,
-          backgroundColor: '#000000', //Blue
-          borderColor    : '#ff0000', //Red
-          editable       : true,
-          data: {
-            id                : '32131221',
-            motivo            : 'Consulta',
-            notas       : 'Sin comenatarios',
-            id_estatus_cita   : 'CITA_01',
-            id_estatus_pago   : 'EST_PAG_05',
-            id_tipo_pago      : 'T_PAG_03',
-            id_medico         : '2321321',
-            id_paciente       : '123123123',
-            id_clinica        : '34567567',
-            id_usuario        : '789789789',
-            fecha_creacion    : '10/10/2023',
-          }
-        },
-        {
-          title          : 'Consulta - Victor Z',
-          start          : new Date(this.y, this.m, this.d, 11, 30),
-          allDay         : false,
-          backgroundColor: '#0073b7', //Blue
-          borderColor    : '#0073b7' //Blue
-        },
-        {
-          title          : 'Consulta - Maria Fer',
-          start          : new Date(this.y, this.m, this.d, 12, 30),
-          allDay         : false,
-          backgroundColor: '#0073b7', //Blue
-          borderColor    : '#0073b7' //Blue
-        },
-        {
-          title          : 'Consulta - Chicharito',
-          start          : new Date(this.y, this.m, this.d, 13, 30),
-          allDay         : false,
-          backgroundColor: '#0073b7', //Blue
-          borderColor    : '#0073b7' //Blue
-        },
-        {
-          title          : 'Comidita de día',
-          start          : new Date(this.y, this.m, this.d, 12, 0),
-          end            : new Date(this.y, this.m, this.d, 14, 0),
-          allDay         : false,
-          backgroundColor: '#00c0ef', //Info (aqua)
-          borderColor    : '#00c0ef' //Info (aqua)
-        },
-        {
-          title          : 'Fiestesita por mi cumple',
-          start          : new Date(this.y, this.m, this.d + 1, 19, 0),
-          end            : new Date(this.y, this.m, this.d + 1, 22, 30),
-          allDay         : false,
-          backgroundColor: '#00a65a', //Success (green)
-          borderColor    : '#00a65a' //Success (green)
-        },
-        {
-          title          : 'Click for Google',
-          start          : new Date(this.y, this.m, 28),
-          end            : new Date(this.y, this.m, 29),
-          url            : 'https://www.google.com/',
-          backgroundColor: '#3c8dbc', //Primary (light-blue)
-          borderColor    : '#3c8dbc' //Primary (light-blue)
-        }
-      ],
+      events: this.citas,
       eventClick: (info)=> {
         
         this.modalRef = this.modalService.open(DetalleEventoComponent, { centered: true, size: 'sm' });
@@ -161,9 +97,6 @@ export class CalendarioComponent implements OnInit {
         });
       },
     };
-
-    ///
-
   }
 
   formatDate(date){

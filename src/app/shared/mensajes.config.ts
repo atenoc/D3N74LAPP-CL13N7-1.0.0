@@ -47,4 +47,9 @@ export const Mensajes = {
     HORARIO_INICIO_REQUERIDO: 'El horario de inicio es obligatorio ',
     HORARIO_INICIO_VALIDO: 'Elije un horario válido ',
     CITA_REGISTRADA: 'La cita se registró correctamente ',
+    CITA_NO_REGISTRADA: 'La cita no se puedo registrar ',
+
+    //Pacientes
+    PACIENTE_NO_REGISTRADO: 'No se pudo registrar el paciente ',
+
 };

@@ -1,13 +1,14 @@
-export interface Evento{
-    titulo:string;
-    fecha_inicio:string;
-    hora_inicio:string;
-    fecha_fin:string;
-    hora_fin:string;
-    detalle:DetalleEvento
+export interface Cita{
+    title: string;
+    start: Date; 
+    end: Date;   
+    backgroundColor: string;
+    borderColor: string;
+    editable: boolean;
+    data: DetalleCita;
 }
 
-export interface DetalleEvento{
+export interface DetalleCita{
     id:string;
     motivo:string;
     notas:string;
