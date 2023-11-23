@@ -7,7 +7,6 @@ import interactionPlugin from '@fullcalendar/interaction';
 import esLocale from '@fullcalendar/core/locales/es';
 import { NgbModal, NgbModalConfig, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DetalleEventoComponent } from './detalle-evento/detalle-evento.component';
-import { FormEventoComponent } from './form-evento/form-evento.component';
 import { CitaFormComponent } from './cita-form/cita-form.component';
 import { CitaService } from 'src/app/services/citas/cita.service';
 import { Cita } from 'src/app/models/Cita.model';
@@ -22,15 +21,7 @@ export class CalendarioComponent implements OnInit {
   private calendarComponent: CalendarioComponent;
 
   modalRef: NgbModalRef;
-/*
-  date = new Date()
-  d = this.date.getDate()
-  m = this.date.getMonth()
-  y = this.date.getFullYear()
-  */
-
   calendarOptions: CalendarOptions = {};
-
   citas:Cita[] = []
 
   constructor(
@@ -46,7 +37,17 @@ export class CalendarioComponent implements OnInit {
   ngOnInit(): void {
 
     this.citas = []
+    this.cargarcitas()
+    
+    // Suscribirse al BehaviorSubject de nueva cita
+    this.citaService.onNuevaCita$().subscribe(() => {
+      // Recargar las citas y actualizar el calendario
+      this.cargarcitas();
+    });
 
+  }
+
+  cargarcitas(){
     this.citaService.getCitas$().subscribe(res=>{
       console.log("Res cita::")
       if(res){
@@ -54,7 +55,6 @@ export class CalendarioComponent implements OnInit {
         this.actualizarCalendario()
       }
     })
-
   }
 
   actualizarCalendario(){
@@ -96,6 +96,9 @@ export class CalendarioComponent implements OnInit {
           console.log("Secerró el modal")
         });
       },
+      noEventsText:'No hay citas para mostrar',
+      listDayFormat: { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'}, //domingo, 23 de enero de 2023
+
     };
   }
 

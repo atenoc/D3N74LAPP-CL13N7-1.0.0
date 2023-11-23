@@ -43,7 +43,11 @@ export class CitaFormComponent implements OnInit {
   fechaRequerida: string;
   horarioValido: string;
 
-  constructor(private activeModal: NgbActiveModal, private pacienteService:PacienteService, private citaService:CitaService) { 
+  constructor(
+    private activeModal: NgbActiveModal, 
+    private pacienteService:PacienteService, 
+    private citaService:CitaService
+    ){ 
     this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
     this.fechaRequerida = Mensajes.FECHA_INICIO_REQUERIDA;
     this.horarioValido = Mensajes.HORARIO_INICIO_VALIDO;
@@ -51,7 +55,6 @@ export class CitaFormComponent implements OnInit {
 
   ngOnInit(): void {
     console.log("CITA FORM")
-    
   }
 
   crearCita(){
@@ -117,6 +120,7 @@ export class CitaFormComponent implements OnInit {
             res=>{
               console.log("Cita Enviada")
               console.log(res)
+              this.citaService.emitirNuevaCita(); // Emitir el evento de nueva cita
 
               Swal.fire({
                 position: 'top-end',

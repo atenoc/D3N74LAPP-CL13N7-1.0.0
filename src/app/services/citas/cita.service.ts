@@ -10,28 +10,14 @@ import { environment } from 'src/environments/environment.prod';
 export class CitaService {
 
   URI = environment.urlApiCitas
+  private nuevaCitaSubject: BehaviorSubject<void> = new BehaviorSubject<void>(null);
 
-  private cita = new BehaviorSubject<Cita>(null);
   private citas = new BehaviorSubject<Cita[]>([]);
-  private citaCreada:Cita
-  private cita$: Subject<Cita>;
 
   constructor(private http: HttpClient) { }
 
   createCita(cita): Observable<Cita> {
-    return this.http.post<Cita>(this.URI, cita).pipe(
-      map(response => {
-        this.citaCreada = response
-        const newCitas = [this.citaCreada, ...this.citas.value];
-        this.citas.next(newCitas);
-        this.cita.next(this.citaCreada);
-        return this.citaCreada;
-      }),
-      catchError(error => {
-        console.log(error);
-        return throwError(error);
-      })
-    );
+    return this.http.post<Cita>(this.URI, cita);
   }
   
 
@@ -43,6 +29,16 @@ export class CitaService {
       err => console.log(err)
     )
     return this.citas.asObservable();
+  }
+
+  // Método para emitir el evento de nueva cita
+  emitirNuevaCita() {
+    this.nuevaCitaSubject.next(null);
+  }
+
+  // Observable para que otros componentes se suscriban a eventos de nuevas citas
+  onNuevaCita$(): Observable<void> {
+    return this.nuevaCitaSubject.asObservable();
   }
 
 }
