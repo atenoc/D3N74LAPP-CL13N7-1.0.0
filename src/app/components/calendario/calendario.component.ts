@@ -52,6 +52,7 @@ export class CalendarioComponent implements OnInit {
       console.log("Res cita::")
       if(res){
         this.citas = res;
+        console.log(this.citas)
         this.actualizarCalendario()
       }
     })

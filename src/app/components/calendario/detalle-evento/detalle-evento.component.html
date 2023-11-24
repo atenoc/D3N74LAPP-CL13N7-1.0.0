@@ -6,14 +6,21 @@
   </div>
   <div class="modal-body my-bg">
 
-    <div class="card-body">
-        <p><strong>Inicio:</strong> {{ inicio }}</p>
-        <p><strong>Fin:</strong> {{ fin }}</p>
+    <!-- <div class="card-body"> -->
+        <span>Paciente:<strong> {{ data.nombre_paciente }}</strong></span>
+        <br>
+        <br>
+        <span><strong>Inicia:</strong> {{ inicio }}</span>
+        <br>
+        <span><strong>Termina:</strong> {{ fin }}</span>
         <hr/>
         <p><strong>Motivo:</strong> {{ data.motivo }}</p>
-        <p><strong>Comentarios:</strong> {{ data.notas }}</p>
-        <p><strong>Fecha creación:</strong> {{ data.fecha_creacion }}</p>
-    </div>
+        <p><strong>Notas:</strong> {{ data.notas }}</p>
+        <hr/>
+        <small class="text-muted"><strong>Creado por:</strong> {{ data.nombre_usuario_creador }}</small>
+        <br>
+        <small class="text-muted"><strong>Fecha creación:</strong> {{ data.fecha_creacion }}</small>
+    <!-- </div> -->
 
    </div>
 

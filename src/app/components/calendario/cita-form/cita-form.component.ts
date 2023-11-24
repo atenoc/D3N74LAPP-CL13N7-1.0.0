@@ -104,10 +104,10 @@ export class CitaFormComponent implements OnInit {
           console.log(res)
 
           const citaJson = {
-            titulo: "Cita: "+this.nombrePaciente+" "+this.apellidoMaternoPaciente,
+            title: "Cita: "+this.nombrePaciente+" "+this.apellidoMaternoPaciente,
             motivo: this.motivo,
-            fecha_hora_inicio: this.fecha_hora_inicio,
-            fecha_hora_fin: this.fecha_hora_fin,
+            start: this.fecha_hora_inicio,
+            end: this.fecha_hora_fin,
             fecha_creacion: this.fecha_creacion,
             id_paciente: res.id,
             id_clinica: localStorage.getItem('_cli'),

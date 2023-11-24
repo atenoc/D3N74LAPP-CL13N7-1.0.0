@@ -11,6 +11,7 @@ export interface Cita{
 export interface DetalleCita{
     id:string;
     motivo:string;
+    nombre_paciente:string;
     notas:string;
     id_estatus_cita:string;
     id_estatus_pago:string;
@@ -19,5 +20,6 @@ export interface DetalleCita{
     id_paciente:string;
     id_clinica:string;
     id_usuario:string;
+    nombre_usuario_creador:string;
     fecha_creacion:Date;
 }
