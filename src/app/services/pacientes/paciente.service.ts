@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, catchError, map, throwError } from 'rxjs';
-import { Paciente } from 'src/app/models/Paciente.model';
+import { Paciente, PacientesPaginados } from 'src/app/models/Paciente.model';
 import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
@@ -32,5 +32,22 @@ export class PacienteService {
         return throwError(error);
       })
     );
+  }
+
+  // get Usuarios Paginados por id_clinica
+  getPacientesByIdClinicaPaginados$(
+    id_clinica:string,
+    page: number,
+    size: number,
+    orderBy: string,
+    way: string
+  ): Observable<PacientesPaginados> {
+    let params = new HttpParams()
+      .set('page', String(page))
+      .set('size', String(size))
+      .set('orderBy', String(orderBy))
+      .set('way', String(way));
+  
+    return this.http.get<PacientesPaginados>(`${this.URI}/paginacion/pacientes/${id_clinica}`, { params });
   }
 }

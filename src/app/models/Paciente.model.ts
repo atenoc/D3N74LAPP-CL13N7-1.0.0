@@ -14,3 +14,13 @@ export interface Paciente{
     id_usuario:string;
     fecha_creacion:Date;
 }
+
+export interface PacientesPaginados {
+    data: Paciente[];
+    pagination: {
+      page: number;
+      size: number;
+      totalPages: number;
+      totalElements: number;
+    };
+}
