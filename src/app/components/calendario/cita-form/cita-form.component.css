@@ -1,3 +1,14 @@
 .my-mt {
     margin-top: 15px;
 }
+
+/* Agrega estilos para el contenedor de la tabla */
+.table-container {
+    max-height: 246px; 
+    overflow-y: auto;
+    position: absolute;
+    width: 97%;
+    z-index: 1;
+    cursor: pointer;
+  }
+  

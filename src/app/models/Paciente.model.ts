@@ -13,6 +13,7 @@ export interface Paciente{
     id_clinica:string;
     id_usuario:string;
     fecha_creacion:Date;
+    nombre_completo_paciente:string;
 }
 
 export interface PacientesPaginados {

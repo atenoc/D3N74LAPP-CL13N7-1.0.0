@@ -5,6 +5,7 @@ import { CitaService } from 'src/app/services/citas/cita.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
 import { PacienteService } from 'src/app/services/pacientes/paciente.service';
 import Swal from 'sweetalert2';
+import { Paciente } from 'src/app/models/Paciente.model';
 
 @Component({
   selector: 'app-cita-form',
@@ -12,6 +13,11 @@ import Swal from 'sweetalert2';
   styleUrls: ['./cita-form.component.css']
 })
 export class CitaFormComponent implements OnInit {
+
+  query = '';
+  mostrarTablaResultados = false;
+
+  pacientes: Paciente[] = [];
 
   date: Date;
   fecha_creacion:string
@@ -31,6 +37,8 @@ export class CitaFormComponent implements OnInit {
   fecha_hora_fin:string
   nota:string=""
 
+  id_paciente:string
+
   mostrarMensajeNombre:boolean = true
   mostrarMensajeApPaterno:boolean = true
   mostrarMensajeTitulo:boolean = true
@@ -42,6 +50,10 @@ export class CitaFormComponent implements OnInit {
   campoRequerido: string;
   fechaRequerida: string;
   horarioValido: string;
+
+  pacienteJson = {}
+  //citaJson = {}
+  existePaciente:boolean;
 
   constructor(
     private activeModal: NgbActiveModal, 
@@ -85,85 +97,132 @@ export class CitaFormComponent implements OnInit {
       this.fecha_creacion = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
       console.log("Fecha creación:: "+this.fecha_creacion)
 
+      if(this.existePaciente){
+        // registrar cita
 
-      const pacienteJson = {
-        nombre: this.nombrePaciente,
-        apellidop: this.apellidoPaternoPaciente,
-        apellidom: this.apellidoMaternoPaciente,
-        edad: this.edad,
-        fecha_creacion: this.fecha_creacion,
-        id_clinica: localStorage.getItem('_cli'),
-        id_usuario: localStorage.getItem('_us')
-      };
+        this.registrarCita();
 
-      this.pacienteService.createPaciente(pacienteJson).subscribe(
-        res=>{
-        
-        if(res){
-          console.log("Paciente Enviado")
-          console.log(res)
+      }else{
+        // registrar paciente y cita
 
-          const citaJson = {
-            title: "Cita: "+this.nombrePaciente+" "+this.apellidoMaternoPaciente,
-            motivo: this.motivo,
-            start: this.fecha_hora_inicio,
-            end: this.fecha_hora_fin,
-            fecha_creacion: this.fecha_creacion,
-            id_paciente: res.id,
-            id_clinica: localStorage.getItem('_cli'),
-            id_usuario: localStorage.getItem('_us')
-          };
-    
-          console.log(citaJson)
-    
-          this.citaService.createCita(citaJson).subscribe(
-            res=>{
-              console.log("Cita Enviada")
-              console.log(res)
-              this.citaService.emitirNuevaCita(); // Emitir el evento de nueva cita
+        this.registrarPaciente()
 
-              Swal.fire({
-                position: 'top-end',
-                html:
-                  `<h5>${ Mensajes.CITA_REGISTRADA }</h5>`+
-                  `<span>${ res.title }</span>`, 
-                showConfirmButton: false,
-                backdrop: false,
-                width: 400,
-                background: 'rgb(40, 167, 69, .90)',
-                color:'white',
-                timerProgressBar:true,
-                timer: 3000,
-              })
+      }
+    }
+  }
 
-              this.closeModal()
+  registrarPaciente(){
+    this.pacienteJson = {
+      nombre: this.nombrePaciente,
+      apellidop: this.apellidoPaternoPaciente,
+      apellidom: this.apellidoMaternoPaciente,
+      edad: this.edad,
+      fecha_creacion: this.fecha_creacion,
+      id_clinica: localStorage.getItem('_cli'),
+      id_usuario: localStorage.getItem('_us')
+    };
 
-            },
-            err =>{
-              Swal.fire({
-                icon: 'error',
-                html:
-                  `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-                  `<span>${ Mensajes.CITA_NO_REGISTRADA }</span></br>`+
-                  `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-                showConfirmButton: false,
-                timer: 3000
-              })
-            })
-        }
+    this.pacienteService.createPaciente(this.pacienteJson).subscribe(
+      res=>{
+      this.id_paciente=res.id
+      this.registrarCita()
+    },
+    err =>{
+      Swal.fire({
+        icon: 'error',
+        html:
+          `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
+          `<span>${ Mensajes.PACIENTE_NO_REGISTRADO }</span></br>`+
+          `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
+        showConfirmButton: false,
+        timer: 3000
+      })
+    })
+
+  }
+
+  registrarCita(){
+    var citaJson = {
+      title: "Cita: "+this.nombrePaciente+" "+this.apellidoMaternoPaciente,
+      motivo: this.motivo,
+      start: this.fecha_hora_inicio,
+      end: this.fecha_hora_fin,
+      fecha_creacion: this.fecha_creacion,
+      id_paciente: this.id_paciente,
+      id_clinica: localStorage.getItem('_cli'),
+      id_usuario: localStorage.getItem('_us')
+    };
+
+    console.log(citaJson)
+
+    this.citaService.createCita(citaJson).subscribe(
+      res=>{
+        console.log("Cita Enviada")
+        console.log(res)
+        this.citaService.emitirNuevaCita(); // Emitir el evento de nueva cita
+
+        Swal.fire({
+          position: 'top-end',
+          html:
+            `<h5>${ Mensajes.CITA_REGISTRADA }</h5>`+
+            `<span>${ res.title }</span>`, 
+          showConfirmButton: false,
+          backdrop: false,
+          width: 400,
+          background: 'rgb(40, 167, 69, .90)',
+          color:'white',
+          timerProgressBar:true,
+          timer: 3000,
+        })
+
+        this.closeModal()
+
       },
       err =>{
         Swal.fire({
           icon: 'error',
           html:
             `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-            `<span>${ Mensajes.PACIENTE_NO_REGISTRADO }</span></br>`+
+            `<span>${ Mensajes.CITA_NO_REGISTRADA }</span></br>`+
             `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
           showConfirmButton: false,
           timer: 3000
         })
       })
-    }
+  }
+
+  buscarPacientes() {
+    this.pacienteService.buscarPacientes(localStorage.getItem('_cli'), this.query).subscribe(
+      (res) => {
+        this.pacientes = res;
+        console.log(this.pacientes)
+        if(this.pacientes.length > 0){
+          this.mostrarTablaResultados = true;
+        }else{
+          this.mostrarTablaResultados = false;
+        }
+      },
+      (error) => {
+        console.error('Error al buscar pacientes: ', error);
+      }
+    );
+  }
+
+  seleccionarPaciente(id_seleccionado: string, nombre:string, apellidop:string, apellidom:string): void {
+    console.log("Id seleccionado: " + id_seleccionado);
+    
+    this.mostrarTablaResultados = false;
+    this.existePaciente = true;
+
+    this.nombrePaciente = nombre;
+    this.apellidoPaternoPaciente = apellidop
+    this.apellidoMaternoPaciente = apellidom
+
+    this.query=nombre +" "+apellidop+" "+apellidom 
+    this.id_paciente = id_seleccionado
+   
+    this.validaNombre()
+    this.validaApPaterno()
   }
 
   validaNombre(){

@@ -50,4 +50,8 @@ export class PacienteService {
   
     return this.http.get<PacientesPaginados>(`${this.URI}/paginacion/pacientes/${id_clinica}`, { params });
   }
+
+  buscarPacientes(id_clinica: string, query: string, ): Observable<any> {
+    return this.http.post(`${this.URI}/buscador/${id_clinica}`, { query });
+  }
 }

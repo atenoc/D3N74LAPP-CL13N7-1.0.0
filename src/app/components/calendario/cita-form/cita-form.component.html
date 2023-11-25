@@ -6,6 +6,32 @@
 </div>
 <div class="modal-body my-bg">
 
+  <div class="row">
+    <div class="col-sm">
+      <div class="form-group">
+        <span><strong class="text-muted">Buscar paciente: </strong></span>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-search"></i></span>
+          </div>
+          <input type="text" [(ngModel)]="query" (input)="buscarPacientes()" class="form-control" placeholder="Buscar por nombre o apellidos...">
+        </div>
+
+        <div class="floating-component">
+          <div class="table-container" *ngIf="mostrarTablaResultados">
+            <table class="table table-bordered table-striped">
+              <tbody>
+                <tr *ngFor="let paciente of pacientes" (click)="seleccionarPaciente(paciente.id, paciente.nombre, paciente.apellidop, paciente.apellidom)">
+                  <td>{{ paciente.nombre }} {{ paciente.apellidop }} {{ paciente.apellidom }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
     <div class="row">
       <div class="col-sm">
         <div class="form-group">
