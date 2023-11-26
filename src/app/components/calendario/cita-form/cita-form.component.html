@@ -9,7 +9,7 @@
   <div class="row">
     <div class="col-sm">
       <div class="form-group">
-        <span><strong class="text-muted">Buscar paciente: </strong></span>
+        <span><strong class="text-muted">Buscar paciente</strong></span>
         <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-search"></i></span>
@@ -19,7 +19,7 @@
 
         <div class="floating-component">
           <div class="table-container" *ngIf="mostrarTablaResultados">
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered table-info">
               <tbody>
                 <tr *ngFor="let paciente of pacientes" (click)="seleccionarPaciente(paciente.id, paciente.nombre, paciente.apellidop, paciente.apellidom)">
                   <td>{{ paciente.nombre }} {{ paciente.apellidop }} {{ paciente.apellidom }}</td>
@@ -35,47 +35,45 @@
     <div class="row">
       <div class="col-sm">
         <div class="form-group">
-            <span><strong> Nombre(s) * </strong></span>
-            <input type="text" class="form-control" placeholder="Nombre" [(ngModel)]="nombrePaciente" (ngModelChange)="validaNombre()">
+            <span><strong class="text-muted"> Nombre(s) * </strong></span>
+            <input type="text" class="form-control" [(ngModel)]="nombrePaciente" (ngModelChange)="validaNombre()">
             <div *ngIf="mostrarMensajeNombre" class="invalid-input-message">{{ campoRequerido }}</div>
         </div>
       </div>
       <div class="col-sm">
         <div class="form-group">
-          <span><strong> Apellido Paterno * </strong></span>
+          <span><strong class="text-muted"> Ap. Paterno * </strong></span>
             <input type="text" class="form-control" [(ngModel)]="apellidoPaternoPaciente" (ngModelChange)="validaApPaterno()">
             <div *ngIf="mostrarMensajeApPaterno" class="invalid-input-message">{{ campoRequerido }}</div>
+        </div>
+      </div>
+      <div class="col-sm">
+        <div class="form-group">
+          <span> <small>Ap. Materno (opcional)</small></span>
+            <input type="text" class="form-control" [(ngModel)]="apellidoMaternoPaciente" >
         </div>
       </div>
       
     </div>
 
     <div class="row">
-      <div class="col-sm-4">
-        <div class="form-group">
-          <span> <small>Ap. Materno (opcional)</small></span>
-            <input type="text" class="form-control" [(ngModel)]="apellidoMaternoPaciente" >
-            
-        </div>
-      </div>
-
-      <!-- <div class="col-sm">
-        <div class="form-group">
-            <span><strong> Título de cita * </strong></span>
-            <input type="text" class="form-control" placeholder="Ej. Cita Mario Perez" [(ngModel)]="titulo" (ngModelChange)="validaTitulo()">
-            <div *ngIf="mostrarMensajeTitulo" class="invalid-input-message">{{ campoRequerido }}</div>
-        </div>
-      </div> -->
-
       <div class="col-2">
         <div class="form-group">
           <span>Edad</span>
-            <input type="number" class="form-control" [(ngModel)]="edad">
+            <input type="text" class="form-control" [(ngModel)]="edad">
         </div>
       </div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <span>Teléfono</span>
+            <input type="text" class="form-control" [(ngModel)]="telefonoPaciente" >
+        </div>
+      </div>
+
+      
       <div class="col-6">
         <div class="form-group">
-          <span><strong> Motivo * </strong></span>
+          <span><strong class="text-muted"> Motivo * </strong></span>
             <input type="text" class="form-control" placeholder="Ej. Consulta" [(ngModel)]="motivo" (ngModelChange)="validaMotivo()">
             <div *ngIf="mostrarMensajeMotivo" class="invalid-input-message">{{ campoRequerido }}</div>
         </div>
@@ -84,7 +82,7 @@
     </div>
     <div class="row">
         <div class="col-sm my-mt">
-            <span><strong> Fecha y hora de inicio * </strong></span>
+            <span><strong class="text-muted"> Fecha y hora de inicio * </strong></span>
             <div class="input-group">
                 <input
                   class="form-control"

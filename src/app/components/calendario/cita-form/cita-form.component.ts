@@ -31,6 +31,7 @@ export class CitaFormComponent implements OnInit {
   apellidoPaternoPaciente:string=""
   apellidoMaternoPaciente:string=""
   edad:number=0
+  telefonoPaciente:string=""
   titulo:string=""
   motivo:string=""
   fecha_hora_inicio:string

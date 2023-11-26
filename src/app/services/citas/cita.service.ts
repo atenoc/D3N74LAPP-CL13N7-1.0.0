@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, catchError, map, throwError } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Cita } from 'src/app/models/Cita.model';
 import { environment } from 'src/environments/environment.prod';
 
@@ -39,6 +39,10 @@ export class CitaService {
   // Observable para que otros componentes se suscriban a eventos de nuevas citas
   onNuevaCita$(): Observable<void> {
     return this.nuevaCitaSubject.asObservable();
+  }
+
+  deleteCita(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.URI}/${id}`);
   }
 
 }

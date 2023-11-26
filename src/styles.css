@@ -20,4 +20,6 @@
     z-index: 1040 !important; /* Asegúrate de que sea menor que el z-index del modal-window */
 }
 
-
+.cursor-pointer{
+    cursor: pointer;
+}
