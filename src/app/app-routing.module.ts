@@ -18,6 +18,7 @@ import { CalendarioComponent } from './components/calendario/calendario.componen
 import { CitaFormComponent } from './components/calendario/cita-form/cita-form.component';
 import { MedicosListComponent } from './components/medicos/medicos-list/medicos-list.component';
 import { PacientesListComponent } from './components/pacientes/pacientes-list/pacientes-list.component';
+import { CitaEditComponent } from './components/calendario/cita-edit/cita-edit.component';
 
 
 const routes: Routes = [
@@ -33,6 +34,7 @@ const routes: Routes = [
   {path:'agenda', component: AgendaComponent, canActivate:[AuthGuard]},
   {path:'calendario', component: CalendarioComponent, canActivate:[AuthGuard]},
   {path:'cita-form', component: CitaFormComponent, canActivate:[AuthGuard]},
+  {path:'cita-edit/:id', component: CitaEditComponent, canActivate:[AuthGuard]},
   {path:'centros', component: CentroListComponent, canActivate:[AuthGuard]},
   {path:'centro-form', component: CentroFormComponent, canActivate:[AuthGuard]},
   {path:'centro-detalle/:id', component: CentroDetalleComponent, canActivate:[AuthGuard]},

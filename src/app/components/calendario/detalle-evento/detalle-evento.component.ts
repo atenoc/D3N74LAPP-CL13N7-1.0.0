@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DetalleCita } from 'src/app/models/Cita.model';
 import { CitaService } from 'src/app/services/citas/cita.service';
@@ -18,10 +19,16 @@ export class DetalleEventoComponent implements OnInit {
   @Input() data: DetalleCita;
 
   constructor(private activeModal: NgbActiveModal,
-    private citaService:CitaService
+    private citaService:CitaService, private router:Router
     ) { }
 
   ngOnInit(): void {
+  }
+
+  editarCita(){
+    console.log("id editar: "+this.data.id)
+    this.router.navigate(['/cita-edit', this.data.id]);
+    this.closeModal()
   }
 
   eliminarCita(){
