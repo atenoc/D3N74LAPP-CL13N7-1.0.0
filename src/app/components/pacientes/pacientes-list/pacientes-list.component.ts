@@ -16,7 +16,7 @@ export class PacientesListComponent implements OnInit {
 
   // Paginación
   currentPage = 1;      // actual
-  pageSize = 9;         // default size
+  pageSize = 10;         // default size
   orderBy = '';   // orden
   way = 'asc';          // direccion 
   totalElements:number  // total 

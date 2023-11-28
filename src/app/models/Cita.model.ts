@@ -11,6 +11,9 @@ export interface Cita{
 export interface DetalleCita{
     id:string;
     motivo:string;
+    nombreP:string;
+    apellidopP:string
+    apellidomP:string
     nombre_paciente:string;
     notas:string;
     id_estatus_cita:string;
@@ -22,4 +25,19 @@ export interface DetalleCita{
     id_usuario:string;
     nombre_usuario_creador:string;
     fecha_creacion:Date;
+}
+
+export interface CitaEditar{
+
+    id:string;
+    title: string;
+    start: string; 
+    end: string;   
+    backgroundColor: string;
+    motivo:string;
+    nombre:string;
+    apellidop:string
+    apellidom:string
+    edad: string
+    telefono:string;
 }

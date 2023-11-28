@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Cita } from 'src/app/models/Cita.model';
+import { Cita, CitaEditar } from 'src/app/models/Cita.model';
 import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
@@ -30,6 +30,11 @@ export class CitaService {
     )
     return this.citas.asObservable();
   }
+
+  getCitaById$(id: string) {
+    return this.http.get<CitaEditar>(`${this.URI}/${id}`);
+  }
+  
 
   // Método para emitir el evento de nueva cita
   emitirNuevaCita() {

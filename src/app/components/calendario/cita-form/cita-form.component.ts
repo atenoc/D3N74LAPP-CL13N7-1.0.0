@@ -30,7 +30,7 @@ export class CitaFormComponent implements OnInit {
   nombrePaciente:string=""
   apellidoPaternoPaciente:string=""
   apellidoMaternoPaciente:string=""
-  edad:number=0
+  edad:string=""
   telefonoPaciente:string=""
   titulo:string=""
   motivo:string=""
@@ -144,7 +144,7 @@ export class CitaFormComponent implements OnInit {
 
   registrarCita(){
     var citaJson = {
-      title: "Cita: "+this.nombrePaciente+" "+this.apellidoMaternoPaciente,
+      title: "Cita. "+this.nombrePaciente+" "+this.apellidoPaternoPaciente,
       motivo: this.motivo,
       start: this.fecha_hora_inicio,
       end: this.fecha_hora_fin,

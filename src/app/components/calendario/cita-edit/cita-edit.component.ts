@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NgbActiveModal, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { Cita, CitaEditar } from 'src/app/models/Cita.model';
 import { Paciente } from 'src/app/models/Paciente.model';
 import { CitaService } from 'src/app/services/citas/cita.service';
 import { PacienteService } from 'src/app/services/pacientes/paciente.service';
@@ -20,6 +21,9 @@ export class CitaEditComponent implements OnInit {
 
   pacientes: Paciente[] = [];
 
+  //cita:Cita
+  citaEditar:CitaEditar
+
   date: Date;
   fecha_creacion:string
 
@@ -31,7 +35,7 @@ export class CitaEditComponent implements OnInit {
   nombrePaciente:string=""
   apellidoPaternoPaciente:string=""
   apellidoMaternoPaciente:string=""
-  edad:number=0
+  edad:string=""
   telefonoPaciente:string=""
   titulo:string=""
   motivo:string=""
@@ -60,20 +64,63 @@ export class CitaEditComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute, 
     private pacienteService:PacienteService, 
-    private citaService:CitaService
+    private citaService:CitaService,
+    private ngbDateParserFormatter: NgbDateParserFormatter
     ) {
     this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
     this.fechaRequerida = Mensajes.FECHA_INICIO_REQUERIDA;
     this.horarioValido = Mensajes.HORARIO_INICIO_VALIDO;
     }
 
-  ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params => {
-      this.id = params['id'];
-    },
-      err => console.log("error: " + err)
-    );
-  }
+    ngOnInit(): void {
+      this.activatedRoute.params.subscribe(params => {
+        this.id = params['id'];
+        console.log(this.id)
+    
+        
+      });
+
+      this.citaService.getCitaById$(this.id).subscribe(res => {
+        console.log("Cita a Editar:", res);
+      
+        this.citaEditar = res;
+        //console.log(this.citaEditar);
+
+        this.nombrePaciente = this.citaEditar.nombre
+        this.apellidoPaternoPaciente = this.citaEditar.apellidop
+        this.apellidoMaternoPaciente = this.citaEditar.apellidom
+        this.motivo = this.citaEditar.motivo
+
+        //this.fechaModelInicio = { year: 1789, month: 7, day: 14 };
+        const fechaInicioCita: NgbDateStruct = this.ngbDateParserFormatter.parse(this.citaEditar.start);
+        this.fechaModelInicio = fechaInicioCita
+
+        console.log("Start: "+this.citaEditar.start)
+        const [fecha, horaStar] = this.citaEditar.start.split(' ');
+        const [hourStart, minuteStart, second] = horaStar.split(':');
+        this.selectedTimeInicio = { hour: +hourStart, minute: +minuteStart };
+
+        if(this.citaEditar.end){
+          
+          const fechaFinCita: NgbDateStruct = this.ngbDateParserFormatter.parse(this.citaEditar.end);
+          this.fechaModelFin = fechaFinCita
+          console.log("End: "+this.citaEditar.end)
+          const [fechaEnd, horaEnd] = this.citaEditar.end.split(' ');
+          const [hourEnd, minuteEnd, secondEnd] = horaEnd.split(':');
+          this.selectedTimeFin = { hour: +hourEnd, minute: +minuteEnd };
+        }
+
+        this.validaNombre()
+        this.validaApPaterno()
+        this.validaMotivo()
+        this.validarFechaInicio()
+        this.validaHoraInicio()
+
+
+      }, err => console.log("error: " + err));
+      
+    }
+    
 
   buscarPacientes() {
     this.pacienteService.buscarPacientes(localStorage.getItem('_cli'), this.query).subscribe(

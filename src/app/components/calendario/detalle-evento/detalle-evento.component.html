@@ -1,5 +1,5 @@
 <div class="modal-header my-bg">
-    <strong> {{ title }}</strong>
+    <strong class="text-primary"> {{ title }}</strong>
     <button type="button" class="close" aria-label="Close" (click)="closeModal()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -7,15 +7,15 @@
   <div class="modal-body my-bg">
 
     <!-- <div class="card-body"> -->
-        <span><strong class="text-info"> Paciente: {{ data.nombre_paciente }}</strong></span>
+        <span class="text-muted">Paciente:</span><strong class="text-info"> {{ data.nombre_paciente }}</strong>
         <br>
         <br>
-        <span><strong class="text-muted">Inicia:</strong> {{ inicio }}</span>
+        <span class="text-muted">Inicia:</span><strong class="text-info"> {{ inicio }}</strong>
         <br>
-        <span><strong class="text-muted">Termina:</strong> {{ fin }}</span>
+        <span class="text-muted">Termina:</span><strong class="text-info"> {{ fin }}</strong>
         <hr/>
-        <p><strong class="text-muted">Motivo:</strong> {{ data.motivo }}</p>
-        <p><strong class="text-muted">Notas:</strong> {{ data.notas }}</p>
+        <p><span class="text-muted">Motivo:</span> <strong class="text-info"> {{ data.motivo }} </strong> </p>
+        <p><span class="text-muted">Notas:</span> {{ data.notas }}</p>
         <hr/>
         <small class="text-muted"><strong>Creado por:</strong> {{ data.nombre_usuario_creador }}</small>
         <br>
