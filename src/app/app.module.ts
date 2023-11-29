@@ -35,6 +35,7 @@ import { CitaFormComponent } from './components/calendario/cita-form/cita-form.c
 import { MedicosListComponent } from './components/medicos/medicos-list/medicos-list.component';
 import { PacientesListComponent } from './components/pacientes/pacientes-list/pacientes-list.component';
 import { CitaEditComponent } from './components/calendario/cita-edit/cita-edit.component';
+import { CitasListComponent } from './components/calendario/citas-list/citas-list.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { CitaEditComponent } from './components/calendario/cita-edit/cita-edit.c
     CitaFormComponent,
     MedicosListComponent,
     PacientesListComponent,
-    CitaEditComponent
+    CitaEditComponent,
+    CitasListComponent
   ],
   imports: [
     BrowserModule,
