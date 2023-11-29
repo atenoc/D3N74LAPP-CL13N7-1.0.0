@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbActiveModal, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Cita, CitaEditar } from 'src/app/models/Cita.model';
 import { Paciente } from 'src/app/models/Paciente.model';
@@ -67,7 +67,8 @@ export class CitaEditComponent implements OnInit {
     private activatedRoute: ActivatedRoute, 
     private pacienteService:PacienteService, 
     private citaService:CitaService,
-    private ngbDateParserFormatter: NgbDateParserFormatter
+    private ngbDateParserFormatter: NgbDateParserFormatter,
+    private router:Router
     ) {
     this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
     this.fechaRequerida = Mensajes.FECHA_INICIO_REQUERIDA;
@@ -160,6 +161,8 @@ export class CitaEditComponent implements OnInit {
         console.log("Cita actualizada")
         console.log(res)
         this.citaService.emitirNuevaCita(); // Emitir el evento de nueva cita
+
+        this.router.navigate(['/calendario'])
 
         Swal.fire({
           position: 'top-end',
