@@ -54,4 +54,8 @@ export class PacienteService {
   buscarPacientes(id_clinica: string, query: string, ): Observable<any> {
     return this.http.post(`${this.URI}/buscador/${id_clinica}`, { query });
   }
+
+  updatePacienteCita(id: string, nombre:string, apellidop:string, apellidom:string, edad:string, telefono:string) {
+    return this.http.patch<Paciente>(`${this.URI}/${id}`, {nombre, apellidop, apellidom, edad, telefono});
+  }
 }

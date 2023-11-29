@@ -36,7 +36,7 @@ export class CitaEditComponent implements OnInit {
   nombrePaciente:string=""
   apellidoPaternoPaciente:string=""
   apellidoMaternoPaciente:string=""
-  edad:string=""
+  edadPaciente:string=""
   telefonoPaciente:string=""
   titulo:string=""
   motivo:string=""
@@ -53,11 +53,13 @@ export class CitaEditComponent implements OnInit {
   mostrarMensajeMotivo:boolean = true
   mostrarMensajeFechaInicio:boolean = true
   mostrarMensajeHoraInicio:boolean = true
+  mostrarMensajeTelefono:boolean = true
 
   //mensajes
   campoRequerido: string;
   fechaRequerida: string;
   horarioValido: string;
+  soloNumeros: string;
 
   pacienteJson = {}
   //citaJson = {}
@@ -73,6 +75,7 @@ export class CitaEditComponent implements OnInit {
     this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
     this.fechaRequerida = Mensajes.FECHA_INICIO_REQUERIDA;
     this.horarioValido = Mensajes.HORARIO_INICIO_VALIDO;
+    this.soloNumeros = "Ingresa sólo números";
     }
 
     ngOnInit(): void {
@@ -89,10 +92,12 @@ export class CitaEditComponent implements OnInit {
         this.citaEditar = res;
         //console.log(this.citaEditar);
 
+        this.motivo = this.citaEditar.motivo
         this.nombrePaciente = this.citaEditar.nombre
         this.apellidoPaternoPaciente = this.citaEditar.apellidop
         this.apellidoMaternoPaciente = this.citaEditar.apellidom
-        this.motivo = this.citaEditar.motivo
+        this.edadPaciente = this.citaEditar.edad
+        this.telefonoPaciente = this.citaEditar.telefono
         this.id_paciente=this.citaEditar.id_paciente
 
         //this.fechaModelInicio = { year: 1789, month: 7, day: 14 };
@@ -119,26 +124,53 @@ export class CitaEditComponent implements OnInit {
         this.validaMotivo()
         this.validarFechaInicio()
         this.validaHoraInicio()
-
+        this.validaTelefono()
 
       }, err => console.log("error: " + err));
       
     }
     
   updateCita(){
-    /*
-    var citaJson = {
-      title: "Cita. "+this.nombrePaciente+" "+this.apellidoPaternoPaciente,
-      motivo: this.motivo,
-      start: this.fecha_hora_inicio,
-      end: this.fecha_hora_fin,
-      fecha_creacion: this.fecha_creacion,
-      id_paciente: this.id_paciente,
-      id_clinica: localStorage.getItem('_cli'),
-      id_usuario: localStorage.getItem('_us')
-    };*/
+    
+    this.pacienteService.updatePacienteCita(
+      this.id_paciente,
+      this.nombrePaciente, 
+      this.apellidoPaternoPaciente,
+      this.apellidoMaternoPaciente,
+      this.edadPaciente,
+      this.telefonoPaciente
+    ).subscribe(res =>{
+      console.log("Se actualizó la información del paciente")
+      console.log(res)
 
-    //console.log(citaJson)
+      setTimeout(() => {
+        Swal.fire({
+          position: 'top-end',
+          html:
+            `<h5>Paciente actualizado correctamente</h5>`+
+            `<span>${res.nombre} ${res.apellidop} ${res.apellidom}</span>`, 
+          showConfirmButton: false,
+          backdrop: false,
+          width: 400,
+          background: 'rgb(40, 167, 69, .90)',
+          color:'white',
+          timerProgressBar:true,
+          timer: 3000,
+        })
+      }, 3000);
+
+    },
+    err =>{
+      Swal.fire({
+        icon: 'error',
+        html:
+          `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
+          `<span>${ Mensajes.PACIENTE_NO_ACTUALIZADO }</span></br>`+
+          `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
+        showConfirmButton: false,
+        timer: 3000
+      })
+    })
 
     this.fecha_hora_inicio = this.fechaModelInicio.year+"-"+this.fechaModelInicio.month+"-"+this.fechaModelInicio.day+" "+this.selectedTimeInicio.hour+":"+this.selectedTimeInicio.minute+":00"
 
@@ -209,8 +241,9 @@ export class CitaEditComponent implements OnInit {
     );
   }
 
-  seleccionarPaciente(id_seleccionado: string, nombre:string, apellidop:string, apellidom:string): void {
+  seleccionarPaciente(id_seleccionado: string, nombre:string, apellidop:string, apellidom:string, edad:string, telefono:string): void {
     console.log("Id seleccionado: " + id_seleccionado);
+    console.log("Teléfono seleccionado: " + telefono);
     
     this.mostrarTablaResultados = false;
     this.existePaciente = true;
@@ -218,12 +251,15 @@ export class CitaEditComponent implements OnInit {
     this.nombrePaciente = nombre;
     this.apellidoPaternoPaciente = apellidop
     this.apellidoMaternoPaciente = apellidom
+    this.edadPaciente = edad
+    this.telefonoPaciente = telefono
 
     this.query=nombre +" "+apellidop+" "+apellidom 
     this.id_paciente = id_seleccionado
    
     this.validaNombre()
     this.validaApPaterno()
+    this.validaTelefono()
   }
 
   validaNombre(){
@@ -271,6 +307,15 @@ export class CitaEditComponent implements OnInit {
       this.mostrarMensajeHoraInicio = true
     }else{
       this.mostrarMensajeHoraInicio = false
+    }
+  }
+
+  validaTelefono(){
+    const esNumero = /^\d+$/.test(this.telefonoPaciente);
+    if(!esNumero || this.telefonoPaciente.length < 10){
+      this.mostrarMensajeTelefono = true
+    }else{
+      this.mostrarMensajeTelefono = false
     }
   }
 

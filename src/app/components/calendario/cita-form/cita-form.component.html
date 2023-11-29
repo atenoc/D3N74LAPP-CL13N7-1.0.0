@@ -21,7 +21,7 @@
           <div class="table-container" *ngIf="mostrarTablaResultados">
             <table class="table table-bordered table-info">
               <tbody>
-                <tr *ngFor="let paciente of pacientes" (click)="seleccionarPaciente(paciente.id, paciente.nombre, paciente.apellidop, paciente.apellidom)">
+                <tr *ngFor="let paciente of pacientes" (click)="seleccionarPaciente(paciente.id, paciente.nombre, paciente.apellidop, paciente.apellidom, paciente.edad, paciente.telefono)">
                   <td>{{ paciente.nombre }} {{ paciente.apellidop }} {{ paciente.apellidom }}</td>
                 </tr>
               </tbody>
@@ -59,14 +59,15 @@
     <div class="row">
       <div class="col-sm-3">
         <div class="form-group">
-          <span>Edad</span>
-            <input type="text" class="form-control" [(ngModel)]="edad">
+          <span> <small>Edad (opcional)</small></span>
+            <input type="text" class="form-control" [(ngModel)]="edadPaciente" maxlength="3">
         </div>
       </div>
       <div class="col-sm-3">
         <div class="form-group">
-          <span>Teléfono</span>
-            <input type="text" class="form-control" [(ngModel)]="telefonoPaciente" >
+          <span><strong class="text-muted"> Teléfono * </strong></span>
+            <input type="text" class="form-control" [(ngModel)]="telefonoPaciente" (ngModelChange)="validaTelefono()" maxlength="10" placeholder="10 dígitos">
+            <div *ngIf="mostrarMensajeTelefono" class="invalid-input-message">{{ soloNumeros }}</div>
         </div>
       </div>
 

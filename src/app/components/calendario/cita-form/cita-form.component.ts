@@ -21,7 +21,6 @@ export class CitaFormComponent implements OnInit {
 
   date: Date;
   fecha_creacion:string
-
   fechaModelInicio: NgbDateStruct;
   fechaModelFin: NgbDateStruct;
   selectedTimeInicio: { hour: number, minute: number } = { hour: 0, minute: 0 };
@@ -30,7 +29,7 @@ export class CitaFormComponent implements OnInit {
   nombrePaciente:string=""
   apellidoPaternoPaciente:string=""
   apellidoMaternoPaciente:string=""
-  edad:string=""
+  edadPaciente:string=""
   telefonoPaciente:string=""
   titulo:string=""
   motivo:string=""
@@ -46,11 +45,13 @@ export class CitaFormComponent implements OnInit {
   mostrarMensajeMotivo:boolean = true
   mostrarMensajeFechaInicio:boolean = true
   mostrarMensajeHoraInicio:boolean = true
+  mostrarMensajeTelefono:boolean = true
 
   //mensajes
   campoRequerido: string;
   fechaRequerida: string;
   horarioValido: string;
+  soloNumeros: string;
 
   pacienteJson = {}
   //citaJson = {}
@@ -64,6 +65,7 @@ export class CitaFormComponent implements OnInit {
     this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
     this.fechaRequerida = Mensajes.FECHA_INICIO_REQUERIDA;
     this.horarioValido = Mensajes.HORARIO_INICIO_VALIDO;
+    this.soloNumeros = "Ingresa sólo números";
   }
 
   ngOnInit(): void {
@@ -77,12 +79,13 @@ export class CitaFormComponent implements OnInit {
     console.log("Fecha Inicio: "+ JSON.stringify(this.fechaModelInicio))
     console.log("Hora Inicio: "+ JSON.stringify(this.selectedTimeInicio))
 
-    if(this.mostrarMensajeTitulo && this.mostrarMensajeMotivo && this.mostrarMensajeFechaInicio && this.mostrarMensajeHoraInicio){
+    if(this.mostrarMensajeTitulo && this.mostrarMensajeMotivo && this.mostrarMensajeFechaInicio && this.mostrarMensajeHoraInicio && this.mostrarMensajeTelefono){
       console.log("Vuelve a validar")
       this.validaTitulo()
       this.validaMotivo()
       this.validarFechaInicio()
       this.validaHoraInicio()
+      this.validaTelefono()
     
     }else{
       console.log("Todo valido")
@@ -117,7 +120,8 @@ export class CitaFormComponent implements OnInit {
       nombre: this.nombrePaciente,
       apellidop: this.apellidoPaternoPaciente,
       apellidom: this.apellidoMaternoPaciente,
-      edad: this.edad,
+      edad: this.edadPaciente,
+      telefono: this.telefonoPaciente,
       fecha_creacion: this.fecha_creacion,
       id_clinica: localStorage.getItem('_cli'),
       id_usuario: localStorage.getItem('_us')
@@ -209,8 +213,9 @@ export class CitaFormComponent implements OnInit {
     );
   }
 
-  seleccionarPaciente(id_seleccionado: string, nombre:string, apellidop:string, apellidom:string): void {
+  seleccionarPaciente(id_seleccionado: string, nombre:string, apellidop:string, apellidom:string, edad:string, telefono:string): void {
     console.log("Id seleccionado: " + id_seleccionado);
+    console.log("Teléfono seleccionado: " + telefono);
     
     this.mostrarTablaResultados = false;
     this.existePaciente = true;
@@ -218,12 +223,15 @@ export class CitaFormComponent implements OnInit {
     this.nombrePaciente = nombre;
     this.apellidoPaternoPaciente = apellidop
     this.apellidoMaternoPaciente = apellidom
+    this.edadPaciente = edad
+    this.telefonoPaciente = telefono
 
     this.query=nombre +" "+apellidop+" "+apellidom 
     this.id_paciente = id_seleccionado
    
     this.validaNombre()
     this.validaApPaterno()
+    this.validaTelefono()
   }
 
   validaNombre(){
@@ -271,6 +279,15 @@ export class CitaFormComponent implements OnInit {
       this.mostrarMensajeHoraInicio = true
     }else{
       this.mostrarMensajeHoraInicio = false
+    }
+  }
+
+  validaTelefono(){
+    const esNumero = /^\d+$/.test(this.telefonoPaciente);
+    if(!esNumero || this.telefonoPaciente.length < 10){
+      this.mostrarMensajeTelefono = true
+    }else{
+      this.mostrarMensajeTelefono = false
     }
   }
 

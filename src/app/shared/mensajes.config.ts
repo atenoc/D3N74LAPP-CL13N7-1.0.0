@@ -56,5 +56,7 @@ export const Mensajes = {
 
     //Pacientes
     PACIENTE_NO_REGISTRADO: 'No se pudo registrar el paciente ',
+    PACIENTE_ACTUALIZADO: 'La información del paciente se actualizó correctamente ',
+    PACIENTE_NO_ACTUALIZADO: 'No se pudo actualizar la información del paciente ',
 
 };
