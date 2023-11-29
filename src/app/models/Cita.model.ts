@@ -40,4 +40,5 @@ export interface CitaEditar{
     apellidom:string
     edad: string
     telefono:string;
+    id_paciente;
 }

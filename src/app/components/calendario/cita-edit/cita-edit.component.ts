@@ -6,6 +6,7 @@ import { Paciente } from 'src/app/models/Paciente.model';
 import { CitaService } from 'src/app/services/citas/cita.service';
 import { PacienteService } from 'src/app/services/pacientes/paciente.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cita-edit',
@@ -44,6 +45,7 @@ export class CitaEditComponent implements OnInit {
   nota:string=""
 
   id_paciente:string
+  //id_medico:string
 
   mostrarMensajeNombre:boolean = true
   mostrarMensajeApPaterno:boolean = true
@@ -90,6 +92,7 @@ export class CitaEditComponent implements OnInit {
         this.apellidoPaternoPaciente = this.citaEditar.apellidop
         this.apellidoMaternoPaciente = this.citaEditar.apellidom
         this.motivo = this.citaEditar.motivo
+        this.id_paciente=this.citaEditar.id_paciente
 
         //this.fechaModelInicio = { year: 1789, month: 7, day: 14 };
         const fechaInicioCita: NgbDateStruct = this.ngbDateParserFormatter.parse(this.citaEditar.start);
@@ -121,6 +124,70 @@ export class CitaEditComponent implements OnInit {
       
     }
     
+  updateCita(){
+    /*
+    var citaJson = {
+      title: "Cita. "+this.nombrePaciente+" "+this.apellidoPaternoPaciente,
+      motivo: this.motivo,
+      start: this.fecha_hora_inicio,
+      end: this.fecha_hora_fin,
+      fecha_creacion: this.fecha_creacion,
+      id_paciente: this.id_paciente,
+      id_clinica: localStorage.getItem('_cli'),
+      id_usuario: localStorage.getItem('_us')
+    };*/
+
+    //console.log(citaJson)
+
+    this.fecha_hora_inicio = this.fechaModelInicio.year+"-"+this.fechaModelInicio.month+"-"+this.fechaModelInicio.day+" "+this.selectedTimeInicio.hour+":"+this.selectedTimeInicio.minute+":00"
+
+    if(this.fechaModelFin){
+      this.fecha_hora_fin = this.fechaModelFin.year+"-"+this.fechaModelFin.month+"-"+this.fechaModelFin.day+" "+this.selectedTimeFin.hour+":"+this.selectedTimeFin.minute+":"+":00"
+    }else{
+      this.fecha_hora_fin = null
+    }
+
+    this.citaService.updateCita(
+      this.id,
+      "Cita. "+this.nombrePaciente+" "+this.apellidoPaternoPaciente,
+      this.motivo,
+      this.fecha_hora_inicio,
+      this.fecha_hora_fin,
+      this.nota,
+      this.id_paciente
+    ).subscribe(
+      res=>{
+        console.log("Cita actualizada")
+        console.log(res)
+        this.citaService.emitirNuevaCita(); // Emitir el evento de nueva cita
+
+        Swal.fire({
+          position: 'top-end',
+          html:
+            `<h5>${ Mensajes.CITA_ACTUALIZADA }</h5>`+
+            `<span>${ res.title }</span>`, 
+          showConfirmButton: false,
+          backdrop: false,
+          width: 400,
+          background: 'rgb(40, 167, 69, .90)',
+          color:'white',
+          timerProgressBar:true,
+          timer: 3000,
+        })
+
+      },
+      err =>{
+        Swal.fire({
+          icon: 'error',
+          html:
+            `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
+            `<span>${ Mensajes.CITA_NO_ACTUALIZADA }</span></br>`+
+            `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
+          showConfirmButton: false,
+          timer: 3000
+        })
+      })
+  }  
 
   buscarPacientes() {
     this.pacienteService.buscarPacientes(localStorage.getItem('_cli'), this.query).subscribe(
