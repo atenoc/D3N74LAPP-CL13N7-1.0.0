@@ -145,3 +145,10 @@ a {
     border-radius: 5px;
  }
 
+ /*****************/
+
+ .p_right{
+	float: right;
+    margin-top: 6px;
+    margin-right: 8px;
+ }

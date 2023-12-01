@@ -56,7 +56,7 @@ export class CitasListComponent implements OnInit {
 
   actualizarCalendario(){
     this.calendarOptions = {
-      aspectRatio: 2.1,
+      //aspectRatio: 2.1,
       customButtons: {
         myCustomButton: {
           text: 'Agregar cita',

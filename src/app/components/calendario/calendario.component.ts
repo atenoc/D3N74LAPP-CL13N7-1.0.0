@@ -73,7 +73,7 @@ export class CalendarioComponent implements OnInit {
       views: {
         timeGridWeek:{
           aspectRatio: 2.3,
-           scrollTime: '08:00:00',
+          scrollTime: '08:00:00',
         },
         timeGridDay:{
           aspectRatio: 2.3,
