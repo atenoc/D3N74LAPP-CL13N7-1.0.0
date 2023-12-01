@@ -16,13 +16,10 @@ import Swal from 'sweetalert2';
 export class CitaEditComponent implements OnInit {
 
   id: string;
-
   query = '';
   mostrarTablaResultados = false;
-
   pacientes: Paciente[] = [];
-
-  //cita:Cita
+  tituloCard: string;
   citaEditar:CitaEditar
 
   date: Date;
@@ -90,6 +87,7 @@ export class CitaEditComponent implements OnInit {
         console.log("Cita a Editar:", res);
       
         this.citaEditar = res;
+        this.tituloCard = this.citaEditar.nombre+' '+this.citaEditar.apellidop+' '+this.citaEditar.apellidom
         //console.log(this.citaEditar);
 
         this.motivo = this.citaEditar.motivo

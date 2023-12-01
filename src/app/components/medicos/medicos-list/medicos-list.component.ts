@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { MedicoService } from 'src/app/services/medicos/medico.service';
-import { CifradoService } from 'src/app/services/shared/cifrado.service';
 
 @Component({
   selector: 'app-medicos-list',
@@ -12,13 +12,13 @@ import { CifradoService } from 'src/app/services/shared/cifrado.service';
 export class MedicosListComponent implements OnInit {
 
   medicos: Usuario[] = [];
-  existenUsuarios:boolean=false
+  existenPacientes:boolean=false
   mensaje:string
 
   constructor(
     private authService:AuthService,
-    private cifradoService: CifradoService,
     private usuarioService:MedicoService, 
+    private router: Router, 
     ) { }
 
   ngOnInit(): void {
@@ -26,7 +26,6 @@ export class MedicosListComponent implements OnInit {
     if(this.authService.validarSesionActiva()){
       this.getMedicosByIdClinica()
     }
-
   }
 
   getMedicosByIdClinica(){
@@ -39,9 +38,14 @@ export class MedicosListComponent implements OnInit {
         if(this.medicos.length <= 0){
           this.mensaje='No hay médicos que mostrar'
         }else{
-          this.existenUsuarios = true;
+          this.existenPacientes = true;
         }
       });
+  }
+
+  selectedIdUser(id: string) {
+    console.log("id seleccionado: "+id)
+    this.router.navigate(['/usuario-detalle', id]);
   }
 
 }

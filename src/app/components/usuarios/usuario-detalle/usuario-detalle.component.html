@@ -19,7 +19,7 @@
 </section>
 
 <section class="content" *ngIf="!editando">
-    <div class="container-fluid">
+    <div class="container">
       <div class="row">
         <div class="col-md-12">
           <div class="card card-primary">
@@ -58,13 +58,13 @@
                             <div class="col-sm">
                                 <div class="form-group">
                                     <small class="text-muted">Contraseña</small>
-                                    <input type="password" class="form-control sin-borde" formControlName="llave" placeholder="Ingrese una contraseña" readonly>
+                                    <input type="password" class="form-control sin-borde" formControlName="llave" placeholder="******" readonly>
                                 </div>
                             </div>
                     
                             <div class="col-sm">
                                 <div class="form-group">
-                                    <small class="text-muted"><strong> Rol * </strong></small>
+                                    <small class="text-muted">Rol</small>
                                     <select class="form-select sin-borde" formControlName="rol" disabled>
                                         <option selected disabled [value]="null">Selecciona una opción:</option>
                                         <option *ngFor="let item of catRoles" [value]="item.id">{{ item.descripcion }}</option>
@@ -183,7 +183,7 @@
                             <div class="col-sm">
                                 <div class="form-group">
                                     <small class="text-muted"><strong> Contraseña * </strong></small>
-                                    <input type="password" class="form-control" formControlName="llave" [ngClass]="getInputClass('llave')" placeholder="Ingrese una contraseña" readonly>
+                                    <input type="password" class="form-control" formControlName="llave" [ngClass]="getInputClass('llave')" placeholder="******" readonly>
                                     <a> <small class="text-primary" style="cursor: pointer;" (click)="selectedIdUser()">Cambiar contraseña...</small> </a>
                                 </div>
                             </div>
