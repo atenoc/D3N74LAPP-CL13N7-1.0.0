@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Paciente } from 'src/app/models/Paciente.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { PacienteService } from 'src/app/services/pacientes/paciente.service';
@@ -24,6 +25,7 @@ export class PacientesListComponent implements OnInit {
   constructor(
     private authService:AuthService,
     private usuarioService:PacienteService, 
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -35,6 +37,7 @@ export class PacientesListComponent implements OnInit {
 
   selectedIdUser(id: string) {
     console.log("id seleccionado: "+id)
+    this.router.navigate(['/paciente-detalle', id]);
   }
 
   getPacientesByIdClinicaPaginados(){

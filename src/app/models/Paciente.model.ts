@@ -14,6 +14,7 @@ export interface Paciente{
     id_usuario:string;
     fecha_creacion:Date;
     nombre_completo_paciente:string;
+    nombre_usuario_creador:string;
 }
 
 export interface PacientesPaginados {

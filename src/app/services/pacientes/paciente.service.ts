@@ -51,11 +51,23 @@ export class PacienteService {
     return this.http.get<PacientesPaginados>(`${this.URI}/paginacion/pacientes/${id_clinica}`, { params });
   }
 
+  getPacienteById$(id: string) {
+    return this.http.get<Paciente>(`${this.URI}/${id}`);
+  }
+
   buscarPacientes(id_clinica: string, query: string, ): Observable<any> {
     return this.http.post(`${this.URI}/buscador/${id_clinica}`, { query });
   }
 
   updatePacienteCita(id: string, nombre:string, apellidop:string, apellidom:string, edad:string, telefono:string) {
-    return this.http.patch<Paciente>(`${this.URI}/${id}`, {nombre, apellidop, apellidom, edad, telefono});
+    return this.http.patch<Paciente>(`${this.URI}/cita/${id}`, {nombre, apellidop, apellidom, edad, telefono});
+  }
+
+  updatePaciente(id: string, nombre:string, apellidop:string, apellidom:string, edad:string, sexo:string, telefono:string, correo:string, direccion:string) {
+    return this.http.patch<Paciente>(`${this.URI}/${id}`, {nombre, apellidop, apellidom, edad, sexo, telefono, correo, direccion});
+  }
+
+  deletePaciente(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.URI}/${id}`);
   }
 }

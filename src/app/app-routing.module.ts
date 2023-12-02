@@ -20,6 +20,7 @@ import { MedicosListComponent } from './components/medicos/medicos-list/medicos-
 import { PacientesListComponent } from './components/pacientes/pacientes-list/pacientes-list.component';
 import { CitaEditComponent } from './components/calendario/cita-edit/cita-edit.component';
 import { CitasListComponent } from './components/calendario/citas-list/citas-list.component';
+import { PacienteDetalleComponent } from './components/pacientes/paciente-detalle/paciente-detalle.component';
 
 
 const routes: Routes = [
@@ -32,6 +33,7 @@ const routes: Routes = [
   {path:'usuario-detalle/:id', component: UsuarioDetalleComponent, canActivate:[AuthGuard]},
   {path:'medicos', component: MedicosListComponent, canActivate:[AuthGuard]},
   {path:'pacientes', component: PacientesListComponent, canActivate:[AuthGuard]},
+  {path:'paciente-detalle/:id', component: PacienteDetalleComponent, canActivate:[AuthGuard]},
   {path:'agenda', component: AgendaComponent, canActivate:[AuthGuard]},
   {path:'calendario', component: CalendarioComponent, canActivate:[AuthGuard]},
   {path:'cita-form', component: CitaFormComponent, canActivate:[AuthGuard]},
