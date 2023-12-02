@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Paciente } from 'src/app/models/Paciente.model';
 import { PacienteService } from 'src/app/services/pacientes/paciente.service';
 import { CifradoService } from 'src/app/services/shared/cifrado.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-paciente-detalle',
@@ -35,7 +37,8 @@ export class PacienteDetalleComponent implements OnInit {
     private activatedRoute: ActivatedRoute, 
     private pacienteService:PacienteService, 
     private router: Router,
-    private cifradoService: CifradoService
+    private cifradoService: CifradoService,
+    private spinner: NgxSpinnerService,
 
   ) {
     this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
@@ -99,6 +102,114 @@ export class PacienteDetalleComponent implements OnInit {
     return {
       'invalid-input': control?.invalid && control?.dirty
     };
+  }
+
+  actualizarPaciente(){
+    this.spinner.show();
+    console.log("Actualizar paciente:")
+    console.log(this.formularioPaciente)
+
+    this.pacienteService.updatePaciente(
+      this.paciente.id, 
+      this.formularioPaciente.value.nombre,
+      this.formularioPaciente.value.apellidop,
+      this.formularioPaciente.value.apellidom,
+      this.formularioPaciente.value.edad,
+      this.formularioPaciente.value.sexo,
+      this.formularioPaciente.value.telefono,
+      this.formularioPaciente.value.correo,
+      this.formularioPaciente.value.direccion,
+      ).subscribe(res => {
+        console.log("Paciente actualizado: "+res);
+
+        this.editando=false
+        this.ngOnInit()
+        this.spinner.hide();
+        Swal.fire({
+          position: 'top-end',
+          html:
+            `<h5>${ Mensajes.PACIENTE_ACTUALIZADO }</h5>`+
+            `<span>${this.paciente.nombre} ${this.paciente.apellidop}</span>`, 
+            
+          showConfirmButton: false,
+          backdrop: false, 
+          width: 400,
+          background: 'rgb(40, 167, 69, .90)',
+          color:'white',
+          timerProgressBar:true,
+          timer: 3000,
+        })
+
+      },
+        err => {
+          this.spinner.hide();
+          console.log("error: " + err)
+          //err.error.message
+          Swal.fire({
+            icon: 'error',
+            html:
+              `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
+              `<span>${ Mensajes.PACIENTE_NO_ACTUALIZADO }</span></br>`+
+              `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
+            showConfirmButton: false,
+            timer: 3000
+          })
+        }
+      );
+
+    return false;
+  }
+
+  deletePaciente(id: string, nombre:string, apellidop:string) {
+
+    Swal.fire({
+      html:
+        `<h5>${ Mensajes.USUARIO_ELIMINAR_QUESTION }</h5> <br/> ` +
+        `<strong> ${nombre} ${apellidop} </strong>`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#dc3545',
+      cancelButtonColor: '#aeaeae',
+      confirmButtonText: 'Si, eliminar',
+      cancelButtonText: 'No, cancelar'
+    }).then((result) => {
+      if (result.value) {
+        // Confirm
+        this.pacienteService.deletePaciente(id).subscribe(res => {
+          console.log("Paciente eliminado:" + JSON.stringify(res))
+
+          Swal.fire({
+            position: 'top-end',
+            html:
+              `<h5>${ Mensajes.USUARIO_ELIMINADO }</h5>`,
+            showConfirmButton: false,
+            backdrop: false, 
+            width: 400,
+            background: 'rgb(40, 167, 69, .90)',
+            color:'white',
+            timerProgressBar:true,
+            timer: 3000,
+          })
+
+          this.router.navigate(['/pacientes']);
+        },
+          err => { 
+            console.log("error: " + err)
+            Swal.fire({
+              icon: 'error',
+              html:
+                `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
+                `<span>${ Mensajes.USUARIO_NO_ELIMINADO }</span></br>`+
+                `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
+              showConfirmButton: false,
+              timer: 3000
+            }) 
+          }
+        )
+    
+      }
+    })
+
   }
 
 }
