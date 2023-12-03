@@ -118,6 +118,7 @@
                                   (ngModelChange)="validarFechaInicio()"
                                   ngbDatepicker
                                   #d1="ngbDatepicker"
+                                  readonly
                                 />
                                 <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d1.toggle()" type="button">
                                   <i class="far fa-calendar-alt"></i>
@@ -151,6 +152,7 @@
                                   [(ngModel)]="fechaModelFin"
                                   ngbDatepicker
                                   #d2="ngbDatepicker"
+                                  readonly
                                 />
                                 <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()" type="button">
                                   <i class="far fa-calendar-alt"></i>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgbActiveModal, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbDateParserFormatter, NgbDateStruct, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Cita, CitaEditar } from 'src/app/models/Cita.model';
 import { Paciente } from 'src/app/models/Paciente.model';
 import { CitaService } from 'src/app/services/citas/cita.service';
@@ -67,12 +67,21 @@ export class CitaEditComponent implements OnInit {
     private pacienteService:PacienteService, 
     private citaService:CitaService,
     private ngbDateParserFormatter: NgbDateParserFormatter,
-    private router:Router
+    private router:Router,
+    config: NgbDatepickerConfig
     ) {
     this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
     this.fechaRequerida = Mensajes.FECHA_INICIO_REQUERIDA;
     this.horarioValido = Mensajes.HORARIO_INICIO_VALIDO;
     this.soloNumeros = "Ingresa sólo números";
+
+    config.markDisabled = (date: NgbDateStruct) => {
+      const currentDate = new Date();
+      const selectedDate = new Date(date.year, date.month - 1, date.day);
+
+      // Deshabilitar los días domingos y fechas anteriores a la actual
+      return selectedDate.getDay() === 0 || selectedDate < currentDate;
+    };
     }
 
     ngOnInit(): void {

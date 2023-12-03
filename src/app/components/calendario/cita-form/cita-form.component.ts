@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbActiveModal, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbDateStruct, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { JsonPipe } from '@angular/common';
 import { CitaService } from 'src/app/services/citas/cita.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
@@ -60,12 +60,21 @@ export class CitaFormComponent implements OnInit {
   constructor(
     private activeModal: NgbActiveModal, 
     private pacienteService:PacienteService, 
-    private citaService:CitaService
+    private citaService:CitaService,
+    config: NgbDatepickerConfig
     ){ 
     this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
     this.fechaRequerida = Mensajes.FECHA_INICIO_REQUERIDA;
     this.horarioValido = Mensajes.HORARIO_INICIO_VALIDO;
     this.soloNumeros = "Ingresa sólo números";
+
+    config.markDisabled = (date: NgbDateStruct) => {
+      const currentDate = new Date();
+      const selectedDate = new Date(date.year, date.month - 1, date.day);
+
+      // Deshabilitar los días domingos y fechas anteriores a la actual
+      return selectedDate.getDay() === 0 || selectedDate < currentDate;
+    };
   }
 
   ngOnInit(): void {
