@@ -90,7 +90,7 @@ export class LoginComponent implements OnInit {
               this.centroService.getCentroByIdUser$(res.id).subscribe(
                 res => {
                   console.log("Si existe Centro")
-                  this.router.navigate(['/agenda'])
+                  this.router.navigate(['/calendario'])
                 },
                 err => {
                   console.log("No existe Centro")
@@ -99,7 +99,7 @@ export class LoginComponent implements OnInit {
                 }
               )
             }else{
-              this.router.navigate(['/agenda'])
+              this.router.navigate(['/calendario'])
             }
           },
           err => {

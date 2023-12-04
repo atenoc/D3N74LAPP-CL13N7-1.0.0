@@ -39,7 +39,7 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
     this.centroService.getCentroByIdUser$(localStorage.getItem('_us')).subscribe(
       res => {
         console.log("Si existe Centro")
-        this.router.navigate(['/agenda'])
+        this.router.navigate(['/calendario'])
       },
       err => {
         console.log("No existe Centro")
