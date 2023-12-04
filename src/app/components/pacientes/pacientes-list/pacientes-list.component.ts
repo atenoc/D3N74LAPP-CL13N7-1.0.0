@@ -81,4 +81,8 @@ export class PacientesListComponent implements OnInit {
     this.getPacientesByIdClinicaPaginados();
   }
 
+  irPacienteForm(){
+    this.router.navigate(['/paciente-form']);
+  }
+
 }

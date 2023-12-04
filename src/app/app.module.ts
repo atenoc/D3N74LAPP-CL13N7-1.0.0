@@ -37,6 +37,7 @@ import { PacientesListComponent } from './components/pacientes/pacientes-list/pa
 import { CitaEditComponent } from './components/calendario/cita-edit/cita-edit.component';
 import { CitasListComponent } from './components/calendario/citas-list/citas-list.component';
 import { PacienteDetalleComponent } from './components/pacientes/paciente-detalle/paciente-detalle.component';
+import { PacienteFormComponent } from './components/pacientes/paciente-form/paciente-form.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { PacienteDetalleComponent } from './components/pacientes/paciente-detall
     PacientesListComponent,
     CitaEditComponent,
     CitasListComponent,
-    PacienteDetalleComponent
+    PacienteDetalleComponent,
+    PacienteFormComponent
   ],
   imports: [
     BrowserModule,

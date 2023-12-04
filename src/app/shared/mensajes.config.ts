@@ -55,7 +55,9 @@ export const Mensajes = {
     CITA_NO_ELIMINADA: 'No se pudo eliminar la cita ',
 
     //Pacientes
+    PACIENTE_REGISTRADO: 'El paciente se registró correctamente ',
     PACIENTE_NO_REGISTRADO: 'No se pudo registrar el paciente ',
+    PACIENTE_EXISTENTE: 'Este paciente ya se encuentra registrado. ',
     PACIENTE_ACTUALIZADO: 'La información del paciente se actualizó correctamente ',
     PACIENTE_NO_ACTUALIZADO: 'No se pudo actualizar la información del paciente ',
     PACIENTE_ELIMINADO: 'El paciente se eliminó correctamente ',
