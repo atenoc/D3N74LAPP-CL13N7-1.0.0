@@ -32,6 +32,12 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { DetalleEventoComponent } from './components/calendario/detalle-evento/detalle-evento.component';
 import { FormEventoComponent } from './components/calendario/form-evento/form-evento.component';
 import { CitaFormComponent } from './components/calendario/cita-form/cita-form.component';
+import { MedicosListComponent } from './components/medicos/medicos-list/medicos-list.component';
+import { PacientesListComponent } from './components/pacientes/pacientes-list/pacientes-list.component';
+import { CitaEditComponent } from './components/calendario/cita-edit/cita-edit.component';
+import { CitasListComponent } from './components/calendario/citas-list/citas-list.component';
+import { PacienteDetalleComponent } from './components/pacientes/paciente-detalle/paciente-detalle.component';
+import { PacienteFormComponent } from './components/pacientes/paciente-form/paciente-form.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +62,13 @@ import { CitaFormComponent } from './components/calendario/cita-form/cita-form.c
     CalendarioComponent,
     DetalleEventoComponent,
     FormEventoComponent,
-    CitaFormComponent
+    CitaFormComponent,
+    MedicosListComponent,
+    PacientesListComponent,
+    CitaEditComponent,
+    CitasListComponent,
+    PacienteDetalleComponent,
+    PacienteFormComponent
   ],
   imports: [
     BrowserModule,

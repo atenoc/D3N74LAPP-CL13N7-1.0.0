@@ -33,7 +33,7 @@ export class CentroListComponent implements OnInit {
           console.log("Rol Centros: "+this.usuario.rol)
   
           if(this.usuario.rol != "sop"){  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
-            this.router.navigate(['/agenda']);
+            this.router.navigate(['/calendario']);
           }else{
             this.centroService.getCentros$().subscribe(
               res=>{

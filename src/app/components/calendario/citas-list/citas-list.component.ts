@@ -6,19 +6,19 @@ import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 import esLocale from '@fullcalendar/core/locales/es';
 import { NgbModal, NgbModalConfig, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { DetalleEventoComponent } from './detalle-evento/detalle-evento.component';
-import { CitaFormComponent } from './cita-form/cita-form.component';
-import { CitaService } from 'src/app/services/citas/cita.service';
 import { Cita } from 'src/app/models/Cita.model';
+import { CitaService } from 'src/app/services/citas/cita.service';
+import { CitaFormComponent } from '../cita-form/cita-form.component';
+import { DetalleEventoComponent } from '../detalle-evento/detalle-evento.component';
 
 @Component({
-  selector: 'app-calendario',
-  templateUrl: './calendario.component.html',
-  styleUrls: ['./calendario.component.css']
+  selector: 'app-citas-list',
+  templateUrl: './citas-list.component.html',
+  styleUrls: ['./citas-list.component.css']
 })
-export class CalendarioComponent implements OnInit {
+export class CitasListComponent implements OnInit {
 
-  private calendarComponent: CalendarioComponent;
+  private citasListComponent: CitasListComponent;
 
   modalRef: NgbModalRef;
   calendarOptions: CalendarOptions = {};
@@ -28,23 +28,19 @@ export class CalendarioComponent implements OnInit {
     private modalService: NgbModal,
     config: NgbModalConfig,
     private citaService:CitaService
-    ) {
-      config.backdrop = 'static';
-		  config.keyboard = false;
-      this.calendarComponent = this; // Captura la instancia del componente en la variable
+  ) {
+    config.backdrop = 'static';
+		config.keyboard = false;
+    this.citasListComponent = this; // Captura la instancia del componente en la variable
   }
 
   ngOnInit(): void {
-
     this.citas = []
     this.cargarcitas()
-    
-    // Suscribirse al BehaviorSubject de nueva cita
+
     this.citaService.onNuevaCita$().subscribe(() => {
-      // Recargar las citas y actualizar el calendario
       this.cargarcitas();
     });
-
   }
 
   cargarcitas(){
@@ -60,32 +56,27 @@ export class CalendarioComponent implements OnInit {
 
   actualizarCalendario(){
     this.calendarOptions = {
+      //aspectRatio: 2.1,
       customButtons: {
         myCustomButton: {
           text: 'Agregar cita',
           click: () => {
-            //alert('clicked the custom button!');
-            this.calendarComponent.openVerticallyCentered()
-          }
-        }
-      },
-      initialView: 'dayGridMonth',
-      views: {
-        timeGridWeek:{
-          aspectRatio: 2.3,
-          scrollTime: '08:00:00',
+            this.citasListComponent.openVerticallyCentered();
+          },
         },
-        timeGridDay:{
-          aspectRatio: 2.3,
-          scrollTime: '08:00:00',
-        }
       },
-      plugins: [dayGridPlugin, timegridPlugin, interactionPlugin],
+      initialView: 'listMonth', // Puedes cambiar a 'listWeek' o 'listDay' según tu preferencia
+      plugins: [listPlugin, interactionPlugin],
       locale: esLocale,
-      headerToolbar:{
-        left:'prev,today,next myCustomButton',
-        center:'title',
-        right:'dayGridMonth,timeGridWeek,timeGridDay'
+      headerToolbar: {
+        left: 'prev,today,next myCustomButton',
+        center: 'title',
+        right: 'listMonth,listWeek,listDay',
+      },
+      buttonText: {
+        listMonth: 'Mes',
+        listWeek: 'Semana',
+        listDay: 'Día',
       },
       events: this.citas,
       eventClick: (info)=> {
@@ -127,4 +118,5 @@ export class CalendarioComponent implements OnInit {
   openVerticallyCentered() {
     this.modalService.open(CitaFormComponent, { centered: true, size: 'lg' });
   }
+
 }

@@ -1,26 +1,30 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbActiveModal, NgbDateStruct, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
-import { JsonPipe } from '@angular/common';
-import { CitaService } from 'src/app/services/citas/cita.service';
-import { Mensajes } from 'src/app/shared/mensajes.config';
-import { PacienteService } from 'src/app/services/pacientes/paciente.service';
-import Swal from 'sweetalert2';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgbActiveModal, NgbDateParserFormatter, NgbDateStruct, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
+import { Cita, CitaEditar } from 'src/app/models/Cita.model';
 import { Paciente } from 'src/app/models/Paciente.model';
+import { CitaService } from 'src/app/services/citas/cita.service';
+import { PacienteService } from 'src/app/services/pacientes/paciente.service';
+import { Mensajes } from 'src/app/shared/mensajes.config';
+import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-cita-form',
-  templateUrl: './cita-form.component.html',
-  styleUrls: ['./cita-form.component.css']
+  selector: 'app-cita-edit',
+  templateUrl: './cita-edit.component.html',
+  styleUrls: ['./cita-edit.component.css']
 })
-export class CitaFormComponent implements OnInit {
+export class CitaEditComponent implements OnInit {
 
+  id: string;
   query = '';
   mostrarTablaResultados = false;
-
   pacientes: Paciente[] = [];
+  tituloCard: string;
+  citaEditar:CitaEditar
 
   date: Date;
   fecha_creacion:string
+
   fechaModelInicio: NgbDateStruct;
   fechaModelFin: NgbDateStruct;
   selectedTimeInicio: { hour: number, minute: number } = { hour: 0, minute: 0 };
@@ -38,6 +42,7 @@ export class CitaFormComponent implements OnInit {
   nota:string=""
 
   id_paciente:string
+  //id_medico:string
 
   mostrarMensajeNombre:boolean = true
   mostrarMensajeApPaterno:boolean = true
@@ -58,11 +63,13 @@ export class CitaFormComponent implements OnInit {
   existePaciente:boolean;
 
   constructor(
-    private activeModal: NgbActiveModal, 
+    private activatedRoute: ActivatedRoute, 
     private pacienteService:PacienteService, 
     private citaService:CitaService,
+    private ngbDateParserFormatter: NgbDateParserFormatter,
+    private router:Router,
     config: NgbDatepickerConfig
-    ){ 
+    ) {
     this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
     this.fechaRequerida = Mensajes.FECHA_INICIO_REQUERIDA;
     this.horarioValido = Mensajes.HORARIO_INICIO_VALIDO;
@@ -75,110 +82,131 @@ export class CitaFormComponent implements OnInit {
       // Deshabilitar los días domingos y fechas anteriores a la actual
       return selectedDate.getDay() === 0 || selectedDate < currentDate;
     };
-  }
-
-  ngOnInit(): void {
-    console.log("CITA FORM")
-  }
-
-  crearCita(){
-    this.date = new Date();
-    console.log("Tiempo Computadora: "+ this.date)
-
-    console.log("Fecha Inicio: "+ JSON.stringify(this.fechaModelInicio))
-    console.log("Hora Inicio: "+ JSON.stringify(this.selectedTimeInicio))
-
-    if(this.mostrarMensajeTitulo && this.mostrarMensajeMotivo && this.mostrarMensajeFechaInicio && this.mostrarMensajeHoraInicio && this.mostrarMensajeTelefono){
-      console.log("Vuelve a validar")
-      this.validaTitulo()
-      this.validaMotivo()
-      this.validarFechaInicio()
-      this.validaHoraInicio()
-      this.validaTelefono()
-    
-    }else{
-      console.log("Todo valido")
-      this.fecha_hora_inicio = this.fechaModelInicio.year+"-"+this.fechaModelInicio.month+"-"+this.fechaModelInicio.day+" "+this.selectedTimeInicio.hour+":"+this.selectedTimeInicio.minute+":00"
-
-      if(this.fechaModelFin){
-        this.fecha_hora_fin = this.fechaModelFin.year+"-"+this.fechaModelFin.month+"-"+this.fechaModelFin.day+" "+this.selectedTimeFin.hour+":"+this.selectedTimeFin.minute+":"+":00"
-      }else{
-        this.fecha_hora_fin = null
-      }
-
-      const mes = this.date.getMonth() +1
-      this.fecha_creacion = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
-      console.log("Fecha creación:: "+this.fecha_creacion)
-
-      if(this.existePaciente){
-        // registrar cita
-
-        this.registrarCita();
-
-      }else{
-        // registrar paciente y cita
-
-        this.registrarPaciente()
-
-      }
     }
-  }
 
-  registrarPaciente(){
-    this.pacienteJson = {
-      nombre: this.nombrePaciente,
-      apellidop: this.apellidoPaternoPaciente,
-      apellidom: this.apellidoMaternoPaciente,
-      edad: this.edadPaciente,
-      telefono: this.telefonoPaciente,
-      fecha_creacion: this.fecha_creacion,
-      id_clinica: localStorage.getItem('_cli'),
-      id_usuario: localStorage.getItem('_us')
-    };
+    ngOnInit(): void {
+      this.activatedRoute.params.subscribe(params => {
+        this.id = params['id'];
+        console.log(this.id)
+    
+        
+      });
 
-    this.pacienteService.createPaciente(this.pacienteJson).subscribe(
-      res=>{
-      this.id_paciente=res.id
-      this.registrarCita()
+      this.citaService.getCitaById$(this.id).subscribe(res => {
+        console.log("Cita a Editar:", res);
+      
+        this.citaEditar = res;
+        this.tituloCard = this.citaEditar.nombre+' '+this.citaEditar.apellidop+' '+this.citaEditar.apellidom
+        //console.log(this.citaEditar);
+
+        this.motivo = this.citaEditar.motivo
+        this.nombrePaciente = this.citaEditar.nombre
+        this.apellidoPaternoPaciente = this.citaEditar.apellidop
+        this.apellidoMaternoPaciente = this.citaEditar.apellidom
+        this.edadPaciente = this.citaEditar.edad
+        this.telefonoPaciente = this.citaEditar.telefono
+        this.id_paciente=this.citaEditar.id_paciente
+
+        //this.fechaModelInicio = { year: 1789, month: 7, day: 14 };
+        const fechaInicioCita: NgbDateStruct = this.ngbDateParserFormatter.parse(this.citaEditar.start);
+        this.fechaModelInicio = fechaInicioCita
+
+        console.log("Start: "+this.citaEditar.start)
+        const [fecha, horaStar] = this.citaEditar.start.split(' ');
+        const [hourStart, minuteStart, second] = horaStar.split(':');
+        this.selectedTimeInicio = { hour: +hourStart, minute: +minuteStart };
+
+        if(this.citaEditar.end){
+          
+          const fechaFinCita: NgbDateStruct = this.ngbDateParserFormatter.parse(this.citaEditar.end);
+          this.fechaModelFin = fechaFinCita
+          console.log("End: "+this.citaEditar.end)
+          const [fechaEnd, horaEnd] = this.citaEditar.end.split(' ');
+          const [hourEnd, minuteEnd, secondEnd] = horaEnd.split(':');
+          this.selectedTimeFin = { hour: +hourEnd, minute: +minuteEnd };
+        }
+
+        this.validaNombre()
+        this.validaApPaterno()
+        this.validaMotivo()
+        this.validarFechaInicio()
+        this.validaHoraInicio()
+        this.validaTelefono()
+
+      }, err => console.log("error: " + err));
+      
+    }
+    
+  updateCita(){
+    
+    this.pacienteService.updatePacienteCita(
+      this.id_paciente,
+      this.nombrePaciente, 
+      this.apellidoPaternoPaciente,
+      this.apellidoMaternoPaciente,
+      this.edadPaciente,
+      this.telefonoPaciente
+    ).subscribe(res =>{
+      console.log("Se actualizó la información del paciente")
+      console.log(res)
+
+      setTimeout(() => {
+        Swal.fire({
+          position: 'top-end',
+          html:
+            `<h5>Paciente actualizado correctamente</h5>`+
+            `<span>${res.nombre} ${res.apellidop} ${res.apellidom}</span>`, 
+          showConfirmButton: false,
+          backdrop: false,
+          width: 400,
+          background: 'rgb(40, 167, 69, .90)',
+          color:'white',
+          timerProgressBar:true,
+          timer: 3000,
+        })
+      }, 3000);
+
     },
     err =>{
       Swal.fire({
         icon: 'error',
         html:
           `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-          `<span>${ Mensajes.PACIENTE_NO_REGISTRADO }</span></br>`+
+          `<span>${ Mensajes.PACIENTE_NO_ACTUALIZADO }</span></br>`+
           `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
         showConfirmButton: false,
         timer: 3000
       })
     })
 
-  }
+    this.fecha_hora_inicio = this.fechaModelInicio.year+"-"+this.fechaModelInicio.month+"-"+this.fechaModelInicio.day+" "+this.selectedTimeInicio.hour+":"+this.selectedTimeInicio.minute+":00"
 
-  registrarCita(){
-    var citaJson = {
-      title: "Cita. "+this.nombrePaciente+" "+this.apellidoPaternoPaciente,
-      motivo: this.motivo,
-      start: this.fecha_hora_inicio,
-      end: this.fecha_hora_fin,
-      fecha_creacion: this.fecha_creacion,
-      id_paciente: this.id_paciente,
-      id_clinica: localStorage.getItem('_cli'),
-      id_usuario: localStorage.getItem('_us')
-    };
+    if(this.fechaModelFin){
+      this.fecha_hora_fin = this.fechaModelFin.year+"-"+this.fechaModelFin.month+"-"+this.fechaModelFin.day+" "+this.selectedTimeFin.hour+":"+this.selectedTimeFin.minute+":"+":00"
+    }else{
+      this.fecha_hora_fin = null
+    }
 
-    console.log(citaJson)
-
-    this.citaService.createCita(citaJson).subscribe(
+    this.citaService.updateCita(
+      this.id,
+      "Cita. "+this.nombrePaciente+" "+this.apellidoPaternoPaciente,
+      this.motivo,
+      this.fecha_hora_inicio,
+      this.fecha_hora_fin,
+      this.nota,
+      this.id_paciente
+    ).subscribe(
       res=>{
-        console.log("Cita Enviada")
+        console.log("Cita actualizada")
         console.log(res)
         this.citaService.emitirNuevaCita(); // Emitir el evento de nueva cita
+
+        this.router.navigate(['/calendario'])
 
         Swal.fire({
           position: 'top-end',
           html:
-            `<h5>${ Mensajes.CITA_REGISTRADA }</h5>`+
+            `<h5>${ Mensajes.CITA_ACTUALIZADA }</h5>`+
             `<span>${ res.title }</span>`, 
           showConfirmButton: false,
           backdrop: false,
@@ -189,21 +217,19 @@ export class CitaFormComponent implements OnInit {
           timer: 3000,
         })
 
-        this.closeModal()
-
       },
       err =>{
         Swal.fire({
           icon: 'error',
           html:
             `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-            `<span>${ Mensajes.CITA_NO_REGISTRADA }</span></br>`+
+            `<span>${ Mensajes.CITA_NO_ACTUALIZADA }</span></br>`+
             `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
           showConfirmButton: false,
           timer: 3000
         })
       })
-  }
+  }  
 
   buscarPacientes() {
     this.pacienteService.buscarPacientes(localStorage.getItem('_cli'), this.query).subscribe(
@@ -298,10 +324,6 @@ export class CitaFormComponent implements OnInit {
     }else{
       this.mostrarMensajeTelefono = false
     }
-  }
-
-  closeModal() {
-    this.activeModal.close('Modal cerrado');
   }
 
 }

@@ -9,6 +9,9 @@ export const environment = {
   urlApiRoles: ipHost+'/api/roles',
   urlApiTitulos: ipHost+'/api/titulos',
   urlApiEspecialidades: ipHost+'/api/especialidades',
+  urlApiMedicos: ipHost+'/api/medicos',
+  urlApiPacientes: ipHost+'/api/pacientes',
+  urlApiCitas: ipHost+'/api/citas',
   secretKey: '123456'
 };
 

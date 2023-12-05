@@ -1,22 +1,35 @@
 <div class="modal-header my-bg">
-    <strong> {{ title }}</strong>
+    <strong class="text-primary"> {{ title }}</strong>
     <button type="button" class="close" aria-label="Close" (click)="closeModal()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body my-bg">
 
-    <div class="card-body">
-        <p><strong>Inicio:</strong> {{ inicio }}</p>
-        <p><strong>Fin:</strong> {{ fin }}</p>
+    <!-- <div class="card-body"> -->
+        <span class="text-muted">Paciente:</span><strong class="text-info"> {{ data.nombre_paciente }}</strong>
+        <br>
+        <br>
+        <span class="text-muted">Inicia:</span><strong class="text-info"> {{ inicio }}</strong>
+        <br>
+        <span class="text-muted">Termina:</span><strong class="text-info"> {{ fin }}</strong>
         <hr/>
-        <p><strong>Motivo:</strong> {{ data.motivo }}</p>
-        <p><strong>Comentarios:</strong> {{ data.notas }}</p>
-        <p><strong>Fecha creación:</strong> {{ data.fecha_creacion }}</p>
+        <p><span class="text-muted">Motivo:</span> <strong class="text-info"> {{ data.motivo }} </strong> </p>
+        <p><span class="text-muted">Notas:</span> {{ data.notas }}</p>
+        <hr/>
+        <small class="text-muted"><strong>Creado por:</strong> {{ data.nombre_usuario_creador }}</small>
+        <br>
+        <small class="text-muted"><strong>Fecha creación:</strong> {{ data.fecha_creacion }}</small>
+    <!-- </div> -->
+
+    <hr/>
+    <div class="d-flex mt-2 ">
+      <div>
+          <a><small class="text-danger cursor-pointer" ngbTooltip="Eliminar cita de forma permanente" (click)="eliminarCita()"> Eliminar</small> </a>
+      </div>
+      <div class="ml-auto">
+         <button class="btn btn-outline-primary btn-sm" (click)="editarCita()"> <i class="nav-icon fas fa-edit"></i> Editar</button>
+      </div>
     </div>
 
    </div>
-
-
-    
-

@@ -16,6 +16,12 @@ import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.co
 import { ConfigPerfilUsuarioComponent } from './components/perfil/config-perfil-usuario/config-perfil-usuario.component';
 import { CalendarioComponent } from './components/calendario/calendario.component';
 import { CitaFormComponent } from './components/calendario/cita-form/cita-form.component';
+import { MedicosListComponent } from './components/medicos/medicos-list/medicos-list.component';
+import { PacientesListComponent } from './components/pacientes/pacientes-list/pacientes-list.component';
+import { CitaEditComponent } from './components/calendario/cita-edit/cita-edit.component';
+import { CitasListComponent } from './components/calendario/citas-list/citas-list.component';
+import { PacienteDetalleComponent } from './components/pacientes/paciente-detalle/paciente-detalle.component';
+import { PacienteFormComponent } from './components/pacientes/paciente-form/paciente-form.component';
 
 
 const routes: Routes = [
@@ -26,9 +32,15 @@ const routes: Routes = [
   {path:'usuarios', component: UsuariosListComponent, canActivate:[AuthGuard]},
   {path:'usuario-form', component: UsuarioFormComponent, canActivate:[AuthGuard]},
   {path:'usuario-detalle/:id', component: UsuarioDetalleComponent, canActivate:[AuthGuard]},
+  {path:'medicos', component: MedicosListComponent, canActivate:[AuthGuard]},
+  {path:'pacientes', component: PacientesListComponent, canActivate:[AuthGuard]}, 
+  {path:'paciente-form', component: PacienteFormComponent, canActivate:[AuthGuard]},
+  {path:'paciente-detalle/:id', component: PacienteDetalleComponent, canActivate:[AuthGuard]},
   {path:'agenda', component: AgendaComponent, canActivate:[AuthGuard]},
   {path:'calendario', component: CalendarioComponent, canActivate:[AuthGuard]},
   {path:'cita-form', component: CitaFormComponent, canActivate:[AuthGuard]},
+  {path:'cita-edit/:id', component: CitaEditComponent, canActivate:[AuthGuard]},
+  {path:'citas', component: CitasListComponent, canActivate:[AuthGuard]},
   {path:'centros', component: CentroListComponent, canActivate:[AuthGuard]},
   {path:'centro-form', component: CentroFormComponent, canActivate:[AuthGuard]},
   {path:'centro-detalle/:id', component: CentroDetalleComponent, canActivate:[AuthGuard]},

@@ -41,5 +41,26 @@ export const Mensajes = {
     CLINICA_ELIMINAR_QUESTION: '¿Estás seguro que quieres eliminar tu clínica/consultorio?',
     CLINICA_ELIMINADA: 'La clínica/consultorio se eliminó correctamente ',
     CLINICA_NO_ELIMINADA: 'No se pudo eliminar tu clínica/consultorio ',
-    
+
+    //Citas
+    FECHA_INICIO_REQUERIDA: 'Esta fecha es obligatoria ',
+    HORARIO_INICIO_REQUERIDO: 'El horario de inicio es obligatorio ',
+    HORARIO_INICIO_VALIDO: 'Elije un horario válido ',
+    CITA_REGISTRADA: 'La cita se registró correctamente ',
+    CITA_NO_REGISTRADA: 'La cita no se puedo registrar ',
+    CITA_ACTUALIZADA: 'La cita se actualizó correctamente ',
+    CITA_NO_ACTUALIZADA: 'No se pudo actualizar la cita ',
+    CITA_ELIMINAR_QUESTION: '¿Estás seguro que quieres eliminar la cita?',
+    CITA_ELIMINADA: 'La cita se eliminó correctamente ',
+    CITA_NO_ELIMINADA: 'No se pudo eliminar la cita ',
+
+    //Pacientes
+    PACIENTE_REGISTRADO: 'El paciente se registró correctamente ',
+    PACIENTE_NO_REGISTRADO: 'No se pudo registrar el paciente ',
+    PACIENTE_EXISTENTE: 'Este paciente ya se encuentra registrado. ',
+    PACIENTE_ACTUALIZADO: 'La información del paciente se actualizó correctamente ',
+    PACIENTE_NO_ACTUALIZADO: 'No se pudo actualizar la información del paciente ',
+    PACIENTE_ELIMINADO: 'El paciente se eliminó correctamente ',
+    PACIENTE_NO_ELIMINADO: 'No se pudo eliminar el paciente ',
+
 };
