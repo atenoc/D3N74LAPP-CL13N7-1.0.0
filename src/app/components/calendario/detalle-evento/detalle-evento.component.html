@@ -7,14 +7,14 @@
   <div class="modal-body my-bg">
 
     <!-- <div class="card-body"> -->
-        <span class="text-muted">Paciente:</span><strong class="text-info"> {{ data.nombre_paciente }}</strong>
-        <br>
-        <br>
+        <span *ngIf="mostrarPaciente" class="text-muted">Paciente:</span><strong class="text-info"> {{ data.nombre_paciente }}</strong>
+        <br *ngIf="mostrarPaciente">
+        <br *ngIf="mostrarPaciente">
         <span class="text-muted">Inicia:</span><strong class="text-info"> {{ inicio }}</strong>
         <br>
         <span class="text-muted">Termina:</span><strong class="text-info"> {{ fin }}</strong>
         <hr/>
-        <p><span class="text-muted">Motivo:</span> <strong class="text-info"> {{ data.motivo }} </strong> </p>
+        <p *ngIf="mostrarMotivo"><span class="text-muted">Motivo:</span> <strong class="text-info"> {{ data.motivo }} </strong> </p>
         <p><span class="text-muted">Notas:</span> {{ data.notas }}</p>
         <hr/>
         <small class="text-muted"><strong>Creado por:</strong> {{ data.nombre_usuario_creador }}</small>
@@ -28,7 +28,7 @@
           <a><small class="text-danger cursor-pointer" ngbTooltip="Eliminar cita de forma permanente" (click)="eliminarCita()"> Eliminar</small> </a>
       </div>
       <div class="ml-auto">
-         <button class="btn btn-outline-primary btn-sm" (click)="editarCita()"> <i class="nav-icon fas fa-edit"></i> Editar</button>
+         <button *ngIf="mostrarBotonEditar" class="btn btn-outline-primary btn-sm" (click)="editarCita()"> <i class="nav-icon fas fa-edit"></i> Editar</button>
       </div>
     </div>
 

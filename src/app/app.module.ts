@@ -30,7 +30,6 @@ import { ConfigPerfilUsuarioComponent } from './components/perfil/config-perfil-
 import { CalendarioComponent } from './components/calendario/calendario.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { DetalleEventoComponent } from './components/calendario/detalle-evento/detalle-evento.component';
-import { FormEventoComponent } from './components/calendario/form-evento/form-evento.component';
 import { CitaFormComponent } from './components/calendario/cita-form/cita-form.component';
 import { MedicosListComponent } from './components/medicos/medicos-list/medicos-list.component';
 import { PacientesListComponent } from './components/pacientes/pacientes-list/pacientes-list.component';
@@ -38,6 +37,7 @@ import { CitaEditComponent } from './components/calendario/cita-edit/cita-edit.c
 import { CitasListComponent } from './components/calendario/citas-list/citas-list.component';
 import { PacienteDetalleComponent } from './components/pacientes/paciente-detalle/paciente-detalle.component';
 import { PacienteFormComponent } from './components/pacientes/paciente-form/paciente-form.component';
+import { EventFormComponent } from './components/calendario/event-form/event-form.component';
 
 @NgModule({
   declarations: [
@@ -61,14 +61,14 @@ import { PacienteFormComponent } from './components/pacientes/paciente-form/paci
     ConfigPerfilUsuarioComponent,
     CalendarioComponent,
     DetalleEventoComponent,
-    FormEventoComponent,
     CitaFormComponent,
     MedicosListComponent,
     PacientesListComponent,
     CitaEditComponent,
     CitasListComponent,
     PacienteDetalleComponent,
-    PacienteFormComponent
+    PacienteFormComponent,
+    EventFormComponent
   ],
   imports: [
     BrowserModule,

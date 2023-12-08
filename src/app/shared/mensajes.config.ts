@@ -63,4 +63,8 @@ export const Mensajes = {
     PACIENTE_ELIMINADO: 'El paciente se eliminó correctamente ',
     PACIENTE_NO_ELIMINADO: 'No se pudo eliminar el paciente ',
 
+    //Eventos
+    EVENTO_REGISTRADO: 'El evento se registró correctamente ',
+    EVENTO_NO_REGISTRADO: 'El evento no se puedo registrar ',
+
 };

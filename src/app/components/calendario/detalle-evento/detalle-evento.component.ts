@@ -18,11 +18,28 @@ export class DetalleEventoComponent implements OnInit {
   @Input() fin: string;
   @Input() data: DetalleCita;
 
+  mostrarPaciente:boolean
+  mostrarMotivo:boolean
+  mostrarBotonEditar:boolean
+
   constructor(private activeModal: NgbActiveModal,
     private citaService:CitaService, private router:Router
     ) { }
 
   ngOnInit(): void {
+    console.log("Detalle")
+    console.log(this.data)
+    if(this.data.nombre_paciente){
+      this.mostrarPaciente = true
+      this.mostrarMotivo = true
+      this.mostrarBotonEditar = true
+      console.log("true")
+    } else {
+      this.mostrarPaciente = false
+      this.mostrarMotivo = false
+      this.mostrarBotonEditar = false
+      console.log("false")
+    }
   }
 
   editarCita(){

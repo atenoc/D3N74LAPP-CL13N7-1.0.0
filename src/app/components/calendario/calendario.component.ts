@@ -10,6 +10,7 @@ import { DetalleEventoComponent } from './detalle-evento/detalle-evento.componen
 import { CitaFormComponent } from './cita-form/cita-form.component';
 import { CitaService } from 'src/app/services/citas/cita.service';
 import { Cita } from 'src/app/models/Cita.model';
+import { EventFormComponent } from './event-form/event-form.component';
 
 @Component({
   selector: 'app-calendario',
@@ -52,7 +53,7 @@ export class CalendarioComponent implements OnInit {
       console.log("Res cita::")
       if(res){
         this.citas = res;
-        //console.log(this.citas)
+        console.log(this.citas)
         this.actualizarCalendario()
       }
     })
@@ -66,6 +67,13 @@ export class CalendarioComponent implements OnInit {
           click: () => {
             //alert('clicked the custom button!');
             this.calendarComponent.openVerticallyCentered()
+          }
+        },
+        myCustomButton2: {
+          text: 'Agregar evento',
+          click: () => {
+            //alert('clicked the custom button!');
+            this.calendarComponent.openEventForm()
           }
         }
       },
@@ -83,7 +91,7 @@ export class CalendarioComponent implements OnInit {
       plugins: [dayGridPlugin, timegridPlugin, interactionPlugin],
       locale: esLocale,
       headerToolbar:{
-        left:'prev,today,next myCustomButton',
+        left:'prev,today,next myCustomButton myCustomButton2',
         center:'title',
         right:'dayGridMonth,timeGridWeek,timeGridDay'
       },
@@ -126,5 +134,9 @@ export class CalendarioComponent implements OnInit {
 
   openVerticallyCentered() {
     this.modalService.open(CitaFormComponent, { centered: true, size: 'lg' });
+  }
+
+  openEventForm() {
+    this.modalService.open(EventFormComponent, { centered: true });
   }
 }

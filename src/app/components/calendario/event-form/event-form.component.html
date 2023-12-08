@@ -1,0 +1,95 @@
+<div class="modal-header my-bg">
+    <h5><strong> Crear Evento </strong></h5>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body my-bg">
+
+    <div class="row">
+        <div class="col-sm">
+            <div class="form-group">
+                <span><strong class="text-muted" ngbTooltip="Ej: Horario Reservado, Carlos.
+                    Ej: Horario de ausencia, Juan.      
+                    Ej: Evento especial, María.      "> Titulo * </strong></span>
+                <input type="text" class="form-control" [(ngModel)]="titulo" (ngModelChange)="validaTitulo()" placeholder="Evento especial | reservar | ausencia | etc">
+                <div *ngIf="mostrarMensajeTitulo" class="invalid-input-message">{{ campoRequerido }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-sm">
+        <div class="form-group">
+            <span class="text-muted">Nota</span>
+            <input type="text" class="form-control" [(ngModel)]="nota" placeholder="Nota o comentario...">
+        </div>
+      </div>
+    </div>
+  
+      <div class="row">
+          <div class="col-sm my-mt">
+              <span><strong class="text-muted"> Fecha y hora de inicio * </strong></span>
+              <div class="input-group">
+                  <input
+                    class="form-control"
+                    placeholder="aaaa-mm-dd"
+                    name="dp1"
+                    [(ngModel)]="fechaModelInicio"
+                    (ngModelChange)="validarFechaInicio()"
+                    ngbDatepicker
+                    #d1="ngbDatepicker" 
+                    readonly
+                  />
+                  <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d1.toggle()" type="button">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </div>
+                <div *ngIf="mostrarMensajeFechaInicio" class="invalid-input-message">{{ fechaRequerida }}</div>
+                
+          </div>
+          <div class="col-sm">
+      
+              <div class="form-group">
+                  <!-- <pre>Selected time: {{selectedTimeInicio | json}}</pre> -->
+                  <ngb-timepicker [(ngModel)]="selectedTimeInicio" [meridian]="true" (ngModelChange)="validaHoraInicio()"></ngb-timepicker>
+                  <div *ngIf="mostrarMensajeHoraInicio" class="invalid-input-message">{{ horarioValido }}</div>
+              </div>
+              
+          </div>
+      </div>
+  
+      <hr/>
+      <small class="text-muted">Opcional</small>
+  
+      <div class="row">
+          <div class="col-sm my-mt">
+              <small>Fecha y hora de termino</small>
+              <div class="input-group">
+                  <input
+                    class="form-control"
+                    placeholder="aaaa-mm-dd"
+                    name="dp2"
+                    [(ngModel)]="fechaModelFin"
+                    ngbDatepicker
+                    #d2="ngbDatepicker" 
+                    readonly
+                  />
+                  <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()" type="button">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </div>
+          </div>
+          <div class="col-sm">
+      
+              <div class="form-group">
+                  <ngb-timepicker [(ngModel)]="selectedTimeFin" [meridian]="true"></ngb-timepicker>
+              </div>
+              
+          </div>
+      </div>
+      <div class="row">
+        <button type="submit" class="btn btn-primary btn-block" (click)="registrarEvento()">Guardar</button>
+      </div>
+  
+  </div>
+  
