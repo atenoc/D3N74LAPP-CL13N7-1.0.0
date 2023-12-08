@@ -87,6 +87,35 @@
               
           </div>
       </div>
+
+      <div class="row">
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-10">
+          <span class="text-muted"><small>Remarcar este evento:</small></span>
+          <div class="color-selector-container mt-1">
+            <div *ngFor="let color of colors">
+              <label>
+                <input
+                  type="radio"
+                  name="color"
+                  [(ngModel)]="selectedColor"
+                  [value]="color"
+                />
+                <div [style.background-color]="color" class="color-option"></div>
+              </label>
+            </div>
+          </div>
+  
+          <!-- <div *ngIf="selectedColor">
+            <p>Color seleccionado: {{ selectedColor }}</p>
+          </div> -->
+        </div>
+        <div class="col-sm-1">
+        </div>
+
+      </div>
+
       <div class="row">
         <button type="submit" class="btn btn-primary btn-block" (click)="registrarEvento()">Guardar</button>
       </div>

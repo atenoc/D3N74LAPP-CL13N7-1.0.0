@@ -33,6 +33,9 @@ export class EventFormComponent implements OnInit {
   mostrarMensajeFechaInicio:boolean = true
   mostrarMensajeHoraInicio:boolean = true
 
+  colors: string[] = ['#f56954', '#00a65a', '#0073b7', '#00c0ef', '#f39c12', '#605ca8', '#d3d3d3'];
+  selectedColor: string = '';
+
   constructor(
     private activeModal: NgbActiveModal, 
     private citaService:CitaService,
@@ -53,6 +56,7 @@ export class EventFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.selectedColor = this.colors[0]; 
   }
 
   registrarEvento(){
@@ -83,6 +87,7 @@ export class EventFormComponent implements OnInit {
         start: this.fecha_hora_inicio,
         end: this.fecha_hora_fin,
         nota: this.nota,
+        color: this.selectedColor,
         fecha_creacion: this.fecha_creacion,
         id_clinica: localStorage.getItem('_cli'),
         id_usuario: localStorage.getItem('_us')

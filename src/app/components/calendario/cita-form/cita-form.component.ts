@@ -159,6 +159,7 @@ export class CitaFormComponent implements OnInit {
     var citaJson = {
       title: "Cita. "+this.nombrePaciente+" "+this.apellidoPaternoPaciente,
       motivo: this.motivo,
+      color: '#00a65a',
       start: this.fecha_hora_inicio,
       end: this.fecha_hora_fin,
       fecha_creacion: this.fecha_creacion,

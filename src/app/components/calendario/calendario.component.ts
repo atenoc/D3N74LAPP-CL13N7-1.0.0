@@ -72,7 +72,6 @@ export class CalendarioComponent implements OnInit {
         myCustomButton2: {
           text: 'Agregar evento',
           click: () => {
-            //alert('clicked the custom button!');
             this.calendarComponent.openEventForm()
           }
         }

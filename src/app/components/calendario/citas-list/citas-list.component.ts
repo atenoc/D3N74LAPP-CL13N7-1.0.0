@@ -10,6 +10,7 @@ import { Cita } from 'src/app/models/Cita.model';
 import { CitaService } from 'src/app/services/citas/cita.service';
 import { CitaFormComponent } from '../cita-form/cita-form.component';
 import { DetalleEventoComponent } from '../detalle-evento/detalle-evento.component';
+import { EventFormComponent } from '../event-form/event-form.component';
 
 @Component({
   selector: 'app-citas-list',
@@ -64,12 +65,18 @@ export class CitasListComponent implements OnInit {
             this.citasListComponent.openVerticallyCentered();
           },
         },
+        myCustomButton2: {
+          text: 'Agregar evento',
+          click: () => {
+            this.citasListComponent.openEventForm()
+          }
+        }
       },
       initialView: 'listMonth', // Puedes cambiar a 'listWeek' o 'listDay' según tu preferencia
       plugins: [listPlugin, interactionPlugin],
       locale: esLocale,
       headerToolbar: {
-        left: 'prev,today,next myCustomButton',
+        left: 'prev,today,next myCustomButton myCustomButton2',
         center: 'title',
         right: 'listMonth,listWeek,listDay',
       },
@@ -117,6 +124,10 @@ export class CitasListComponent implements OnInit {
 
   openVerticallyCentered() {
     this.modalService.open(CitaFormComponent, { centered: true, size: 'lg' });
+  }
+
+  openEventForm() {
+    this.modalService.open(EventFormComponent, { centered: true });
   }
 
 }
