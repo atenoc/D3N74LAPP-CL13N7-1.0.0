@@ -111,15 +111,9 @@ export class CitaFormComponent implements OnInit {
       console.log("Fecha creación:: "+this.fecha_creacion)
 
       if(this.existePaciente){
-        // registrar cita
-
         this.registrarCita();
-
       }else{
-        // registrar paciente y cita
-
         this.registrarPaciente()
-
       }
     }
   }
@@ -140,6 +134,23 @@ export class CitaFormComponent implements OnInit {
       res=>{
       this.id_paciente=res.id
       this.registrarCita()
+
+      setTimeout(() => {
+        Swal.fire({
+          position: 'top-end',
+          html:
+            `<h5>${ Mensajes.PACIENTE_REGISTRADO }</h5>`+
+            `<span>${res.nombre} ${res.apellidop} ${res.apellidom}</span>`, 
+          showConfirmButton: false,
+          backdrop: false,
+          width: 400,
+          background: 'rgb(40, 167, 69, .90)',
+          color:'white',
+          timerProgressBar:true,
+          timer: 3000,
+        })
+      }, 3000);
+
     },
     err =>{
       Swal.fire({

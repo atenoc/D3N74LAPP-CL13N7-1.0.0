@@ -9,10 +9,13 @@
     <div class="row">
         <div class="col-sm">
             <div class="form-group">
-                <span><strong class="text-muted" ngbTooltip="Ej: Horario Reservado, Carlos.
-                    Ej: Horario de ausencia, Juan.      
-                    Ej: Evento especial, María.      "> Titulo * </strong></span>
-                <input type="text" class="form-control" [(ngModel)]="titulo" (ngModelChange)="validaTitulo()" placeholder="Evento especial | reservar | ausencia | etc">
+
+                <strong class="text-muted" > Titulo * </strong>
+                <i class="fas fa-info-circle cursor-pointer text-muted ml-1" 
+                  triggers="click" [autoClose]="'outside'" placement="end" 
+                  ngbTooltip="Ej. Espacio reservado, Carlos. Ej. Fuera de clínica, Dr Juan. Ej. Evento especial, María..."></i>
+
+                <input type="text" class="form-control" [(ngModel)]="titulo" (ngModelChange)="validaTitulo()" placeholder="Nombre corto...">
                 <div *ngIf="mostrarMensajeTitulo" class="invalid-input-message">{{ campoRequerido }}</div>
             </div>
         </div>
@@ -60,6 +63,9 @@
   
       <hr/>
       <small class="text-muted">Opcional</small>
+      <i class="fas fa-info-circle cursor-pointer text-muted ml-1" 
+        triggers="click" [autoClose]="'outside'" placement="end" 
+        ngbTooltip="De no seleccionar esta opción, el evento será de 1 hora"></i>
   
       <div class="row">
           <div class="col-sm my-mt">

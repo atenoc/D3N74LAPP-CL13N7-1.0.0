@@ -9,7 +9,10 @@
   <div class="row">
     <div class="col-sm">
       <div class="form-group">
-        <span><strong class="text-muted">Buscar paciente</strong></span>
+        <span class="text-muted">Buscar paciente</span>
+        <i class="fas fa-info-circle cursor-pointer text-muted ml-1" 
+          triggers="click" [autoClose]="'outside'" placement="end" 
+          ngbTooltip="Buscar pacientes existentes"></i>
         <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-search"></i></span>
@@ -60,7 +63,7 @@
       <div class="col-sm-3">
         <div class="form-group">
           <span> <small>Edad (opcional)</small></span>
-            <input type="text" class="form-control" [(ngModel)]="edadPaciente" maxlength="3">
+          <input type="text" class="form-control" [(ngModel)]="edadPaciente" maxlength="3">
         </div>
       </div>
       <div class="col-sm-3">
@@ -114,11 +117,13 @@
     </div>
 
     <hr/>
-    <small class="text-muted">Opcional</small>
 
     <div class="row">
         <div class="col-sm my-mt">
-            <small>Fecha y hora de termino</small>
+            <small>Fecha y hora de termino (opcional )</small>
+            <i class="fas fa-info-circle cursor-pointer text-muted ml-1" 
+              triggers="click" [autoClose]="'outside'" placement="end" 
+              ngbTooltip="De no seleccionar esta opción, la cita será de 1 hora"></i>
             <div class="input-group">
                 <input
                   class="form-control"
@@ -148,7 +153,12 @@
         </div> -->
     </div>
     <div class="row">
-      <button type="submit" class="btn btn-primary btn-block" (click)="crearCita()">Guardar</button>
+      <div class="d-flex mt-2">
+        <div class="ml-auto">
+            <small class="text-muted">Los campos marcados con (*) son obligatorios</small>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block mt-2" (click)="crearCita()">Guardar</button>
     </div>
 
 </div>

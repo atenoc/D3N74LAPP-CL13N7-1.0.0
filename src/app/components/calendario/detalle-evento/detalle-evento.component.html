@@ -1,5 +1,5 @@
 <div class="modal-header my-bg">
-    <strong class="text-primary"> {{ title }}</strong>
+    <strong class="my-txt-color"> {{ title }}</strong>
     <button type="button" class="close" aria-label="Close" (click)="closeModal()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -7,15 +7,49 @@
   <div class="modal-body my-bg">
 
     <!-- <div class="card-body"> -->
-        <span *ngIf="mostrarPaciente" class="text-muted">Paciente:</span><strong class="text-info"> {{ data.nombre_paciente }}</strong>
-        <br *ngIf="mostrarPaciente">
-        <br *ngIf="mostrarPaciente">
-        <span class="text-muted">Inicia:</span><strong class="text-info"> {{ inicio }}</strong>
-        <br>
-        <span class="text-muted">Termina:</span><strong class="text-info"> {{ fin }}</strong>
+      <div class="row" *ngIf="mostrarPaciente">
+        <div class="col-sm-3 text-right">
+          <span class="text-muted">Paciente:</span>
+        </div>
+        <div class="col-sm-9">
+          <strong class="text-info">{{data.nombre_paciente}}</strong>
+        </div>
+      </div>
+
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <span class="text-muted">Inicia:</span>
+          </div>
+          <div class="col-sm-9">
+            <strong class="text-info">{{inicio}}</strong>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <span class="text-muted">Termina:</span>
+          </div>
+          <div class="col-sm-9">
+            <strong class="text-info">{{fin}}</strong>
+          </div>
+        </div>
         <hr/>
-        <p *ngIf="mostrarMotivo"><span class="text-muted">Motivo:</span> <strong class="text-info"> {{ data.motivo }} </strong> </p>
-        <p><span class="text-muted">Notas:</span> {{ data.notas }}</p>
+        <div class="row" *ngIf="mostrarMotivo">
+          <div class="col-sm-3 text-right">
+            <span class="text-muted">Motivo:</span>
+          </div>
+          <div class="col-sm-9">
+            <strong class="text-info">{{data.motivo}}</strong>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <span class="text-muted">Notas:</span>
+          </div>
+          <div class="col-sm-9">
+            <strong class="text-info">{{data.notas}}</strong>
+          </div>
+        </div>
+        
         <hr/>
         <small class="text-muted"><strong>Creado por:</strong> {{ data.nombre_usuario_creador }}</small>
         <br>

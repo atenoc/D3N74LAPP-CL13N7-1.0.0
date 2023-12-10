@@ -58,7 +58,7 @@
 
                             <div class="col-sm">
                                 <div class="form-group">
-                                    <small class="text-muted">Apellido Materno </small>
+                                    <small class="text-muted">Apellido Materno (opcional) </small>
                                     <input type="text" class="form-control" formControlName="apellidom">
                                 </div>
                             </div>
@@ -67,14 +67,14 @@
                         <div class="row">
                             <div class="col-sm">
                                 <div class="form-group">
-                                    <small class="text-muted">Edad</small>
+                                    <small class="text-muted">Edad (opcional)</small>
                                     <input type="text" class="form-control" formControlName="edad" maxlength="3">
                                 </div>
                             </div>
 
                             <div class="col-sm">
                                 <div class="form-group">
-                                    <small class="text-muted">Sexo</small>
+                                    <small class="text-muted">Sexo (opcional)</small>
                                     <input type="text" class="form-control" formControlName="sexo">
                                 </div>
                             </div>
@@ -100,8 +100,8 @@
                         <div class="row">
                             <div class="col-sm">
                                 <div class="form-group">
-                                    <small class="text-muted">Correo</small>
-                                    <input type="email" class="form-control" formControlName="correo" [ngClass]="getInputClass('correo')" placeholder="Ingresa un correo electrónico">
+                                    <small class="text-muted">Correo (opcional)</small>
+                                    <input type="email" class="form-control" formControlName="correo" [ngClass]="getInputClass('correo')" placeholder="correo@ejemplo.com">
                                     <div *ngIf="formularioPaciente.controls['correo'].invalid && formularioPaciente.controls['correo'].dirty" class="invalid-input-message">
                                         <span *ngIf="formularioPaciente.controls['correo'].errors.email">{{ correoValido }}</span>
                                     </div>
@@ -111,7 +111,7 @@
                         <div class="row">
                             <div class="col-sm">
                                 <div class="form-group">
-                                    <small class="text-muted">Dirección</small>
+                                    <small class="text-muted">Dirección (opcional)</small>
                                     <input type="email" class="form-control" formControlName="direccion">
                                 </div>
                             </div>

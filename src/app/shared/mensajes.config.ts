@@ -50,7 +50,7 @@ export const Mensajes = {
     CITA_NO_REGISTRADA: 'La cita no se puedo registrar ',
     CITA_ACTUALIZADA: 'La cita se actualizó correctamente ',
     CITA_NO_ACTUALIZADA: 'No se pudo actualizar la cita ',
-    CITA_ELIMINAR_QUESTION: '¿Estás seguro que quieres eliminar la cita?',
+    CITA_ELIMINAR_QUESTION: '¿Estás seguro que quieres eliminar... ?',
     CITA_ELIMINADA: 'La cita se eliminó correctamente ',
     CITA_NO_ELIMINADA: 'No se pudo eliminar la cita ',
 
