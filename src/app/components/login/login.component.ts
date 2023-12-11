@@ -9,6 +9,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Mensajes } from 'src/app/shared/mensajes.config';
 import { CifradoService } from 'src/app/services/shared/cifrado.service';
 import { CentroService } from 'src/app/services/centro.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-login',
@@ -29,6 +30,7 @@ export class LoginComponent implements OnInit {
   mensajeDetalleError: String
 
   constructor(
+    private sharedService:SharedService, 
     private centroService:CentroService,
     private formBuilder:FormBuilder, 
     private authService: AuthService, 
@@ -99,6 +101,7 @@ export class LoginComponent implements OnInit {
                 }
               )
             }else{
+              this.sharedService.notifyApp.emit();
               this.router.navigate(['/calendario'])
             }
           },
