@@ -15,7 +15,18 @@
       <!-- Sidebar user (optional) -->
       <div class="user-panel d-flex mt-2 mb-2">
 
-        <div class="row row-width">
+        <ul id="accordion2" class="accordion2">
+
+          <li>
+            <div class="link"><i class="fas fa-user text-success"></i>{{ nombreUsuario }}<i class="fa fa-chevron-down"></i></div>
+            <ul class="submenu">
+              <li><a routerLink="/perfil"><i class="fas fa-user-circle"></i>Mi perfil</a></li>
+              <li (click)="salir()" class="cursor-pointer"><a><i class="fas fa-sign-out-alt"></i>Salir</a></li>
+            </ul>
+          </li>
+        </ul>
+
+        <!-- <div class="row row-width">
           <div class="col-10 text-center mt-2">
             <a routerLink="/perfil" data-bs-toggle="tooltip" data-bs-placement="right" title="Ver mi perfil">{{ nombreUsuario }} </a>  
           </div>
@@ -27,7 +38,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
       </div>
 

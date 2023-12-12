@@ -109,6 +109,7 @@ export class SidebarComponent implements OnInit {
       };
     
       var accordion = new Accordion($('#accordion'), false);
+      var accordion2 = new Accordion($('#accordion2'), false);
     });
   }
 }
