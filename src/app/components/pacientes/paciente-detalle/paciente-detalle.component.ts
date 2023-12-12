@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { CatalogoSexo } from 'src/app/models/Catalogo.model';
 import { Paciente } from 'src/app/models/Paciente.model';
+import { CatalogoService } from 'src/app/services/catalogo.service';
 import { PacienteService } from 'src/app/services/pacientes/paciente.service';
 import { CifradoService } from 'src/app/services/shared/cifrado.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
@@ -32,7 +34,10 @@ export class PacienteDetalleComponent implements OnInit {
 
   rol:string
 
+  catSexo:CatalogoSexo[] = [];
+
   constructor(
+    private catalogoService:CatalogoService,
     private formBuilder:FormBuilder, 
     private activatedRoute: ActivatedRoute, 
     private pacienteService:PacienteService, 
@@ -86,6 +91,8 @@ export class PacienteDetalleComponent implements OnInit {
           correo: this.paciente.correo,
           direccion: this.paciente.direccion,
         });
+
+        this.cargarCatSexo()
       },
       err => {
         console.log("error: " + err)
@@ -210,6 +217,15 @@ export class PacienteDetalleComponent implements OnInit {
       }
     })
 
+  }
+
+  cargarCatSexo(){
+    this.catalogoService.getSexo$().subscribe(res => { 
+      this.catSexo = res
+      console.log("Sexo: "+res.length)
+    },
+    err => console.log("error: " + err)
+    )
   }
 
 }

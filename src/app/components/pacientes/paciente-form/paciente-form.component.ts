@@ -2,7 +2,9 @@ import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { CatalogoSexo } from 'src/app/models/Catalogo.model';
 import { Paciente } from 'src/app/models/Paciente.model';
+import { CatalogoService } from 'src/app/services/catalogo.service';
 import { PacienteService } from 'src/app/services/pacientes/paciente.service';
 import { CifradoService } from 'src/app/services/shared/cifrado.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
@@ -29,7 +31,10 @@ export class PacienteFormComponent implements OnInit {
 
   paciente:Paciente
 
+  catSexo:CatalogoSexo[] = [];
+
   constructor(
+    private catalogoService:CatalogoService,
     private cifradoService: CifradoService,
     private formBuilder:FormBuilder, 
     private spinner: NgxSpinnerService, 
@@ -59,6 +64,13 @@ export class PacienteFormComponent implements OnInit {
       ])],
       direccion: [''],
     })
+
+    this.catalogoService.getSexo$().subscribe(res => { 
+      this.catSexo = res
+      //console.log("Especialidades: "+this.catEspecialidades.length)
+    },
+    err => console.log("error: " + err)
+  )
   }
 
   getInputClass(controlName: string) {

@@ -75,7 +75,11 @@
                             <div class="col-sm">
                                 <div class="form-group">
                                     <small class="text-muted">Sexo (opcional)</small>
-                                    <input type="text" class="form-control" formControlName="sexo">
+                                    <!-- <input type="text" class="form-control" formControlName="sexo"> -->
+                                    <select class="form-select" formControlName="sexo">
+                                        <option selected disabled [value]="0">Selecciona una opción:</option>
+                                        <option *ngFor="let item of catSexo" [value]="item.id">{{ item.descripcion }}</option>
+                                    </select>
                                 </div>
                             </div>
                     
