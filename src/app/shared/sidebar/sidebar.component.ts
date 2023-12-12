@@ -46,6 +46,9 @@ export class SidebarComponent implements OnInit {
         if(this.rolUsuario=="adminn1"){
           this.mostrarUsuarios=true
         }
+        if(this.rolUsuario=="adminn2" || this.rolUsuario=="medic" || this.rolUsuario=="caja" || this.rolUsuario=="recepcion"){
+          this.mostrarUsuarios=false
+        }
         console.log("Usuario sidebar:: ")
         console.log(this.usuario)
         this.inicializarAccordion()

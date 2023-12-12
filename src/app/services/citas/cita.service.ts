@@ -25,8 +25,8 @@ export class CitaService {
   }
   
 
-  getCitas$(): Observable<Cita[]>{
-    this.http.get<Cita[]>(this.URI).subscribe(
+  getCitas$(id_clinica): Observable<Cita[]>{
+    this.http.get<Cita[]>(`${this.URI}/${id_clinica}`).subscribe(
       res=>{
         this.citas.next(res)
       },
