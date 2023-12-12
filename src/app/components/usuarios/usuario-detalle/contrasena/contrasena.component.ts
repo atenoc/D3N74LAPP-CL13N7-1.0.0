@@ -35,9 +35,9 @@ export class ContrasenaComponent implements OnInit {
     
     this.activatedRoute.params.subscribe(params => {
       this.id = params['id'];
-      this.usuarioService.getUsuario$(this.id).subscribe(res => {   //volver a llamar los datos con el id recibido
+      this.usuarioService.getPassUsuario$(this.id).subscribe(res => {   //volver a llamar los datos con el id recibido
         this.llave = res.llave;
-        //console.log("id obtenido:" + res.llave)
+        console.log("Res obtenido")
 
       },
         err => console.log("error: " + err)

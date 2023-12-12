@@ -155,4 +155,8 @@ export class UsuarioService {
     return this.http.patch(`${this.URI}/password/usuario/${id}`, { llave });
   }
 
+  getPassUsuario$(id: string){
+    return this.http.get<Usuario>(`${this.URI}/${id}/contrasena`)
+  }
+
 }
