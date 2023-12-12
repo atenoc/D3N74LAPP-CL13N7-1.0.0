@@ -80,6 +80,8 @@ export class LoginComponent implements OnInit {
         /* Obtener usuario por Correo */
         this.usuarioService.getUsuarioByCorreo$(this.correoUsuario).subscribe(
           res => {
+
+            this.sharedService.setNombreUsuario(res.nombre +" "+res.apellidop)
     
             console.log("Cli:: "+JSON.stringify(res.id_clinica))
             localStorage.setItem('_cli', res.id_clinica)
@@ -91,6 +93,7 @@ export class LoginComponent implements OnInit {
             if(res.rol =="suadmin" || res.rol =="sop"){
               this.centroService.getCentroByIdUser$(res.id).subscribe(
                 res => {
+                  this.sharedService.setNombreClinica(res.nombre);
                   console.log("Si existe Centro")
                   this.router.navigate(['/calendario'])
                 },
@@ -101,9 +104,22 @@ export class LoginComponent implements OnInit {
                 }
               )
             }else{
-              this.sharedService.notifyApp.emit();
-              this.router.navigate(['/calendario'])
+              this.centroService.getCentro$(res.id_clinica).subscribe(
+                res => {
+                  this.sharedService.setNombreClinica(res.nombre);
+                  console.log("Si pertenece a un entro")
+                  this.router.navigate(['/calendario'])
+                },
+                err => {
+                  console.log("No pertenece a ningún centro")
+                  console.log(err)
+                  this.router.navigate(['/login'])
+                }
+              )
             }
+
+            this.sharedService.notifyApp.emit();
+
           },
           err => {
             console.log(err.error.message)

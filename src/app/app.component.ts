@@ -14,8 +14,8 @@ export class AppComponent implements OnInit{
   //title = 'dentalapp-client';
   isOnline: boolean;
 
-  usuario:Usuario
-  usuarioActivo:Boolean
+  //usuario:Usuario
+  usuarioActivo:Boolean=false
 
   constructor(
     private authService:AuthService,
@@ -39,21 +39,6 @@ export class AppComponent implements OnInit{
       this.isOnline = false;
     });
 
-    // validar usuario activo
-    /*this.usuarioService.validarUsuarioActivo$(localStorage.getItem('_us'), localStorage.getItem('_em')).subscribe(
-      res => {
-        this.usuario = res;
-        if(this.usuario){
-          console.log("SESION ACTIVA")
-          this.usuarioActivo=true
-        }
-      },
-      err => {
-        console.log("error AppComponent: " + err)
-        this.router.navigate(['/pagina/404/no-encontrada'])
-      }
-    )*/
-
     if(this.authService.validarSesionActiva()){
       console.log("SESION ACTIVA")
       this.usuarioActivo=true
@@ -66,8 +51,9 @@ export class AppComponent implements OnInit{
     this.sharedService.notifyApp.subscribe(() => {
       setTimeout(() => {
         //window.location.reload();
+        this.ngOnInit()
         console.log("Recibi notificación de inicio de sesion")
-      }, 1500);
+      }, 0);
     });
   }
 

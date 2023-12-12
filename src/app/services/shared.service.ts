@@ -7,8 +7,8 @@ import { BehaviorSubject } from 'rxjs';
 export class SharedService {
   public notifyApp: EventEmitter<any> = new EventEmitter();
 
-  private messageSource = new BehaviorSubject<string>('') 
-  mensajeActual = this.messageSource.asObservable()
+  //private messageSource = new BehaviorSubject<string>('') 
+  //mensajeActual = this.messageSource.asObservable()
 
   private cambiarContrasena = new BehaviorSubject<boolean>(true);
   private nombreClinica = new BehaviorSubject<string>('');
@@ -16,9 +16,9 @@ export class SharedService {
 
   constructor() { }
 
-  cambiarMensaje(message: string){
+  /*cambiarMensaje(message: string){
     this.messageSource.next(message)
-  }
+  }*/
 
   getCambiarContrasena() {
     return this.cambiarContrasena.asObservable();

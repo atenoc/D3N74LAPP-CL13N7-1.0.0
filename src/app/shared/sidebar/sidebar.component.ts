@@ -65,7 +65,7 @@ export class SidebarComponent implements OnInit {
   salir(){
     this.authService.logout()
 
-    this.sharedService.mensajeActual.subscribe(
+    /*this.sharedService.mensajeActual.subscribe(
       res => {
         if(res){
           this.rolUsuario=""
@@ -74,7 +74,7 @@ export class SidebarComponent implements OnInit {
 
         }
       }
-    )
+    )*/
   }
 
   inicializarAccordion(): void {
