@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timegridPlugin from '@fullcalendar/timegrid';
@@ -20,6 +20,10 @@ import { EventFormComponent } from './event-form/event-form.component';
 export class CalendarioComponent implements OnInit {
 
   private calendarComponent: CalendarioComponent;
+  aspectRatioMonth: number;
+  aspectRatioValue: number;
+  textButtonCita:string;
+  textButtonEvento:string;
 
   modalRef: NgbModalRef;
   calendarOptions: CalendarOptions = {};
@@ -35,7 +39,13 @@ export class CalendarioComponent implements OnInit {
       this.calendarComponent = this; // Captura la instancia del componente en la variable
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    this.checkWindowSize();
+  }
+
   ngOnInit(): void {
+    this.checkWindowSize();
 
     this.citas = []
     this.cargarcitas()
@@ -63,14 +73,14 @@ export class CalendarioComponent implements OnInit {
     this.calendarOptions = {
       customButtons: {
         myCustomButton: {
-          text: 'Agregar cita',
+          text: this.textButtonCita,
           click: () => {
             //alert('clicked the custom button!');
             this.calendarComponent.openVerticallyCentered()
           }
         },
         myCustomButton2: {
-          text: 'Agregar evento',
+          text: this.textButtonEvento,
           click: () => {
             this.calendarComponent.openEventForm()
           }
@@ -78,12 +88,15 @@ export class CalendarioComponent implements OnInit {
       },
       initialView: 'dayGridMonth',
       views: {
+        dayGridMonth:{
+          aspectRatio: this.aspectRatioMonth
+        },
         timeGridWeek:{
-          aspectRatio: 2.3,
+          aspectRatio: this.aspectRatioValue,
           scrollTime: '08:00:00',
         },
         timeGridDay:{
-          aspectRatio: 2.3,
+          aspectRatio: this.aspectRatioValue,
           scrollTime: '08:00:00',
         }
       },
@@ -137,5 +150,27 @@ export class CalendarioComponent implements OnInit {
 
   openEventForm() {
     this.modalService.open(EventFormComponent, { centered: true });
+  }
+
+  private checkWindowSize(): void {
+    const windowWidth = window.innerWidth;
+    console.log("Tamaño pantalla: "+windowWidth)
+
+    if (windowWidth <= 500) {
+      this.aspectRatioMonth=0.6
+      this.aspectRatioValue=0.6
+      this.textButtonCita="cita";
+      this.textButtonEvento="evento";
+    } else if (windowWidth > 500 && windowWidth < 800) {
+      this.aspectRatioMonth=1
+      this.aspectRatioValue=1
+      this.textButtonCita="+ cita";
+      this.textButtonEvento="+ evento";
+    } else if (windowWidth >= 800 ) {
+      this.aspectRatioMonth=1.5
+      this.aspectRatioValue=2.3
+      this.textButtonCita="Agregar cita";
+      this.textButtonEvento="Agregar evento";
+    }
   }
 }
