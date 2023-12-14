@@ -2,13 +2,21 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
-          <div class="card mt-2">
+          <div class="card">
 
-            <div class="card-body">
+            <div class="card-header">
+              <span class="text-center text-muted">Calendario</span>
 
-            <full-calendar [options]="calendarOptions"></full-calendar>
-
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i>
+                </button>
+              </div>
+              <!-- /.card-tools -->
             </div>
+            <div class="card-body">
+              <full-calendar [options]="calendarOptions"></full-calendar>
+            </div>
+
         </div>
        </div>
       </div>
