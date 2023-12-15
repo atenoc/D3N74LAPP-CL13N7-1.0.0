@@ -1,10 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 //import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Centro } from 'src/app/models/Centro.model';
+import { AuthService } from 'src/app/services/auth.service';
 import { CentroService } from 'src/app/services/centro.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { CifradoService } from 'src/app/services/shared/cifrado.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
 import Swal from 'sweetalert2';
 
@@ -15,9 +18,9 @@ import Swal from 'sweetalert2';
 })
 export class CentroDetalleComponent implements OnInit {
 
+  rol:string
   id: string
   centro: Centro
-
   formularioCentro:FormGroup
 
   //mensajes
@@ -28,11 +31,14 @@ export class CentroDetalleComponent implements OnInit {
   soloNumeros: string;
 
   constructor(
+    private authService:AuthService,
+    private cifradoService: CifradoService,
     private formBuilder:FormBuilder, 
     //private activatedRoute: ActivatedRoute,
     private centroService:CentroService, 
     private modalService: NgbModal,
-    private sharedService:SharedService 
+    private sharedService:SharedService,
+    private router: Router, 
     ) {
       this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
       this.correoValido = Mensajes.CORREO_VALIDO;
@@ -43,27 +49,36 @@ export class CentroDetalleComponent implements OnInit {
   ngOnInit() {
     console.log("CENTRO DETALLE Comp")
 
-    this.formularioCentro = this.formBuilder.group({
-      nombre: ['', [Validators.required, Validators.minLength(3)]],
-      telefono: ['', [Validators.required, Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
-      correo: ['', Validators.compose([
-        //Validators.required, 
-        Validators.email
-      ])],
-      direccion: ['', [Validators.required, Validators.minLength(10)]]
-    })
+    if(this.authService.validarSesionActiva()){
+      this.rol = this.cifradoService.getDecryptedRol();
 
-    /*this.activatedRoute.params.subscribe(params => {
-      this.id = params['id'];
-      this.cargarCentro(this.id)
-      
-    });*/
-
-    this.centroService.currentCentroId.subscribe((idCentroService) => {
-      this.id = idCentroService;
-      this.cargarCentro(this.id)
-    });
- 
+      if(this.rol != "sop"){ 
+        this.router.navigate(['/pagina/404/no-encontrada']);
+      }else{
+        this.formularioCentro = this.formBuilder.group({
+          nombre: ['', [Validators.required, Validators.minLength(3)]],
+          telefono: ['', [Validators.required, Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
+          correo: ['', Validators.compose([
+            //Validators.required, 
+            Validators.email
+          ])],
+          direccion: ['', [Validators.required, Validators.minLength(3)]]
+        })
+    
+        /*this.activatedRoute.params.subscribe(params => {
+          this.id = params['id'];
+          this.cargarCentro(this.id)
+          
+        });*/
+    
+        this.centroService.currentCentroId.subscribe((idCentroService) => {
+          this.id = idCentroService;
+          this.cargarCentro(this.id)
+        });
+      }
+    }else{
+      this.router.navigate(['/pagina/404/no-encontrada'])
+    }
   }
 
   cargarCentro(id_centro:string){

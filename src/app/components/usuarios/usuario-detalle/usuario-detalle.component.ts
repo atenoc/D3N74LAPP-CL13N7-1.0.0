@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CatalogoEspecialidad, CatalogoRol, CatalogoTitulo } from 'src/app/models/Catalogo.model';
 import { Usuario } from 'src/app/models/Usuario.model';
+import { AuthService } from 'src/app/services/auth.service';
 import { CatalogoService } from 'src/app/services/catalogo.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { CifradoService } from 'src/app/services/shared/cifrado.service';
@@ -40,6 +41,7 @@ export class UsuarioDetalleComponent implements OnInit {
   rol:string
 
   constructor(
+    private authService:AuthService,
     private formBuilder:FormBuilder, 
     private activatedRoute: ActivatedRoute, 
     private usuarioService:UsuarioService, 
@@ -59,59 +61,65 @@ export class UsuarioDetalleComponent implements OnInit {
 
   ngOnInit() {
     //this.el.nativeElement.querySelector('input').focus();
-    this.rol = this.cifradoService.getDecryptedRol();
 
-    if(this.rol == "sop" || this.rol == "suadmin" || this.rol == "adminn1"){
+    if(this.authService.validarSesionActiva()){
+      this.rol = this.cifradoService.getDecryptedRol();
 
-      this.formularioUsuario = this.formBuilder.group({
-        correo: ['', Validators.compose([
-          Validators.required, Validators.email
-        ])],
-        llave: ['', [Validators.required, Validators.minLength(6)]],
-        rol: ['', Validators.required],
-        titulo: [''],
-        nombre: ['', [Validators.required, Validators.minLength(3)]],
-        apellidop: ['', [Validators.required, Validators.minLength(3)]],
-        apellidom: [''],
-        especialidad: [''],
-        telefono: ['', [Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
-      })
-  
-      this.activatedRoute.params.subscribe(params => {
-        this.id = params['id'];
-        this.usuarioService.getUsuario$(this.id).subscribe(res => {   //volver a llamar los datos con el id recibido
-          this.usuario = res;
-          console.log(res)
-          console.log("id Especialidad:" + res.id_especialidad)
-          //console.log("usuario obtenido:" + JSON.stringify(res))
-          this.tituloCard = this.usuario.nombre+' '+this.usuario.apellidop+' '+this.usuario.apellidom
-          this.idUsuario=this.usuario.id
-          this.fecha_creacion=this.usuario.fecha_creacion
-  
-          this.formularioUsuario.patchValue({
-            correo: this.usuario.correo,
-            llave: this.usuario.llave,
-            rol: this.usuario.id_rol,
-            titulo: this.usuario.id_titulo,
-            nombre: this.usuario.nombre,
-            apellidop: this.usuario.apellidop,
-            apellidom: this.usuario.apellidom,
-            especialidad: this.usuario.id_especialidad,
-            telefono: this.usuario.telefono
-          });
-  
-          // carga Catálogos
-          this.cargarRoles()
-          this.cargarTitulos()
-          this.cargarEspecialidades()
-        },
-        err => {
-          console.log("error: " + err)
+      if(this.rol == "sop" || this.rol == "suadmin" || this.rol == "adminn1"){
+
+        this.formularioUsuario = this.formBuilder.group({
+          correo: ['', Validators.compose([
+            Validators.required, Validators.email
+          ])],
+          llave: [''],
+          rol: ['', Validators.required],
+          titulo: [''],
+          nombre: ['', [Validators.required, Validators.minLength(3)]],
+          apellidop: ['', [Validators.required, Validators.minLength(3)]],
+          apellidom: [''],
+          especialidad: [''],
+          telefono: ['', [Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
         })
-  
-      },
-        err => console.log("error: " + err)
-      );
+    
+        this.activatedRoute.params.subscribe(params => {
+          this.id = params['id'];
+          this.usuarioService.getUsuario$(this.id).subscribe(res => {   //volver a llamar los datos con el id recibido
+            this.usuario = res;
+            console.log(res)
+            console.log("id Especialidad:" + res.id_especialidad)
+            //console.log("usuario obtenido:" + JSON.stringify(res))
+            this.tituloCard = this.usuario.nombre+' '+this.usuario.apellidop+' '+this.usuario.apellidom
+            this.idUsuario=this.usuario.id
+            this.fecha_creacion=this.usuario.fecha_creacion
+    
+            this.formularioUsuario.patchValue({
+              correo: this.usuario.correo,
+              llave: this.usuario.llave,
+              rol: this.usuario.id_rol,
+              titulo: this.usuario.id_titulo,
+              nombre: this.usuario.nombre,
+              apellidop: this.usuario.apellidop,
+              apellidom: this.usuario.apellidom,
+              especialidad: this.usuario.id_especialidad,
+              telefono: this.usuario.telefono
+            });
+    
+            // carga Catálogos
+            this.cargarRoles()
+            this.cargarTitulos()
+            this.cargarEspecialidades()
+          },
+          err => {
+            console.log("error: " + err)
+          })
+    
+        },
+          err => console.log("error: " + err)
+        );
+
+      }else{
+        this.router.navigate(['/pagina/404/no-encontrada'])
+      }
 
     }else{
       this.router.navigate(['/pagina/404/no-encontrada'])

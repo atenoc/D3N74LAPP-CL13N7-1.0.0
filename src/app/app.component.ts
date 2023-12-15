@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { UsuarioService } from './services/usuario.service';
 import { SharedService } from './services/shared.service';
-import { Usuario } from './models/Usuario.model';
+//import { Usuario } from './models/Usuario.model';
 import { Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
 
@@ -21,8 +21,8 @@ export class AppComponent implements OnInit{
     private authService:AuthService,
     public sharedService: SharedService,
     public usuarioService: UsuarioService,
-    private renderer: Renderer2, 
-    private el: ElementRef,
+    //private renderer: Renderer2, 
+    //private el: ElementRef,
     private router:Router
     ) {
       this.isOnline = window.navigator.onLine;

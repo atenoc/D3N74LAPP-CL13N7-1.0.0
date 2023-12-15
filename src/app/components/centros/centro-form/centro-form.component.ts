@@ -5,6 +5,9 @@ import { Centro } from 'src/app/models/Centro.model';
 import { CentroService } from 'src/app/services/centro.service';
 import Swal from 'sweetalert2';
 import { Mensajes } from 'src/app/shared/mensajes.config';
+import { AuthService } from 'src/app/services/auth.service';
+import { CifradoService } from 'src/app/services/shared/cifrado.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-centro-form',
@@ -14,6 +17,7 @@ import { Mensajes } from 'src/app/shared/mensajes.config';
 export class CentroFormComponent implements OnInit {
 
   //centro = { }
+  rol:string
   centroRes:Centro
   formularioCentro:FormGroup
 
@@ -24,6 +28,9 @@ export class CentroFormComponent implements OnInit {
   soloNumeros: string;
 
   constructor(
+    private authService:AuthService,
+    private cifradoService: CifradoService,
+    private router: Router,
     private formBuilder:FormBuilder, 
     private centroService:CentroService, 
     private modalService: NgbModal) {
@@ -34,15 +41,24 @@ export class CentroFormComponent implements OnInit {
     }
 
   ngOnInit() {
-    this.formularioCentro = this.formBuilder.group({
-      nombre: ['', [Validators.required, Validators.minLength(3)]],
-      telefono: ['', [Validators.required, Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
-      correo: ['', Validators.compose([
-        //Validators.required, 
-        Validators.email
-      ])],
-      direccion: ['', [Validators.required, Validators.minLength(10)]]
-    })
+    if(this.authService.validarSesionActiva()){
+      this.rol = this.cifradoService.getDecryptedRol();
+      if(this.rol != "sop"){ 
+        this.router.navigate(['/pagina/404/no-encontrada']);
+      }else{
+        this.formularioCentro = this.formBuilder.group({
+          nombre: ['', [Validators.required, Validators.minLength(3)]],
+          telefono: ['', [Validators.required, Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
+          correo: ['', Validators.compose([
+            //Validators.required, 
+            Validators.email
+          ])],
+          direccion: ['', [Validators.required, Validators.minLength(10)]]
+        })
+      }
+    }else{
+      this.router.navigate(['/pagina/404/no-encontrada'])
+    } 
   }
 
   getInputClass(controlName: string) {

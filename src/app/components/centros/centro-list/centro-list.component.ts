@@ -3,8 +3,9 @@ import { Router } from '@angular/router';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Centro } from 'src/app/models/Centro.model';
 import { Usuario } from 'src/app/models/Usuario.model';
+import { AuthService } from 'src/app/services/auth.service';
 import { CentroService } from 'src/app/services/centro.service';
-import { UsuarioService } from 'src/app/services/usuario.service';
+import { CifradoService } from 'src/app/services/shared/cifrado.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -14,40 +15,40 @@ import Swal from 'sweetalert2';
 })
 export class CentroListComponent implements OnInit {
 
+  rol:string
   centros: Centro[] = [];
   usuario:Usuario
 
-  constructor(private usuarioService: UsuarioService, private centroService:CentroService, private router: Router,
-    private modalService: NgbModal, config: NgbModalConfig) {
+  constructor(
+    private authService:AuthService,
+    private cifradoService: CifradoService,
+    private centroService:CentroService, 
+    private router: Router,
+    private modalService: NgbModal, 
+      config: NgbModalConfig) {
       config.backdrop = 'static';
 		  config.keyboard = false;
     }
 
   ngOnInit() {
-    if(localStorage.getItem('_us')){
+    if(this.authService.validarSesionActiva()){
+      this.rol = this.cifradoService.getDecryptedRol();
 
-      this.usuarioService.getUsuario$(localStorage.getItem('_us')).subscribe(
-        res => {
+      if(this.rol != "sop"){ 
+        this.router.navigate(['/pagina/404/no-encontrada']);
+      }else{
+        this.centroService.getCentros$().subscribe(
+          res=>{
+            console.log("Listado de centros:: " + res)
+            this.centros = res;
+          },
+         err => console.log(err)
+        )
+      }
 
-          this.usuario = res;
-          console.log("Rol Centros: "+this.usuario.rol)
-  
-          if(this.usuario.rol != "sop"){  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ROL
-            this.router.navigate(['/calendario']);
-          }else{
-            this.centroService.getCentros$().subscribe(
-              res=>{
-                console.log("Listado de centros:: " + res)
-                this.centros = res;
-              },
-             err => console.log(err)
-            )
-          }
-        },
-        err => console.log("error: " + err)
-      )
-
-    } 
+    }else{
+      this.router.navigate(['/pagina/404/no-encontrada'])
+    }
   }
 
   openVerticallyCentered(content) {
