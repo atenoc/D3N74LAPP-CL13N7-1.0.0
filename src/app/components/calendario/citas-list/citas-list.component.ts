@@ -112,7 +112,7 @@ export class CitasListComponent implements OnInit {
       events: this.citas,
       eventClick: (info)=> {
         
-        this.modalRef = this.modalService.open(DetalleEventoComponent, { centered: true, size: 'sm' }); //{ centered: true, size: 'sm' });
+        this.modalRef = this.modalService.open(DetalleEventoComponent, { centered: true, size: 'sm', backdrop: true }); //{ centered: true, size: 'sm' });
         this.modalRef.componentInstance.title = info.event.title;
 
         const inicioFormateado = this.formatDate(info.event.start);

@@ -89,7 +89,8 @@ export class CalendarioComponent implements OnInit {
       initialView: 'dayGridMonth',
       views: {
         dayGridMonth:{
-          aspectRatio: this.aspectRatioMonth
+          aspectRatio: this.aspectRatioMonth,
+          dayMaxEventRows: 5,  // Activa la opción de "ver más"
         },
         timeGridWeek:{
           aspectRatio: this.aspectRatioValue,
@@ -110,7 +111,7 @@ export class CalendarioComponent implements OnInit {
       events: this.citas,
       eventClick: (info)=> {
         
-        this.modalRef = this.modalService.open(DetalleEventoComponent, { centered: true, size: 'sm' }); //{ centered: true, size: 'sm' });
+        this.modalRef = this.modalService.open(DetalleEventoComponent, { centered: true, size: 'sm', backdrop: true }); //{ centered: true, size: 'sm' });
         this.modalRef.componentInstance.title = info.event.title;
 
         const inicioFormateado = this.formatDate(info.event.start);
