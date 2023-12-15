@@ -72,7 +72,9 @@ export class PacienteDetalleComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.id = params['id'];
 
+      this.spinner.show();
       this.pacienteService.getPacienteById$(this.id).subscribe(res => {   //volver a llamar los datos con el id recibido
+        this.spinner.hide();
         this.paciente = res;
         console.log(res)
 
@@ -95,6 +97,7 @@ export class PacienteDetalleComponent implements OnInit {
         this.cargarCatSexo()
       },
       err => {
+        this.spinner.hide();
         console.log("error: " + err)
       })
 
@@ -181,8 +184,9 @@ export class PacienteDetalleComponent implements OnInit {
       cancelButtonText: 'No, cancelar'
     }).then((result) => {
       if (result.value) {
-        // Confirm
+        this.spinner.show();
         this.pacienteService.deletePaciente(id).subscribe(res => {
+          this.spinner.hide();
           console.log("Paciente eliminado:" + JSON.stringify(res))
 
           Swal.fire({
@@ -201,6 +205,7 @@ export class PacienteDetalleComponent implements OnInit {
           this.router.navigate(['/pacientes']);
         },
           err => { 
+            this.spinner.hide();
             console.log("error: " + err)
             Swal.fire({
               icon: 'error',

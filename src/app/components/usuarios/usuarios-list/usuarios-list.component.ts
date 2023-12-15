@@ -112,11 +112,17 @@ export class UsuariosListComponent implements OnInit {
         this.totalElements = res.pagination.totalElements
         console.log(res)
         if(this.usuarios.length <= 0){
-          this.mensaje='¡No hay usuarios!'
+          this.mensaje='No hay usuarios para mostrar'
         }else{
           this.existenUsuarios = true;
         }
-      });
+      },
+      err => {
+        this.mensaje='No se pudo obtener la información'
+        console.log(err.error.message)
+        console.log(err)
+      }
+      );
   }
 
   onPageChange(event: any) {

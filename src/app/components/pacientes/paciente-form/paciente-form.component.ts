@@ -81,7 +81,6 @@ export class PacienteFormComponent implements OnInit {
   }
 
   crearPaciente(){
-    this.spinner.show();
     console.log("CREAR Paciente")
 
     var nuevoPacienteJson = JSON.parse(JSON.stringify(this.formularioPaciente.value))
@@ -95,22 +94,23 @@ export class PacienteFormComponent implements OnInit {
 
     nuevoPacienteJson.fecha_creacion = this.fecha_creacion
 
-    console.log("Usuario a registrar: ")
+    console.log("Paciente a registrar: ")
     console.log(nuevoPacienteJson)
 
+    this.spinner.show();
     this.pacienteService.createPaciente(nuevoPacienteJson).subscribe(
       res => {
+        this.spinner.hide();
         this.paciente = res;
         console.log("Paciente creado")
         //this.modalService.dismissAll()
       
-        this.spinner.hide();
         this.router.navigate(['/pacientes'])
         Swal.fire({
           position: 'top-end',
           html:
             `<h5>${ Mensajes.PACIENTE_REGISTRADO }</h5>`+
-            `<span>Usuario: ${this.paciente.nombre} ${this.paciente.apellidop}</span>`, 
+            `<span>Paciente: ${this.paciente.nombre} ${this.paciente.apellidop}</span>`, 
           showConfirmButton: false,
           backdrop: false,
           width: 400,

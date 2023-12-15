@@ -102,7 +102,6 @@ export class UsuarioFormComponent implements OnInit {
   }
 
   crearUsuario(){
-    this.spinner.show();
     console.log("CREAR USUARIO")
 
     var nuevoUsuarioJson = JSON.parse(JSON.stringify(this.formularioUsuario.value))
@@ -114,6 +113,7 @@ export class UsuarioFormComponent implements OnInit {
 
     console.log("Usuario a registrar: "+ nuevoUsuarioJson)
     console.log(nuevoUsuarioJson)
+    this.spinner.show();
     this.usuarioService.createUsuario(nuevoUsuarioJson).subscribe(
       res => {
         this.usuario = res;

@@ -6,6 +6,7 @@ import { Mensajes } from 'src/app/shared/mensajes.config';
 import { PacienteService } from 'src/app/services/pacientes/paciente.service';
 import Swal from 'sweetalert2';
 import { Paciente } from 'src/app/models/Paciente.model';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-cita-form',
@@ -58,6 +59,7 @@ export class CitaFormComponent implements OnInit {
   existePaciente:boolean;
 
   constructor(
+    private spinner: NgxSpinnerService, 
     private activeModal: NgbActiveModal, 
     private pacienteService:PacienteService, 
     private citaService:CitaService,
@@ -130,8 +132,10 @@ export class CitaFormComponent implements OnInit {
       id_usuario: localStorage.getItem('_us')
     };
 
+    this.spinner.show();
     this.pacienteService.createPaciente(this.pacienteJson).subscribe(
       res=>{
+      this.spinner.hide();
       this.id_paciente=res.id
       this.registrarCita()
 
@@ -153,6 +157,7 @@ export class CitaFormComponent implements OnInit {
 
     },
     err =>{
+      this.spinner.hide();
       Swal.fire({
         icon: 'error',
         html:
@@ -180,9 +185,10 @@ export class CitaFormComponent implements OnInit {
     };
 
     console.log(citaJson)
-
+    this.spinner.show();
     this.citaService.createCita(citaJson).subscribe(
       res=>{
+        this.spinner.hide();
         console.log("Cita Enviada")
         console.log(res)
         this.citaService.emitirNuevaCita(); // Emitir el evento de nueva cita
@@ -202,9 +208,9 @@ export class CitaFormComponent implements OnInit {
         })
 
         this.closeModal()
-
       },
       err =>{
+        this.spinner.hide();
         Swal.fire({
           icon: 'error',
           html:

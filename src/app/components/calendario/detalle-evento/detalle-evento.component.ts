@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { DetalleCita } from 'src/app/models/Cita.model';
 import { CitaService } from 'src/app/services/citas/cita.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
@@ -22,8 +23,11 @@ export class DetalleEventoComponent implements OnInit {
   mostrarMotivo:boolean
   mostrarBotonEditar:boolean
 
-  constructor(private activeModal: NgbActiveModal,
-    private citaService:CitaService, private router:Router
+  constructor(
+    private spinner: NgxSpinnerService, 
+    private activeModal: NgbActiveModal,
+    private citaService:CitaService, 
+    private router:Router
     ) { }
 
   ngOnInit(): void {
@@ -64,9 +68,10 @@ export class DetalleEventoComponent implements OnInit {
       cancelButtonText: 'No, cancelar'
     }).then((result) => {
       if (result.value) {
-        // Confirm
+        this.spinner.show();
         this.citaService.deleteCita(this.data.id).subscribe(res=>{
           console.log("Cita eliminada")
+          this.spinner.hide();
 
           Swal.fire({
             position: 'top-end',
@@ -86,6 +91,7 @@ export class DetalleEventoComponent implements OnInit {
           this.closeModal()
         },
           err => { 
+            this.spinner.hide();
             console.log("error: " + err)
             Swal.fire({
               icon: 'error',
