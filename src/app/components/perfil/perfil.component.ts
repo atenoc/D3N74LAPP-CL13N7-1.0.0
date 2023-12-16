@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalConfig  } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Centro } from 'src/app/models/Centro.model';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from 'src/app/services/auth.service';
@@ -21,8 +22,10 @@ export class PerfilComponent implements OnInit {
   centro: Centro = {} as Centro;
 
   rol:string
+  mostrarOpciones:boolean=false
 
   constructor(
+    private spinner: NgxSpinnerService, 
     private authService:AuthService,
     private usuarioService:UsuarioService, 
     private centroService:CentroService, 
@@ -39,6 +42,9 @@ export class PerfilComponent implements OnInit {
     if(this.authService.validarSesionActiva()){
 
       this.rol = this.cifradoService.getDecryptedRol();
+      if(this.rol == "sop" || this.rol == "suadmin" || this.rol == "adminn1"){
+        this.mostrarOpciones= true
+      }
 
       // Consulta de Usuario por Correo
       this.usuarioService.getUsuario$(localStorage.getItem('_us')).subscribe(
@@ -92,12 +98,13 @@ export class PerfilComponent implements OnInit {
     this.router.navigate(['/centro-detalle', id]);
   }
 
-  deleteCentro(id: string, nombre:string) {
+  deleteCentroCuenta(id: string, nombre:string) {
 
     Swal.fire({
       html:
-        `<h5>${ Mensajes.CLINICA_ELIMINAR_QUESTION }</h5> <br/> ` +
-        `<strong> ${ nombre } </strong>`,
+        `<h5>¿Estás seguro que quieres eliminar tu cuenta?</h5>` +
+        `<strong> Clínica/consultorio: ${ nombre } </strong> <br/>`+
+        `<small>Si deseas eliminar tu cuenta, ten en cuenta que se también se borrará toda la información de tus usuarios, pacientes, médicos, citas, etc. Esta acción no se puede revertir.</small>`,
       icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#dc3545',
@@ -107,32 +114,48 @@ export class PerfilComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         // Confirm
-
-        this.centroService.deleteCentro(id).subscribe(res => {
-          console.log("Centro eliminado:" + res)
-          this.ngOnInit()
-          Swal.fire({
-            icon: 'success',
-            showConfirmButton: false,
-            html:
-                `<strong>${ Mensajes.CLINICA_ELIMINADA }</strong>`,
-            timer: 2000
-          })
-        },
-          err => { 
-            console.log("error: " + err)
+        this.spinner.show();
+        setTimeout(() => {
+          this.centroService.deleteCentro(id).subscribe(res => {
+            this.spinner.hide();
+            console.log("Centro eliminado:" + res)
+            
             Swal.fire({
-              icon: 'error',
-              html:
-                `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-                `<span>${ Mensajes.CLINICA_NO_ELIMINADA }</span></br>`+
-                `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
+              icon: 'success',
               showConfirmButton: false,
-              timer: 3000
-            }) 
-          }
-        )
-    
+              html:
+                  `<strong>Tu cuenta ha sido eliminada</strong>`,
+              timer: 2000
+            })
+            setTimeout(() => {
+              console.log("Cuenta eliminada")
+              localStorage.removeItem('_enc_t')
+              localStorage.removeItem('_lor_')
+              localStorage.removeItem('_us')
+              localStorage.removeItem('_em')
+              localStorage.removeItem('_cli')
+              window.location.reload();
+              this.router.navigate(['/login'])
+            }, 2000);
+            
+          },
+            err => { 
+              this.spinner.hide();
+              console.log("error: " + err)
+              Swal.fire({
+                icon: 'error',
+                html:
+                  `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
+                  `<span>${ Mensajes.CLINICA_NO_ELIMINADA }</span></br>`+
+                  `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
+                showConfirmButton: false,
+                timer: 3000
+              }) 
+            }
+          )
+          
+        }, 1500);
+
       }
     })
  
