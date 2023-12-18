@@ -9,6 +9,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Mensajes } from 'src/app/shared/mensajes.config';
 import { CifradoService } from 'src/app/services/shared/cifrado.service';
 import { CentroService } from 'src/app/services/centro.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-login',
@@ -29,6 +30,7 @@ export class LoginComponent implements OnInit {
   mensajeDetalleError: String
 
   constructor(
+    private sharedService:SharedService, 
     private centroService:CentroService,
     private formBuilder:FormBuilder, 
     private authService: AuthService, 
@@ -78,6 +80,8 @@ export class LoginComponent implements OnInit {
         /* Obtener usuario por Correo */
         this.usuarioService.getUsuarioByCorreo$(this.correoUsuario).subscribe(
           res => {
+
+            this.sharedService.setNombreUsuario(res.nombre +" "+res.apellidop)
     
             console.log("Cli:: "+JSON.stringify(res.id_clinica))
             localStorage.setItem('_cli', res.id_clinica)
@@ -89,6 +93,7 @@ export class LoginComponent implements OnInit {
             if(res.rol =="suadmin" || res.rol =="sop"){
               this.centroService.getCentroByIdUser$(res.id).subscribe(
                 res => {
+                  this.sharedService.setNombreClinica(res.nombre);
                   console.log("Si existe Centro")
                   this.router.navigate(['/calendario'])
                 },
@@ -99,8 +104,22 @@ export class LoginComponent implements OnInit {
                 }
               )
             }else{
-              this.router.navigate(['/calendario'])
+              this.centroService.getCentro$(res.id_clinica).subscribe(
+                res => {
+                  this.sharedService.setNombreClinica(res.nombre);
+                  console.log("Si pertenece a un entro")
+                  this.router.navigate(['/calendario'])
+                },
+                err => {
+                  console.log("No pertenece a ningún centro")
+                  console.log(err)
+                  this.router.navigate(['/login'])
+                }
+              )
             }
+
+            this.sharedService.notifyApp.emit();
+
           },
           err => {
             console.log(err.error.message)

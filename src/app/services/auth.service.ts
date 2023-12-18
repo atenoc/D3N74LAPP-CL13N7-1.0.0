@@ -65,7 +65,11 @@ export class AuthService {
         this.router.navigate(['/login'])
 
         // Se manda un mensaje para validar el cierre de sesion y refrescar el menu 
-        this.sharedService.cambiarMensaje("refresh_navigate")
+        //this.sharedService.cambiarMensaje("refresh_navigate")
+        //this.sharedService.notifyApp.emit();
+        //
+        window.location.reload();
+        console.log("reload")
 
         Swal.fire({
           icon: 'info',

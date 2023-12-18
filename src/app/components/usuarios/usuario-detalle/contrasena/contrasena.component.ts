@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SharedService } from 'src/app/services/shared.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { CifradoService } from 'src/app/services/shared/cifrado.service';
 
 @Component({
   selector: 'app-contrasena',
@@ -12,6 +14,8 @@ import { SharedService } from 'src/app/services/shared.service';
   styleUrls: ['./contrasena.component.css']
 })
 export class ContrasenaComponent implements OnInit {
+
+  rol:string
 
   formPassword:FormGroup
   id:string
@@ -22,30 +26,50 @@ export class ContrasenaComponent implements OnInit {
   faEye=faEye;
   faEyeSlash=faEyeSlash;
 
-  constructor(private formBuilder:FormBuilder, private activatedRoute: ActivatedRoute, private usuarioService:UsuarioService, private sharedService:SharedService) { }
+  constructor(
+    private authService:AuthService,
+    private cifradoService: CifradoService,
+    private router: Router, 
+    private formBuilder:FormBuilder,
+    private activatedRoute: ActivatedRoute, 
+    private usuarioService:UsuarioService, 
+    private sharedService:SharedService
+    ) { }
 
   ngOnInit() {
 
-    this.formPassword = this.formBuilder.group({
-      nuevoPassword1: ['', [Validators.required, Validators.minLength(8)]],
-      nuevoPassword2: ['', [Validators.required]]
-    }, {
-      validator: this.passwordMatchValidator
-    });
+    if(this.authService.validarSesionActiva()){
+      this.rol = this.cifradoService.getDecryptedRol();
+
+      if(this.rol == "sop" || this.rol == "suadmin" || this.rol == "adminn1"){
+
+        this.formPassword = this.formBuilder.group({
+          nuevoPassword1: ['', [Validators.required, Validators.minLength(8)]],
+          nuevoPassword2: ['', [Validators.required]]
+        }, {
+          validator: this.passwordMatchValidator
+        });
+        
+        this.activatedRoute.params.subscribe(params => {
+          this.id = params['id'];
+          this.usuarioService.getPassUsuario$(this.id).subscribe(res => {   //volver a llamar los datos con el id recibido
+            this.llave = res.llave;
+            console.log("Res obtenido")
     
-    this.activatedRoute.params.subscribe(params => {
-      this.id = params['id'];
-      this.usuarioService.getUsuario$(this.id).subscribe(res => {   //volver a llamar los datos con el id recibido
-        this.llave = res.llave;
-        //console.log("id obtenido:" + res.llave)
+          },
+            err => console.log("error: " + err)
+          )
+    
+        },
+          err => console.log("error: " + err)
+        );
 
-      },
-        err => console.log("error: " + err)
-      )
-
-    },
-      err => console.log("error: " + err)
-    );
+      }else{
+        this.router.navigate(['/pagina/404/no-encontrada'])
+      }
+    }else{
+      this.router.navigate(['/pagina/404/no-encontrada'])
+    }
   }
 
   passwordMatchValidator(formGroup: FormGroup) {

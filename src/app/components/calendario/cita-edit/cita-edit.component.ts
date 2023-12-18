@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbActiveModal, NgbDateParserFormatter, NgbDateStruct, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Cita, CitaEditar } from 'src/app/models/Cita.model';
 import { Paciente } from 'src/app/models/Paciente.model';
 import { CitaService } from 'src/app/services/citas/cita.service';
@@ -63,6 +64,7 @@ export class CitaEditComponent implements OnInit {
   existePaciente:boolean;
 
   constructor(
+    private spinner: NgxSpinnerService, 
     private activatedRoute: ActivatedRoute, 
     private pacienteService:PacienteService, 
     private citaService:CitaService,
@@ -88,8 +90,6 @@ export class CitaEditComponent implements OnInit {
       this.activatedRoute.params.subscribe(params => {
         this.id = params['id'];
         console.log(this.id)
-    
-        
       });
 
       this.citaService.getCitaById$(this.id).subscribe(res => {
@@ -138,7 +138,7 @@ export class CitaEditComponent implements OnInit {
     }
     
   updateCita(){
-    
+    this.spinner.show();
     this.pacienteService.updatePacienteCita(
       this.id_paciente,
       this.nombrePaciente, 
@@ -147,6 +147,7 @@ export class CitaEditComponent implements OnInit {
       this.edadPaciente,
       this.telefonoPaciente
     ).subscribe(res =>{
+      this.spinner.hide();
       console.log("Se actualizó la información del paciente")
       console.log(res)
 
@@ -168,6 +169,7 @@ export class CitaEditComponent implements OnInit {
 
     },
     err =>{
+      this.spinner.hide();
       Swal.fire({
         icon: 'error',
         html:
@@ -187,6 +189,7 @@ export class CitaEditComponent implements OnInit {
       this.fecha_hora_fin = null
     }
 
+    this.spinner.show();
     this.citaService.updateCita(
       this.id,
       "Cita. "+this.nombrePaciente+" "+this.apellidoPaternoPaciente,
@@ -197,6 +200,7 @@ export class CitaEditComponent implements OnInit {
       this.id_paciente
     ).subscribe(
       res=>{
+        this.spinner.hide();
         console.log("Cita actualizada")
         console.log(res)
         this.citaService.emitirNuevaCita(); // Emitir el evento de nueva cita
@@ -219,6 +223,7 @@ export class CitaEditComponent implements OnInit {
 
       },
       err =>{
+        this.spinner.hide();
         Swal.fire({
           icon: 'error',
           html:

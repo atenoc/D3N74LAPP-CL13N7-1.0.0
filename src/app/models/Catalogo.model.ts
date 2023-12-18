@@ -14,3 +14,8 @@ export interface CatalogoEspecialidad{
     id:string;
     especialidad:string;
 }
+
+export interface CatalogoSexo{
+    id:string;
+    descripcion:string;
+}

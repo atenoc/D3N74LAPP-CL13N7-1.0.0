@@ -12,12 +12,12 @@ import { MedicoService } from 'src/app/services/medicos/medico.service';
 export class MedicosListComponent implements OnInit {
 
   medicos: Usuario[] = [];
-  existenPacientes:boolean=false
+  existenMedicos:boolean=false
   mensaje:string
 
   constructor(
     private authService:AuthService,
-    private usuarioService:MedicoService, 
+    private medicoService:MedicoService, 
     private router: Router, 
     ) { }
 
@@ -30,7 +30,7 @@ export class MedicosListComponent implements OnInit {
 
   getMedicosByIdClinica(){
     console.log("Users by Cli")
-    this.usuarioService
+    this.medicoService
       .getMedicos$(localStorage.getItem('_cli'))
       .subscribe((res) => {
         this.medicos = res
@@ -38,9 +38,16 @@ export class MedicosListComponent implements OnInit {
         if(this.medicos.length <= 0){
           this.mensaje='No hay médicos que mostrar'
         }else{
-          this.existenPacientes = true;
+          this.existenMedicos = true;
         }
-      });
+      },
+      err => {
+        this.mensaje='No se pudo obtener la información'
+        console.log(err.error.message)
+        console.log(err)
+      }
+      
+      );
   }
 
   selectedIdUser(id: string) {

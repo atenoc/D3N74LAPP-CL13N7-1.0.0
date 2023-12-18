@@ -50,7 +50,7 @@ export const Mensajes = {
     CITA_NO_REGISTRADA: 'La cita no se puedo registrar ',
     CITA_ACTUALIZADA: 'La cita se actualizó correctamente ',
     CITA_NO_ACTUALIZADA: 'No se pudo actualizar la cita ',
-    CITA_ELIMINAR_QUESTION: '¿Estás seguro que quieres eliminar la cita?',
+    CITA_ELIMINAR_QUESTION: '¿Estás seguro que quieres eliminar... ?',
     CITA_ELIMINADA: 'La cita se eliminó correctamente ',
     CITA_NO_ELIMINADA: 'No se pudo eliminar la cita ',
 
@@ -62,5 +62,9 @@ export const Mensajes = {
     PACIENTE_NO_ACTUALIZADO: 'No se pudo actualizar la información del paciente ',
     PACIENTE_ELIMINADO: 'El paciente se eliminó correctamente ',
     PACIENTE_NO_ELIMINADO: 'No se pudo eliminar el paciente ',
+
+    //Eventos
+    EVENTO_REGISTRADO: 'El evento se registró correctamente ',
+    EVENTO_NO_REGISTRADO: 'El evento no se puedo registrar ',
 
 };

@@ -46,6 +46,9 @@ export class SidebarComponent implements OnInit {
         if(this.rolUsuario=="adminn1"){
           this.mostrarUsuarios=true
         }
+        if(this.rolUsuario=="adminn2" || this.rolUsuario=="medic" || this.rolUsuario=="caja" || this.rolUsuario=="recepcion"){
+          this.mostrarUsuarios=false
+        }
         console.log("Usuario sidebar:: ")
         console.log(this.usuario)
         this.inicializarAccordion()
@@ -65,7 +68,7 @@ export class SidebarComponent implements OnInit {
   salir(){
     this.authService.logout()
 
-    this.sharedService.mensajeActual.subscribe(
+    /*this.sharedService.mensajeActual.subscribe(
       res => {
         if(res){
           this.rolUsuario=""
@@ -74,7 +77,7 @@ export class SidebarComponent implements OnInit {
 
         }
       }
-    )
+    )*/
   }
 
   inicializarAccordion(): void {
@@ -106,6 +109,7 @@ export class SidebarComponent implements OnInit {
       };
     
       var accordion = new Accordion($('#accordion'), false);
+      var accordion2 = new Accordion($('#accordion2'), false);
     });
   }
 }

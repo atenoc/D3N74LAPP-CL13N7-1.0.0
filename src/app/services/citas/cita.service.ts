@@ -19,10 +19,14 @@ export class CitaService {
   createCita(cita): Observable<Cita> {
     return this.http.post<Cita>(this.URI, cita);
   }
+
+  createEvento(evento): Observable<Cita> {
+    return this.http.post<Cita>(`${this.URI}/evento`, evento);
+  }
   
 
-  getCitas$(): Observable<Cita[]>{
-    this.http.get<Cita[]>(this.URI).subscribe(
+  getCitas$(id_clinica): Observable<Cita[]>{
+    this.http.get<Cita[]>(`${this.URI}/clinica/${id_clinica}`).subscribe(
       res=>{
         this.citas.next(res)
       },

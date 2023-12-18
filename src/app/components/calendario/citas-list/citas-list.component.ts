@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timegridPlugin from '@fullcalendar/timegrid';
@@ -10,6 +10,7 @@ import { Cita } from 'src/app/models/Cita.model';
 import { CitaService } from 'src/app/services/citas/cita.service';
 import { CitaFormComponent } from '../cita-form/cita-form.component';
 import { DetalleEventoComponent } from '../detalle-evento/detalle-evento.component';
+import { EventFormComponent } from '../event-form/event-form.component';
 
 @Component({
   selector: 'app-citas-list',
@@ -19,6 +20,10 @@ import { DetalleEventoComponent } from '../detalle-evento/detalle-evento.compone
 export class CitasListComponent implements OnInit {
 
   private citasListComponent: CitasListComponent;
+  aspectRatioMonth: number;
+  aspectRatioValue: number;
+  textButtonCita:string;
+  textButtonEvento:string;
 
   modalRef: NgbModalRef;
   calendarOptions: CalendarOptions = {};
@@ -34,7 +39,14 @@ export class CitasListComponent implements OnInit {
     this.citasListComponent = this; // Captura la instancia del componente en la variable
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    this.checkWindowSize();
+  }
+
   ngOnInit(): void {
+    this.checkWindowSize();
+
     this.citas = []
     this.cargarcitas()
 
@@ -44,7 +56,7 @@ export class CitasListComponent implements OnInit {
   }
 
   cargarcitas(){
-    this.citaService.getCitas$().subscribe(res=>{
+    this.citaService.getCitas$(localStorage.getItem('_cli')).subscribe(res=>{
       console.log("Res cita::")
       if(res){
         this.citas = res;
@@ -59,17 +71,36 @@ export class CitasListComponent implements OnInit {
       //aspectRatio: 2.1,
       customButtons: {
         myCustomButton: {
-          text: 'Agregar cita',
+          text: this.textButtonCita,
           click: () => {
             this.citasListComponent.openVerticallyCentered();
           },
         },
+        myCustomButton2: {
+          text: this.textButtonEvento,
+          click: () => {
+            this.citasListComponent.openEventForm()
+          }
+        }
       },
       initialView: 'listMonth', // Puedes cambiar a 'listWeek' o 'listDay' según tu preferencia
+      views: {
+        listMonth:{
+          aspectRatio: this.aspectRatioMonth
+        },
+        listWeek:{
+          aspectRatio: this.aspectRatioValue,
+          scrollTime: '08:00:00',
+        },
+        listDay:{
+          aspectRatio: this.aspectRatioValue,
+          scrollTime: '08:00:00',
+        }
+      },
       plugins: [listPlugin, interactionPlugin],
       locale: esLocale,
       headerToolbar: {
-        left: 'prev,today,next myCustomButton',
+        left: 'prev,today,next myCustomButton myCustomButton2',
         center: 'title',
         right: 'listMonth,listWeek,listDay',
       },
@@ -81,7 +112,7 @@ export class CitasListComponent implements OnInit {
       events: this.citas,
       eventClick: (info)=> {
         
-        this.modalRef = this.modalService.open(DetalleEventoComponent, { centered: true, size: 'sm' }); //{ centered: true, size: 'sm' });
+        this.modalRef = this.modalService.open(DetalleEventoComponent, { centered: true, size: 'sm', backdrop: true }); //{ centered: true, size: 'sm' });
         this.modalRef.componentInstance.title = info.event.title;
 
         const inicioFormateado = this.formatDate(info.event.start);
@@ -117,6 +148,32 @@ export class CitasListComponent implements OnInit {
 
   openVerticallyCentered() {
     this.modalService.open(CitaFormComponent, { centered: true, size: 'lg' });
+  }
+
+  openEventForm() {
+    this.modalService.open(EventFormComponent, { centered: true });
+  }
+
+  private checkWindowSize(): void {
+    const windowWidth = window.innerWidth;
+    console.log("Tamaño pantalla: "+windowWidth)
+
+    if (windowWidth <= 500) {
+      this.aspectRatioMonth=0.6
+      this.aspectRatioValue=0.6
+      this.textButtonCita="cita";
+      this.textButtonEvento="evento";
+    } else if (windowWidth > 500 && windowWidth < 800) {
+      this.aspectRatioMonth=1
+      this.aspectRatioValue=1
+      this.textButtonCita="+ cita";
+      this.textButtonEvento="+ evento";
+    } else if (windowWidth >= 800 ) {
+      this.aspectRatioMonth=1.5
+      this.aspectRatioValue=2.3
+      this.textButtonCita="Agregar cita";
+      this.textButtonEvento="Agregar evento";
+    }
   }
 
 }

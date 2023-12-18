@@ -1,0 +1,130 @@
+<div class="modal-header my-bg">
+    <h5><strong> Crear Evento </strong></h5>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body my-bg">
+
+    <div class="row">
+        <div class="col-sm">
+            <div class="form-group">
+
+                <strong class="text-muted" > Titulo * </strong>
+                <i class="fas fa-info-circle cursor-pointer text-muted ml-1" 
+                  triggers="click" [autoClose]="'outside'" placement="end" 
+                  ngbTooltip="Ej. Espacio reservado, Carlos. Ej. Fuera de clínica, Dr Juan. Ej. Evento especial, María..."></i>
+
+                <input type="text" class="form-control" [(ngModel)]="titulo" (ngModelChange)="validaTitulo()" placeholder="Nombre corto...">
+                <div *ngIf="mostrarMensajeTitulo" class="invalid-input-message">{{ campoRequerido }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-sm">
+        <div class="form-group">
+            <span class="text-muted">Nota</span>
+            <input type="text" class="form-control" [(ngModel)]="nota" placeholder="Nota o comentario...">
+        </div>
+      </div>
+    </div>
+  
+      <div class="row">
+          <div class="col-sm my-mt">
+              <span><strong class="text-muted"> Fecha y hora de inicio * </strong></span>
+              <div class="input-group">
+                  <input
+                    class="form-control"
+                    placeholder="aaaa-mm-dd"
+                    name="dp1"
+                    [(ngModel)]="fechaModelInicio"
+                    (ngModelChange)="validarFechaInicio()"
+                    ngbDatepicker
+                    #d1="ngbDatepicker" 
+                    readonly
+                  />
+                  <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d1.toggle()" type="button">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </div>
+                <div *ngIf="mostrarMensajeFechaInicio" class="invalid-input-message">{{ fechaRequerida }}</div>
+                
+          </div>
+          <div class="col-sm">
+      
+              <div class="form-group">
+                  <!-- <pre>Selected time: {{selectedTimeInicio | json}}</pre> -->
+                  <ngb-timepicker [(ngModel)]="selectedTimeInicio" [meridian]="true" (ngModelChange)="validaHoraInicio()"></ngb-timepicker>
+                  <div *ngIf="mostrarMensajeHoraInicio" class="invalid-input-message">{{ horarioValido }}</div>
+              </div>
+              
+          </div>
+      </div>
+  
+      <hr/>
+      <small class="text-muted">Opcional</small>
+      <i class="fas fa-info-circle cursor-pointer text-muted ml-1" 
+        triggers="click" [autoClose]="'outside'" placement="end" 
+        ngbTooltip="De no seleccionar esta opción, el evento será de 1 hora"></i>
+  
+      <div class="row">
+          <div class="col-sm my-mt">
+              <small>Fecha y hora de termino</small>
+              <div class="input-group">
+                  <input
+                    class="form-control"
+                    placeholder="aaaa-mm-dd"
+                    name="dp2"
+                    [(ngModel)]="fechaModelFin"
+                    ngbDatepicker
+                    #d2="ngbDatepicker" 
+                    readonly
+                  />
+                  <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()" type="button">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                </div>
+          </div>
+          <div class="col-sm">
+      
+              <div class="form-group">
+                  <ngb-timepicker [(ngModel)]="selectedTimeFin" [meridian]="true"></ngb-timepicker>
+              </div>
+              
+          </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-10">
+          <span class="text-muted"><small>Remarcar este evento:</small></span>
+          <div class="color-selector-container mt-1">
+            <div *ngFor="let color of colors">
+              <label>
+                <input
+                  type="radio"
+                  name="color"
+                  [(ngModel)]="selectedColor"
+                  [value]="color"
+                />
+                <div [style.background-color]="color" class="color-option"></div>
+              </label>
+            </div>
+          </div>
+  
+          <!-- <div *ngIf="selectedColor">
+            <p>Color seleccionado: {{ selectedColor }}</p>
+          </div> -->
+        </div>
+        <div class="col-sm-1">
+        </div>
+
+      </div>
+
+      <div class="row">
+        <button type="submit" class="btn btn-primary btn-block" (click)="registrarEvento()">Guardar</button>
+      </div>
+  
+  </div>
+  

@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { CatalogoSexo } from 'src/app/models/Catalogo.model';
 import { Paciente } from 'src/app/models/Paciente.model';
+import { CatalogoService } from 'src/app/services/catalogo.service';
 import { PacienteService } from 'src/app/services/pacientes/paciente.service';
 import { CifradoService } from 'src/app/services/shared/cifrado.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
@@ -32,7 +34,10 @@ export class PacienteDetalleComponent implements OnInit {
 
   rol:string
 
+  catSexo:CatalogoSexo[] = [];
+
   constructor(
+    private catalogoService:CatalogoService,
     private formBuilder:FormBuilder, 
     private activatedRoute: ActivatedRoute, 
     private pacienteService:PacienteService, 
@@ -67,7 +72,9 @@ export class PacienteDetalleComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.id = params['id'];
 
+      this.spinner.show();
       this.pacienteService.getPacienteById$(this.id).subscribe(res => {   //volver a llamar los datos con el id recibido
+        this.spinner.hide();
         this.paciente = res;
         console.log(res)
 
@@ -86,8 +93,11 @@ export class PacienteDetalleComponent implements OnInit {
           correo: this.paciente.correo,
           direccion: this.paciente.direccion,
         });
+
+        this.cargarCatSexo()
       },
       err => {
+        this.spinner.hide();
         console.log("error: " + err)
       })
 
@@ -174,8 +184,9 @@ export class PacienteDetalleComponent implements OnInit {
       cancelButtonText: 'No, cancelar'
     }).then((result) => {
       if (result.value) {
-        // Confirm
+        this.spinner.show();
         this.pacienteService.deletePaciente(id).subscribe(res => {
+          this.spinner.hide();
           console.log("Paciente eliminado:" + JSON.stringify(res))
 
           Swal.fire({
@@ -194,6 +205,7 @@ export class PacienteDetalleComponent implements OnInit {
           this.router.navigate(['/pacientes']);
         },
           err => { 
+            this.spinner.hide();
             console.log("error: " + err)
             Swal.fire({
               icon: 'error',
@@ -210,6 +222,15 @@ export class PacienteDetalleComponent implements OnInit {
       }
     })
 
+  }
+
+  cargarCatSexo(){
+    this.catalogoService.getSexo$().subscribe(res => { 
+      this.catSexo = res
+      console.log("Sexo: "+res.length)
+    },
+    err => console.log("error: " + err)
+    )
   }
 
 }

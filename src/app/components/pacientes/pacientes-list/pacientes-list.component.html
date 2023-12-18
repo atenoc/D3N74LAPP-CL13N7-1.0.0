@@ -32,7 +32,7 @@
             </div>
             <div class="card-body">
   
-              <div *ngIf="existenUsuarios; else ver_mensaje">
+              <div *ngIf="existenPacientes; else ver_mensaje">
                 <table class="table table-responsive table-hover table-striped table-sm">
                   <thead class="thead-dark">
                     <tr>
@@ -59,18 +59,17 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let usuario of usuarios">
-                      <!-- <th class="text-muted"><small><strong>{{ usuario.id }}</strong></small></th> -->
-                      <td scope="row" class="text-muted">{{ usuario.contador }}</td>
-                      <td><strong class="text-muted"> {{ usuario.nombre }} </strong></td>
-                      <td><strong class="text-muted"> {{ usuario.apellidop }} </strong></td>
-                      <td><strong class="text-muted"> {{ usuario.apellidom }} </strong></td>
-                      <td>{{ usuario.edad }}</td>
-                      <td>{{ usuario.telefono }}</td>
-                      <td>{{ usuario.correo }}</td>
+                    <tr *ngFor="let paciente of pacientes">
+                      <td scope="row" class="text-muted">{{ paciente.contador }}</td>
+                      <td><strong class="text-muted"> {{ paciente.nombre }} </strong></td>
+                      <td><strong class="text-muted"> {{ paciente.apellidop }} </strong></td>
+                      <td><strong class="text-muted"> {{ paciente.apellidom }} </strong></td>
+                      <td>{{ paciente.edad }}</td>
+                      <td>{{ paciente.telefono }}</td>
+                      <td>{{ paciente.correo }}</td>
                       <td class="text-center">
                         
-                        <button class="btn btn-outline-primary my-2 my-sm-0 btn-sm" (click)="selectedIdUser(usuario.id)"
+                        <button class="btn btn-outline-primary my-2 my-sm-0 btn-sm" (click)="selectedIdUser(paciente.id)"
                           ngbTooltip="Información del paciente"><i class="fas fa-info-circle"></i> Ver
                         </button>
                     </td>

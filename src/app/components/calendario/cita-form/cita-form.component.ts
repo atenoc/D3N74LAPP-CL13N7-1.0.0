@@ -6,6 +6,7 @@ import { Mensajes } from 'src/app/shared/mensajes.config';
 import { PacienteService } from 'src/app/services/pacientes/paciente.service';
 import Swal from 'sweetalert2';
 import { Paciente } from 'src/app/models/Paciente.model';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-cita-form',
@@ -58,6 +59,7 @@ export class CitaFormComponent implements OnInit {
   existePaciente:boolean;
 
   constructor(
+    private spinner: NgxSpinnerService, 
     private activeModal: NgbActiveModal, 
     private pacienteService:PacienteService, 
     private citaService:CitaService,
@@ -111,15 +113,9 @@ export class CitaFormComponent implements OnInit {
       console.log("Fecha creación:: "+this.fecha_creacion)
 
       if(this.existePaciente){
-        // registrar cita
-
         this.registrarCita();
-
       }else{
-        // registrar paciente y cita
-
         this.registrarPaciente()
-
       }
     }
   }
@@ -136,12 +132,32 @@ export class CitaFormComponent implements OnInit {
       id_usuario: localStorage.getItem('_us')
     };
 
+    this.spinner.show();
     this.pacienteService.createPaciente(this.pacienteJson).subscribe(
       res=>{
+      this.spinner.hide();
       this.id_paciente=res.id
       this.registrarCita()
+
+      setTimeout(() => {
+        Swal.fire({
+          position: 'top-end',
+          html:
+            `<h5>${ Mensajes.PACIENTE_REGISTRADO }</h5>`+
+            `<span>${res.nombre} ${res.apellidop} ${res.apellidom}</span>`, 
+          showConfirmButton: false,
+          backdrop: false,
+          width: 400,
+          background: 'rgb(40, 167, 69, .90)',
+          color:'white',
+          timerProgressBar:true,
+          timer: 3000,
+        })
+      }, 3000);
+
     },
     err =>{
+      this.spinner.hide();
       Swal.fire({
         icon: 'error',
         html:
@@ -159,6 +175,7 @@ export class CitaFormComponent implements OnInit {
     var citaJson = {
       title: "Cita. "+this.nombrePaciente+" "+this.apellidoPaternoPaciente,
       motivo: this.motivo,
+      color: '#00a65a',
       start: this.fecha_hora_inicio,
       end: this.fecha_hora_fin,
       fecha_creacion: this.fecha_creacion,
@@ -168,9 +185,10 @@ export class CitaFormComponent implements OnInit {
     };
 
     console.log(citaJson)
-
+    this.spinner.show();
     this.citaService.createCita(citaJson).subscribe(
       res=>{
+        this.spinner.hide();
         console.log("Cita Enviada")
         console.log(res)
         this.citaService.emitirNuevaCita(); // Emitir el evento de nueva cita
@@ -190,9 +208,9 @@ export class CitaFormComponent implements OnInit {
         })
 
         this.closeModal()
-
       },
       err =>{
+        this.spinner.hide();
         Swal.fire({
           icon: 'error',
           html:

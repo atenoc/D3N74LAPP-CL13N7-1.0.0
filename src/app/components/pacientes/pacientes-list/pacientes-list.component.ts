@@ -11,8 +11,8 @@ import { PacienteService } from 'src/app/services/pacientes/paciente.service';
 })
 export class PacientesListComponent implements OnInit {
 
-  usuarios: Paciente[] = [];
-  existenUsuarios:boolean=false
+  pacientes: Paciente[] = [];
+  existenPacientes:boolean=false
   mensaje:string
 
   // Paginación
@@ -24,7 +24,7 @@ export class PacientesListComponent implements OnInit {
 
   constructor(
     private authService:AuthService,
-    private usuarioService:PacienteService, 
+    private pacienteService:PacienteService, 
     private router: Router,
   ) { }
 
@@ -41,29 +41,33 @@ export class PacientesListComponent implements OnInit {
   }
 
   getPacientesByIdClinicaPaginados(){
-    console.log("Users by Cli")
-    this.usuarioService
+    console.log("Pacientes by Cli")
+    this.pacienteService
       .getPacientesByIdClinicaPaginados$(localStorage.getItem('_cli'), this.currentPage, this.pageSize, this.orderBy, this.way)
       .subscribe((res) => {
-        this.usuarios = res.data
+        this.pacientes = res.data
         this.totalElements = res.pagination.totalElements
         console.log(res)
-        if(this.usuarios.length <= 0){
+        if(this.pacientes.length <= 0){
           this.mensaje='No hay pacientes para mostrar'
         }else{
-          this.existenUsuarios = true;
+          this.existenPacientes = true;
         }
-      });
+      },
+      err => {
+        this.mensaje='No se pudo obtener la información'
+        console.log(err.error.message)
+        console.log(err)
+      }
+      );
   }
 
   onPageChange(event: any) {
     this.currentPage = event;
-    //this.getUsuariosPaginados();
     this.getPacientesByIdClinicaPaginados();
   }
 
   onPageSizeChange() {
-    //this.getUsuariosPaginados();
     this.getPacientesByIdClinicaPaginados();
   }
 
@@ -77,7 +81,6 @@ export class PacientesListComponent implements OnInit {
   
     console.log("Ordenar por: " + this.orderBy);
     console.log("Modo: " + this.way);
-    //this.getUsuariosPaginados();
     this.getPacientesByIdClinicaPaginados();
   }
 
