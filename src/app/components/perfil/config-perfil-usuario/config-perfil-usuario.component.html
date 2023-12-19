@@ -1,115 +1,117 @@
 <div class="fondo">
-  <div class="wizard card-like">
-    <form>
-      <div class="wizard-header">
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="text-center">
-              <h1>Bienvenido</h1>
-              <h5>Proporciona algunos datos para comenzar</h5>
-            </div>
-            <hr />
-            <div class="steps text-center">
-              <div class="wizard-step active"></div>
-              <div class="wizard-step"></div>
-              <div class="wizard-step"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="wizard-body">
-        <div class="step initial active">
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="form-group">
-                <label for="firstname">¿Cuál es tu nombre?</label>
-                <input type="text" class="form-control" id="firstname" [(ngModel)]="nombre" placeholder="Escribe tu nombre...">
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="form-group">
-                <label for="lastname">Ingresa tu primer apellido</label>
-                <input type="text" class="form-control" id="lastname" [(ngModel)]="apellido" placeholder="Tu apellido paterno">
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <div class="step">
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="form-group">
-                <label for="firstname">¿Cómo se llama tu clínica / consultorio dental?</label>
-                <input type="text" class="form-control" id="firstname" [(ngModel)]="nombreClinica" placeholder="Consultorio dental...">
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="form-group">
-                <label for="lastname">Teléfono de tu clínica</label>
-                <input type="text" class="form-control" id="lastname" [(ngModel)]="telefono" placeholder="Ingresa 10 dígitos" maxlength="10" minlength="10" required>
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <div class="step">
+  <div class="container">
+    <div class="wizard card-like">
+      <form>
+        <div class="wizard-header">
           <div class="row">
             <div class="col-sm-12">
-              <div class="form-group">
-                <label for="firstname">¿Cuál es la dirección de tu clínica?</label>
-                <input type="text" class="form-control" id="firstname" [(ngModel)]="direccionClinica" placeholder="Ciudad de México...">
+              <div class="text-center">
+                <h1>Bienvenido</h1>
+                <h5>Proporciona algunos datos para comenzar</h5>
+              </div>
+              <hr />
+              <div class="steps text-center">
+                <div class="wizard-step active"></div>
+                <div class="wizard-step"></div>
+                <div class="wizard-step"></div>
               </div>
             </div>
           </div>
-
         </div>
-        <div class="step">
+        <div class="wizard-body">
+          <div class="step initial active">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="firstname">¿Cuál es tu nombre?</label>
+                  <input type="text" class="form-control" id="firstname" [(ngModel)]="nombre" placeholder="Escribe tu nombre...">
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="lastname">Ingresa tu primer apellido</label>
+                  <input type="text" class="form-control" id="lastname" [(ngModel)]="apellido" placeholder="Tu apellido paterno">
+                </div>
+              </div>
+            </div>
+  
+          </div>
+          <div class="step">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="firstname">¿Cómo se llama tu clínica / consultorio dental?</label>
+                  <input type="text" class="form-control" id="firstname" [(ngModel)]="nombreClinica" placeholder="Consultorio dental...">
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="lastname">Teléfono de tu clínica</label>
+                  <input type="text" class="form-control" id="lastname" [(ngModel)]="telefono" placeholder="Ingresa 10 dígitos" maxlength="10" minlength="10" required>
+                </div>
+              </div>
+            </div>
+  
+          </div>
+          <div class="step">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="firstname">¿Cuál es la dirección de tu clínica?</label>
+                  <input type="text" class="form-control" id="firstname" [(ngModel)]="direccionClinica" placeholder="Ciudad de México...">
+                </div>
+              </div>
+            </div>
+  
+          </div>
+          <div class="step">
+            <div class="row text-center">
+              <h4>Verifica tu información</h4>
+            </div>
+            <div class="row text-center">
+              <p>
+                <span>Nombre: {{ nombre }} {{ apellido}}</span>
+              </p>
+              <p>
+                <span>Clínica: {{ nombreClinica }}</span>
+              </p>
+              <p>
+                <span>Teléfono: {{ telefono }}</span>
+              </p>
+              <p>
+                <span>Dirección: {{ direccionClinica }}</span>
+              </p>
+  
+              <p>
+                <small class="text-muted">Los datos ingresados son necesarios para poder iniciar, podrás editarlos en cualquier momento...</small>
+              </p>
+            </div>
+  
+  
+          </div>
+        </div>
+        <div class="wizard-footer">
           <div class="row text-center">
-            <h4>Verifica tu información</h4>
-          </div>
-          <div class="row text-center">
-            <p>
-              <span>Nombre: {{ nombre }} {{ apellido}}</span>
-            </p>
-            <p>
-              <span>Clínica: {{ nombreClinica }}</span>
-            </p>
-            <p>
-              <span>Teléfono: {{ telefono }}</span>
-            </p>
-            <p>
-              <span>Dirección: {{ direccionClinica }}</span>
-            </p>
-
-            <p>
-              <small class="text-muted">Los datos ingresados son necesarios para poder iniciar, podrás editarlos en cualquier momento...</small>
-            </p>
-          </div>
-
-
-        </div>
-      </div>
-      <div class="wizard-footer">
-        <div class="row text-center">
-          <div class="d-flex mt-2">
-            <div class="col-sm">
-              <button id="wizard-prev" style="display:none" type="button" class="btn btn-outline-secondary">
-                Regresar
-              </button>
-            </div>
-            <div class="col-sm">
-              <button id="wizard-next" type="button" class="btn btn-primary">
-                Continuar
-              </button>
-            </div>
-            <div class="col-sm">
-              <button id="wizard-subm" style="display:none" type="button" class="btn btn-success" (click)="validarInfo()">
-                Iniciar
-              </button>
+            <div class="d-flex mt-2">
+              <div class="col-sm">
+                <button id="wizard-prev" style="display:none" type="button" class="btn btn-outline-secondary">
+                  Regresar
+                </button>
+              </div>
+              <div class="col-sm">
+                <button id="wizard-next" type="button" class="btn btn-primary">
+                  Continuar
+                </button>
+              </div>
+              <div class="col-sm">
+                <button id="wizard-subm" style="display:none" type="button" class="btn btn-success" (click)="validarInfo()">
+                  Iniciar
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </div>
