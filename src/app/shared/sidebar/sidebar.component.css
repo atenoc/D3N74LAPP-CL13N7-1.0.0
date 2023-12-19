@@ -227,3 +227,13 @@ a {
     margin-top: 6px;
     margin-right: 8px;
  }
+
+
+
+ /*************************/
+
+ @media only screen and (max-width: 600px) {
+	.main-sidebar {
+	  display: none; /* Ocultar la barra lateral en dispositivos móviles */
+	}
+  }
