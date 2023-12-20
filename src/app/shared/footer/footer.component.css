@@ -25,9 +25,22 @@
     display: none;
 }
 
+.dropdown-menu.show {
+    background: #e6fafd;
+}
+
 .custom-dropdown {
     width: 75px; /* Ajusta el valor según tu preferencia */
-  }
+}
+
+.dropdown-item {
+    color: #006c7d;
+}
+
+.btn-outline-info {
+    color: #17a2b8;
+    border-color: #343a40
+}
   
 
 /****************************/

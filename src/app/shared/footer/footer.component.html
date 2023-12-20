@@ -17,8 +17,8 @@
           Usuarios
         </button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
-          <button ngbDropdownItem routerLink="/usuarios">Ver usuarios</button>
-          <button ngbDropdownItem routerLink="/usuario-form">Agregar usuario</button>
+          <button ngbDropdownItem routerLink="/usuarios"><i class="fas fa-list-ol"></i> Ver usuarios</button>
+          <button ngbDropdownItem routerLink="/usuario-form"><i class="fas fa-plus"></i> Agregar usuario</button>
         </div>
       </div>
 
@@ -28,8 +28,7 @@
           Médicos
         </button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
-          <button ngbDropdownItem routerLink="/medicos">Ver médicos</button>
-          <button ngbDropdownItem routerLink="/usuario-form">Agregar médico</button>
+          <button ngbDropdownItem routerLink="/medicos"><i class="fas fa-list-ol"></i> Ver médicos</button>
         </div>
       </div>
 
@@ -39,8 +38,8 @@
           Citas
         </button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
-          <button ngbDropdownItem routerLink="/calendario">Calendario</button>
-          <button ngbDropdownItem routerLink="/citas">Agenda</button>
+          <button ngbDropdownItem routerLink="/calendario"><i class="far fa-calendar-alt"></i> Calendario</button>
+          <button ngbDropdownItem routerLink="/citas"><i class="fas fa-list-alt"></i> Agenda</button>
         </div>
       </div>
 
@@ -50,19 +49,19 @@
           Pacientes
         </button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
-          <button ngbDropdownItem routerLink="/pacientes">Ver pacientes</button>
-          <button ngbDropdownItem routerLink="/paciente-form">Agregar paciente</button>
+          <button ngbDropdownItem routerLink="/pacientes"><i class="fas fa-list-ol"></i> Ver pacientes</button>
+          <button ngbDropdownItem routerLink="/paciente-form"><i class="fas fa-plus"></i> Agregar paciente</button>
         </div>
       </div>
 
       <div ngbDropdown placement="top-end" class="d-inline-block">
         <button type="button" class="btn btn-outline-info btn-sm d-flex flex-column align-items-center custom-dropdown" id="dropdownBasic5" ngbDropdownToggle>
           <i class="fas fa-user-circle" style="margin-bottom: 5px;"></i> 
-          Perfil
+          Cuenta
         </button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
-          <button ngbDropdownItem routerLink="/perfil">Mi perfil</button>
-          <button ngbDropdownItem (click)="salir()">Salir</button>
+          <button ngbDropdownItem routerLink="/perfil"><i class="fas fa-address-card"></i> Mi perfil</button>
+          <button ngbDropdownItem (click)="salir()"><i class="fas fa-sign-out-alt"></i> Salir</button>
         </div>
       </div>
 
