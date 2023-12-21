@@ -8,44 +8,44 @@
 
     <!-- <div class="card-body"> -->
       <div class="row" *ngIf="mostrarPaciente">
-        <div class="col-sm-3 text-right">
-          <span class="text-muted">Paciente:</span>
+        <div class="col-sm-3">
+          <span class="text-muted">Paciente: </span>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-9 text-center">
           <strong class="text-info">{{data.nombre_paciente}}</strong>
         </div>
       </div>
 
         <div class="row">
-          <div class="col-sm-3 text-right">
-            <span class="text-muted">Inicia:</span>
+          <div class="col-sm-3">
+            <span class="text-muted">Inicia: </span>
           </div>
-          <div class="col-sm-9">
-            <strong class="text-info">{{inicio}}</strong>
+          <div class="col-sm-9 text-center">
+            <h5><strong class="text-info">{{inicio}}</strong></h5>
           </div>
         </div>
         <div class="row">
-          <div class="col-sm-3 text-right">
-            <span class="text-muted">Termina:</span>
+          <div class="col-sm-3">
+            <span class="text-muted">Termina: </span>
           </div>
-          <div class="col-sm-9">
+          <div class="col-sm-9 text-center">
             <strong class="text-info">{{fin}}</strong>
           </div>
         </div>
         <hr/>
         <div class="row" *ngIf="mostrarMotivo">
-          <div class="col-sm-3 text-right">
-            <span class="text-muted">Motivo:</span>
+          <div class="col-sm-3">
+            <span class="text-muted">Motivo: </span>
           </div>
-          <div class="col-sm-9">
+          <div class="col-sm-9 text-center">
             <strong class="text-info">{{data.motivo}}</strong>
           </div>
         </div>
-        <div class="row">
-          <div class="col-sm-3 text-right">
-            <span class="text-muted">Notas:</span>
+        <div class="row" *ngIf="!mostrarMotivo">
+          <div class="col-sm-3">
+            <span class="text-muted">Notas: </span>
           </div>
-          <div class="col-sm-9">
+          <div class="col-sm-9 text-center">
             <strong class="text-info">{{data.notas}}</strong>
           </div>
         </div>

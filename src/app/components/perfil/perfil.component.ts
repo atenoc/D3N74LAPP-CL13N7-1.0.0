@@ -105,7 +105,7 @@ export class PerfilComponent implements OnInit {
       html:
         `<h5>¿Estás seguro que quieres eliminar tu cuenta?</h5>` +
         `<strong> Clínica/consultorio: ${ nombre } </strong> <br/>`+
-        `<small>Si deseas eliminar tu cuenta, ten en cuenta que se también se borrará toda la información de tus usuarios, pacientes, médicos, citas, etc. Esta acción no se puede revertir.</small>`,
+        `<small>Si deseas eliminar tu cuenta, ten en cuenta que también se borrará toda la información de tus usuarios, pacientes, médicos, citas, etc. Esta acción no se puede revertir.</small>`,
       icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#dc3545',
