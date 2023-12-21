@@ -83,6 +83,7 @@ export class PerfilComponent implements OnInit {
   }
 
   openVerticallyCentered(content) {
+    console.log("ID Centro Edit: "+this.centro.id)
     this.centroService.changeCentroId(this.centro.id); // Cambia el id en el servicio
     this.modalService.open(content, { centered: true });
 

@@ -48,13 +48,9 @@ export class CentroDetalleComponent implements OnInit {
 
   ngOnInit() {
     console.log("CENTRO DETALLE Comp")
-
     if(this.authService.validarSesionActiva()){
       this.rol = this.cifradoService.getDecryptedRol();
-
-      if(this.rol != "sop"){ 
-        this.router.navigate(['/pagina/404/no-encontrada']);
-      }else{
+      if(this.rol == "sop" || this.rol == "suadmin"){
         this.formularioCentro = this.formBuilder.group({
           nombre: ['', [Validators.required, Validators.minLength(3)]],
           telefono: ['', [Validators.required, Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
@@ -65,17 +61,14 @@ export class CentroDetalleComponent implements OnInit {
           direccion: ['', [Validators.required, Validators.minLength(3)]]
         })
     
-        /*this.activatedRoute.params.subscribe(params => {
-          this.id = params['id'];
-          this.cargarCentro(this.id)
-          
-        });*/
-    
         this.centroService.currentCentroId.subscribe((idCentroService) => {
           this.id = idCentroService;
           this.cargarCentro(this.id)
         });
+      }else{
+        this.router.navigate(['/pagina/404/no-encontrada'])
       }
+      
     }else{
       this.router.navigate(['/pagina/404/no-encontrada'])
     }
