@@ -41,6 +41,8 @@ export class UsuarioDetalleComponent implements OnInit {
   
   rol:string
 
+  desabilitarRol:boolean;
+
   constructor(
     private authService:AuthService,
     private formBuilder:FormBuilder, 
@@ -84,6 +86,14 @@ export class UsuarioDetalleComponent implements OnInit {
     
         this.activatedRoute.params.subscribe(params => {
           this.id = params['id'];
+          if(this.id == localStorage.getItem('_us')){
+            console.log("Mismo usuario")
+            this.desabilitarRol = true;
+          }else{
+            console.log("Otro usuario")
+            this.desabilitarRol = false;
+          }
+          
           this.usuarioService.getUsuario$(this.id).subscribe(res => {   //volver a llamar los datos con el id recibido
             this.usuario = res;
             console.log(res)

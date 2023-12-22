@@ -177,10 +177,18 @@
                             <div class="form-group">
                                 <div class="form-group">
                                     <small class="text-muted"><strong> Rol * </strong></small>
-                                    <select class="form-select" formControlName="rol">
-                                        <option selected disabled [value]="0">Selecciona una opción:</option>
-                                        <option *ngFor="let item of catRoles" [value]="item.id">{{ item.descripcion }}</option>
-                                    </select>
+                                    <ng-container *ngIf="desabilitarRol; else habilitado">
+                                        <select class="form-select" formControlName="rol" disabled>
+                                            <option selected disabled [value]="0">Selecciona una opción:</option>
+                                            <option *ngFor="let item of catRoles" [value]="item.id">{{ item.descripcion }}</option>
+                                        </select>
+                                    </ng-container>
+                                    <ng-template #habilitado>
+                                        <select class="form-select" formControlName="rol">
+                                            <option selected disabled [value]="0">Selecciona una opción:</option>
+                                            <option *ngFor="let item of catRoles" [value]="item.id">{{ item.descripcion }}</option>
+                                        </select>
+                                    </ng-template>
                                 </div>
                 
                                 <div *ngIf="formularioUsuario.controls['rol'].invalid && formularioUsuario.controls['rol'].dirty" class="invalid-input-message">
@@ -270,7 +278,7 @@
                         </div>
                         <hr/> 
                         <div class="d-flex mt-2">
-                            <div>
+                            <div *ngIf="!desabilitarRol">
                                 <small *ngIf="rol=='suadmin' || rol=='sop'" class="text-muted">Eliminar usuario</small>
                             </div>
                             <div class="ml-auto">
@@ -280,9 +288,13 @@
                     
                         <div class="d-flex mt-2 ">
                             <div>
-                                <button *ngIf="rol=='suadmin' || rol=='sop'" class="btn btn-outline-secondary my-2 my-sm-0 btn-sm ml-2" (click)="deleteUser(usuario.id, usuario.correo)"
+                                <ng-container *ngIf="!desabilitarRol">
+                                    <button *ngIf="rol=='suadmin' || rol=='sop'" class="btn btn-outline-secondary my-2 my-sm-0 btn-sm ml-2" (click)="deleteUser(usuario.id, usuario.correo)"
                                     ngbTooltip="Eliminar usuario de forma permanente"><i class="fas fa-trash-alt"></i>
                                 </button>
+                                </ng-container>
+
+                                
                             </div>
                             <div class="ml-auto">
                             <button type="submit" class="btn btn-primary btn-block" (click)="actualizarUsuario()" [disabled]="formularioUsuario.invalid">Guardar</button>

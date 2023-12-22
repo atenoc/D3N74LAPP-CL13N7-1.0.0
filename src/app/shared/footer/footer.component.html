@@ -11,7 +11,7 @@
 
     <div class="mb-2 text-center">
         
-      <div ngbDropdown placement="top-start" class="d-inline-block">
+      <div ngbDropdown placement="top-start" class="d-inline-block" *ngIf="mostrarUsuarios">
         <button type="button" class="btn btn-outline-primary btn-sm d-flex flex-column align-items-center custom-dropdown" id="dropdownBasic1" ngbDropdownToggle>
           <i class="fas fa-users" style="margin-bottom: 5px;"></i> 
           <small>Usuarios</small>
@@ -60,6 +60,7 @@
           <small>Cuenta</small>
         </button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+          <button ngbDropdownItem routerLink="/centros" *ngIf="mostrarClinicas"><i class="fas fa-building"></i> Centros</button>
           <button ngbDropdownItem routerLink="/perfil"><i class="fas fa-address-card"></i> Mi perfil</button>
           <button ngbDropdownItem (click)="salir()"><i class="fas fa-sign-out-alt"></i> Salir</button>
         </div>
