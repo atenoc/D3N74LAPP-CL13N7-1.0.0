@@ -26,7 +26,7 @@
             <div class="card-header">
               <h3 class="card-title">
                 <button class="btn btn-outline-primary btn-sm" (click)="irPacienteForm()">
-                  <i class="fas fa-plus"></i> Agregar Paciente 
+                  <i class="fas fa-plus"></i> Agregar paciente 
                 </button>
               </h3>
             </div>
@@ -52,9 +52,9 @@
                         <span *ngIf="orderBy === 'apellidom' && way === 'asc'">▲</span>
                         <span *ngIf="orderBy === 'apellidom' && way === 'desc'">▼</span>
                       </th>
-                      <th class="col-1">Edad</th>
+                      <th class="col-1 hide-on-mobile">Edad</th>
                       <th class="col-1">Teléfono</th>
-                      <th class="col-1">Correo</th>
+                      <th class="col-1 hide-on-mobile">Correo</th>
                       <th class="col-1">Detalle</th>
                     </tr>
                   </thead>
@@ -64,13 +64,14 @@
                       <td><strong class="text-muted"> {{ paciente.nombre }} </strong></td>
                       <td><strong class="text-muted"> {{ paciente.apellidop }} </strong></td>
                       <td><strong class="text-muted"> {{ paciente.apellidom }} </strong></td>
-                      <td>{{ paciente.edad }}</td>
+                      <td class="hide-on-mobile">{{ paciente.edad }}</td>
                       <td>{{ paciente.telefono }}</td>
-                      <td>{{ paciente.correo }}</td>
+                      <td class="hide-on-mobile">{{ paciente.correo }}</td>
                       <td class="text-center">
                         
                         <button class="btn btn-outline-primary my-2 my-sm-0 btn-sm" (click)="selectedIdUser(paciente.id)"
-                          ngbTooltip="Información del paciente"><i class="fas fa-info-circle"></i> Ver
+                          ngbTooltip="Información del paciente"><i class="fas fa-info-circle"></i> 
+                          <span class="hide-on-mobile">Ver</span>
                         </button>
                     </td>
                     </tr>

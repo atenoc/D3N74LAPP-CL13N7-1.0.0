@@ -26,6 +26,7 @@ export class UsuarioDetalleComponent implements OnInit {
   tituloCard: string;
   idUsuario:string;
   fecha_creacion:Date;
+  nombre_usuario_creador:string;
 
   catRoles:CatalogoRol[] = [];
   catTitulos:CatalogoTitulo[] = [];
@@ -91,6 +92,7 @@ export class UsuarioDetalleComponent implements OnInit {
             this.tituloCard = this.usuario.nombre+' '+this.usuario.apellidop+' '+this.usuario.apellidom
             this.idUsuario=this.usuario.id
             this.fecha_creacion=this.usuario.fecha_creacion
+            this.nombre_usuario_creador = this.usuario.nombre_usuario_creador
     
             this.formularioUsuario.patchValue({
               correo: this.usuario.correo,

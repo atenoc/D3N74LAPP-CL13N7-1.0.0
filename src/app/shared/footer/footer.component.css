@@ -26,7 +26,7 @@
 }
 
 .dropdown-menu.show {
-    background: #e6fafd;
+    background: #007bff;
 }
 
 .custom-dropdown {
@@ -34,12 +34,19 @@
 }
 
 .dropdown-item {
-    color: #006c7d;
+    color: #fff;
 }
 
-.btn-outline-info {
-    color: #17a2b8;
+.btn-outline-primary {
+    color: #00a1ff;
     border-color: #343a40
+}
+
+/* Estilo hover para el botón */
+.btn-outline-primary:hover {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
 }
   
 
@@ -49,8 +56,4 @@
 	.horizontal-footer {
 	  display: block;
 	}
-
-    .content-footer{
-        display: none;
-    }
 }

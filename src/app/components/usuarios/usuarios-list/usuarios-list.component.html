@@ -26,7 +26,7 @@
           <div class="card-header">
             <h3 class="card-title">
               <button class="btn btn-outline-primary btn-sm" (click)="irUsuarioForm()">
-                <i class="fas fa-plus"></i> Agregar Usuario 
+                <i class="fas fa-plus"></i> Agregar usuario 
               </button>
             </h3>
           </div>
@@ -37,7 +37,7 @@
                 <thead class="thead-dark">
                   <tr>
                     <th class="col-1">#</th> 
-                    <th class="col-1">Título</th>
+                    <th class="col-1 hide-on-mobile">Título</th>
                     <th class="col-1" (click)="onSortChange('nombre')">
                       Nombre(s)
                       <span *ngIf="orderBy === 'nombre' && way === 'asc'">▲</span>
@@ -56,10 +56,10 @@
                     
                     <th class="col-1">Correo</th>
                     <th class="col-1">Rol</th>
-                    <th class="col-1">Especialidad</th>
+                    <th class="col-1 hide-on-mobile">Especialidad</th>
                     <th class="col-1">Teléfono</th>
                     <!-- <th class="col-1">Id Usuario Creador</th> -->
-                    <th class="col-1">Creado por</th>
+                    <th class="col-1 hide-on-mobile">Creado por</th>
                     <!-- <th class="col-1">Fecha creación</th> -->
                     <th class="col-1">Detalle</th>
                   </tr>
@@ -68,16 +68,16 @@
                   <tr *ngFor="let usuario of usuarios">
                     <!-- <th class="text-muted"><small><strong>{{ usuario.id }}</strong></small></th> -->
                     <td scope="row" class="text-muted">{{ usuario.contador }}</td>
-                    <td>{{ usuario.titulo }}</td>
+                    <td class="hide-on-mobile">{{ usuario.titulo }}</td>
                     <td>{{ usuario.nombre }}</td>
                     <td>{{ usuario.apellidop }}</td>
                     <td>{{ usuario.apellidom }}</td>
                     <td>{{ usuario.correo }}</td>
                     <td>{{ usuario.desc_rol }}</td>
-                    <td>{{ usuario.especialidad }}</td>
+                    <td class="hide-on-mobile">{{ usuario.especialidad }}</td>
                     <td>{{ usuario.telefono }}</td>
                     <!-- <td>{{ usuario.id_usuario }}</td> -->
-                    <td>{{ usuario.nombre_usuario_creador }}</td>
+                    <td class="hide-on-mobile">{{ usuario.nombre_usuario_creador }}</td>
                     <!-- <td> <small>{{ usuario.fecha_creacion }}</small> </td> -->
                     <td class="text-center">
                       

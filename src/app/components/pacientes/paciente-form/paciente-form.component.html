@@ -7,7 +7,7 @@
             Agregar Paciente
           </h5>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-6 hide-on-mobile">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a routerLink="/calendario">Calendario</a></li>
             <li class="breadcrumb-item"><a routerLink="/citas">Agenda</a></li>
@@ -30,114 +30,110 @@
               </h3>
             </div>
             <div class="card-body">
+                <form [formGroup]="formularioPaciente">
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="form-group">
+                                <small class="text-muted"><strong> Nombre(s) * </strong></small>
+                                <input type="text" class="form-control" formControlName="nombre" [ngClass]="getInputClass('nombre')">
 
-                <div class="container">
-                    <form [formGroup]="formularioPaciente">
-                        <div class="row">
-                            <div class="col-sm">
-                                <div class="form-group">
-                                    <small class="text-muted"><strong> Nombre(s) * </strong></small>
-                                    <input type="text" class="form-control" formControlName="nombre" [ngClass]="getInputClass('nombre')">
+                                <div *ngIf="formularioPaciente.controls['nombre'].invalid && formularioPaciente.controls['nombre'].dirty" class="invalid-input-message">
+                                    <span *ngIf="formularioPaciente.controls['nombre'].errors.required">{{ campoRequerido }}</span>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <div class="col-sm">
+                            <div class="form-group">
+                                <small class="text-muted"><strong> Apellido Paterno * </strong></small>
+                                <input type="text" class="form-control" formControlName="apellidop" [ngClass]="getInputClass('apellidop')">
 
-                                    <div *ngIf="formularioPaciente.controls['nombre'].invalid && formularioPaciente.controls['nombre'].dirty" class="invalid-input-message">
-                                        <span *ngIf="formularioPaciente.controls['nombre'].errors.required">{{ campoRequerido }}</span>
+                                <div *ngIf="formularioPaciente.controls['apellidop'].invalid && formularioPaciente.controls['apellidop'].dirty" class="invalid-input-message">
+                                    <span *ngIf="formularioPaciente.controls['apellidop'].errors.required">{{ campoRequerido }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm">
+                            <div class="form-group">
+                                <small class="text-muted">Apellido Materno (opcional) </small>
+                                <input type="text" class="form-control" formControlName="apellidom">
+                            </div>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="form-group">
+                                <small class="text-muted">Edad (opcional)</small>
+                                <input type="text" class="form-control" formControlName="edad" maxlength="3">
+                            </div>
+                        </div>
+
+                        <div class="col-sm">
+                            <div class="form-group">
+                                <small class="text-muted">Sexo (opcional)</small>
+                                <!-- <input type="text" class="form-control" formControlName="sexo"> -->
+                                <select class="form-select" formControlName="sexo">
+                                    <option selected disabled [value]="0">Selecciona una opción:</option>
+                                    <option *ngFor="let item of catSexo" [value]="item.id">{{ item.descripcion }}</option>
+                                </select>
+                            </div>
+                        </div>
+                
+                        <div class="col-sm">
+                            <div class="form-group">
+                                <small class="text-muted"><strong>Teléfono * </strong></small>
+                                <input type="text" class="form-control" formControlName="telefono" [ngClass]="getInputClass('telefono')" placeholder="10 dígitos" maxlength="10">
+                                <div *ngIf="formularioPaciente.controls['telefono'].invalid && formularioPaciente.controls['telefono'].dirty" class="invalid-input-message">
+                                    <div>
+                                        <span *ngIf="formularioPaciente.controls['telefono'].errors.required">{{ campoRequerido }}</span> 
                                     </div>
-                                </div>
-                            </div>
-                    
-                            <div class="col-sm">
-                                <div class="form-group">
-                                    <small class="text-muted"><strong> Apellido Paterno * </strong></small>
-                                    <input type="text" class="form-control" formControlName="apellidop" [ngClass]="getInputClass('apellidop')">
-
-                                    <div *ngIf="formularioPaciente.controls['apellidop'].invalid && formularioPaciente.controls['apellidop'].dirty" class="invalid-input-message">
-                                        <span *ngIf="formularioPaciente.controls['apellidop'].errors.required">{{ campoRequerido }}</span>
+                                    <div>
+                                        <span *ngIf="formularioPaciente.controls['telefono'].errors.pattern && !formularioPaciente.controls['telefono'].errors.required">{{ soloNumeros }}</span> 
                                     </div>
-                                </div>
-                            </div>
-
-                            <div class="col-sm">
-                                <div class="form-group">
-                                    <small class="text-muted">Apellido Materno (opcional) </small>
-                                    <input type="text" class="form-control" formControlName="apellidom">
-                                </div>
-                            </div>
-                        </div>
-                        <hr/>
-                        <div class="row">
-                            <div class="col-sm">
-                                <div class="form-group">
-                                    <small class="text-muted">Edad (opcional)</small>
-                                    <input type="text" class="form-control" formControlName="edad" maxlength="3">
-                                </div>
-                            </div>
-
-                            <div class="col-sm">
-                                <div class="form-group">
-                                    <small class="text-muted">Sexo (opcional)</small>
-                                    <!-- <input type="text" class="form-control" formControlName="sexo"> -->
-                                    <select class="form-select" formControlName="sexo">
-                                        <option selected disabled [value]="0">Selecciona una opción:</option>
-                                        <option *ngFor="let item of catSexo" [value]="item.id">{{ item.descripcion }}</option>
-                                    </select>
-                                </div>
-                            </div>
-                    
-                            <div class="col-sm">
-                                <div class="form-group">
-                                    <small class="text-muted"><strong>Teléfono * </strong></small>
-                                    <input type="text" class="form-control" formControlName="telefono" [ngClass]="getInputClass('telefono')" placeholder="10 dígitos" maxlength="10">
-                                    <div *ngIf="formularioPaciente.controls['telefono'].invalid && formularioPaciente.controls['telefono'].dirty" class="invalid-input-message">
-                                        <div>
-                                            <span *ngIf="formularioPaciente.controls['telefono'].errors.required">{{ campoRequerido }}</span> 
-                                        </div>
-                                        <div>
-                                            <span *ngIf="formularioPaciente.controls['telefono'].errors.pattern && !formularioPaciente.controls['telefono'].errors.required">{{ soloNumeros }}</span> 
-                                        </div>
-                                        <div>
-                                            <span *ngIf="formularioPaciente.controls['telefono'].errors.minlength">{{ telefonoLongitud }}</span> 
-                                        </div>
-                                    </div> 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm">
-                                <div class="form-group">
-                                    <small class="text-muted">Correo (opcional)</small>
-                                    <input type="email" class="form-control" formControlName="correo" [ngClass]="getInputClass('correo')" placeholder="correo@ejemplo.com">
-                                    <div *ngIf="formularioPaciente.controls['correo'].invalid && formularioPaciente.controls['correo'].dirty" class="invalid-input-message">
-                                        <span *ngIf="formularioPaciente.controls['correo'].errors.email">{{ correoValido }}</span>
+                                    <div>
+                                        <span *ngIf="formularioPaciente.controls['telefono'].errors.minlength">{{ telefonoLongitud }}</span> 
                                     </div>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="form-group">
+                                <small class="text-muted">Correo (opcional)</small>
+                                <input type="email" class="form-control" formControlName="correo" [ngClass]="getInputClass('correo')" placeholder="correo@ejemplo.com">
+                                <div *ngIf="formularioPaciente.controls['correo'].invalid && formularioPaciente.controls['correo'].dirty" class="invalid-input-message">
+                                    <span *ngIf="formularioPaciente.controls['correo'].errors.email">{{ correoValido }}</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-sm">
-                                <div class="form-group">
-                                    <small class="text-muted">Dirección (opcional)</small>
-                                    <input type="email" class="form-control" formControlName="direccion">
-                                </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="form-group">
+                                <small class="text-muted">Dirección (opcional)</small>
+                                <input type="email" class="form-control" formControlName="direccion">
                             </div>
                         </div>
-                        <hr/> 
-                        <div class="d-flex mt-2">
-                            <div class="ml-auto">
-                                <small class="text-muted">Los campos marcados con (*) son obligatorios</small>
-                            </div>
+                    </div>
+                    <hr/> 
+                    <div class="d-flex mt-2">
+                        <div class="ml-auto">
+                            <small class="text-muted">Los campos marcados con (*) son obligatorios</small>
                         </div>
+                    </div>
 
-                        <div class="d-flex mt-2 ">
-                            <div>
-                            </div>
-                            <div class="ml-auto">
-                               <button type="submit" class="btn btn-primary btn-block" [disabled]="formularioPaciente.invalid" (click)="crearPaciente()">Guardar</button>
-                            </div>
+                    <div class="d-flex mt-2 ">
+                        <div>
                         </div>
+                        <div class="ml-auto">
+                           <button type="submit" class="btn btn-primary btn-block" [disabled]="formularioPaciente.invalid" (click)="crearPaciente()">Guardar</button>
+                        </div>
+                    </div>
 
-                    </form>
-                </div>
-
+                </form>
             </div>
           </div>
         </div>

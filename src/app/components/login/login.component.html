@@ -4,13 +4,13 @@
 
     <div class="">
 
-        <div class="card-header text-white"><strong>Iniciar Sesión</strong></div>
+        <div class="card-header text-white"><strong>Bienvenido</strong></div>
         <div class="card-body">
 
             <form [formGroup]="formularioLogin">
      
                 <div class="form-group">
-                    <small class="text-muted">Correo</small>
+                    <small class="text-muted text-white">Correo</small>
                     <input type="email" class="form-control sin-borde-login" formControlName="correo" placeholder="Ingrese su correo electrónico">
                     <div *ngIf="formularioLogin.controls['correo'].invalid && formularioLogin.controls['correo'].dirty" class="invalid-input-message">
                       <span *ngIf="formularioLogin.controls['correo'].errors.required">{{ campoRequerido }}</span>
@@ -18,13 +18,13 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <small class="text-muted">Contraseña</small>
+                    <small class="text-muted text-white">Contraseña</small>
                     <input type="password" class="form-control sin-borde-login" formControlName="llave" placeholder="Ingrese su contraseña">
                     <div *ngIf="formularioLogin.controls['llave'].invalid && formularioLogin.controls['llave'].dirty" class="invalid-input-message">
                         <span *ngIf="formularioLogin.controls['llave'].errors.required">{{ campoRequerido }}</span> 
                     </div>
                 </div>
-        
+                <br>
                 <button type="submit" class="btn btn-primary btn-block" (click)="login()" [disabled]="formularioLogin.invalid" >Entrar</button>
             </form>
 

@@ -5,7 +5,7 @@
         <div class="col-sm-6">
           <h1>Mi perfil</h1>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-6 hide-on-mobile">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a routerLink="/calendario">Calendario</a></li>
             <li class="breadcrumb-item"><a routerLink="/citas">Agenda</a></li>
@@ -69,35 +69,38 @@
         <div class="col-md-9">
           <div class="card card-primary">
             <div class="card-header">
-                <h3 class="card-title">Consultorio dental</h3>
+                <h3 class="card-title">Mi consultorio dental</h3>
             </div><!-- /.card-header -->
             <div class="card-body">
 
                 <strong><i class="fas fa-tooth"></i> Nombre</strong>
-                <p class="text-muted">{{ centro.nombre }}</p>
+                <p class="text-primary">{{ centro.nombre }}</p>
                 <hr>
 
                 <strong><i class="fas fa-phone"></i> Teléfono</strong>
-                <p class="text-muted">{{ centro.telefono }}</p>
+                <p class="text-primary">{{ centro.telefono }}</p>
                 <hr>
 
                 <strong><i class="fas fa-map-marker-alt mr-1"></i> Dirección</strong>
-                <p class="text-muted">{{ centro.direccion }}</p>
+                <p class="text-primary">{{ centro.direccion }}</p>
                 <hr>
 
                 <strong><i class="fas fa-envelope"></i> Correo</strong>
-                <p class="text-muted">{{ centro.correo }}</p>
+                <p class="text-primary">{{ centro.correo }}</p>
                 <hr>
 
                 <strong><i class="fas fa-calendar"></i> Fecha / Hora de creación</strong>
-                <p class="text-muted">{{ centro.fecha_creacion }}</p>
+                <p class="text-primary">{{ centro.fecha_creacion }}</p>
                 <hr>
 
                 <div *ngIf="mostrarOpciones" class="card-footer text-right bg-white" >
-                    <button class="btn btn-outline-primary mb-2 me-2" (click)="openVerticallyCentered(content)"
+                    <button class="btn btn-outline-primary mb-2 me-2" (click)="selectedIdCentro(centro.id)">
+                        <i class="fas fa-pencil-alt mr-1"></i> Editar
+                    </button>
+                    <!-- <button class="btn btn-outline-primary mb-2 me-2" (click)="openVerticallyCentered(content)"
                           placement="bottom" ngbTooltip="Editar información">
                           <i class="fas fa-pencil-alt mr-1"></i> Editar
-                    </button>
+                    </button> -->
                     <!-- <a> <small class="text-primary cursor-pointer mr-3" (click)="selectedIdCentro(centro.id)"> <i class="fas fa-pencil-alt mr-1"></i> Editar...</small> </a> -->
                     <!-- <a> <small class="text-danger cursor-pointer" (click)="deleteCentro(centro.id, centro.nombre)"> Eliminar</small> </a> -->
                 </div>
@@ -116,7 +119,7 @@
   <ngx-spinner bdColor = "rgba(0,0,0,0.7)" size = "large" color = "#ffffff" type = "ball-scale-multiple" [fullScreen] = "true"><p style="color: white" > Cargando, por favor espere... </p></ngx-spinner>
 
 
-  <ng-template #content let-c="close" let-d="dismiss">
+  <!-- <ng-template #content let-c="close" let-d="dismiss">
     <div class="modal-header">
       <h4 class="modal-title">Modificar Información</h4>
       <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
@@ -129,7 +132,6 @@
 
     </div>
     <div class="modal-footer">
-      <!-- <button type="button" class="btn btn-light" (click)="limpiarForm()">Limpiar</button> -->
       <button type="button" class="btn btn-light" (click)="c('Cerrar')">Cerrar</button>
     </div>
-  </ng-template>
+  </ng-template> -->
