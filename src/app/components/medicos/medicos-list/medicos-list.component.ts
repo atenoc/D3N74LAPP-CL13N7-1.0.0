@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { MedicoService } from 'src/app/services/medicos/medico.service';
+import { CifradoService } from 'src/app/services/shared/cifrado.service';
 
 @Component({
   selector: 'app-medicos-list',
@@ -11,12 +12,17 @@ import { MedicoService } from 'src/app/services/medicos/medico.service';
 })
 export class MedicosListComponent implements OnInit {
 
+  rol:string
+
   medicos: Usuario[] = [];
   existenMedicos:boolean=false
   mensaje:string
 
+  mostrarBotonAddMedico:boolean = false
+
   constructor(
     private authService:AuthService,
+    private cifradoService: CifradoService,
     private medicoService:MedicoService, 
     private router: Router, 
     ) { }
@@ -24,6 +30,11 @@ export class MedicosListComponent implements OnInit {
   ngOnInit(): void {
 
     if(this.authService.validarSesionActiva()){
+      this.rol = this.cifradoService.getDecryptedRol();
+      if(this.rol == "sop" || this.rol == "suadmin" || this.rol == "adminn1"){
+        this.mostrarBotonAddMedico = true
+      }
+
       this.getMedicosByIdClinica()
     }
   }

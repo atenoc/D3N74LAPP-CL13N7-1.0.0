@@ -107,7 +107,7 @@ export class LoginComponent implements OnInit {
               this.centroService.getCentro$(res.id_clinica).subscribe(
                 res => {
                   this.sharedService.setNombreClinica(res.nombre);
-                  console.log("Si pertenece a un entro")
+                  console.log("Si pertenece a un centro")
                   this.router.navigate(['/calendario'])
                 },
                 err => {

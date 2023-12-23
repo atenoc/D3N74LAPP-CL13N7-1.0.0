@@ -13,6 +13,8 @@
 .sin-borde{
     border: 0 !important;
     background: #f8f9fa !important;
+    color: #007bff !important;
+    font-weight: 500 !important;
 }
 
 /* Modal de Ng-Modal */
@@ -23,3 +25,14 @@
 .cursor-pointer{
     cursor: pointer;
 }
+
+
+/****************************/
+
+@media only screen and (max-width: 600px) {
+
+    .hide-on-mobile{
+        display: none;
+    }
+}
+

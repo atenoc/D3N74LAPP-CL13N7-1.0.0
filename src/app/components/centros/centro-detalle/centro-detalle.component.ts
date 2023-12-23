@@ -1,8 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-//import { ActivatedRoute } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Centro } from 'src/app/models/Centro.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { CentroService } from 'src/app/services/centro.service';
@@ -34,9 +32,8 @@ export class CentroDetalleComponent implements OnInit {
     private authService:AuthService,
     private cifradoService: CifradoService,
     private formBuilder:FormBuilder, 
-    //private activatedRoute: ActivatedRoute,
+    private activatedRoute: ActivatedRoute,
     private centroService:CentroService, 
-    private modalService: NgbModal,
     private sharedService:SharedService,
     private router: Router, 
     ) {
@@ -48,56 +45,50 @@ export class CentroDetalleComponent implements OnInit {
 
   ngOnInit() {
     console.log("CENTRO DETALLE Comp")
-
     if(this.authService.validarSesionActiva()){
       this.rol = this.cifradoService.getDecryptedRol();
-
-      if(this.rol != "sop"){ 
-        this.router.navigate(['/pagina/404/no-encontrada']);
-      }else{
+      if(this.rol == "sop" || this.rol == "suadmin"){
         this.formularioCentro = this.formBuilder.group({
           nombre: ['', [Validators.required, Validators.minLength(3)]],
           telefono: ['', [Validators.required, Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
           correo: ['', Validators.compose([
             //Validators.required, 
-            Validators.email
+            Validators.email,
           ])],
           direccion: ['', [Validators.required, Validators.minLength(3)]]
         })
-    
-        /*this.activatedRoute.params.subscribe(params => {
+
+        this.activatedRoute.params.subscribe(params => {
           this.id = params['id'];
-          this.cargarCentro(this.id)
-          
-        });*/
+          this.centroService.getCentro$(this.id).subscribe(res =>  {  //volver a llamar los datos con el id recibido
+            this.centro = res;
+            console.log("id Centro obtenido:" + res.id)
     
-        this.centroService.currentCentroId.subscribe((idCentroService) => {
-          this.id = idCentroService;
-          this.cargarCentro(this.id)
-        });
+            this.formularioCentro.patchValue({
+              correo: this.centro.correo,
+              nombre: this.centro.nombre,
+              telefono: this.centro.telefono,
+              direccion: this.centro.direccion
+            });
+          },
+          err => {
+            console.log("error: " + err)
+          })
+    
+        },
+          err => console.log("error: " + err)
+        );
+
+      }else{
+        this.router.navigate(['/pagina/404/no-encontrada'])
       }
+      
     }else{
       this.router.navigate(['/pagina/404/no-encontrada'])
     }
   }
 
-  cargarCentro(id_centro:string){
-    this.centroService.getCentro$(id_centro).subscribe(
-      res => {
-        this.centro = res;
-        console.log("id Centro obtenido:" + res.id)
 
-        this.formularioCentro.patchValue({
-          correo: this.centro.correo,
-          nombre: this.centro.nombre,
-          telefono: this.centro.telefono,
-          direccion: this.centro.direccion
-        });
-
-      },
-      err => console.log("error: " + err)
-    )
-  }
 
   getInputClass(controlName: string) {
     const control = this.formularioCentro.get(controlName);
@@ -117,9 +108,9 @@ export class CentroDetalleComponent implements OnInit {
       .subscribe(res => {
         console.log("Centro actualizado: "+res);
 
-        this.modalService.dismissAll()
-        this.centroService.changeCentroId('success') //Regresamos el idCentro
         this.sharedService.setNombreClinica(this.formularioCentro.value.nombre);
+
+        this.router.navigate(['/perfil'])
         Swal.fire({
           icon: 'success',
           html:
@@ -147,4 +138,5 @@ export class CentroDetalleComponent implements OnInit {
 
     return false;
   }
+  
 }

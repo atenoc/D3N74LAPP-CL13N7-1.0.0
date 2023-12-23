@@ -91,9 +91,10 @@ export class ContrasenaComponent implements OnInit {
     console.log("Actualizando contraseña...")
     this.usuarioService.updateUsuarioLlave(this.id, formGroup.get('nuevoPassword1').value).subscribe(res => {
         console.log("Contraseña actualizada: "+res);
-        this.ngOnInit()
+        //this.ngOnInit()
 
-        this.sharedService.setData(false);
+        //this.sharedService.setData(false);
+        this.router.navigate(['/usuario-detalle', res.id]);
 
         Swal.fire({
           icon: 'success',

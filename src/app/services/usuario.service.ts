@@ -152,7 +152,7 @@ export class UsuarioService {
 
   // updateUserPassword
   updateUsuarioLlave(id: string, llave: string){
-    return this.http.patch(`${this.URI}/password/usuario/${id}`, { llave });
+    return this.http.patch<Usuario>(`${this.URI}/password/usuario/${id}`, { llave });
   }
 
   getPassUsuario$(id: string){

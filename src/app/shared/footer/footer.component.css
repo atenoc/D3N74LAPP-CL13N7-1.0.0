@@ -1,0 +1,59 @@
+.my-footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #343a40; /* Cambia el color de fondo según tus preferencias */
+    padding: 1px; /* Ajusta el relleno según tus necesidades */
+    z-index: 1032;
+    display: none;
+}
+
+#dropdownBasic1::after {
+    display: none;
+}
+#dropdownBasic2::after {
+    display: none;
+}
+#dropdownBasic3::after {
+    display: none;
+}
+#dropdownBasic4::after {
+    display: none;
+}
+#dropdownBasic5::after {
+    display: none;
+}
+
+.dropdown-menu.show {
+    background: #007bff;
+}
+
+.custom-dropdown {
+    width: 75px; /* Ajusta el valor según tu preferencia */
+}
+
+.dropdown-item {
+    color: #fff;
+}
+
+.btn-outline-primary {
+    color: #00a1ff;
+    border-color: #343a40
+}
+
+/* Estilo hover para el botón */
+.btn-outline-primary:hover {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+  
+
+/****************************/
+
+@media only screen and (max-width: 600px) {
+	.horizontal-footer {
+	  display: block;
+	}
+}

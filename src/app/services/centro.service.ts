@@ -19,8 +19,8 @@ export class CentroService {
   private centro$: Subject<Centro>; // Para actualizar el centro creado desde el perfil
 
   //Para envíar el id hacia otro componente / modal
-  private centroIdSource = new BehaviorSubject<string>('');
-  currentCentroId = this.centroIdSource.asObservable()
+  //private centroIdSource = new BehaviorSubject<string>('');
+  //currentCentroId = this.centroIdSource.asObservable()
 
   constructor(private http: HttpClient) {
     this.centro$ = new Subject();
@@ -59,7 +59,7 @@ export class CentroService {
   }
 
   // GET One
-  getCentro$(id: string) {
+  /*getCentro$(id: string) {
     this.http.get<Centro>(`${this.URI}/${id}`).subscribe(
       res=>{
         this.centro$.next(res)
@@ -67,6 +67,10 @@ export class CentroService {
       err => console.log(err)
     )
     return this.centro$.asObservable();
+  }*/
+
+  getCentro$(id: string){
+    return this.http.get<Centro>(`${this.URI}/${id}`)
   }
 
   // PATCH One
@@ -101,7 +105,7 @@ export class CentroService {
     );
   }
 
-  changeCentroId(id: string) {
+  /*changeCentroId(id: string) {
     this.centroIdSource.next(id);
-  } 
+  }*/
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NgbModal, NgbModalConfig  } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
+import { NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Centro } from 'src/app/models/Centro.model';
 import { Usuario } from 'src/app/models/Usuario.model';
@@ -30,7 +30,6 @@ export class PerfilComponent implements OnInit {
     private usuarioService:UsuarioService, 
     private centroService:CentroService, 
     private router:Router,
-    private modalService: NgbModal, 
     private cifradoService: CifradoService,
     config: NgbModalConfig) {
       config.backdrop = 'static';
@@ -59,16 +58,6 @@ export class PerfilComponent implements OnInit {
 
     }
 
-    //Este método debe quedar a nivel de ngOnInit
-    this.centroService.currentCentroId.subscribe((respuesta) => {
-      console.log("Valor idCentro: "+ respuesta);
-      // Utiliza this.centroId para cargar los datos del centro
-      if(respuesta === "success"){
-        console.log("Reload")
-        this.centroService.changeCentroId('')
-        this.cargarClinicaAsociada()
-      }
-    });
   }
 
   cargarClinicaAsociada(){
@@ -82,19 +71,13 @@ export class PerfilComponent implements OnInit {
     )
   }
 
-  openVerticallyCentered(content) {
-    this.centroService.changeCentroId(this.centro.id); // Cambia el id en el servicio
-    this.modalService.open(content, { centered: true });
-
-  }
-
   selectedIdUser(id: string) {
     console.log("id seleccionado: "+id)
     this.router.navigate(['/usuario-detalle', id]);
   }
 
   selectedIdCentro(id: string) {
-    console.log("id seleccionado: "+id)
+    console.log("id centro: "+id)
     this.router.navigate(['/centro-detalle', id]);
   }
 
@@ -104,7 +87,7 @@ export class PerfilComponent implements OnInit {
       html:
         `<h5>¿Estás seguro que quieres eliminar tu cuenta?</h5>` +
         `<strong> Clínica/consultorio: ${ nombre } </strong> <br/>`+
-        `<small>Si deseas eliminar tu cuenta, ten en cuenta que se también se borrará toda la información de tus usuarios, pacientes, médicos, citas, etc. Esta acción no se puede revertir.</small>`,
+        `<small>Si deseas eliminar tu cuenta, ten en cuenta que también se borrará toda la información de tus usuarios, pacientes, médicos, citas, etc. Esta acción no se puede revertir.</small>`,
       icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#dc3545',

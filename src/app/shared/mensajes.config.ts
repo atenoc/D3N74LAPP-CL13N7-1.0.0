@@ -13,14 +13,14 @@ export const Mensajes = {
     REGISTRO_ERROR: 'No pudimos registrar tu información ',
     
     // Validaciones de formulario
-    CAMPO_REQUERIDO: 'Este campo es requerido. ',
-    CORREO_VALIDO: 'Por favor, ingrese un correo válido. ',
-    CORREO_EXISTENTE: 'Este correo ya se encuentra registrado. ',
-    TELEFONO_LONGITUD:'El teléfono debe contener al menos 10 dígitos. ',
-    SOLO_NUMEROS: 'Por favor, ingrese sólo números. ', 
-    CONTRASENA_LONGITUD: 'La contraseña debe contener al menos 6 caracteres. ',
-    CONTRASENA_ACTUALIZAR: 'Por favor, actualiza tu contraseña. ', 
-    CONTRASENA_VERIFICAR: 'Por favor, verifica tu correo y/o contraseña. ', 
+    CAMPO_REQUERIDO: 'Este campo es requerido ',
+    CORREO_VALIDO: 'Por favor, ingrese un correo válido ',
+    CORREO_EXISTENTE: 'Este correo ya se encuentra registrado ',
+    TELEFONO_LONGITUD:'El teléfono debe contener al menos 10 dígitos ',
+    SOLO_NUMEROS: 'Por favor, ingrese sólo números ', 
+    CONTRASENA_LONGITUD: 'La contraseña debe contener al menos 6 caracteres ',
+    CONTRASENA_ACTUALIZAR: 'Por favor, actualiza tu contraseña ', 
+    CONTRASENA_VERIFICAR: 'Por favor, verifica tu correo y/o contraseña ', 
 
     // Usuarios
     USUARIO_EXISTENTE: 'Este usuario ya se encuentra registrado ',

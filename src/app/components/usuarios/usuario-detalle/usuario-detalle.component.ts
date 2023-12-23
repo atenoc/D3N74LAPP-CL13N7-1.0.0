@@ -26,6 +26,7 @@ export class UsuarioDetalleComponent implements OnInit {
   tituloCard: string;
   idUsuario:string;
   fecha_creacion:Date;
+  nombre_usuario_creador:string;
 
   catRoles:CatalogoRol[] = [];
   catTitulos:CatalogoTitulo[] = [];
@@ -39,6 +40,9 @@ export class UsuarioDetalleComponent implements OnInit {
   soloNumeros: string;
   
   rol:string
+  descRol:string
+
+  mismoUsuario:boolean;
 
   constructor(
     private authService:AuthService,
@@ -83,14 +87,24 @@ export class UsuarioDetalleComponent implements OnInit {
     
         this.activatedRoute.params.subscribe(params => {
           this.id = params['id'];
+          if(this.id == localStorage.getItem('_us')){
+            console.log("Mismo usuario")
+            this.mismoUsuario = true;
+          }else{
+            console.log("Otro usuario")
+            this.mismoUsuario = false;
+          }
+          
           this.usuarioService.getUsuario$(this.id).subscribe(res => {   //volver a llamar los datos con el id recibido
             this.usuario = res;
+            this.descRol = res.desc_rol;
             console.log(res)
             console.log("id Especialidad:" + res.id_especialidad)
             //console.log("usuario obtenido:" + JSON.stringify(res))
             this.tituloCard = this.usuario.nombre+' '+this.usuario.apellidop+' '+this.usuario.apellidom
             this.idUsuario=this.usuario.id
             this.fecha_creacion=this.usuario.fecha_creacion
+            this.nombre_usuario_creador = this.usuario.nombre_usuario_creador
     
             this.formularioUsuario.patchValue({
               correo: this.usuario.correo,
