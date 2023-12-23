@@ -59,7 +59,7 @@ export class CentroService {
   }
 
   // GET One
-  getCentro$(id: string) {
+  /*getCentro$(id: string) {
     this.http.get<Centro>(`${this.URI}/${id}`).subscribe(
       res=>{
         this.centro$.next(res)
@@ -67,6 +67,10 @@ export class CentroService {
       err => console.log(err)
     )
     return this.centro$.asObservable();
+  }*/
+
+  getCentro$(id: string){
+    return this.http.get<Centro>(`${this.URI}/${id}`)
   }
 
   // PATCH One

@@ -40,8 +40,9 @@ export class UsuarioDetalleComponent implements OnInit {
   soloNumeros: string;
   
   rol:string
+  descRol:string
 
-  desabilitarRol:boolean;
+  mismoUsuario:boolean;
 
   constructor(
     private authService:AuthService,
@@ -88,14 +89,15 @@ export class UsuarioDetalleComponent implements OnInit {
           this.id = params['id'];
           if(this.id == localStorage.getItem('_us')){
             console.log("Mismo usuario")
-            this.desabilitarRol = true;
+            this.mismoUsuario = true;
           }else{
             console.log("Otro usuario")
-            this.desabilitarRol = false;
+            this.mismoUsuario = false;
           }
           
           this.usuarioService.getUsuario$(this.id).subscribe(res => {   //volver a llamar los datos con el id recibido
             this.usuario = res;
+            this.descRol = res.desc_rol;
             console.log(res)
             console.log("id Especialidad:" + res.id_especialidad)
             //console.log("usuario obtenido:" + JSON.stringify(res))

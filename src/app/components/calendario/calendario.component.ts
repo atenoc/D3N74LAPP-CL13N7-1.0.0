@@ -60,7 +60,7 @@ export class CalendarioComponent implements OnInit {
 
   cargarcitas(){
     this.citaService.getCitas$(localStorage.getItem('_cli')).subscribe(res=>{
-      console.log("Res cita::")
+      //console.log("Res cita::")
       if(res){
         this.citas = res;
         console.log(this.citas)
