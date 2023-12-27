@@ -34,5 +34,12 @@
     .hide-on-mobile{
         display: none;
     }
-}
 
+    .show-on-mobile{
+        display: block !important;
+    }
+
+    .table-responsive{
+        display: none !important;
+    }
+}
