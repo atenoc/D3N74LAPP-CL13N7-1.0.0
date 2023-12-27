@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { CifradoService } from 'src/app/services/shared/cifrado.service';
@@ -16,10 +16,12 @@ export class FooterComponent implements OnInit {
   mostrarClinicas:boolean=false;
   mostrarUsuarios:boolean=false;
 
+  isDarkMode = false;
+
   constructor(
     public authService: AuthService,
-    private cifradoService: CifradoService,
     public usuarioService: UsuarioService, 
+    private renderer: Renderer2
   ) { }
 
   ngOnInit(): void {
@@ -49,6 +51,16 @@ export class FooterComponent implements OnInit {
 
   salir(){
     this.authService.logout()
+  }
+
+  toggleDarkMode() {
+    this.isDarkMode = !this.isDarkMode;
+    const body = document.body;
+    if (this.isDarkMode) {
+      this.renderer.addClass(body, 'dark-mode');
+    } else {
+      this.renderer.removeClass(body, 'dark-mode');
+    }
   }
 
 }

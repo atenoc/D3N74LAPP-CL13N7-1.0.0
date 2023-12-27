@@ -37,17 +37,17 @@
                   <thead class="thead-dark">
                     <tr>
                       <th class="col-1">#</th> 
-                      <th class="col-1" (click)="onSortChange('nombre')">
+                      <th class="col-1 cursor-pointer" (click)="onSortChange('nombre')">
                         Nombre(s)
                         <span *ngIf="orderBy === 'nombre' && way === 'asc'">▲</span>
                         <span *ngIf="orderBy === 'nombre' && way === 'desc'">▼</span>
                       </th>
-                      <th class="col-1" (click)="onSortChange('apellidop')">
+                      <th class="col-1 cursor-pointer" (click)="onSortChange('apellidop')">
                         Ap. Paterno
                         <span *ngIf="orderBy === 'apellidop' && way === 'asc'">▲</span>
                         <span *ngIf="orderBy === 'apellidop' && way === 'desc'">▼</span>
                       </th>
-                      <th class="col-1" (click)="onSortChange('apellidom')">
+                      <th class="col-1 cursor-pointer" (click)="onSortChange('apellidom')">
                         Ap. Materno
                         <span *ngIf="orderBy === 'apellidom' && way === 'asc'">▲</span>
                         <span *ngIf="orderBy === 'apellidom' && way === 'desc'">▼</span>

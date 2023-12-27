@@ -60,6 +60,7 @@
           <small>Cuenta</small>
         </button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+          <button ngbDropdownItem (click)="toggleDarkMode()"><i class="fas fa-fill-drip"></i> Modo oscuro</button>
           <button ngbDropdownItem routerLink="/centros" *ngIf="mostrarClinicas"><i class="fas fa-building"></i> Centros</button>
           <button ngbDropdownItem routerLink="/perfil"><i class="fas fa-address-card"></i> Mi perfil</button>
           <button ngbDropdownItem (click)="salir()"><i class="fas fa-sign-out-alt"></i> Salir</button>
