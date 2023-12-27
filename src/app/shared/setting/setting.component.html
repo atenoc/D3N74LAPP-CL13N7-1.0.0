@@ -3,12 +3,16 @@
     <div class="container mt-3">
 
         <div class="row">
-            <div class="col-sm-6">
-                <button class="btn btn-primary btn-sm" (click)="toggleDarkMode()">Modo oscuro</button>
+            <div class="ml-3">
+                <button *ngIf="!isDarkMode" class="btn btn-outline-light btn-sm" (click)="toggleDarkMode()">Modo oscuro</button>
+                <button *ngIf="isDarkMode" class="btn btn-primary btn-sm" (click)="toggleDarkMode()">Modo claro</button>
             </div>
-            <div class="col-sm-6">
-                <input class="form-check-input" type="checkbox" [(ngModel)]="isDarkMode" disabled>
+            <hr>
+            <div class="ml-3">
+                <button *ngIf="!menuOculto" class="btn btn-outline-light btn-sm" (click)="toggleMenuOculto()">Ocultar menú lateral</button>
+                <button *ngIf="menuOculto" class="btn btn-primary btn-sm" (click)="toggleMenuOculto()">Mostrar menú lateral</button>
             </div>
+            <hr>
         </div>
 
     </div>

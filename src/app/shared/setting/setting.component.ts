@@ -8,6 +8,7 @@ import { Component, OnInit, Renderer2 } from '@angular/core';
 export class SettingComponent implements OnInit {
 
   isDarkMode = false;
+  menuOculto = false;
 
   constructor(private renderer: Renderer2) { }
 
@@ -25,6 +26,21 @@ export class SettingComponent implements OnInit {
       this.renderer.addClass(body, 'dark-mode');
     } else {
       this.renderer.removeClass(body, 'dark-mode');
+    }
+  }
+
+  toggleMenuOculto() {
+    this.menuOculto = !this.menuOculto;
+
+    // Obtén la referencia al elemento body
+    const body = document.body;
+
+    // Agrega o elimina la clase 'dark-mode' según el estado actual
+    if (this.menuOculto) {
+      this.renderer.addClass(body, 'sidebar-collapse');
+      this.renderer.removeClass(body, 'sidebar-mini');
+    } else {
+      this.renderer.removeClass(body, 'sidebar-collapse');
     }
   }
 }
