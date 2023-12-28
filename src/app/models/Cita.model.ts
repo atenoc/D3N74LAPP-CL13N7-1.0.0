@@ -1,7 +1,7 @@
 export interface Cita{
     title: string;
-    start: string; 
-    end: string;   
+    start: Date; 
+    end: Date;   
     backgroundColor: string;
     borderColor: string;
     editable: boolean;

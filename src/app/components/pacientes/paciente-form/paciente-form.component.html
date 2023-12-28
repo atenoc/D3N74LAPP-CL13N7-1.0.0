@@ -34,7 +34,7 @@
                     <div class="row">
                         <div class="col-sm">
                             <div class="form-group">
-                                <small class="text-muted"><strong> Nombre(s) * </strong></small>
+                                <small><strong> Nombre(s) * </strong></small>
                                 <input type="text" class="form-control" formControlName="nombre" [ngClass]="getInputClass('nombre')">
 
                                 <div *ngIf="formularioPaciente.controls['nombre'].invalid && formularioPaciente.controls['nombre'].dirty" class="invalid-input-message">
@@ -45,7 +45,7 @@
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <small class="text-muted"><strong> Apellido Paterno * </strong></small>
+                                <small><strong> Apellido Paterno * </strong></small>
                                 <input type="text" class="form-control" formControlName="apellidop" [ngClass]="getInputClass('apellidop')">
 
                                 <div *ngIf="formularioPaciente.controls['apellidop'].invalid && formularioPaciente.controls['apellidop'].dirty" class="invalid-input-message">
@@ -83,7 +83,7 @@
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <small class="text-muted"><strong>Teléfono * </strong></small>
+                                <small><strong>Teléfono * </strong></small>
                                 <input type="text" class="form-control" formControlName="telefono" [ngClass]="getInputClass('telefono')" placeholder="10 dígitos" maxlength="10">
                                 <div *ngIf="formularioPaciente.controls['telefono'].invalid && formularioPaciente.controls['telefono'].dirty" class="invalid-input-message">
                                     <div>

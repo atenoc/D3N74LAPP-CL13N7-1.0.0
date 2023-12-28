@@ -36,7 +36,7 @@
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <small class="text-muted"><strong> Correo * </strong></small>
+                                <small><strong> Correo * </strong></small>
                                 <input type="email" class="form-control" formControlName="correo" [ngClass]="getInputClass('correo')" placeholder="ejemplo@correo.com">
                                 <div *ngIf="formularioUsuario.controls['correo'].invalid && formularioUsuario.controls['correo'].dirty" class="invalid-input-message">
                                     <span *ngIf="formularioUsuario.controls['correo'].errors.required" >{{ campoRequerido }}</span>
@@ -47,7 +47,7 @@
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <small class="text-muted"><strong> Contraseña * </strong></small>
+                                <small><strong> Contraseña * </strong></small>
                                 <input type="password" class="form-control" formControlName="llave" [ngClass]="getInputClass('llave')" placeholder="Ingrese una contraseña">
                                 <div *ngIf="formularioUsuario.controls['llave'].invalid && formularioUsuario.controls['llave'].dirty" class="invalid-input-message">
                                     <span *ngIf="formularioUsuario.controls['llave'].errors.required">{{ campoRequerido }}</span>
@@ -58,7 +58,7 @@
                 
                         <div class="col-sm">                         
                             <div class="form-group">
-                                <small class="text-muted"><strong> Rol * </strong></small>
+                                <small><strong> Rol * </strong></small>
                                 <select class="form-select" formControlName="rol">
                                     <option selected disabled [value]="0">Selecciona una opción:</option>
                                     <option *ngFor="let item of catRoles" [value]="item.id">{{ item.descripcion }}</option>
@@ -87,7 +87,7 @@
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <small class="text-muted"><strong> Nombre(s) * </strong></small>
+                                <small><strong> Nombre(s) * </strong></small>
                                 <input type="text" class="form-control" formControlName="nombre" [ngClass]="getInputClass('nombre')" placeholder="">
                                 <div *ngIf="formularioUsuario.controls['nombre'].invalid && formularioUsuario.controls['nombre'].dirty" class="invalid-input-message">
                                     <span *ngIf="formularioUsuario.controls['nombre'].errors.required">{{ campoRequerido }}</span> 
@@ -97,7 +97,7 @@
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <small class="text-muted"><strong> Apellido Paterno * </strong></small>
+                                <small><strong> Apellido Paterno * </strong></small>
                                 <input type="text" class="form-control" formControlName="apellidop" [ngClass]="getInputClass('apellidop')" placeholder="">
                                 <div *ngIf="formularioUsuario.controls['apellidop'].invalid && formularioUsuario.controls['apellidop'].dirty" class="invalid-input-message">
                                     <span *ngIf="formularioUsuario.controls['apellidop'].errors.required">{{ campoRequerido }}</span> 

@@ -80,7 +80,7 @@
                 <div class="row no-show show-on-mobile">
                   <div *ngFor="let paciente of pacientes" class="col-sm-12">
                       <div class="d-flex">
-                        <div> <strong class="text-muted"> {{ paciente.nombre }} {{ paciente.apellidop }} {{ paciente.apellidom }} </strong></div>
+                        <div> <strong> {{ paciente.nombre }} {{ paciente.apellidop }} {{ paciente.apellidom }} </strong></div>
                         <div class="ml-auto">
                           <h4 class="text-muted" (click)="selectedIdUser(paciente.id)"><strong></strong>...</h4>
                         </div>
