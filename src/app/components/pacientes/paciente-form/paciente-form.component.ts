@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CatalogoSexo } from 'src/app/models/Catalogo.model';
@@ -28,6 +28,7 @@ export class PacienteFormComponent implements OnInit {
   correoValido: string;
   telefonoLongitud: string;
   soloNumeros: string;
+  soloLetras: string;
 
   paciente:Paciente
 
@@ -46,16 +47,17 @@ export class PacienteFormComponent implements OnInit {
     this.correoValido = Mensajes.CORREO_VALIDO;
     this.telefonoLongitud = Mensajes.TELEFONO_LONGITUD;
     this.soloNumeros = Mensajes.SOLO_NUMEROS;
+    this.soloLetras = Mensajes.SOLO_LETRAS;
   }
 
   ngOnInit(): void {
     this.rol = this.cifradoService.getDecryptedRol();
-
+    this.el.nativeElement.querySelector('input').focus();
     this.formularioPaciente = this.formBuilder.group({
-      nombre: ['', [Validators.required, Validators.minLength(3)]],
-      apellidop: ['', [Validators.required, Validators.minLength(3)]],
-      apellidom: [''],
-      edad: [''],
+      nombre: ['', [Validators.required, Validators.minLength(3), this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
+      apellidop: ['', [Validators.required, Validators.minLength(3), this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
+      apellidom: ['', [this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
+      edad: ['', [Validators.pattern('^[0-9]+$'), Validators.maxLength(3)]],
       sexo: [''],
       telefono: ['', [Validators.required, Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
       correo: ['', Validators.compose([
@@ -72,6 +74,29 @@ export class PacienteFormComponent implements OnInit {
     err => console.log("error: " + err)
   )
   }
+
+  // validarTexto(regex: RegExp) {
+  //   return (control: AbstractControl) => {
+  //     if (control.value && !regex.test(control.value)) {
+  //       return { 'invalidText': true };
+  //     }
+  
+  //     return null;
+  //   };
+  // }
+
+  validarTexto(regex: RegExp) {
+    return (control: AbstractControl) => {
+      const value = control.value;
+  
+      if (value && !regex.test(value)) {
+        return { 'invalidRegex': true };
+      }
+  
+      return null;
+    };
+  }
+  
 
   getInputClass(controlName: string) {
     const control = this.formularioPaciente.get(controlName);

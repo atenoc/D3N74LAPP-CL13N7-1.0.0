@@ -130,10 +130,23 @@
           <i class="fas fa-expand-arrows-alt"></i>
         </a>
       </li>
-      <li class="nav-item">
+      <!-- Botón que muestra el panel de configuración -->
+      <!-- <li class="nav-item">
         <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
           <i class="fas fa-tools"></i>
         </a>
+      </li> -->
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+          <i class="fas fa-tools"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+          <small *ngIf="!isDarkMode" class="dropdown-item cursor-pointer text-primary" (click)="toggleDarkMode()">Cambiar a modo oscuro</small>
+          <small *ngIf="isDarkMode" class="dropdown-item cursor-pointer text-primary" (click)="toggleDarkMode()">Cambiar a modo claro</small>
+          <div class="dropdown-divider"></div>
+          <small *ngIf="!menuOculto" class="dropdown-item cursor-pointer text-primary" (click)="toggleMenuOculto()">Ocultar menú lateral</small>
+          <small *ngIf="menuOculto" class="dropdown-item cursor-pointer text-primary" (click)="toggleMenuOculto()">Mostrar menú lateral</small>
+        </div>
       </li>
     </ul>
   </nav>

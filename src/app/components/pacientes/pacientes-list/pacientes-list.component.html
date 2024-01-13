@@ -7,7 +7,7 @@
             Pacientes
           </h5>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-6 hide-on-mobile">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a routerLink="/calendario">Calendario</a></li>
             <li class="breadcrumb-item"><a routerLink="/citas">Agenda</a></li>
@@ -23,7 +23,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="card card-primary card-outline">
-            <div class="card-header">
+            <div class="card-header hide-on-mobile">
               <h3 class="card-title">
                 <button class="btn btn-outline-primary btn-sm" (click)="irPacienteForm()">
                   <i class="fas fa-plus"></i> Agregar paciente 
@@ -33,8 +33,8 @@
             <div class="card-body">
   
               <div *ngIf="existenPacientes; else ver_mensaje">
-                <table class="table table-responsive table-hover table-striped table-sm">
-                  <thead class="thead-dark">
+                <table class="table-responsive table-hover table-striped hide-on-mobile">
+                  <thead>
                     <tr>
                       <th class="col-1">#</th> 
                       <th class="col-1 cursor-pointer" (click)="onSortChange('nombre')">
@@ -52,37 +52,47 @@
                         <span *ngIf="orderBy === 'apellidom' && way === 'asc'">▲</span>
                         <span *ngIf="orderBy === 'apellidom' && way === 'desc'">▼</span>
                       </th>
-                      <th class="col-1 hide-on-mobile">Edad</th>
+                      <th class="col-1">Edad</th>
                       <th class="col-1">Teléfono</th>
-                      <th class="col-1 hide-on-mobile">Correo</th>
-                      <th class="col-1">Detalle</th>
+                      <th class="col-1">Correo</th>
+                      <th class="col-1">Opción</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let paciente of pacientes">
                       <td scope="row" class="text-muted">{{ paciente.contador }}</td>
-                      <td><strong class="text-muted"> {{ paciente.nombre }} </strong></td>
-                      <td><strong class="text-muted"> {{ paciente.apellidop }} </strong></td>
-                      <td><strong class="text-muted"> {{ paciente.apellidom }} </strong></td>
-                      <td class="hide-on-mobile">{{ paciente.edad }}</td>
+                      <td>{{ paciente.nombre }}</td>
+                      <td>{{ paciente.apellidop }}</td>
+                      <td>{{ paciente.apellidom }}</td>
+                      <td>{{ paciente.edad }}</td>
                       <td>{{ paciente.telefono }}</td>
-                      <td class="hide-on-mobile">{{ paciente.correo }}</td>
+                      <td>{{ paciente.correo }}</td>
                       <td class="text-center">
-                        
-                        <button class="btn btn-outline-primary my-2 btn-sm" (click)="selectedIdUser(paciente.id)"
+                        <button class="btn btn-outline-primary btn-sm" (click)="selectedIdUser(paciente.id)"
                           ngbTooltip="Información del paciente"><i class="fas fa-info-circle"></i> 
-                          <span class="hide-on-mobile">Ver</span>
+                          <span> Ver</span>
                         </button>
-                    </td>
+                      </td>
                     </tr>
                   </tbody>
+                  <hr>
                 </table>
+                
                 <div class="row no-show show-on-mobile">
                   <div *ngFor="let paciente of pacientes" class="col-sm-12">
                       <div class="d-flex">
                         <div> <strong> {{ paciente.nombre }} {{ paciente.apellidop }} {{ paciente.apellidom }} </strong></div>
                         <div class="ml-auto">
-                          <h4 class="text-muted" (click)="selectedIdUser(paciente.id)"><strong></strong>...</h4>
+                          <!-- <h4 class="text-muted" (click)="selectedIdUser(paciente.id)"><strong></strong>...</h4> -->
+                          <div ngbDropdown class="d-inline-block">
+                            <h4 id="dropdownBasic1" ngbDropdownToggle>
+                              ...
+                            </h4>
+                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                              <button ngbDropdownItem (click)="selectedIdUser(paciente.id)">Ver información</button>
+                            </div>
+                          </div>
+
                         </div>
                       </div>
 

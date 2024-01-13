@@ -9,3 +9,7 @@
 .no-show{
     display: none;
 }
+
+#dropdownBasic1::after {
+    display: none;
+}

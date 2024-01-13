@@ -58,6 +58,9 @@
                             <div class="form-group">
                                 <small class="text-muted">Apellido Materno (opcional) </small>
                                 <input type="text" class="form-control" formControlName="apellidom">
+                                <div *ngIf="formularioPaciente.controls['apellidom'].invalid" class="invalid-input-message">
+                                    <span *ngIf="formularioPaciente.controls['apellidom'].errors.invalidRegex">{{ soloLetras }}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -67,6 +70,9 @@
                             <div class="form-group">
                                 <small class="text-muted">Edad (opcional)</small>
                                 <input type="text" class="form-control" formControlName="edad" maxlength="3">
+                                <div *ngIf="formularioPaciente.controls['edad'].invalid" class="invalid-input-message">
+                                    <span *ngIf="formularioPaciente.controls['edad'].errors">{{ soloNumeros }}</span>
+                                </div>
                             </div>
                         </div>
 
@@ -114,7 +120,7 @@
                         <div class="col-sm">
                             <div class="form-group">
                                 <small class="text-muted">Dirección (opcional)</small>
-                                <input type="email" class="form-control" formControlName="direccion">
+                                <textarea class="form-control" formControlName="direccion" rows="2" maxlength="130"></textarea>
                             </div>
                         </div>
                     </div>

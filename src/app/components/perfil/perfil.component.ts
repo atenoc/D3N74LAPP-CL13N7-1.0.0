@@ -76,6 +76,11 @@ export class PerfilComponent implements OnInit {
     this.router.navigate(['/usuario-detalle', id]);
   }
 
+  selectedIdContrasena(id: string) {
+    console.log("id seleccionado: "+ id)
+    this.router.navigate(['/password', id]);
+  }
+
   selectedIdCentro(id: string) {
     console.log("id centro: "+id)
     this.router.navigate(['/centro-detalle', id]);

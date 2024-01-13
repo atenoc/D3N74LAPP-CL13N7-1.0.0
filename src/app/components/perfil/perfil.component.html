@@ -45,7 +45,8 @@
               </ul>
 
               <div class="text-right">
-                <a> <small class="text-primary cursor-pointer" (click)="selectedIdUser(usuario.id)">Más detalle...</small> </a>
+                <a> <small class="text-primary cursor-pointer" (click)="selectedIdContrasena(usuario.id)">Cambiar contraseña</small> </a> <br>
+                <a> <small class="text-primary cursor-pointer" (click)="selectedIdUser(usuario.id)">Ver toda mi información</small> </a>
               </div>
             </div>
             <!-- /.card-body -->
@@ -59,7 +60,8 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <a> <small class="text-danger cursor-pointer" (click)="deleteCentroCuenta(centro.id, centro.nombre)"> Eliminar</small> </a>
+                <a> <small class="text-danger cursor-pointer" (click)="deleteCentroCuenta(centro.id, centro.nombre)"
+                  ngbTooltip="Eliminar mi cuenta y toda la información de mi consultorio"> Eliminar</small> </a>
             </div>
             <!-- /.card-body -->
           </div>
@@ -94,7 +96,7 @@
                 <hr>
 
                 <div *ngIf="mostrarOpciones" class="text-right" >
-                    <button class="btn btn-outline-primary mb-2 me-2" (click)="selectedIdCentro(centro.id)">
+                    <button class="btn btn-outline-primary mb-2 me-2" (click)="selectedIdCentro(centro.id)" ngbTooltip="Modificar información de mi consultorio">
                         <i class="fas fa-pencil-alt mr-1"></i> Editar
                     </button>
                     <!-- <button class="btn btn-outline-primary mb-2 me-2" (click)="openVerticallyCentered(content)"
