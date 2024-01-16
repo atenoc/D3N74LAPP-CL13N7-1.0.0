@@ -48,10 +48,15 @@ export class LoginComponent implements OnInit {
     this.el.nativeElement.querySelector('input').focus();
     this.formularioLogin = this.formBuilder.group({
       correo: ['', Validators.compose([
-        Validators.required, Validators.email
+        Validators.required, this.emailValidator
       ])],
       llave: ['', Validators.required]
     })
+  }
+
+  emailValidator(control) {
+    const emailRegexp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegexp.test(control.value) ? null : { emailInvalido: true };
   }
 
   login(){
@@ -140,7 +145,7 @@ export class LoginComponent implements OnInit {
         console.log(err)
 
         if(err.error.message === undefined){
-          this.mensajeDetalleError = Mensajes.SIN_CONEXION_RED
+          this.mensajeDetalleError = Mensajes.SIN_CONEXION_RED +'. '+Mensajes.INTENTAR_MAS_TARDE
           Swal.fire({
             icon: 'error',
             html:

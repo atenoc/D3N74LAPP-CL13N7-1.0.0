@@ -4,24 +4,29 @@ export const Mensajes = {
     ERROR_500: 'Oopss, ocurrió un error ',
     WARNING: 'Aviso ',
     SUCCESS: 'Genial ',
-    INTENTAR_MAS_TARDE: 'Por favor intentalo más tarde ',
-    SIN_CONEXION_RED: 'Sin conexión a internet ',
+    INTENTAR_MAS_TARDE: 'Por favor inténtalo más tarde ',
+    SIN_CONEXION_RED: 'Lo sentimos, no pudimos conectarnos',
 
     // Registro
-    REGISTRO_VALIDACION: 'Por favor, rellena todos los campos',
-    REGISTRO_EXITOSO: 'Todo listo para administrar tu clínica/consultorio dental',
+    REGISTRO_VALIDACION: 'Por favor, rellena todos los campos ',
+    REGISTRO_EXITOSO: 'Todo listo para administrar tu clínica/consultorio dental ',
     REGISTRO_ERROR: 'No pudimos registrar tu información ',
     
     // Validaciones de formulario
     CAMPO_REQUERIDO: 'Este campo es requerido ',
-    CORREO_VALIDO: 'Por favor, ingrese un correo válido ',
+    CORREO_VALIDO: 'Por favor, ingresa un correo válido ',
     CORREO_EXISTENTE: 'Este correo ya se encuentra registrado ',
     TELEFONO_LONGITUD:'El teléfono debe contener al menos 10 dígitos ',
-    SOLO_NUMEROS: 'Por favor, ingrese sólo números ', 
-    SOLO_LETRAS: 'Por favor, ingrese sólo letras ', 
+    SOLO_NUMEROS: 'Por favor, ingresa sólo números ', 
+    SOLO_LETRAS: 'Por favor, ingresa sólo letras ', 
+
+    //Contraseña
+    CONTRASENA_INVALIDA: 'La contraseña debe contener al menos una letra mayúscula (A-Z), un número (0-9) y un caracter especial (#, $, %, &, ect) ',
     CONTRASENA_LONGITUD: 'La contraseña debe contener al menos 6 caracteres ',
     CONTRASENA_ACTUALIZAR: 'Por favor, actualiza tu contraseña ', 
     CONTRASENA_VERIFICAR: 'Por favor, verifica tu correo y/o contraseña ', 
+    CONTRASENA_CONFIRMACION: 'Por favor confirma tu nueva contraseña ',
+    CONTRASENAS_NO_COINCIDEN: 'Las contraseñas no coinciden, verifica que sean iguales',
 
     // Usuarios
     USUARIO_EXISTENTE: 'Este usuario ya se encuentra registrado ',

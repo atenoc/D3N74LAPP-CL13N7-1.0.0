@@ -111,7 +111,8 @@
                                 <small class="text-muted">Correo (opcional)</small>
                                 <input type="email" class="form-control" formControlName="correo" [ngClass]="getInputClass('correo')" placeholder="correo@ejemplo.com">
                                 <div *ngIf="formularioPaciente.controls['correo'].invalid && formularioPaciente.controls['correo'].dirty" class="invalid-input-message">
-                                    <span *ngIf="formularioPaciente.controls['correo'].errors.email">{{ correoValido }}</span>
+                                    <!-- <span *ngIf="formularioPaciente.controls['correo'].errors.email">{{ correoValido }}</span> -->
+                                    <span *ngIf="formularioPaciente.controls['correo'].hasError('emailInvalido')">{{ correoValido }}</span>
                                 </div>
                             </div>
                         </div>

@@ -130,7 +130,7 @@ export class CitasListComponent implements OnInit {
         });
       },
       noEventsText:'No hay citas para mostrar',
-      listDayFormat: { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'}, //domingo, 23 de enero de 2023
+      //listDayFormat: { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'}, //domingo, 23 de enero de 2023
 
     };
   }

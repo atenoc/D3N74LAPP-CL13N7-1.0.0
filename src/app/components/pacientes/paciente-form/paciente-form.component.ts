@@ -62,7 +62,7 @@ export class PacienteFormComponent implements OnInit {
       telefono: ['', [Validators.required, Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
       correo: ['', Validators.compose([
         //Validators.required, 
-        Validators.email
+        this.emailValidator
       ])],
       direccion: [''],
     })
@@ -75,16 +75,6 @@ export class PacienteFormComponent implements OnInit {
   )
   }
 
-  // validarTexto(regex: RegExp) {
-  //   return (control: AbstractControl) => {
-  //     if (control.value && !regex.test(control.value)) {
-  //       return { 'invalidText': true };
-  //     }
-  
-  //     return null;
-  //   };
-  // }
-
   validarTexto(regex: RegExp) {
     return (control: AbstractControl) => {
       const value = control.value;
@@ -96,8 +86,12 @@ export class PacienteFormComponent implements OnInit {
       return null;
     };
   }
-  
 
+  emailValidator(control) {
+    const emailRegexp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegexp.test(control.value) ? null : { emailInvalido: true };
+  }
+  
   getInputClass(controlName: string) {
     const control = this.formularioPaciente.get(controlName);
     return {

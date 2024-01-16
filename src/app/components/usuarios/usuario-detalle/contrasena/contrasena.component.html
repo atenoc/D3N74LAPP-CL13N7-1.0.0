@@ -27,8 +27,9 @@
                   <small>Nueva Contraseña</small>
                   <input type="password" class="form-control" formControlName="nuevoPassword1">
                   <div *ngIf="formPassword.controls['nuevoPassword1'].invalid && formPassword.controls['nuevoPassword1'].dirty" class="invalid-input-message">
-                    <span *ngIf="formPassword.controls['nuevoPassword1'].errors.required">La nueva contraseña es requerida</span>
-                    <span *ngIf="formPassword.controls['nuevoPassword1'].errors.minlength">La contraseña debe contener al menos 8 caracteres.</span> 
+                    <span *ngIf="formPassword.controls['nuevoPassword1'].errors.required">{{ campoRequerido }} </span> <br>
+                    <span *ngIf="formPassword.controls['nuevoPassword1'].hasError('passwordInvalido')">{{ contrasenaInvalida }} </span><br>
+                    <span *ngIf="formPassword.controls['nuevoPassword1'].errors.minlength"> {{ contrasenaLongitud }} </span> 
                   </div>                  
                 </div>   
     
@@ -36,13 +37,11 @@
                   <small>Confirmar Contraseña</small>
                   <input type="password" class="form-control" formControlName="nuevoPassword2" >
                   <div *ngIf="formPassword.controls['nuevoPassword2'].invalid && formPassword.controls['nuevoPassword2'].dirty" class="invalid-input-message">
-                    <span *ngIf="formPassword.controls['nuevoPassword2'].errors.required">Por favor confirma tu nueva contraseña</span>
+                    <span *ngIf="formPassword.controls['nuevoPassword2'].errors.required">{{ contrasenaConfirmacion }}</span>
                   </div>
                 </div>
 
-                <div *ngIf="formPassword.controls['nuevoPassword2'].errors?.mismatch" class="invalid-input-message">
-                  Las contraseñas no coinciden.
-                </div>
+                <div *ngIf="formPassword.controls['nuevoPassword2'].errors?.mismatch" class="invalid-input-message">{{ contrasenasNoCoinciden }}</div>
 
                 <button class="btn btn-primary btn-block mt-3" [disabled]="formPassword.invalid" (click)="updateUsuarioLlave(formPassword)">Actualizar</button>
 
