@@ -64,7 +64,7 @@ export class PacienteDetalleComponent implements OnInit {
       telefono: ['', [Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
       correo: ['', Validators.compose([
         //Validators.required, 
-        Validators.email
+        this.emailValidator
       ])],
       direccion: [''],
     })
@@ -105,6 +105,11 @@ export class PacienteDetalleComponent implements OnInit {
     err => console.log("error: " + err)
     );
 
+  }
+
+  emailValidator(control) {
+    const emailRegexp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegexp.test(control.value) ? null : { emailInvalido: true };
   }
 
   getInputClass(controlName: string) {

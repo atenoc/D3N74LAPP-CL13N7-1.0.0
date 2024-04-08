@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SharedService } from 'src/app/services/shared.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { CifradoService } from 'src/app/services/shared/cifrado.service';
+import { Mensajes } from 'src/app/shared/mensajes.config';
 
 @Component({
   selector: 'app-contrasena',
@@ -26,15 +25,26 @@ export class ContrasenaComponent implements OnInit {
   faEye=faEye;
   faEyeSlash=faEyeSlash;
 
+  //mensajes
+  campoRequerido: string;
+  contrasenaInvalida: string;
+  contrasenaLongitud: string;
+  contrasenaConfirmacion: string;
+  contrasenasNoCoinciden: string;
+
   constructor(
     private authService:AuthService,
     private cifradoService: CifradoService,
     private router: Router, 
     private formBuilder:FormBuilder,
     private activatedRoute: ActivatedRoute, 
-    private usuarioService:UsuarioService, 
-    private sharedService:SharedService
-    ) { }
+    ) {
+      this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
+      this.contrasenaInvalida = Mensajes.CONTRASENA_INVALIDA;
+      this.contrasenaLongitud = Mensajes.CONTRASENA_LONGITUD;
+      this.contrasenaConfirmacion = Mensajes.CONTRASENA_CONFIRMACION;
+      this.contrasenasNoCoinciden = Mensajes.CONTRASENAS_NO_COINCIDEN;
+     }
 
   ngOnInit() {
 
@@ -44,7 +54,7 @@ export class ContrasenaComponent implements OnInit {
       if(this.rol == "sop" || this.rol == "suadmin" || this.rol == "adminn1"){
 
         this.formPassword = this.formBuilder.group({
-          nuevoPassword1: ['', [Validators.required, Validators.minLength(8)]],
+          nuevoPassword1: ['', [Validators.required, Validators.minLength(8), this.passwordValidator]],
           nuevoPassword2: ['', [Validators.required]]
         }, {
           validator: this.passwordMatchValidator
@@ -52,7 +62,7 @@ export class ContrasenaComponent implements OnInit {
         
         this.activatedRoute.params.subscribe(params => {
           this.id = params['id'];
-          this.usuarioService.getPassUsuario$(this.id).subscribe(res => {   //volver a llamar los datos con el id recibido
+          this.authService.getPassUsuario$(this.id).subscribe(res => {   //volver a llamar los datos con el id recibido
             this.llave = res.llave;
             console.log("Res obtenido")
     
@@ -72,6 +82,12 @@ export class ContrasenaComponent implements OnInit {
     }
   }
 
+  passwordValidator(control) {
+    // La contraseña debe contener al menos una letra mayúscula, un número y un carácter especial.
+    const passwordRegexp = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_]).+$/;
+    return passwordRegexp.test(control.value) ? null : { passwordInvalido: true };
+  }
+
   passwordMatchValidator(formGroup: FormGroup) {
     const password1 = formGroup.get('nuevoPassword1').value;
     const password2 = formGroup.get('nuevoPassword2').value;
@@ -89,7 +105,7 @@ export class ContrasenaComponent implements OnInit {
 
   updateUsuarioLlave(formGroup: FormGroup): boolean {
     console.log("Actualizando contraseña...")
-    this.usuarioService.updateUsuarioLlave(this.id, formGroup.get('nuevoPassword1').value).subscribe(res => {
+    this.authService.updateUsuarioLlave(this.id, formGroup.get('nuevoPassword1').value).subscribe(res => {
         console.log("Contraseña actualizada: "+res);
         //this.ngOnInit()
 

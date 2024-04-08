@@ -33,14 +33,14 @@
                 <form [formGroup]="formularioCentro">
      
                     <div class="form-group">
-                        <small class="form-text text-muted">Nombre *</small>
+                        <small>Nombre *</small>
                         <input type="email" class="form-control" formControlName="nombre" [ngClass]="getInputClass('nombre')" placeholder="Ingresa el nombre de tu consultorio">
                         <div *ngIf="formularioCentro.controls['nombre'].invalid && formularioCentro.controls['nombre'].dirty" class="invalid-input-message">
                           <span *ngIf="formularioCentro.controls['nombre'].errors.required">{{ campoRequerido }}</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <small class="text-muted">Teléfono de contacto *</small>
+                        <small>Teléfono de contacto *</small>
                         <input type="text" class="form-control" formControlName="telefono" [ngClass]="getInputClass('telefono')" placeholder="10 dígitos" maxlength="10">
                         <div *ngIf="formularioCentro.controls['telefono'].invalid && formularioCentro.controls['telefono'].dirty" class="invalid-input-message">
                             <span *ngIf="formularioCentro.controls['telefono'].errors.pattern && !formularioCentro.controls['telefono'].errors.required">{{ soloNumeros }}</span> 
@@ -55,11 +55,12 @@
                         <input type="email" class="form-control" formControlName="correo" [ngClass]="getInputClass('correo')" placeholder="Ingrese un correo electrónico">
                         <div *ngIf="formularioCentro.controls['correo'].invalid && formularioCentro.controls['correo'].dirty" class="invalid-input-message">
                             <!-- <span *ngIf="formularioCentro.controls['correo'].errors.required">El correo es requerido</span> -->
-                            <span *ngIf="formularioCentro.controls['correo'].errors.email">{{ correoValido }}</span>
+                            <!-- <span *ngIf="formularioCentro.controls['correo'].errors.email">{{ correoValido }}</span> -->
+                            <span *ngIf="formularioCentro.controls['correo'].hasError('emailInvalido')">{{ correoValido }}</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <small class="text-muted">Dirección ó Domicilio *</small>
+                        <small>Dirección ó Domicilio *</small>
                         <textarea class="form-control" formControlName="direccion" [ngClass]="getInputClass('direccion')" rows="2" maxlength="130"></textarea>
                         <div *ngIf="formularioCentro.controls['direccion'].invalid && formularioCentro.controls['direccion'].dirty" class="invalid-input-message">
                             <span *ngIf="formularioCentro.controls['direccion'].errors.required">{{ campoRequerido }}</span> 

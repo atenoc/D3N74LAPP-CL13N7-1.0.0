@@ -38,6 +38,7 @@ import { CitasListComponent } from './components/calendario/citas-list/citas-lis
 import { PacienteDetalleComponent } from './components/pacientes/paciente-detalle/paciente-detalle.component';
 import { PacienteFormComponent } from './components/pacientes/paciente-form/paciente-form.component';
 import { EventFormComponent } from './components/calendario/event-form/event-form.component';
+import { SettingComponent } from './shared/setting/setting.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { EventFormComponent } from './components/calendario/event-form/event-for
     CitasListComponent,
     PacienteDetalleComponent,
     PacienteFormComponent,
-    EventFormComponent
+    EventFormComponent,
+    SettingComponent
   ],
   imports: [
     BrowserModule,

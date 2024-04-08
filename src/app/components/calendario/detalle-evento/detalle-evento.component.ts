@@ -32,6 +32,7 @@ export class DetalleEventoComponent implements OnInit {
 
   ngOnInit(): void {
     console.log("Detalle")
+    console.log("title: "+ this.title+ ", incio: "+this.inicio+", fin:  "+this.fin)
     console.log(this.data)
     if(this.data.nombre_paciente){
       this.mostrarPaciente = true

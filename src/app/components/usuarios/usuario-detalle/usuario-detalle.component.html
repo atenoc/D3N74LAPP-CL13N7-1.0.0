@@ -173,7 +173,7 @@
                         <div class="col-sm">
                             <div class="form-group">
                                 <div class="form-group">
-                                    <small class="text-muted"><strong> Rol * </strong></small>
+                                    <small><strong> Rol * </strong></small>
                                     <ng-container *ngIf="mismoUsuario; else habilitado">
                                         <input type="text" class="form-control" value="{{descRol}}" readonly>
                                     </ng-container>
@@ -206,7 +206,7 @@
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <small class="text-muted"><strong> Nombre(s) * </strong></small>
+                                <small><strong> Nombre(s) * </strong></small>
                                 <input type="text" class="form-control" formControlName="nombre" [ngClass]="getInputClass('nombre')" placeholder="">
                                 <div *ngIf="formularioUsuario.controls['nombre'].invalid && formularioUsuario.controls['nombre'].dirty" class="invalid-input-message">
                                     <span *ngIf="formularioUsuario.controls['nombre'].errors.required">{{ campoRequerido }}</span> 
@@ -216,7 +216,7 @@
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <small class="text-muted"><strong> Apellido Paterno * </strong></small>
+                                <small><strong> Apellido Paterno * </strong></small>
                                 <input type="text" class="form-control" formControlName="apellidop" [ngClass]="getInputClass('apellidop')" placeholder="">
                                 <div *ngIf="formularioUsuario.controls['apellidop'].invalid && formularioUsuario.controls['apellidop'].dirty" class="invalid-input-message">
                                     <span *ngIf="formularioUsuario.controls['apellidop'].errors.required">{{ campoRequerido }}</span> 

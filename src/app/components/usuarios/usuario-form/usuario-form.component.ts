@@ -58,7 +58,7 @@ export class UsuarioFormComponent implements OnInit {
       this.el.nativeElement.querySelector('input').focus();
       this.formularioUsuario = this.formBuilder.group({
         correo: ['', Validators.compose([
-          Validators.required, Validators.email
+          Validators.required, this.emailValidator
         ])],
         llave: ['', [Validators.required, Validators.minLength(6)]],
         rol: ['', Validators.required],
@@ -92,6 +92,11 @@ export class UsuarioFormComponent implements OnInit {
     }else{
       this.router.navigate(['/pagina/404/no-encontrada'])
     }
+  }
+
+  emailValidator(control) {
+    const emailRegexp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegexp.test(control.value) ? null : { emailInvalido: true };
   }
 
   getInputClass(controlName: string) {

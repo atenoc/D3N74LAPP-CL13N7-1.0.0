@@ -1,5 +1,5 @@
 <div class="modal-header my-bg">
-    <h5><strong> Crear Evento </strong></h5>
+    <h5><strong> Nuevo evento </strong></h5>
     <button type="button" class="close" aria-label="Close" (click)="closeModal()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -10,7 +10,7 @@
         <div class="col-sm">
             <div class="form-group">
 
-                <strong class="text-muted" > Titulo * </strong>
+                <strong> Titulo * </strong>
                 <i class="fas fa-info-circle cursor-pointer text-muted ml-1" 
                   triggers="click" [autoClose]="'outside'" placement="end" 
                   ngbTooltip="Ej. Espacio reservado, Carlos. Ej. Fuera de clínica, Dr Juan. Ej. Evento especial, María..."></i>
@@ -31,7 +31,7 @@
   
       <div class="row">
           <div class="col-sm my-mt">
-              <span><strong class="text-muted"> Fecha y hora de inicio * </strong></span>
+              <span><strong> Fecha y hora de inicio * </strong></span>
               <div class="input-group">
                   <input
                     class="form-control"
@@ -69,7 +69,7 @@
   
       <div class="row">
           <div class="col-sm my-mt">
-              <small>Fecha y hora de termino</small>
+              <small class="text-muted">Fecha y hora de termino</small>
               <div class="input-group">
                   <input
                     class="form-control"

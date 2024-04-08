@@ -34,18 +34,22 @@
 
               <ul class="list-group list-group-unbordered mb-3">
                 <li class="list-group-item">
-                  <b>Especialidad</b> <a class="float-right">{{ usuario.especialidad }}</a>
+                  <b class="text-primary">Especialidad</b> <a class="float-right">{{ usuario.especialidad }}</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Correo</b> <a class="float-right">{{ usuario.correo }}</a>
+                  <b class="text-primary">Correo</b> <a class="float-right">{{ usuario.correo }}</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Teléfono</b> <a class="float-right">{{ usuario.telefono }}</a>
+                  <b class="text-primary">Teléfono</b> <a class="float-right">{{ usuario.telefono }}</a>
                 </li>
               </ul>
 
               <div class="text-right">
-                <a> <small class="text-primary cursor-pointer" (click)="selectedIdUser(usuario.id)">Más detalle...</small> </a>
+                <a> <span class="text-primary cursor-pointer" (click)="selectedIdContrasena(usuario.id)">Cambiar mi contraseña</span> </a>
+              </div>
+              <hr>
+              <div class="text-right">
+                <a> <span class="text-primary cursor-pointer" (click)="selectedIdUser(usuario.id)">Ver más información...</span> </a>
               </div>
             </div>
             <!-- /.card-body -->
@@ -59,7 +63,8 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <a> <small class="text-danger cursor-pointer" (click)="deleteCentroCuenta(centro.id, centro.nombre)"> Eliminar</small> </a>
+                <a> <small class="text-danger cursor-pointer" (click)="deleteCentroCuenta(centro.id, centro.nombre)"
+                  ngbTooltip="Eliminar mi cuenta y toda la información de mi consultorio"> Eliminar</small> </a>
             </div>
             <!-- /.card-body -->
           </div>
@@ -93,8 +98,8 @@
                 <p class="text-primary">{{ centro.fecha_creacion }}</p>
                 <hr>
 
-                <div *ngIf="mostrarOpciones" class="card-footer text-right bg-white" >
-                    <button class="btn btn-outline-primary mb-2 me-2" (click)="selectedIdCentro(centro.id)">
+                <div *ngIf="mostrarOpciones" class="text-right" >
+                    <button class="btn btn-outline-primary mb-2 me-2" (click)="selectedIdCentro(centro.id)" ngbTooltip="Modificar información de mi consultorio">
                         <i class="fas fa-pencil-alt mr-1"></i> Editar
                     </button>
                     <!-- <button class="btn btn-outline-primary mb-2 me-2" (click)="openVerticallyCentered(content)"

@@ -60,21 +60,21 @@
                     <div class="row">
                       <div class="col-sm">
                         <div class="form-group">
-                            <span><strong class="text-muted"> Nombre(s) * </strong></span>
+                            <span><strong> Nombre(s) * </strong></span>
                             <input type="text" class="form-control" [(ngModel)]="nombrePaciente" (ngModelChange)="validaNombre()">
                             <div *ngIf="mostrarMensajeNombre" class="invalid-input-message">{{ campoRequerido }}</div>
                         </div>
                       </div>
                       <div class="col-sm">
                         <div class="form-group">
-                          <span><strong class="text-muted"> Ap. Paterno * </strong></span>
+                          <span><strong> Ap. Paterno * </strong></span>
                             <input type="text" class="form-control" [(ngModel)]="apellidoPaternoPaciente" (ngModelChange)="validaApPaterno()">
                             <div *ngIf="mostrarMensajeApPaterno" class="invalid-input-message">{{ campoRequerido }}</div>
                         </div>
                       </div>
                       <div class="col-sm">
                         <div class="form-group">
-                          <span> <small>Ap. Materno (opcional)</small></span>
+                          <span> <small class="text-muted">Ap. Materno (opcional)</small></span>
                             <input type="text" class="form-control" [(ngModel)]="apellidoMaternoPaciente" >
                         </div>
                       </div>
@@ -84,22 +84,22 @@
                     <div class="row">
                       <div class="col-sm-3">
                         <div class="form-group">
-                          <span> <small>Edad (opcional)</small></span>
+                          <span> <small class="text-muted">Edad (opcional)</small></span>
                             <input type="text" class="form-control" [(ngModel)]="edadPaciente" maxlength="3">
                         </div>
                       </div>
                       <div class="col-sm-3">
                         <div class="form-group">
-                          <span><strong class="text-muted"> Teléfono * </strong></span>
+                          <span><strong> Teléfono * </strong></span>
                             <input type="text" class="form-control" [(ngModel)]="telefonoPaciente" (ngModelChange)="validaTelefono()" maxlength="10" placeholder="10 dígitos">
                             <div *ngIf="mostrarMensajeTelefono" class="invalid-input-message">{{ soloNumeros }}</div>
                         </div>
                       </div>
                 
                       
-                      <div class="col-6">
+                      <div class="col-sm-6">
                         <div class="form-group">
-                          <span><strong class="text-muted"> Motivo * </strong></span>
+                          <span><strong> Motivo * </strong></span>
                             <input type="text" class="form-control" placeholder="Ej. Consulta" [(ngModel)]="motivo" (ngModelChange)="validaMotivo()">
                             <div *ngIf="mostrarMensajeMotivo" class="invalid-input-message">{{ campoRequerido }}</div>
                         </div>
@@ -108,7 +108,7 @@
                     </div>
                     <div class="row">
                         <div class="col-sm my-mt">
-                            <span><strong class="text-muted"> Fecha y hora de inicio * </strong></span>
+                            <span><strong> Fecha y hora de inicio * </strong></span>
                             <div class="input-group">
                                 <input
                                   class="form-control"
@@ -143,7 +143,10 @@
                 
                     <div class="row">
                         <div class="col-sm my-mt">
-                            <small>Fecha y hora de termino</small>
+                            <small class="text-muted">Fecha y hora de termino</small>
+                            <i class="fas fa-info-circle cursor-pointer text-muted ml-1" 
+                              triggers="click" [autoClose]="'outside'" placement="end" 
+                              ngbTooltip="De no seleccionar esta opción, la cita será de 1 hora"></i>
                             <div class="input-group">
                                 <input
                                   class="form-control"

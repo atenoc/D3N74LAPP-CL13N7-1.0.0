@@ -1,0 +1,15 @@
+.col-sm-12{
+    margin-bottom: -15px !important;
+}
+
+.ml-auto{
+    margin-top: -10px !important;
+}
+
+.no-show{
+    display: none;
+}
+
+#dropdownBasic1::after {
+    display: none;
+}

@@ -60,6 +60,18 @@
                 </tr>
               </tbody>
             </table>
+            <div class="row no-show show-on-mobile">
+              <div *ngFor="let centro of centros" class="col-sm-12">
+                  <div class="d-flex">
+                    <div> <strong> {{ centro.nombre }}</strong></div>
+                    <div class="ml-auto">
+                      <h4 class="text-muted" (click)="selectedIdUser(centro.id)"><strong></strong>...</h4>
+                    </div>
+                  </div>
+                  <hr>
+              </div>
+              
+            </div>
           </div>
         </div>
       </div>

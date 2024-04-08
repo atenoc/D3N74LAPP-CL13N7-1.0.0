@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from '../../services/auth.service'
 import Swal from 'sweetalert2';
-import { UsuarioService } from 'src/app/services/usuario.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Mensajes } from 'src/app/shared/mensajes.config';
 import { CifradoService } from 'src/app/services/shared/cifrado.service';
@@ -34,7 +33,6 @@ export class LoginComponent implements OnInit {
     private centroService:CentroService,
     private formBuilder:FormBuilder, 
     private authService: AuthService, 
-    private usuarioService:UsuarioService, 
     private router: Router,
     private spinner: NgxSpinnerService, 
     private el: ElementRef,
@@ -48,10 +46,15 @@ export class LoginComponent implements OnInit {
     this.el.nativeElement.querySelector('input').focus();
     this.formularioLogin = this.formBuilder.group({
       correo: ['', Validators.compose([
-        Validators.required, Validators.email
+        Validators.required, this.emailValidator
       ])],
       llave: ['', Validators.required]
     })
+  }
+
+  emailValidator(control) {
+    const emailRegexp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegexp.test(control.value) ? null : { emailInvalido: true };
   }
 
   login(){
@@ -78,7 +81,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('_em', this.correoUsuario)
 
         /* Obtener usuario por Correo */
-        this.usuarioService.getUsuarioByCorreo$(this.correoUsuario).subscribe(
+        this.authService.getUsuarioByCorreo$(this.correoUsuario).subscribe(
           res => {
 
             this.sharedService.setNombreUsuario(res.nombre +" "+res.apellidop)
@@ -140,7 +143,7 @@ export class LoginComponent implements OnInit {
         console.log(err)
 
         if(err.error.message === undefined){
-          this.mensajeDetalleError = Mensajes.SIN_CONEXION_RED
+          this.mensajeDetalleError = Mensajes.SIN_CONEXION_RED +'. '+Mensajes.INTENTAR_MAS_TARDE
           Swal.fire({
             icon: 'error',
             html:

@@ -7,7 +7,7 @@
           Usuarios
         </h5>
       </div>
-      <div class="col-sm-6">
+      <div class="col-sm-6 hide-on-mobile">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a routerLink="/calendario">Calendario</a></li>
           <li class="breadcrumb-item"><a routerLink="/citas">Agenda</a></li>
@@ -23,7 +23,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card card-primary card-outline">
-          <div class="card-header">
+          <div class="card-header hide-on-mobile">
             <h3 class="card-title">
               <button class="btn btn-outline-primary btn-sm" (click)="irUsuarioForm()">
                 <i class="fas fa-plus"></i> Agregar usuario 
@@ -33,51 +33,51 @@
           <div class="card-body">
 
             <div *ngIf="existenUsuarios; else ver_mensaje">
-              <table class="table table-responsive table-hover table-striped">
+              <table class="table-responsive table-hover table-striped hide-on-mobile">
                 <thead class="thead-dark">
                   <tr>
                     <th class="col-1">#</th> 
-                    <th class="col-1 hide-on-mobile">Título</th>
-                    <th class="col-1" (click)="onSortChange('nombre')">
+                    <th class="col-1">Título</th>
+                    <th class="col-2 cursor-pointer" (click)="onSortChange('nombre')">
                       Nombre(s)
                       <span *ngIf="orderBy === 'nombre' && way === 'asc'">▲</span>
                       <span *ngIf="orderBy === 'nombre' && way === 'desc'">▼</span>
                     </th>
-                    <th class="col-1" (click)="onSortChange('apellidop')">
+                    <th class="col-1 cursor-pointer" (click)="onSortChange('apellidop')">
                       Ap. Paterno
                       <span *ngIf="orderBy === 'apellidop' && way === 'asc'">▲</span>
                       <span *ngIf="orderBy === 'apellidop' && way === 'desc'">▼</span>
                     </th>
-                    <th class="col-1" (click)="onSortChange('apellidom')">
+                    <th class="col-1 cursor-pointer" (click)="onSortChange('apellidom')">
                       Ap. Materno
                       <span *ngIf="orderBy === 'apellidom' && way === 'asc'">▲</span>
                       <span *ngIf="orderBy === 'apellidom' && way === 'desc'">▼</span>
                     </th>
                     
                     <th class="col-1">Correo</th>
-                    <th class="col-1">Rol</th>
-                    <th class="col-1 hide-on-mobile">Especialidad</th>
+                    <th class="col-2">Rol</th>
+                    <th class="col-1">Especialidad</th>
                     <th class="col-1">Teléfono</th>
                     <!-- <th class="col-1">Id Usuario Creador</th> -->
-                    <th class="col-1 hide-on-mobile">Creado por</th>
+                    <!-- <th class="col-1">Creado por</th> -->
                     <!-- <th class="col-1">Fecha creación</th> -->
-                    <th class="col-1">Detalle</th>
+                    <th class="col-1">Opción</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let usuario of usuarios">
                     <!-- <th class="text-muted"><small><strong>{{ usuario.id }}</strong></small></th> -->
-                    <td scope="row" class="text-muted">{{ usuario.contador }}</td>
-                    <td class="hide-on-mobile">{{ usuario.titulo }}</td>
+                    <td class="text-muted">{{ usuario.contador }}</td>
+                    <td>{{ usuario.titulo }}</td>
                     <td>{{ usuario.nombre }}</td>
                     <td>{{ usuario.apellidop }}</td>
                     <td>{{ usuario.apellidom }}</td>
                     <td>{{ usuario.correo }}</td>
                     <td>{{ usuario.desc_rol }}</td>
-                    <td class="hide-on-mobile">{{ usuario.especialidad }}</td>
+                    <td>{{ usuario.especialidad }}</td>
                     <td>{{ usuario.telefono }}</td>
                     <!-- <td>{{ usuario.id_usuario }}</td> -->
-                    <td class="hide-on-mobile">{{ usuario.nombre_usuario_creador }}</td>
+                    <!-- <td>{{ usuario.nombre_usuario_creador }}</td> -->
                     <!-- <td> <small>{{ usuario.fecha_creacion }}</small> </td> -->
                     <td class="text-center">
                       
@@ -90,49 +90,82 @@
                   </td>
                   </tr>
                 </tbody>
+                <hr>
               </table>
-              <div class="container">
-                <div class="row">
-                  <div class="col-sm-3 text-sm-end">
-                    Mostrar:
-                  </div>
-                  <div class="col-sm-1">
-                    <div class="d-inline">
-                      <select class="form-select" [(ngModel)]="pageSize" (change)="onPageSizeChange()">
-                        <option value="1">1</option>
-                        <option value="3">3</option>
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="30">30</option>
-                        <option value="50">50</option>
-                      </select>
+              
+              <div class="row no-show show-on-mobile">
+                <div *ngFor="let usuario of usuarios" class="col-sm-12">
+                    <div class="d-flex">
+                      <div> <strong> {{ usuario.nombre }} {{ usuario.apellidop }} {{ usuario.apellidom }} </strong></div>
+                      <div class="ml-auto">
+                        <!-- <h4 class="text-muted" (click)="selectedIdUser(usuario.id)"><strong></strong>...</h4> -->
+                        <div ngbDropdown class="d-inline-block">
+                          <h4 id="dropdownBasic1" ngbDropdownToggle>
+                            ...
+                          </h4>
+                          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                            <button ngbDropdownItem (click)="selectedIdUser(usuario.id)">Ver información</button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                
-                  <div class="col-sm-5">
-                    <ngb-pagination
-                      [collectionSize]="totalElements"
-                      [(page)]="currentPage"
-                      [pageSize]="pageSize"
-                      [maxSize]="5"
-                      [rotate]="true"
-                      (pageChange)="onPageChange($event)">
-                      <ng-template ngbPaginationFirst>Primero</ng-template>
-                      <ng-template ngbPaginationLast>Último</ng-template>
-                      <ng-template ngbPaginationPrevious>Anterior</ng-template>
-                      <ng-template ngbPaginationNext>Siguiente</ng-template>
-                      <ng-template ngbPaginationEllipsis>...</ng-template>
-                      <ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>
-                    </ngb-pagination>
-                  </div>
-                
-                  <div class="col-sm-1">
-                    <span>Total: <span class="text-muted">{{ totalElements }}</span></span>
+                    <hr>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-2">
+                  
+                </div>
+              
+                <div class="col-sm-8 mt-3 d-flex justify-content-center">
+                  <ngb-pagination
+                    [collectionSize]="totalElements"
+                    [(page)]="currentPage"
+                    [pageSize]="pageSize"
+                    [maxSize]="5"
+                    [rotate]="true"
+                    (pageChange)="onPageChange($event)">
+                    <ng-template ngbPaginationFirst>Primero</ng-template>
+                    <ng-template ngbPaginationLast>Último</ng-template>
+                    <ng-template ngbPaginationPrevious>Anterior</ng-template>
+                    <ng-template ngbPaginationNext>Siguiente</ng-template>
+                    <ng-template ngbPaginationEllipsis>...</ng-template>
+                    <ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>
+                  </ngb-pagination>     
+                </div>
+              
+                <div class="col-sm-2">
+                  <div class="row">
+
+                    <div class="d-flex">
+                      <div class="mt-3">
+                        <span class="text-muted">Total: </span><strong class="text-muted">{{ totalElements }}</strong>
+                      </div>
+                      
+                      <div class="ml-auto">
+                        <div class="d-inline">
+                          <small class="text-muted">Mostrar:</small>
+                        </div>
+                        <div class="d-inline">
+                          <select class="form-select" [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+                            <option value="1">1</option>
+                            <option value="3">3</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
+
             </div>
+
             <ng-template #ver_mensaje>
           
               <div class="container">

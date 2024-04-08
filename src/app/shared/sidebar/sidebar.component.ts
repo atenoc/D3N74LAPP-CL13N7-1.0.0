@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { SharedService } from 'src/app/services/shared.service';
-import { UsuarioService } from 'src/app/services/usuario.service';
 import * as $ from 'jquery';
 
 @Component({
@@ -23,14 +22,13 @@ export class SidebarComponent implements OnInit {
   constructor(
     private sharedService:SharedService, 
     public authService: AuthService, 
-    public usuarioService: UsuarioService, 
     private router: Router) { }
 
   ngOnInit(): void {
     console.log("SIDEBAR Component")
     //this.inicializarAccordion()
 
-    this.usuarioService.validarUsuarioActivo$(localStorage.getItem('_us'), localStorage.getItem('_em')).subscribe(
+    this.authService.validarUsuarioActivo$(localStorage.getItem('_us'), localStorage.getItem('_em')).subscribe(
       res => {
         this.usuario = res;
         this.idUsuario=this.usuario.id

@@ -1,0 +1,19 @@
+<aside class="control-sidebar control-sidebar-dark my-bg">
+    
+    <div class="container mt-3">
+
+        <div class="row">
+            <div class="ml-3">
+                <button *ngIf="!isDarkMode" class="btn btn-outline-light btn-sm" (click)="toggleDarkMode()">Modo oscuro</button>
+                <button *ngIf="isDarkMode" class="btn btn-primary btn-sm" (click)="toggleDarkMode()">Modo claro</button>
+            </div>
+            <hr>
+            <div class="ml-3">
+                <button *ngIf="!menuOculto" class="btn btn-outline-light btn-sm" (click)="toggleMenuOculto()">Ocultar menú lateral</button>
+                <button *ngIf="menuOculto" class="btn btn-primary btn-sm" (click)="toggleMenuOculto()">Mostrar menú lateral</button>
+            </div>
+            <hr>
+        </div>
+
+    </div>
+</aside>
