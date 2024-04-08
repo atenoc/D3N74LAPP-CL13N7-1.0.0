@@ -3,12 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment.prod';
 import Swal from 'sweetalert2';
-import { SharedService } from './shared.service';
+//import { SharedService } from './shared.service';
+import { Usuario } from '../models/Usuario.model';
+import { Subject, catchError, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+  private usuario$: Subject<Usuario>;
 
   //URI = 'http://localhost:4000/api/seguridad';
   URI = environment.urlApiSeguridad
@@ -16,7 +20,7 @@ export class AuthService {
   constructor(
     private http: HttpClient, 
     private router:Router, 
-    private sharedService:SharedService
+    //private sharedService:SharedService
     ) {
   }
 
@@ -81,5 +85,26 @@ export class AuthService {
       }
     })
   }
+
+  // getUserByCorreo - After Login 2
+  getUsuarioByCorreo$(correo: string) {
+    return this.http.get<Usuario>(`${this.URI}/usuario/correo/${correo}`)
+  }
+
+  // verificar usuario activo - After Login 3 - Sidebar/Footer
+  validarUsuarioActivo$(id: string, correo: string) {
+    return this.http.get<Usuario>(`${this.URI}/verificar/usuario/${id}/correo/${correo}`)
+  }
+
+  
+  getPassUsuario$(id: string){
+    return this.http.get<Usuario>(`${this.URI}/${id}/contrasena`)
+  }
+
+  // updateUserPassword
+  updateUsuarioLlave(id: string, llave: string){
+    return this.http.patch<Usuario>(`${this.URI}/password/usuario/${id}`, { llave });
+  }
+  
 }
 

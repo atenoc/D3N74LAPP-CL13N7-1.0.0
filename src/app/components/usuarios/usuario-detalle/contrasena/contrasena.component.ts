@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-//import { SharedService } from 'src/app/services/shared.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { CifradoService } from 'src/app/services/shared/cifrado.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
@@ -40,8 +38,6 @@ export class ContrasenaComponent implements OnInit {
     private router: Router, 
     private formBuilder:FormBuilder,
     private activatedRoute: ActivatedRoute, 
-    private usuarioService:UsuarioService, 
-    //private sharedService:SharedService
     ) {
       this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
       this.contrasenaInvalida = Mensajes.CONTRASENA_INVALIDA;
@@ -66,7 +62,7 @@ export class ContrasenaComponent implements OnInit {
         
         this.activatedRoute.params.subscribe(params => {
           this.id = params['id'];
-          this.usuarioService.getPassUsuario$(this.id).subscribe(res => {   //volver a llamar los datos con el id recibido
+          this.authService.getPassUsuario$(this.id).subscribe(res => {   //volver a llamar los datos con el id recibido
             this.llave = res.llave;
             console.log("Res obtenido")
     
@@ -109,7 +105,7 @@ export class ContrasenaComponent implements OnInit {
 
   updateUsuarioLlave(formGroup: FormGroup): boolean {
     console.log("Actualizando contraseña...")
-    this.usuarioService.updateUsuarioLlave(this.id, formGroup.get('nuevoPassword1').value).subscribe(res => {
+    this.authService.updateUsuarioLlave(this.id, formGroup.get('nuevoPassword1').value).subscribe(res => {
         console.log("Contraseña actualizada: "+res);
         //this.ngOnInit()
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Centro } from 'src/app/models/Centro.model';
 import { AuthService } from 'src/app/services/auth.service';
@@ -20,10 +20,11 @@ export class CentroDetalleComponent implements OnInit {
   id: string
   centro: Centro
   formularioCentro:FormGroup
+  nombreCentro:string
 
   //mensajes
   campoRequerido: string;
-  correoValido: string;
+  correoNoValido: string;
   contrasenaLongitud: string;
   telefonoLongitud: string;
   soloNumeros: string;
@@ -38,7 +39,7 @@ export class CentroDetalleComponent implements OnInit {
     private router: Router, 
     ) {
       this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
-      this.correoValido = Mensajes.CORREO_VALIDO;
+      this.correoNoValido = Mensajes.CORREO_VALIDO;
       this.telefonoLongitud = Mensajes.TELEFONO_LONGITUD;
       this.soloNumeros = Mensajes.SOLO_NUMEROS;
     }
@@ -51,10 +52,14 @@ export class CentroDetalleComponent implements OnInit {
         this.formularioCentro = this.formBuilder.group({
           nombre: ['', [Validators.required, Validators.minLength(3)]],
           telefono: ['', [Validators.required, Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
-          correo: ['', Validators.compose([
-            //Validators.required, 
-            this.emailValidator,
-          ])],
+          correo: ['', [Validators.minLength(5), // Hacer que el campo sea opcional
+                  (control: AbstractControl) => { // Validación condicional del correo electrónico
+                    if (control.value && control.value.trim() !== '') {
+                      return this.emailValidator(control);
+                    } else {
+                      return null; // Si el campo está vacío, no aplicar la validación del correo electrónico
+                    }
+                  }]],
           direccion: ['', [Validators.required, Validators.minLength(3)]]
         })
 
@@ -70,6 +75,7 @@ export class CentroDetalleComponent implements OnInit {
               telefono: this.centro.telefono,
               direccion: this.centro.direccion
             });
+            this.nombreCentro = this.centro.nombre
           },
           err => {
             console.log("error: " + err)

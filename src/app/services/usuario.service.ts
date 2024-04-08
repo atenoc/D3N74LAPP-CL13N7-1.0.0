@@ -15,10 +15,10 @@ export class UsuarioService {
   private usuario = new BehaviorSubject<Usuario>(null);
   private usuarios = new BehaviorSubject<Usuario[]>([]);
   private usuarioCreado:Usuario 
-  private usuario$: Subject<Usuario>; // Para actualizar la info del usuario en el navigate
+  //private usuario$: Subject<Usuario>; // Para actualizar la info del usuario en el navigate
 
   constructor(private http: HttpClient) {
-    this.usuario$ = new Subject();
+    //this.usuario$ = new Subject();
   }
 
   // POST
@@ -48,8 +48,8 @@ export class UsuarioService {
     );
   }
   
-  // GET
-  getUsuarios$(): Observable<Usuario[]>{
+  // GET old (deprecated)
+  /*getUsuarios$(): Observable<Usuario[]>{
     this.http.get<Usuario[]>(this.URI).subscribe(
       res=>{
         this.usuarios.next(res)
@@ -57,9 +57,9 @@ export class UsuarioService {
       err => console.log(err)
     )
     return this.usuarios.asObservable();
-  }
+  }*/
 
-  // GET
+  // GET Usuario por id
   getUsuario$(id: string){
     return this.http.get<Usuario>(`${this.URI}/${id}`)
   }
@@ -87,35 +87,6 @@ export class UsuarioService {
     );
   }
   
-  // getUserByCorreo - After Login
-  getUsuarioByCorreo$(correo: string) {
-    if(correo){
-      this.http.get<Usuario>(`${this.URI}/usuario/correo/${correo}`).subscribe(
-        res=>{
-          this.usuario$.next(res)
-        },
-        err => console.log(err)
-      )
-      return this.usuario$.asObservable();
-    }else{
-      return this.usuario$;
-    }
-  }
-
-  // getUserByIdUserAndCorreo - After Login 2
-  validarUsuarioActivo$(id: string, correo: string) {
-    if (id && correo) {
-      return this.http.get<Usuario>(`${this.URI}/usuario/${id}/correo/${correo}`).pipe(
-        catchError((err) => {
-          //console.log(err); 
-          return throwError(err); // Lanzar el error nuevamente para que lo maneje el componente
-        })
-      );
-    } else {
-      return this.usuario$;
-    }
-  }
-
   // getUsusuario Paginados por id_usuario
   getUsuariosByUsuarioPaginados$(
     id:string,
@@ -148,15 +119,6 @@ export class UsuarioService {
       .set('way', String(way));
   
     return this.http.get<UsuariosPaginados>(`${this.URI}/paginacion/clinica/${id_clinica}`, { params });
-  }
-
-  // updateUserPassword
-  updateUsuarioLlave(id: string, llave: string){
-    return this.http.patch<Usuario>(`${this.URI}/password/usuario/${id}`, { llave });
-  }
-
-  getPassUsuario$(id: string){
-    return this.http.get<Usuario>(`${this.URI}/${id}/contrasena`)
   }
 
 }
