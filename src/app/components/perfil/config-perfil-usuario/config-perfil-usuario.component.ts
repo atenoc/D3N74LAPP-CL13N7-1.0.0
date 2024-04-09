@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Centro } from 'src/app/models/Centro.model';
 import { CentroService } from 'src/app/services/centro.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
@@ -23,6 +22,9 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
   direccionClinica:string
 
   formularioCentro:FormGroup
+
+  date: Date;
+  fecha_creacion:string
 
   constructor(
     private centroService:CentroService, 
@@ -95,7 +97,11 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
         console.log("Clínica registrada correctamente, id:: "+res.id)
         localStorage.setItem('_cli', res.id)
 
-        this.usuarioService.updateUsuarioRegister(localStorage.getItem('_us'), this.nombre, this.apellido, res.id).subscribe(
+        this.date = new Date();
+        const mes = this.date.getMonth()+1;
+        this.fecha_creacion = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
+
+        this.usuarioService.updateUsuarioRegister(localStorage.getItem('_us'), this.nombre, this.apellido, res.id, this.fecha_creacion).subscribe(
           res=>{
 
             this.router.navigate(['/perfil'])

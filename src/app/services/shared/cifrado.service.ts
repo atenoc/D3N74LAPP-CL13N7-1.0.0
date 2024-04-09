@@ -49,4 +49,18 @@ export class CifradoService {
     const encryptedLlave = CryptoJS.AES.encrypt(llave, this.secretKey).toString();
     return encryptedLlave;
   }
+
+  setEncryptedIdPlan(id_plan: string): void {
+    const encryptedRol = CryptoJS.AES.encrypt(id_plan, this.secretKey).toString();
+    localStorage.setItem('_plan', encryptedRol);
+  }
+
+  getDecryptedIdPlan(): string | null {
+    const encryptedRol = localStorage.getItem('_plan');
+    if (encryptedRol) {
+      const bytes = CryptoJS.AES.decrypt(encryptedRol, this.secretKey);
+      return bytes.toString(CryptoJS.enc.Utf8);
+    }
+    return null;
+  }
 }

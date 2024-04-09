@@ -63,6 +63,12 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
+              <ul class="list-group list-group-unbordered mb-3">
+                <li class="list-group-item">
+                  <b class="text-primary">Plan</b> <a class="float-right">{{ usuario.plan }}</a>
+                </li>
+              </ul>
+
                 <a> <small class="text-danger cursor-pointer" (click)="deleteCentroCuenta(centro.id, centro.nombre)"
                   ngbTooltip="Eliminar mi cuenta y toda la información de mi consultorio"> Eliminar</small> </a>
             </div>

@@ -28,6 +28,8 @@ export class UsuariosListComponent implements OnInit {
   way = 'asc';          // direccion 
   totalElements:number  // total 
 
+  isDisabled:boolean = false
+
   constructor(
     private authService:AuthService,
     private usuarioService:UsuarioService, 
@@ -42,9 +44,14 @@ export class UsuariosListComponent implements OnInit {
     }
 
   ngOnInit() {
-
     console.log("USUARIOS LIST COMP")
+
     if(this.authService.validarSesionActiva()){
+
+      if(this.cifradoService.getDecryptedIdPlan() == '0402PF3T'){
+        this.isDisabled = true
+        console.log("Prueba 30 terminada");
+      }
 
       this.rol = this.cifradoService.getDecryptedRol();
       console.log("Rol Des:: "+this.rol)

@@ -5,6 +5,7 @@ import { CentroService } from 'src/app/services/centro.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Mensajes } from '../mensajes.config';
 import { SharedService } from 'src/app/services/shared.service';
+import { CifradoService } from 'src/app/services/shared/cifrado.service';
 
 @Component({
   selector: 'app-header',
@@ -20,17 +21,22 @@ export class HeaderComponent implements OnInit {
   llaveStatus:number
   nombreCentro:string
   mostrarCambiarContrasena:boolean=true
-  mensajeContrasena:string
-
+  mensajeContrasena:string 
+  enlaceContrasena:string
+  
   isDarkMode = false;
   menuOculto = false;
+
+  isDisabled:boolean 
+  mensajePruebaTerminada:string
 
   constructor(
     private sharedService:SharedService,
     public usuarioService: UsuarioService, 
     private centroService:CentroService,
     private router: Router,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private cifradoService: CifradoService,
     ) { }
 
   ngOnInit(): void {
@@ -51,8 +57,18 @@ export class HeaderComponent implements OnInit {
         if(this.usuario.llave_status == 0){
           this.mostrarCambiarContrasena=true
           this.mensajeContrasena=Mensajes.CONTRASENA_ACTUALIZAR;
+          this.enlaceContrasena='Cambiar'
         }else{
           this.mostrarCambiarContrasena=false
+          this.mensajeContrasena=''
+          this.enlaceContrasena=''
+        }
+
+        this.cifradoService.setEncryptedIdPlan(res.id_plan)
+        if(this.cifradoService.getDecryptedIdPlan() == '0402PF3T'){
+          this.mensajePruebaTerminada = Mensajes.PRUEBA_TERMINADA
+          this.isDisabled=true
+          console.log("Prueba 30 terminada");
         }
 
         this.centroService.getCentro$(localStorage.getItem('_cli')).subscribe(

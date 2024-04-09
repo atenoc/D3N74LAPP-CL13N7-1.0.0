@@ -73,4 +73,7 @@ export const Mensajes = {
     EVENTO_REGISTRADO: 'El evento se registró correctamente ',
     EVENTO_NO_REGISTRADO: 'El evento no se puedo registrar ',
 
+    //Planes
+    PRUEBA_TERMINADA: 'Tu prueba gratuita ha terminado ', 
+
 };

@@ -5,14 +5,14 @@ import { environment } from 'src/environments/environment.prod';
 import Swal from 'sweetalert2';
 //import { SharedService } from './shared.service';
 import { Usuario } from '../models/Usuario.model';
-import { Subject, catchError, throwError } from 'rxjs';
+//import { Subject, catchError, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private usuario$: Subject<Usuario>;
+  //private usuario$: Subject<Usuario>;
 
   //URI = 'http://localhost:4000/api/seguridad';
   URI = environment.urlApiSeguridad
@@ -66,6 +66,7 @@ export class AuthService {
         localStorage.removeItem('_us')
         localStorage.removeItem('_em')
         localStorage.removeItem('_cli')
+        localStorage.removeItem('_plan')
         this.router.navigate(['/login'])
 
         // Se manda un mensaje para validar el cierre de sesion y refrescar el menu 

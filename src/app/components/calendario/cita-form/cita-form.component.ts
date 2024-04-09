@@ -7,6 +7,9 @@ import { PacienteService } from 'src/app/services/pacientes/paciente.service';
 import Swal from 'sweetalert2';
 import { Paciente } from 'src/app/models/Paciente.model';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
+import { CifradoService } from 'src/app/services/shared/cifrado.service';
 
 @Component({
   selector: 'app-cita-form',
@@ -58,11 +61,16 @@ export class CitaFormComponent implements OnInit {
   //citaJson = {}
   existePaciente:boolean;
 
+  isDisabled:boolean = false
+
   constructor(
+    private authService:AuthService,
+    private cifradoService: CifradoService,
     private spinner: NgxSpinnerService, 
     private activeModal: NgbActiveModal, 
     private pacienteService:PacienteService, 
     private citaService:CitaService,
+    private router: Router, 
     config: NgbDatepickerConfig
     ){ 
     this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
@@ -81,6 +89,15 @@ export class CitaFormComponent implements OnInit {
 
   ngOnInit(): void {
     console.log("CITA FORM")
+
+    if(this.authService.validarSesionActiva()){
+      if(this.cifradoService.getDecryptedIdPlan() == '0402PF3T'){
+        this.isDisabled = true
+        console.log("Prueba 30 terminada");
+      }
+    }else{
+      this.router.navigate(['/pagina/404/no-encontrada'])
+    }
   }
 
   crearCita(){

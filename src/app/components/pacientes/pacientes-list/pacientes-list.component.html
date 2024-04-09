@@ -25,7 +25,7 @@
           <div class="card card-primary card-outline">
             <div class="card-header hide-on-mobile">
               <h3 class="card-title">
-                <button class="btn btn-outline-primary btn-sm" (click)="irPacienteForm()">
+                <button class="btn btn-outline-primary btn-sm" (click)="irPacienteForm()" [disabled]="isDisabled">
                   <i class="fas fa-plus"></i> Agregar paciente 
                 </button>
               </h3>

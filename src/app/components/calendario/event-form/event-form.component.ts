@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgbActiveModal, NgbDateStruct, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
+import { AuthService } from 'src/app/services/auth.service';
 import { CitaService } from 'src/app/services/citas/cita.service';
 import { PacienteService } from 'src/app/services/pacientes/paciente.service';
+import { CifradoService } from 'src/app/services/shared/cifrado.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
 import Swal from 'sweetalert2';
 
@@ -36,9 +39,14 @@ export class EventFormComponent implements OnInit {
   colors: string[] = ['#f56954', '#00a65a', '#0073b7', '#00c0ef', '#f39c12', '#605ca8', '#d3d3d3'];
   selectedColor: string = '';
 
+  isDisabled:boolean = false
+
   constructor(
+    private authService:AuthService,
+    private cifradoService: CifradoService,
     private activeModal: NgbActiveModal, 
     private citaService:CitaService,
+    private router: Router,
     config: NgbDatepickerConfig
     ){ 
 
@@ -56,7 +64,19 @@ export class EventFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.selectedColor = this.colors[0]; 
+    console.log("EVENTO FORM");
+    
+    if(this.authService.validarSesionActiva()){
+      if(this.cifradoService.getDecryptedIdPlan() == '0402PF3T'){
+        this.isDisabled = true
+        console.log("Prueba 30 terminada");
+      }
+
+      this.selectedColor = this.colors[0];
+
+    }else{
+      this.router.navigate(['/pagina/404/no-encontrada'])
+    }
   }
 
   registrarEvento(){
