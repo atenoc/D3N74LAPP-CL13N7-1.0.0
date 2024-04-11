@@ -170,8 +170,8 @@ export class CalendarioComponent implements OnInit {
     } else if (windowWidth >= 800 ) {
       this.aspectRatioMonth=1.5
       this.aspectRatioValue=2.3
-      this.textButtonCita="Agregar cita";
-      this.textButtonEvento="Agregar evento";
+      this.textButtonCita="Agendar cita";
+      this.textButtonEvento="Nuevo evento";
     }
   }
 }

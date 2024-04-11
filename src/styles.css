@@ -43,3 +43,17 @@
         display: none !important;
     }
 }
+
+
+/* Calendar */
+
+:root {
+    --fc-button-bg-color: #007bff;
+    --fc-button-border-color: #ffffff;
+
+    --fc-button-hover-bg-color: #0064cf;
+    --fc-button-hover-border-color: #0064cf;
+
+    --fc-button-active-bg-color: #004889;
+    --fc-button-active-border-color: #007fff;
+}

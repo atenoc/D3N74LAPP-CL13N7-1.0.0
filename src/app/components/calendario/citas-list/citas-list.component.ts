@@ -1,7 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/core';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timegridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 import esLocale from '@fullcalendar/core/locales/es';
@@ -18,6 +16,7 @@ import { EventFormComponent } from '../event-form/event-form.component';
   styleUrls: ['./citas-list.component.css']
 })
 export class CitasListComponent implements OnInit {
+  // AgendaListComponent
 
   private citasListComponent: CitasListComponent;
   aspectRatioMonth: number;
@@ -171,8 +170,8 @@ export class CitasListComponent implements OnInit {
     } else if (windowWidth >= 800 ) {
       this.aspectRatioMonth=1.5
       this.aspectRatioValue=2.3
-      this.textButtonCita="Agregar cita";
-      this.textButtonEvento="Agregar evento";
+      this.textButtonCita="Agendar cita";
+      this.textButtonEvento="Nuevo evento";
     }
   }
 

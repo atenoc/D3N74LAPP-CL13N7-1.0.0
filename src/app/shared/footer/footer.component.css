@@ -3,7 +3,8 @@
     left: 0;
     bottom: 0;
     width: 100%;
-    background-color: #343a40; /* Cambia el color de fondo según tus preferencias */
+    /*background-color: #343a40;  Cambia el color de fondo según tus preferencias */
+    background: #ff4f60;
     padding: 1px; /* Ajusta el relleno según tus necesidades */
     z-index: 1032;
     display: none;
@@ -37,9 +38,15 @@
     color: #fff;
 }
 
+.dropdown-item:hover {
+    color: #015aa8;
+    background: rgb(255, 255, 255);
+}
+
 .btn-outline-primary {
-    color: #00a1ff;
-    border-color: #343a40
+    color: white;
+    border-color: #343a40;
+    border-color: #ff4f60;
 }
 
 /* Estilo hover para el botón */
@@ -57,3 +64,5 @@
 	  display: block;
 	}
 }
+
+/* dropdown-item */

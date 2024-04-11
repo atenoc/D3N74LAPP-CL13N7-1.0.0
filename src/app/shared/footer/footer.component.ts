@@ -16,6 +16,9 @@ export class FooterComponent implements OnInit {
 
   isDarkMode = false;
 
+  date: Date;
+  numberAnio:number
+
   constructor(
     public authService: AuthService,
     private renderer: Renderer2
@@ -23,6 +26,9 @@ export class FooterComponent implements OnInit {
 
   ngOnInit(): void {
     console.log("FOOTER")
+    this.date = new Date();
+    this.numberAnio = this.date.getFullYear()
+    console.log("Año fotter: "+this.date.getFullYear())
     if(localStorage.getItem('_us') && localStorage.getItem('_em')){
       this.authService.validarUsuarioActivo$(localStorage.getItem('_us'), localStorage.getItem('_em')).subscribe(
         res => {
