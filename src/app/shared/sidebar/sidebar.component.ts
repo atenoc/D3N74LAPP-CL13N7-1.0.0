@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from 'src/app/services/auth.service';
@@ -10,7 +10,9 @@ import * as $ from 'jquery';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, AfterViewInit {
+  @ViewChild('medidor') medidor: ElementRef;
+  //@ViewChild('spanUsuarios') spanUsuarios: ElementRef; //obtener el id de un elemento html
 
   usuario:Usuario
   idUsuario:string
@@ -22,7 +24,9 @@ export class SidebarComponent implements OnInit {
   constructor(
     private sharedService:SharedService, 
     public authService: AuthService, 
-    private router: Router) { }
+    private router: Router,
+    private renderer: Renderer2
+  ) { }
 
   ngOnInit(): void {
     console.log("SIDEBAR Component")
@@ -110,4 +114,44 @@ export class SidebarComponent implements OnInit {
       var accordion2 = new Accordion($('#accordion2'), false);
     });
   }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.observeSizeChanges();
+    }, 500);
+  }
+
+  private observeSizeChanges(): void {
+    const medidor = this.medidor.nativeElement;
+
+    //const spanUsuarios = this.spanUsuarios.nativeElement;
+
+    const elementsClass = document.querySelectorAll('.noneBlock');
+
+    const resizeObserver = new ResizeObserver(entries => {
+      entries.forEach(entry => {
+        //console.log('El tamaño cambió:', entry.contentRect.width, 'x', entry.contentRect.height);
+        if(entry.contentRect.width < 195){
+
+          //spanUsuarios.classList.add('oculto');
+          //spanUsuarios.classList.remove('mostrar');
+
+          elementsClass.forEach(element => {
+            this.renderer.setStyle(element, 'display', 'none');
+          });
+
+        }else{
+          //spanUsuarios.classList.add('mostrar');
+          //spanUsuarios.classList.remove('oculto');
+
+          elementsClass.forEach(element => {
+            this.renderer.setStyle(element, 'display', 'inline');
+          });
+          
+        }
+      });
+    });
+    resizeObserver.observe(medidor);
+  }
+
 }
