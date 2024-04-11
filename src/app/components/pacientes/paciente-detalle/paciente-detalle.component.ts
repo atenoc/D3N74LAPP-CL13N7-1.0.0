@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CatalogoSexo } from 'src/app/models/Catalogo.model';
@@ -62,10 +62,14 @@ export class PacienteDetalleComponent implements OnInit {
       edad: [''],
       sexo: [''],
       telefono: ['', [Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
-      correo: ['', Validators.compose([
-        //Validators.required, 
-        this.emailValidator
-      ])],
+      correo: ['', [Validators.minLength(5), // Hacer que el campo sea opcional
+                  (control: AbstractControl) => { // Validación condicional del correo electrónico
+                    if (control.value && control.value.trim() !== '') {
+                      return this.emailValidator(control);
+                    } else {
+                      return null; // Si el campo está vacío, no aplicar la validación del correo electrónico
+                    }
+                  }]],
       direccion: [''],
     })
 
@@ -144,7 +148,7 @@ export class PacienteDetalleComponent implements OnInit {
           position: 'top-end',
           html:
             `<h5>${ Mensajes.PACIENTE_ACTUALIZADO }</h5>`+
-            `<span>${this.paciente.nombre} ${this.paciente.apellidop}</span>`, 
+            `<span>${ res.nombre } ${ res.apellidop }</span>`, 
             
           showConfirmButton: false,
           backdrop: false, 

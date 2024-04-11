@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Mi perfil</h1>
+          <h5>Mi perfil</h5>
         </div>
         <div class="col-sm-6 hide-on-mobile">
           <ol class="breadcrumb float-sm-right">
@@ -20,7 +20,7 @@
   <section class="content">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-4">
 
           <!-- Profile Image -->
           <div class="card card-primary card-outline">
@@ -45,23 +45,22 @@
               </ul>
 
               <div class="text-right">
-                <a> <span class="text-primary cursor-pointer" (click)="selectedIdContrasena(usuario.id)">Cambiar mi contraseña</span> </a>
+                <a class="link-opacity-10-hover cursor-pointer" (click)="selectedIdContrasena(usuario.id)">Cambiar contraseña</a>
               </div>
               <hr>
               <div class="text-right">
-                <a> <span class="text-primary cursor-pointer" (click)="selectedIdUser(usuario.id)">Ver más información...</span> </a>
+                <a> <button class="btn btn-outline-primary btn-sm cursor-pointer" (click)="selectedIdUser(usuario.id)">Ver mi información...</button> </a>
               </div>
             </div>
             <!-- /.card-body -->
           </div>
           <!-- /.card -->
 
-          <!-- About Me Box -->
-          <div class="card card-primary" *ngIf="mostrarOpciones">
+          <!-- Mi cuenta -->
+          <!-- <div class="card card-primary" *ngIf="mostrarOpciones">
             <div class="card-header">
               <h3 class="card-title">Mi cuenta</h3>
             </div>
-            <!-- /.card-header -->
             <div class="card-body">
               <ul class="list-group list-group-unbordered mb-3">
                 <li class="list-group-item">
@@ -69,18 +68,22 @@
                 </li>
               </ul>
 
-                <a> <small class="text-danger cursor-pointer" (click)="deleteCentroCuenta(centro.id, centro.nombre)"
+              <a> <small class="text-danger cursor-pointer" (click)="deleteCentroCuenta(centro.id, centro.nombre)"
                   ngbTooltip="Eliminar mi cuenta y toda la información de mi consultorio"> Eliminar</small> </a>
             </div>
-            <!-- /.card-body -->
-          </div>
+          </div> -->
+
           <!-- /.card -->
         </div>
         <!-- /.col -->
-        <div class="col-md-9">
+        <div class="col-md-4">
           <div class="card card-primary">
             <div class="card-header">
                 <h3 class="card-title">Mi consultorio dental</h3>
+                <div *ngIf="mostrarOpciones" class="card-tools">
+                    <button class="btn btn-light btn-sm" (click)="selectedIdCentro(centro.id)" ngbTooltip="Modificar información del consultorio">
+                    <i class="fas fa-pencil-alt mr-1"></i>Editar</button>
+                </div>
             </div><!-- /.card-header -->
             <div class="card-body">
 
@@ -102,24 +105,32 @@
 
                 <strong><i class="fas fa-calendar"></i> Fecha / Hora de creación</strong>
                 <p class="text-primary">{{ centro.fecha_creacion }}</p>
-                <hr>
-
-                <div *ngIf="mostrarOpciones" class="text-right" >
-                    <button class="btn btn-outline-primary mb-2 me-2" (click)="selectedIdCentro(centro.id)" ngbTooltip="Modificar información de mi consultorio">
-                        <i class="fas fa-pencil-alt mr-1"></i> Editar
-                    </button>
-                    <!-- <button class="btn btn-outline-primary mb-2 me-2" (click)="openVerticallyCentered(content)"
-                          placement="bottom" ngbTooltip="Editar información">
-                          <i class="fas fa-pencil-alt mr-1"></i> Editar
-                    </button> -->
-                    <!-- <a> <small class="text-primary cursor-pointer mr-3" (click)="selectedIdCentro(centro.id)"> <i class="fas fa-pencil-alt mr-1"></i> Editar...</small> </a> -->
-                    <!-- <a> <small class="text-danger cursor-pointer" (click)="deleteCentro(centro.id, centro.nombre)"> Eliminar</small> </a> -->
-                </div>
 
             </div><!-- /.card-body -->
           </div>
           <!-- /.card -->
         </div>
+        <!-- /.col -->
+
+        <div class="col-md-4">
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Mi cuenta</h3>
+            </div>
+            <div class="card-body">
+              <ul class="list-group list-group-unbordered mb-3">
+                <li class="list-group-item">
+                  <b class="text-primary">Plan</b> <a class="float-right">{{ usuario.plan }}</a>
+                </li>
+              </ul>
+
+              <a> <small class="text-danger cursor-pointer" (click)="deleteCentroCuenta(centro.id, centro.nombre)"
+                  ngbTooltip="Eliminar mi cuenta y toda la información de mi consultorio"> Eliminar</small> </a>
+
+            </div>
+          </div>
+        </div> 
+
         <!-- /.col -->
       </div>
       <!-- /.row -->
@@ -128,21 +139,3 @@
   <!-- /.content -->
 
   <ngx-spinner bdColor = "rgba(0,0,0,0.7)" size = "large" color = "#ffffff" type = "ball-scale-multiple" [fullScreen] = "true"><p style="color: white" > Cargando, por favor espere... </p></ngx-spinner>
-
-
-  <!-- <ng-template #content let-c="close" let-d="dismiss">
-    <div class="modal-header">
-      <h4 class="modal-title">Modificar Información</h4>
-      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-
-      <app-centro-detalle></app-centro-detalle>
-
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-light" (click)="c('Cerrar')">Cerrar</button>
-    </div>
-  </ng-template> -->
