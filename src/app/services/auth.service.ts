@@ -93,7 +93,7 @@ export class AuthService {
     return this.http.get<Usuario>(`${this.URI}/usuario/correo/${correo}`)
   }
 
-  // verificar usuario activo - After Login 3 - Sidebar/Footer
+  // verificar usuario activo - After Login 3 - Sidebar/Header/Footer
   validarUsuarioActivo$(id: string, correo: string, id_clinica) {
     return this.http.get<Usuario>(`${this.URI}/verificar/usuario/${id}/correo/${correo}/clinica/${id_clinica}`)
   }

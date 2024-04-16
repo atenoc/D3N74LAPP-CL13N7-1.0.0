@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
@@ -32,6 +32,7 @@ export class UsuarioFormComponent implements OnInit {
   contrasenaLongitud: string;
   telefonoLongitud: string;
   soloNumeros: string;
+  soloLetras: string;
 
   rol:string
 
@@ -55,6 +56,7 @@ export class UsuarioFormComponent implements OnInit {
       this.contrasenaLongitud = Mensajes.CONTRASENA_LONGITUD;
       this.telefonoLongitud = Mensajes.TELEFONO_LONGITUD;
       this.soloNumeros = Mensajes.SOLO_NUMEROS;
+      this.soloLetras = Mensajes.SOLO_LETRAS;
     }
 
   ngOnInit() {
@@ -78,9 +80,9 @@ export class UsuarioFormComponent implements OnInit {
           llave: ['', [Validators.required, Validators.minLength(6)]],
           rol: ['', Validators.required],
           titulo: [''],
-          nombre: ['', [Validators.required, Validators.minLength(3)]],
-          apellidop: ['', [Validators.required, Validators.minLength(3)]],
-          apellidom: [''],
+          nombre: ['', [Validators.required, Validators.minLength(3), this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/) ]],
+          apellidop: ['', [Validators.required, Validators.minLength(3), this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
+          apellidom: ['', [this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
           especialidad: [''],
           telefono: ['', [Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
         })
@@ -111,6 +113,18 @@ export class UsuarioFormComponent implements OnInit {
     }else{
       this.router.navigate(['/pagina/404/no-encontrada'])
     }
+  }
+
+  validarTexto(regex: RegExp) {
+    return (control: AbstractControl) => {
+      const value = control.value;
+  
+      if (value && !regex.test(value)) {
+        return { 'invalidRegex': true };
+      }
+  
+      return null;
+    };
   }
 
   emailValidator(control) {

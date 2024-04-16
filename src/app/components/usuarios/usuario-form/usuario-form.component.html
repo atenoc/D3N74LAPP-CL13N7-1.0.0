@@ -110,6 +110,9 @@
                             <div class="form-group">
                                 <small class="text-muted"> Apellido Materno </small>
                                 <input type="text" class="form-control" formControlName="apellidom" placeholder="">
+                                <div *ngIf="formularioUsuario.controls['apellidom'].invalid" class="invalid-input-message">
+                                    <span *ngIf="formularioUsuario.controls['apellidom'].errors.invalidRegex">{{ soloLetras }}</span>
+                                </div>
                             </div>
                         </div>
                 

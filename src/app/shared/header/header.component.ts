@@ -6,6 +6,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 import { Mensajes } from '../mensajes.config';
 import { SharedService } from 'src/app/services/shared.service';
 import { CifradoService } from 'src/app/services/shared/cifrado.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -27,17 +28,18 @@ export class HeaderComponent implements OnInit {
   isDarkMode = false;
   menuOculto = false;
 
+  id_plan:string
   isDisabled:boolean 
   mensajePruebaTerminada:string
   mensajeLink:string
 
   constructor(
+    public authService: AuthService, 
     private sharedService:SharedService,
     public usuarioService: UsuarioService, 
     private centroService:CentroService,
     private router: Router,
     private renderer: Renderer2,
-    private cifradoService: CifradoService,
     ) { }
 
   ngOnInit(): void {
@@ -51,12 +53,14 @@ export class HeaderComponent implements OnInit {
       this.nombreCentro = nombreCentro;
     });
 
-    this.usuarioService.getUsuario$(localStorage.getItem('_us')).subscribe(
+    this.authService.validarUsuarioActivo$(localStorage.getItem('_us'), localStorage.getItem('_em'), localStorage.getItem('_cli')).subscribe(
       res => {
         
         this.usuario = res;
         this.idUsuario=this.usuario.id
         this.rol=this.usuario.rol
+        this.id_plan=this.usuario.id_plan
+        console.log("U Plan Header: "+this.id_plan)
 
         if(this.usuario.llave_status == 0){
           this.mostrarCambiarContrasena=true
@@ -68,13 +72,13 @@ export class HeaderComponent implements OnInit {
           this.enlaceContrasena=''
         }
 
-        if(this.cifradoService.getDecryptedIdPlan() == '0402PF3T'){
+        if(this.id_plan == '0402PF3T'){
           this.isDisabled=true
           if(this.rol=="suadmin"){
             this.mensajePruebaTerminada = Mensajes.PRUEBA_TERMINADA
             this.mensajeLink="Ver planes"
             console.log("Prueba 30 terminada");
-          }else if(this.rol=="adminn2" || this.rol=="medic" || this.rol=="caja" || this.rol=="recepcion"){
+          }else if(this.rol=="adminn1" ||this.rol=="adminn2" || this.rol=="medic" || this.rol=="caja" || this.rol=="recepcion"){
             this.mensajePruebaTerminada = Mensajes.PRUEBA_TERMINADA_USER
             this.mensajeLink=""
             console.log("Funcionalidades no disponibles para User");
