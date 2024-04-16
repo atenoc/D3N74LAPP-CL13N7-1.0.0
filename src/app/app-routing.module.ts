@@ -22,6 +22,7 @@ import { CitaEditComponent } from './components/calendario/cita-edit/cita-edit.c
 import { CitasListComponent } from './components/calendario/citas-list/citas-list.component';
 import { PacienteDetalleComponent } from './components/pacientes/paciente-detalle/paciente-detalle.component';
 import { PacienteFormComponent } from './components/pacientes/paciente-form/paciente-form.component';
+import { PlanesListComponent } from './components/planes/planes-list/planes-list.component';
 
 
 const routes: Routes = [
@@ -45,6 +46,7 @@ const routes: Routes = [
   {path:'centro-form', component: CentroFormComponent, canActivate:[AuthGuard]},
   {path:'centro-detalle/:id', component: CentroDetalleComponent, canActivate:[AuthGuard]},
   {path:'perfil', component: PerfilComponent, canActivate:[AuthGuard]},
+  {path:'planes', component: PlanesListComponent, canActivate:[AuthGuard]},
   {path:'password/:id', component: ContrasenaComponent, canActivate:[AuthGuard]},
   {path:'pagina/404/no-encontrada', component: PageNotFoundComponent, canActivate:[AuthGuard]},
 ];

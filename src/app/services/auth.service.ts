@@ -67,6 +67,7 @@ export class AuthService {
         localStorage.removeItem('_em')
         localStorage.removeItem('_cli')
         localStorage.removeItem('_plan')
+        localStorage.removeItem('dias_restantes_p_g')
         this.router.navigate(['/login'])
 
         // Se manda un mensaje para validar el cierre de sesion y refrescar el menu 
@@ -93,8 +94,8 @@ export class AuthService {
   }
 
   // verificar usuario activo - After Login 3 - Sidebar/Footer
-  validarUsuarioActivo$(id: string, correo: string) {
-    return this.http.get<Usuario>(`${this.URI}/verificar/usuario/${id}/correo/${correo}`)
+  validarUsuarioActivo$(id: string, correo: string, id_clinica) {
+    return this.http.get<Usuario>(`${this.URI}/verificar/usuario/${id}/correo/${correo}/clinica/${id_clinica}`)
   }
 
   

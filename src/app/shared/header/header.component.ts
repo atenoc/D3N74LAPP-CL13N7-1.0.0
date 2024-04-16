@@ -16,7 +16,7 @@ export class HeaderComponent implements OnInit {
 
   usuario:Usuario
   idUsuario:string
-  rolUsuario:string
+  rol:string
   nombreUsuario:string
   llaveStatus:number
   nombreCentro:string
@@ -29,6 +29,7 @@ export class HeaderComponent implements OnInit {
 
   isDisabled:boolean 
   mensajePruebaTerminada:string
+  mensajeLink:string
 
   constructor(
     private sharedService:SharedService,
@@ -52,8 +53,11 @@ export class HeaderComponent implements OnInit {
 
     this.usuarioService.getUsuario$(localStorage.getItem('_us')).subscribe(
       res => {
+        
         this.usuario = res;
         this.idUsuario=this.usuario.id
+        this.rol=this.usuario.rol
+
         if(this.usuario.llave_status == 0){
           this.mostrarCambiarContrasena=true
           this.mensajeContrasena=Mensajes.CONTRASENA_ACTUALIZAR;
@@ -64,11 +68,19 @@ export class HeaderComponent implements OnInit {
           this.enlaceContrasena=''
         }
 
-        this.cifradoService.setEncryptedIdPlan(res.id_plan)
         if(this.cifradoService.getDecryptedIdPlan() == '0402PF3T'){
-          this.mensajePruebaTerminada = Mensajes.PRUEBA_TERMINADA
           this.isDisabled=true
-          console.log("Prueba 30 terminada");
+          if(this.rol=="suadmin"){
+            this.mensajePruebaTerminada = Mensajes.PRUEBA_TERMINADA
+            this.mensajeLink="Ver planes"
+            console.log("Prueba 30 terminada");
+          }else if(this.rol=="adminn2" || this.rol=="medic" || this.rol=="caja" || this.rol=="recepcion"){
+            this.mensajePruebaTerminada = Mensajes.PRUEBA_TERMINADA_USER
+            this.mensajeLink=""
+            console.log("Funcionalidades no disponibles para User");
+          }
+
+          
         }
 
         this.centroService.getCentro$(localStorage.getItem('_cli')).subscribe(

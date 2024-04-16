@@ -91,6 +91,7 @@ export class CitaFormComponent implements OnInit {
     console.log("CITA FORM")
 
     if(this.authService.validarSesionActiva()){
+      console.log("id_plan: " +this.cifradoService.getDecryptedIdPlan())
       if(this.cifradoService.getDecryptedIdPlan() == '0402PF3T'){
         this.isDisabled = true
         console.log("Prueba 30 terminada");

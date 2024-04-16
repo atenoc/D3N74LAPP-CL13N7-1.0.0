@@ -4,6 +4,7 @@ import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { SharedService } from 'src/app/services/shared.service';
 import * as $ from 'jquery';
+import { Mensajes } from 'src/app/shared/mensajes.config';
 
 @Component({
   selector: 'app-sidebar',
@@ -21,35 +22,64 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   mostrarClinicas:boolean=false;
   mostrarUsuarios:boolean=false;
 
+  id_plan:string
+  mensajeVigencia:string
+  mensajeRestanDias:string
+  linkPlanes:string
+
   constructor(
     private sharedService:SharedService, 
     public authService: AuthService, 
     private router: Router,
-    private renderer: Renderer2
+    private renderer: Renderer2,
   ) { }
 
   ngOnInit(): void {
     console.log("SIDEBAR Component")
     //this.inicializarAccordion()
 
-    this.authService.validarUsuarioActivo$(localStorage.getItem('_us'), localStorage.getItem('_em')).subscribe(
+    this.authService.validarUsuarioActivo$(localStorage.getItem('_us'), localStorage.getItem('_em'), localStorage.getItem('_cli')).subscribe(
       res => {
         this.usuario = res;
+        //console.log("sidebar usuario")
+        //console.log(this.usuario)
         this.idUsuario=this.usuario.id
         this.rolUsuario=this.usuario.rol
+        this.id_plan=this.usuario.id_plan
+        console.log("U Plan: "+this.id_plan)
+
         this.nombreUsuario=this.usuario.nombre +" "+this.usuario.apellidop
         if(this.rolUsuario=="sop"){
           this.mostrarClinicas=true
           this.mostrarUsuarios=true
+          this.mensajeVigencia=""
+          this.mensajeRestanDias=""
+          this.linkPlanes=""
         }
         if(this.rolUsuario=="suadmin"){
           this.mostrarUsuarios=true
+          if(this.id_plan == "0401PF30"){
+            this.mensajeVigencia=Mensajes.PRUEBA_GRATUITA_30;
+            this.mensajeRestanDias="Quedan "+localStorage.getItem('dias_restantes_p_g')+" días"
+            this.linkPlanes="Ver planes"
+          }else if(this.id_plan == "0402PF3T"){
+            this.mensajeVigencia=Mensajes.PRUEBA_TERMINADA
+            this.mensajeRestanDias=""
+            this.linkPlanes="Ver planes"
+          }
+          
         }
         if(this.rolUsuario=="adminn1"){
           this.mostrarUsuarios=true
+          this.mensajeVigencia=""
+          this.mensajeRestanDias=""
+          this.linkPlanes=""
         }
         if(this.rolUsuario=="adminn2" || this.rolUsuario=="medic" || this.rolUsuario=="caja" || this.rolUsuario=="recepcion"){
           this.mostrarUsuarios=false
+          this.mensajeVigencia=""
+          this.mensajeRestanDias=""
+          this.linkPlanes=""
         }
         //console.log("Usuario sidebar:: ")
         //console.log(this.usuario)
@@ -61,6 +91,16 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.sharedService.getNombreUsuario().subscribe(datoRecibido => {
       this.nombreUsuario = datoRecibido;
     });
+
+    this.sharedService.getMensajeVigenciaPlanGratuito().subscribe(datoRecibido => {
+      this.mensajeVigencia = datoRecibido;
+    });
+
+    this.sharedService.getDiasRestantesPlanGratuito().subscribe(datoRecibido => {
+      this.mensajeRestanDias = "Quedan "+datoRecibido+" días";
+    });
+
+
   }
 
   selectedIdUser(){
@@ -69,17 +109,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   salir(){
     this.authService.logout()
-
-    /*this.sharedService.mensajeActual.subscribe(
-      res => {
-        if(res){
-          this.rolUsuario=""
-          this.sharedService.notifyApp.emit();
-          console.log("Voy a mandar una notificación a App Component")
-
-        }
-      }
-    )*/
   }
 
   inicializarAccordion(): void {
@@ -87,10 +116,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       var Accordion = function(el, multiple) {
         this.el = el || {};
         this.multiple = multiple || false;
-    
-        // Variables privadas
         var links = this.el.find('.link');
-        // Evento
         links.on('click', { el: this.el, multiple: this.multiple }, this.dropdown);
       };
     

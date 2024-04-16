@@ -74,6 +74,8 @@ export const Mensajes = {
     EVENTO_NO_REGISTRADO: 'El evento no se puedo registrar ',
 
     //Planes
+    PRUEBA_GRATUITA_30: 'Prueba gratuita por 30 días ',
     PRUEBA_TERMINADA: 'Tu prueba gratuita ha terminado ', 
+    PRUEBA_TERMINADA_USER: 'Algunas funcionalidades no están disponibles, contacta a tu administrador ', 
 
 };

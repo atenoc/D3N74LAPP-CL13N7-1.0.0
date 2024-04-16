@@ -39,6 +39,7 @@ import { PacienteDetalleComponent } from './components/pacientes/paciente-detall
 import { PacienteFormComponent } from './components/pacientes/paciente-form/paciente-form.component';
 import { EventFormComponent } from './components/calendario/event-form/event-form.component';
 import { SettingComponent } from './shared/setting/setting.component';
+import { PlanesListComponent } from './components/planes/planes-list/planes-list.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { SettingComponent } from './shared/setting/setting.component';
     PacienteDetalleComponent,
     PacienteFormComponent,
     EventFormComponent,
-    SettingComponent
+    SettingComponent,
+    PlanesListComponent
   ],
   imports: [
     BrowserModule,

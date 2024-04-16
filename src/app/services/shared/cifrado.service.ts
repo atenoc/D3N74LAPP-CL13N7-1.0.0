@@ -50,7 +50,9 @@ export class CifradoService {
     return encryptedLlave;
   }
 
+
   setEncryptedIdPlan(id_plan: string): void {
+    console.log("Valor a encriptar: "+id_plan)
     const encryptedRol = CryptoJS.AES.encrypt(id_plan, this.secretKey).toString();
     localStorage.setItem('_plan', encryptedRol);
   }
@@ -58,7 +60,9 @@ export class CifradoService {
   getDecryptedIdPlan(): string | null {
     const encryptedRol = localStorage.getItem('_plan');
     if (encryptedRol) {
+      console.log("Vamos a desencriptar...")
       const bytes = CryptoJS.AES.decrypt(encryptedRol, this.secretKey);
+      console.log("Valor desencriptado: "+bytes.toString(CryptoJS.enc.Utf8))
       return bytes.toString(CryptoJS.enc.Utf8);
     }
     return null;
