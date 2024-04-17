@@ -64,6 +64,9 @@
       <div class="ml-auto">
          <button *ngIf="mostrarBotonEditar" class="btn btn-outline-primary btn-sm" (click)="editarCita()"> <i class="nav-icon fas fa-edit"></i> Editar</button>
       </div>
+      <div class="ml-auto">
+        <button *ngIf="mostrarBotonEditar" class="btn btn-outline-success btn-sm" (click)="atenderPaciente(data.id_paciente)"> <i class="far fa-hand-paper"></i> Atender</button>
+     </div>
     </div>
 
    </div>

@@ -19,7 +19,6 @@ import Swal from 'sweetalert2';
 export class PacienteFormComponent implements OnInit {
 
   rol:string
-
   formularioPaciente:FormGroup;
   date: Date;
   fecha_creacion:string
@@ -32,7 +31,6 @@ export class PacienteFormComponent implements OnInit {
   soloLetras: string;
 
   paciente:Paciente
-
   catSexo:CatalogoSexo[] = [];
 
   isDisabled:boolean = false

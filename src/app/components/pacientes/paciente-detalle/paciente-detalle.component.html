@@ -27,10 +27,13 @@
           <div class="card card-primary">
             <div class="card-header">
               <h3 class="card-title">
-                Información del paciente
+                <i class="fas fa-user"></i> Información del paciente
               </h3>
               <div class="card-tools">
-                <button class="btn btn-light btn-sm" (click)="editando = true"> <i class="nav-icon fas fa-edit"></i> Editar</button>
+                <button class="btn btn-light btn-sm mr-3" (click)="editando = true"> <i class="nav-icon fas fa-edit"></i> Editar</button>
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
               </div>
             </div>
             <div class="card-body">
@@ -83,8 +86,7 @@
                                 <input type="text" class="form-control sin-borde" formControlName="telefono" readonly>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
+
                         <div class="col-sm">
                             <div class="form-group">
                                 <small class="text-muted">Correo</small>
@@ -166,6 +168,9 @@
                             <div class="form-group">
                                 <small class="text-muted">Apellido Materno </small>
                                 <input type="text" class="form-control" formControlName="apellidom">
+                                <div *ngIf="formularioPaciente.controls['apellidom'].invalid" class="invalid-input-message">
+                                    <span *ngIf="formularioPaciente.controls['apellidom'].errors.invalidRegex">{{ soloLetras }}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -175,6 +180,9 @@
                             <div class="form-group">
                                 <small class="text-muted">Edad</small>
                                 <input type="text" class="form-control" formControlName="edad" maxlength="3">
+                                <div *ngIf="formularioPaciente.controls['edad'].invalid" class="invalid-input-message">
+                                    <span *ngIf="formularioPaciente.controls['edad'].errors">{{ soloNumeros }}</span>
+                                </div>
                             </div>
                         </div>
 
@@ -203,8 +211,6 @@
                                 </div> 
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-sm">
                             <div class="form-group">
                                 <small class="text-muted">Correo</small>
@@ -238,7 +244,7 @@
                     <hr/> 
                     <div class="d-flex mt-2">
                         <div>
-                            <small *ngIf="rol=='suadmin' || rol=='sop'" class="text-muted">Eliminar usuario</small>
+                            <small *ngIf="rol=='suadmin' || rol=='sop'" class="text-muted">Eliminar paciente</small>
                         </div>
                         <div class="ml-auto">
                             <small class="text-muted">Los campos marcados con (*) son obligatorios</small>
@@ -263,5 +269,87 @@
       </div>
     </div>
 </section> 
+
+<div class="container">
+
+    <div class="card card-success">
+        <div class="card-header">
+          <h3 class="card-title"><i class="fas fa-book-medical"></i> Historia clínica</h3>
+    
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="maximize">
+              <i class="fas fa-expand"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+
+        </div>
+        <div class="card-body">
+          The body of the card
+        </div>
+    </div>
+
+    <div class="card card-success">
+        <div class="card-header">
+          <h3 class="card-title"><i class="fas fa-clipboard-list"></i> Diagnostico y plan de tratamiento</h3>
+    
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="maximize">
+              <i class="fas fa-expand"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+
+        </div>
+        <div class="card-body">
+          The body of the card
+        </div>
+    </div>
+
+    <div class="card card-success">
+        <div class="card-header">
+          <h3 class="card-title"><i class="fas fa-tooth"></i> Tratamientos realizados</h3>
+    
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="maximize">
+              <i class="fas fa-expand"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+
+        </div>
+        <div class="card-body">
+          The body of the card
+        </div>
+    </div>
+
+    <div class="card card-success">
+        <div class="card-header">
+          <h3 class="card-title"><i class="fas fa-money-check-alt"></i> Historial de pagos</h3>
+    
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="maximize">
+              <i class="fas fa-expand"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+
+        </div>
+        <div class="card-body">
+          The body of the card
+        </div>
+    </div>
+
+</div>
+
+
 
 <ngx-spinner bdColor = "rgba(0,0,0,0.7)" size = "large" color = "#ffffff" type = "ball-scale-multiple" [fullScreen] = "true"><p style="color: white" > Cargando, por favor espere... </p></ngx-spinner>

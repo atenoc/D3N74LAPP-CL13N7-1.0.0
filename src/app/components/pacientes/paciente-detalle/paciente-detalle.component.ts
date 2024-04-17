@@ -17,6 +17,7 @@ import Swal from 'sweetalert2';
 })
 export class PacienteDetalleComponent implements OnInit {
 
+  rol:string
   id: string;
   paciente:Paciente;
   formularioPaciente:FormGroup;
@@ -31,8 +32,7 @@ export class PacienteDetalleComponent implements OnInit {
   correoValido: string;
   telefonoLongitud: string;
   soloNumeros: string;
-
-  rol:string
+  soloLetras: string;
 
   catSexo:CatalogoSexo[] = [];
 
@@ -50,6 +50,7 @@ export class PacienteDetalleComponent implements OnInit {
       this.correoValido = Mensajes.CORREO_VALIDO;
       this.telefonoLongitud = Mensajes.TELEFONO_LONGITUD;
       this.soloNumeros = Mensajes.SOLO_NUMEROS;
+      this.soloLetras = Mensajes.SOLO_LETRAS;
    }
 
   ngOnInit(): void {
@@ -58,8 +59,8 @@ export class PacienteDetalleComponent implements OnInit {
     this.formularioPaciente = this.formBuilder.group({
       nombre: ['', [Validators.required, Validators.minLength(3)]],
       apellidop: ['', [Validators.required, Validators.minLength(3)]],
-      apellidom: [''],
-      edad: [''],
+      apellidom: ['', [this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
+      edad: ['', [Validators.pattern('^[0-9]+$'), Validators.maxLength(3)]],
       sexo: [''],
       telefono: ['', [Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
       correo: ['', [Validators.minLength(5), // Hacer que el campo sea opcional
@@ -109,6 +110,18 @@ export class PacienteDetalleComponent implements OnInit {
     err => console.log("error: " + err)
     );
 
+  }
+
+  validarTexto(regex: RegExp) {
+    return (control: AbstractControl) => {
+      const value = control.value;
+  
+      if (value && !regex.test(value)) {
+        return { 'invalidRegex': true };
+      }
+  
+      return null;
+    };
   }
 
   emailValidator(control) {
