@@ -1,5 +1,6 @@
 const ipHost:string ="http://localhost:4000"
-//const ipHost:string ="https://d3n74l4pp-4p1-production.up.railway.app"
+
+//const ipHost:string ="https://d3n74l4pp-4p1-100-production.up.railway.app" // V1
 
 export const environment = {
   production: true,
@@ -13,6 +14,7 @@ export const environment = {
   urlApiMedicos: ipHost+'/api/medicos',
   urlApiPacientes: ipHost+'/api/pacientes',
   urlApiCitas: ipHost+'/api/citas',
+  urlApiPlanes: ipHost+'/api/planes',
   secretKey: '123456'
 };
 

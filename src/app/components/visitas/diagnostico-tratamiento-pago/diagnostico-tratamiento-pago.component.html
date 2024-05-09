@@ -1,0 +1,127 @@
+<!-- Paciente Detalle  diagnostico-tratamiento-pago -->
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h5>
+            Titulo cita
+          </h5>
+        </div>
+        <div class="col-sm-6 hide-on-mobile">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a routerLink="/calendario">Calendario</a></li>
+            <li class="breadcrumb-item"><a routerLink="/citas">Agenda</a></li>
+            <li class="breadcrumb-item"><a routerLink="/pacientes">Pacientes</a></li>
+            <li class="breadcrumb-item active">Detalle</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+</section>
+
+<div class="container">
+  <div class="card card-primary card-outline card-outline-tabs">
+    <div class="card-header p-0 border-bottom-0">
+      <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
+
+        <li class="nav-item">
+          <a class="nav-link active" id="custom-tabs-diagnostico-tratamiento" data-toggle="pill" href="#tab-diagnostico-tratamiento"><i class="fas fa-clipboard-list"></i> Diagnostico y tratamiento</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="custom-tabs-tratamientos-realizados" data-toggle="pill" href="#tab-tratamientos-realizados"><i class="fas fa-tooth"></i> Tratamientos realizados</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="custom-tabs-historial-pagos" data-toggle="pill" href="#tab-historial-pagos"><i class="fas fa-money-check-alt"></i> Pagos</a>
+        </li>
+      </ul>
+      <div class="card-tools" style="margin-top: -35px;">
+        <button type="button" class="btn btn-tool" data-card-widget="maximize">
+          <i class="fas fa-expand"></i>
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="tab-content" id="custom-tabs-four-tabContent">
+        <div class="tab-pane fade show active" id="tab-diagnostico-tratamiento">
+
+          <button type="button" class="btn btn-primary">Nuevo Diagnóstico y Tratamiento</button>
+
+          <div class="accordion" id="historialTratamientos">
+              <div class="accordion-item">
+                  <h2 class="accordion-header">
+                      <button class="accordion-button collapsed" type="button" >
+                          Fecha del tratamiento... 
+                      </button>
+                  </h2>
+                  <div>
+                      <div class="accordion-body">
+                          Descripción del tratamiento... : 
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+
+          <form>
+              <!-- Diagnóstico -->
+              <div class="mb-3">
+                  <label for="descripcionProblema" class="form-label">Descripción del problema</label>
+                  <textarea class="form-control" id="descripcionProblema" rows="3"></textarea>
+              </div>
+              <div class="mb-3">
+                  <label for="fechaDiagnostico" class="form-label">Fecha del diagnóstico</label>
+                  <input type="date" class="form-control" id="fechaDiagnostico">
+              </div>
+              <div class="mb-3">
+                  <label for="codigoDiagnostico" class="form-label">Código de diagnóstico (CIE-10)</label>
+                  <input type="text" class="form-control" id="codigoDiagnostico">
+              </div>
+              <div class="mb-3">
+                  <label for="fileInput" class="form-label">Subir archivos de evidencia</label>
+                  <input class="form-control" type="file" id="fileInput" multiple>
+              </div>
+
+              <!-- Plan de tratamiento -->
+              <div class="mb-3">
+                  <label for="tratamientoPropuesto" class="form-label">Tratamiento propuesto</label>
+                  <textarea class="form-control" id="tratamientoPropuesto" rows="3"></textarea>
+              </div>
+              <div class="mb-3">
+                  <label for="medicamentos" class="form-label">Medicamentos prescritos</label>
+                  <input type="text" class="form-control" id="medicamentos">
+              </div>
+              <div class="mb-3">
+                  <label for="costoEstimado" class="form-label">Costo estimado</label>
+                  <input type="number" class="form-control" id="costoEstimado">
+              </div>
+
+              <!-- Seguimiento y notas -->
+              <div class="mb-3">
+                  <label for="proximaCita" class="form-label">Próxima cita</label>
+                  <input type="date" class="form-control" id="proximaCita">
+              </div>
+              <div class="mb-3">
+                  <label for="notasSeguimiento" class="form-label">Notas de seguimiento</label>
+                  <textarea class="form-control" id="notasSeguimiento" rows="3"></textarea>
+              </div>
+
+              <!-- Botón de acción -->
+              <div class="mb-3">
+                  <button type="submit" class="btn btn-primary">Guardar</button>
+              </div>
+          </form>
+
+
+        </div>
+        <div class="tab-pane fade" id="tab-tratamientos-realizados">
+           4
+        </div>
+        <div class="tab-pane fade" id="tab-historial-pagos">
+          5
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

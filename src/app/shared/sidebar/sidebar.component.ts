@@ -107,6 +107,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/password', this.idUsuario]);
   }
 
+  irAPerfil(){
+    this.router.navigate(['/perfil']);
+  }
   salir(){
     this.authService.logout()
   }
