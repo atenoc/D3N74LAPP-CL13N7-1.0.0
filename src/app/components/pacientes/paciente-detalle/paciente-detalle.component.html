@@ -27,6 +27,9 @@
         <a class="nav-link active" id="custom-tabs-datos-personales" data-toggle="pill" href="#tab-datos-personales"><i class="fas fa-user"></i> Datos personales</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" id="custom-tabs-tratamientos-realizados" data-toggle="pill" href="#tab-tratamientos-realizados"><i class="fas fa-tooth"></i> Tratamientos realizados</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" id="custom-tabs-historial-pagos" data-toggle="pill" href="#tab-historial-pagos"><i class="fas fa-money-check-alt"></i> Historial de pagos</a>
       </li>
     </ul>
@@ -174,6 +177,34 @@
         </form>
 
       </div>
+      <div class="tab-pane fade" id="tab-tratamientos-realizados">
+        <h2>Tratamientos Realizados</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Descripción del Tratamiento</th>
+                        <th scope="col">Dentista</th>
+                        <th scope="col">Costo</th>
+                        <th scope="col">Detalles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Asumiendo que "tratamientos" es un array de objetos con información del tratamiento -->
+                    <tr>
+                        <th scope="row"></th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <button class="btn btn-info">Ver Detalles</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+      </div>
       <div class="tab-pane fade" id="tab-historial-pagos">
         5
       </div>
@@ -289,5 +320,7 @@
   </div>
 </div>
 </div>
+
+
 
 <ngx-spinner bdColor = "rgba(0,0,0,0.7)" size = "large" color = "#ffffff" type = "ball-scale-multiple" [fullScreen] = "true"><p style="color: white" > Cargando, por favor espere... </p></ngx-spinner>
