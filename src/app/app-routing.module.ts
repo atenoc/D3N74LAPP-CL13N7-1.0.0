@@ -23,8 +23,7 @@ import { CitasListComponent } from './components/calendario/citas-list/citas-lis
 import { PacienteDetalleComponent } from './components/pacientes/paciente-detalle/paciente-detalle.component';
 import { PacienteFormComponent } from './components/pacientes/paciente-form/paciente-form.component';
 import { PlanesListComponent } from './components/planes/planes-list/planes-list.component';
-import { DiagnosticoTratamientoPagoComponent } from './components/visitas/diagnostico-tratamiento-pago/diagnostico-tratamiento-pago.component';
-
+import { DetalleVisitaComponent } from './components/visitas/detalle-visita/detalle-visita.component';
 
 const routes: Routes = [
   {path:'', redirectTo:'/home', pathMatch:'full'},
@@ -43,7 +42,7 @@ const routes: Routes = [
   {path:'cita-form', component: CitaFormComponent, canActivate:[AuthGuard]},
   {path:'cita-edit/:id', component: CitaEditComponent, canActivate:[AuthGuard]},
   {path:'citas', component: CitasListComponent, canActivate:[AuthGuard]},
-  {path:'diagnostico-tratamento', component: DiagnosticoTratamientoPagoComponent, canActivate:[AuthGuard]},
+  {path:'detalle-visita/:id', component: DetalleVisitaComponent, canActivate:[AuthGuard]},
   {path:'centros', component: CentroListComponent, canActivate:[AuthGuard]},
   {path:'centro-form', component: CentroFormComponent, canActivate:[AuthGuard]},
   {path:'centro-detalle/:id', component: CentroDetalleComponent, canActivate:[AuthGuard]},

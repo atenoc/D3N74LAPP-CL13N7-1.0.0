@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { error } from 'console';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CatalogoSexo } from 'src/app/models/Catalogo.model';
+import { Cita, CitaPaciente } from 'src/app/models/Cita.model';
 import { Paciente } from 'src/app/models/Paciente.model';
 import { CatalogoService } from 'src/app/services/catalogo.service';
+import { CitaService } from 'src/app/services/citas/cita.service';
 import { PacienteService } from 'src/app/services/pacientes/paciente.service';
 import { CifradoService } from 'src/app/services/shared/cifrado.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
@@ -35,6 +38,7 @@ export class PacienteDetalleComponent implements OnInit {
   soloLetras: string;
 
   catSexo:CatalogoSexo[] = [];
+  citas:CitaPaciente[] = []
 
   constructor(
     private catalogoService:CatalogoService,
@@ -44,6 +48,7 @@ export class PacienteDetalleComponent implements OnInit {
     private router: Router,
     private cifradoService: CifradoService,
     private spinner: NgxSpinnerService,
+    private citasService: CitaService
 
   ) {
     this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
@@ -100,6 +105,7 @@ export class PacienteDetalleComponent implements OnInit {
         });
 
         this.cargarCatSexo()
+        this.cargarCitas()
       },
       err => {
         this.spinner.hide();
@@ -253,6 +259,24 @@ export class PacienteDetalleComponent implements OnInit {
     },
     err => console.log("error: " + err)
     )
+  }
+
+  cargarCitas(){
+    console.log("This id: "+this.id)
+
+    this.citasService.getCitasByIdPaciente(this.id).subscribe (res => {
+      console.log("Citas:")
+      this.citas = res
+      console.log(this.citas)
+
+    },
+    err => console.log("error: "+ err)
+  )}
+
+  selectedIdCita(id: string) {
+    console.log("id cita seleccionado: "+id)
+    this.router.navigate(['/detalle-visita', id]);
+    //this.router.navigate(['/pacientes']);
   }
 
 }

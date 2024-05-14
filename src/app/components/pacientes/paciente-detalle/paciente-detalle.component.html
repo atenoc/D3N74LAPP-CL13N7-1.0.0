@@ -316,7 +316,14 @@
 
   </div>
   <div class="card-body">
-    Juanito González - Consulta - 07/10/2024
+    
+    <div *ngIf="citas">
+      <div *ngFor="let cita of citas">
+        <a class="link-opacity-100 cursor-pointer" (click)="selectedIdCita(cita.id)">{{ cita.titulo }} / {{cita.motivo}} / {{ cita.fecha_hora_inicio}}</a>
+      </div>
+    </div>
+
+    
   </div>
 </div>
 </div>

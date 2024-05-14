@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { AppRoutingModule } from './components/visitas/diagnostico-tratamiento-pago/app-routing.module';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { NavigateComponent } from './components/navigate/navigate.component';
@@ -40,7 +40,7 @@ import { PacienteFormComponent } from './components/pacientes/paciente-form/paci
 import { EventFormComponent } from './components/calendario/event-form/event-form.component';
 import { SettingComponent } from './shared/setting/setting.component';
 import { PlanesListComponent } from './components/planes/planes-list/planes-list.component';
-import { DiagnosticoTratamientoPagoComponent } from './components/visitas/diagnostico-tratamiento-pago/diagnostico-tratamiento-pago.component';
+import { DetalleVisitaComponent } from './components/visitas/detalle-visita/detalle-visita.component';
 
 @NgModule({
   declarations: [
@@ -74,7 +74,7 @@ import { DiagnosticoTratamientoPagoComponent } from './components/visitas/diagno
     EventFormComponent,
     SettingComponent,
     PlanesListComponent,
-    DiagnosticoTratamientoPagoComponent
+    DetalleVisitaComponent
   ],
   imports: [
     BrowserModule,
