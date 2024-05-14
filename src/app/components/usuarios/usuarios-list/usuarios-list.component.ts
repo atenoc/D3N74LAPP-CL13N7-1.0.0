@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
-import { UsuarioService } from 'src/app/services/usuario.service';
+import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
 import { NgbModal, NgbModalConfig, NgbPaginationConfig } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from 'src/app/services/auth.service';
-import { CifradoService } from 'src/app/services/shared/cifrado.service';
+import { CifradoService } from 'src/app/services/cifrado.service';
 
 @Component({
   selector: 'app-usuarios',

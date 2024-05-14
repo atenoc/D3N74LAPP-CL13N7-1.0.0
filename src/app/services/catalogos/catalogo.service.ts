@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
-import { CatalogoEspecialidad, CatalogoRol, CatalogoSexo, CatalogoTitulo } from '../models/Catalogo.model';
+import { CatalogoEspecialidad, CatalogoRol, CatalogoSexo, CatalogoTitulo } from '../../models/Catalogo.model';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({

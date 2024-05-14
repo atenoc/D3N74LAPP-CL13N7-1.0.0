@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, catchError, map, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
-import { Catalogo } from '../models/Catalogo.model';
+import { Catalogo } from '../../models/Catalogo.model';
 
 @Injectable({
   providedIn: 'root'

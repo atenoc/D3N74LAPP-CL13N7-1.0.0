@@ -6,8 +6,8 @@ import { AuthService } from '../../services/auth.service'
 import Swal from 'sweetalert2';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Mensajes } from 'src/app/shared/mensajes.config';
-import { CifradoService } from 'src/app/services/shared/cifrado.service';
-import { CentroService } from 'src/app/services/centro.service';
+import { CifradoService } from 'src/app/services/cifrado.service';
+import { CentroService } from 'src/app/services/clinicas/centro.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { PlanesService } from 'src/app/services/planes/planes.service';
 

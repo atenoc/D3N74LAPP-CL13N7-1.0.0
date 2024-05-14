@@ -6,11 +6,11 @@ import timegridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import esLocale from '@fullcalendar/core/locales/es';
 import { NgbModal, NgbModalConfig, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { DetalleEventoComponent } from './detalle-evento/detalle-evento.component';
-import { CitaFormComponent } from './cita-form/cita-form.component';
+import { DetalleEventoComponent } from '../detalle-evento/detalle-evento.component';
+import { CitaFormComponent } from '../cita-form/cita-form.component';
 import { CitaService } from 'src/app/services/citas/cita.service';
 import { Cita } from 'src/app/models/Cita.model';
-import { EventFormComponent } from './event-form/event-form.component';
+import { EventFormComponent } from '../event-form/event-form.component';
 
 @Component({
   selector: 'app-calendario',

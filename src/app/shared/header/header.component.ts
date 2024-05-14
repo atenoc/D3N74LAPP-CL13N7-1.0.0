@@ -1,11 +1,11 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
-import { CentroService } from 'src/app/services/centro.service';
-import { UsuarioService } from 'src/app/services/usuario.service';
+import { CentroService } from 'src/app/services/clinicas/centro.service';
+import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
 import { Mensajes } from '../mensajes.config';
 import { SharedService } from 'src/app/services/shared.service';
-import { CifradoService } from 'src/app/services/shared/cifrado.service';
+import { CifradoService } from 'src/app/services/cifrado.service';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({

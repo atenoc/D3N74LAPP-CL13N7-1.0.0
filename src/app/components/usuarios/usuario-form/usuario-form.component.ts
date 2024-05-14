@@ -1,14 +1,14 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Usuario } from 'src/app/models/Usuario.model';
-import { UsuarioService } from 'src/app/services/usuario.service';
+import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
 import Swal from 'sweetalert2';
 import { Mensajes } from 'src/app/shared/mensajes.config';
 import { CatalogoEspecialidad, CatalogoRol, CatalogoTitulo } from 'src/app/models/Catalogo.model';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { CatalogoService } from 'src/app/services/catalogo.service';
-import { CifradoService } from 'src/app/services/shared/cifrado.service';
+import { CatalogoService } from 'src/app/services/catalogos/catalogo.service';
+import { CifradoService } from 'src/app/services/cifrado.service';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({

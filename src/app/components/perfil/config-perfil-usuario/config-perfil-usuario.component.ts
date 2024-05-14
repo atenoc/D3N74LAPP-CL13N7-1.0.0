@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CentroService } from 'src/app/services/centro.service';
+import { CentroService } from 'src/app/services/clinicas/centro.service';
 import { SharedService } from 'src/app/services/shared.service';
-import { CifradoService } from 'src/app/services/shared/cifrado.service';
-import { UsuarioService } from 'src/app/services/usuario.service';
+import { CifradoService } from 'src/app/services/cifrado.service';
+import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
 import Swal from 'sweetalert2';
 declare var require: any;

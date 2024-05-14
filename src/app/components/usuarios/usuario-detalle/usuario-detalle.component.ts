@@ -5,10 +5,10 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { CatalogoEspecialidad, CatalogoRol, CatalogoTitulo } from 'src/app/models/Catalogo.model';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from 'src/app/services/auth.service';
-import { CatalogoService } from 'src/app/services/catalogo.service';
+import { CatalogoService } from 'src/app/services/catalogos/catalogo.service';
 import { SharedService } from 'src/app/services/shared.service';
-import { CifradoService } from 'src/app/services/shared/cifrado.service';
-import { UsuarioService } from 'src/app/services/usuario.service';
+import { CifradoService } from 'src/app/services/cifrado.service';
+import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
 import Swal from 'sweetalert2';
 

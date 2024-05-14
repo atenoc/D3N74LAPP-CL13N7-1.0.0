@@ -9,7 +9,7 @@ import { Paciente } from 'src/app/models/Paciente.model';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { CifradoService } from 'src/app/services/shared/cifrado.service';
+import { CifradoService } from 'src/app/services/cifrado.service';
 
 @Component({
   selector: 'app-cita-form',
@@ -191,7 +191,7 @@ export class CitaFormComponent implements OnInit {
 
   registrarCita(){
     var citaJson = {
-      title: "Cita. "+this.nombrePaciente+" "+this.apellidoPaternoPaciente,
+      title: "Cita · "+this.nombrePaciente+" "+this.apellidoPaternoPaciente,
       motivo: this.motivo,
       color: '#00a65a',
       start: this.fecha_hora_inicio,

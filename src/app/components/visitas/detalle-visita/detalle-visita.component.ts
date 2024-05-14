@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Cita, CitaEditar, CitaPaciente } from 'src/app/models/Cita.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { CitaService } from 'src/app/services/citas/cita.service';
-import { CifradoService } from 'src/app/services/shared/cifrado.service';
+import { CifradoService } from 'src/app/services/cifrado.service';
 
 @Component({
   selector: 'app-detalle-visita',

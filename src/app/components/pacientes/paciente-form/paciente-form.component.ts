@@ -5,9 +5,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { CatalogoSexo } from 'src/app/models/Catalogo.model';
 import { Paciente } from 'src/app/models/Paciente.model';
 import { AuthService } from 'src/app/services/auth.service';
-import { CatalogoService } from 'src/app/services/catalogo.service';
+import { CatalogoService } from 'src/app/services/catalogos/catalogo.service';
 import { PacienteService } from 'src/app/services/pacientes/paciente.service';
-import { CifradoService } from 'src/app/services/shared/cifrado.service';
+import { CifradoService } from 'src/app/services/cifrado.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
 import Swal from 'sweetalert2';
 

@@ -3,9 +3,9 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { ActivatedRoute, Router } from '@angular/router';
 import { Centro } from 'src/app/models/Centro.model';
 import { AuthService } from 'src/app/services/auth.service';
-import { CentroService } from 'src/app/services/centro.service';
+import { CentroService } from 'src/app/services/clinicas/centro.service';
 import { SharedService } from 'src/app/services/shared.service';
-import { CifradoService } from 'src/app/services/shared/cifrado.service';
+import { CifradoService } from 'src/app/services/cifrado.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
 import Swal from 'sweetalert2';
 

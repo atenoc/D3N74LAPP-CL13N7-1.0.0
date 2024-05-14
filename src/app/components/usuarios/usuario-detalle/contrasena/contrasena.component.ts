@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
-import { CifradoService } from 'src/app/services/shared/cifrado.service';
+import { CifradoService } from 'src/app/services/cifrado.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
 
 @Component({

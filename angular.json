@@ -46,8 +46,7 @@
               "node_modules/admin-lte/dist/js/adminlte.min.js",
               "node_modules/admin-lte/plugins/moment/moment.min.js",
               "node_modules/admin-lte/plugins/fullcalendar/main.js",
-              "src/assets/js/custom-wizard.js",
-              "src/assets/js/full-calendar-init.js"
+              "src/assets/js/custom-wizard.js"
             ]
           },
           "configurations": {
