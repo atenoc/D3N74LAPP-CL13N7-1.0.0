@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Cita, CitaEditar, CitaPaciente } from 'src/app/models/Cita.model';
+import { CitaEditar } from 'src/app/models/Cita.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { CitaService } from 'src/app/services/citas/cita.service';
 import { CifradoService } from 'src/app/services/cifrado.service';

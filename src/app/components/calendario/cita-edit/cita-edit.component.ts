@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgbActiveModal, NgbDateParserFormatter, NgbDateStruct, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateParserFormatter, NgbDateStruct, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Cita, CitaEditar } from 'src/app/models/Cita.model';
+import { CitaEditar } from 'src/app/models/Cita.model';
 import { Paciente } from 'src/app/models/Paciente.model';
 import { CitaService } from 'src/app/services/citas/cita.service';
 import { PacienteService } from 'src/app/services/pacientes/paciente.service';

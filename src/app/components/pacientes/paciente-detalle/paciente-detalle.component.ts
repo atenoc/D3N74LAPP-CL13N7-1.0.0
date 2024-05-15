@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { error } from 'console';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CatalogoSexo } from 'src/app/models/Catalogo.model';
-import { Cita, CitaPaciente } from 'src/app/models/Cita.model';
+import { CitaPaciente } from 'src/app/models/Cita.model';
 import { Paciente } from 'src/app/models/Paciente.model';
 import { CatalogoService } from 'src/app/services/catalogos/catalogo.service';
 import { CitaService } from 'src/app/services/citas/cita.service';

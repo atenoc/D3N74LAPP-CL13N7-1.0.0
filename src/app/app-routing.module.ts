@@ -48,6 +48,7 @@ const routes: Routes = [
   {path:'planes', component: PlanesListComponent, canActivate:[AuthGuard]},
   {path:'password/:id', component: ContrasenaComponent, canActivate:[AuthGuard]},
   {path:'pagina/404/no-encontrada', component: PageNotFoundComponent, canActivate:[AuthGuard]},
+  {path:'**', component: PageNotFoundComponent, canActivate:[AuthGuard]},
 ];
 
 @NgModule({

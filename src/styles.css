@@ -57,3 +57,22 @@
     --fc-button-active-bg-color: #004889;
     --fc-button-active-border-color: #007fff;
 }
+
+/* Estilos para el scrollbar */
+::-webkit-scrollbar {
+    width: 13px; /* Ancho total del scrollbar incluyendo "margen" */
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    box-shadow: inset 4px 0 0 0 transparent; /* Espacio transparente simulando margen a la derecha */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #a0a0a0;
+    border-radius: 10px;  
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}
