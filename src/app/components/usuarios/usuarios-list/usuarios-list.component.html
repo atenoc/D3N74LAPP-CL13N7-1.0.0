@@ -36,8 +36,8 @@
               <table class="table-responsive table-hover table-striped hide-on-mobile">
                 <thead class="thead-dark">
                   <tr>
-                    <th class="col-1">#</th> 
-                    <th class="col-1">Título</th>
+                    <th class="primer-columna">#</th> 
+                    <!-- <th class="col-1">Título</th> -->
                     <th class="col-2 cursor-pointer" (click)="onSortChange('nombre')">
                       Nombre(s)
                       <span *ngIf="orderBy === 'nombre' && way === 'asc'">▲</span>
@@ -67,8 +67,8 @@
                 <tbody>
                   <tr *ngFor="let usuario of usuarios">
                     <!-- <th class="text-muted"><small><strong>{{ usuario.id }}</strong></small></th> -->
-                    <td class="text-muted">{{ usuario.contador }}</td>
-                    <td>{{ usuario.titulo }}</td>
+                    <th scope="row" class="text-muted">{{ usuario.contador }}</th>
+                    <!-- <td>{{ usuario.titulo }}</td> -->
                     <td>{{ usuario.nombre }}</td>
                     <td>{{ usuario.apellidop }}</td>
                     <td>{{ usuario.apellidom }}</td>

@@ -65,14 +65,42 @@
 
 ::-webkit-scrollbar-track {
     background: #f1f1f1;
-    box-shadow: inset 4px 0 0 0 transparent; /* Espacio transparente simulando margen a la derecha */
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #a0a0a0;
+    background: #c1c1c1;
     border-radius: 10px;  
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #888;
+    background: #a5a5a5;
+}
+
+
+/* estilo para las tablas */
+
+.table-responsive {
+    /*display: inline-table !important;*/
+    border-collapse: separate !important;
+    border-spacing: 3px !important;
+}
+
+.table-responsive thead {
+    color: white !important;
+    /*background-color: #0472c9 !important;*/
+    background-color: #3f9ffb;
+    height: 50px !important;
+}
+
+/*.table-striped tbody tr:nth-child(odd) {
+    background-color: #f0f8ff !important;
+}*/
+
+.table-hover tbody tr:hover {
+    color: #000000 !important;
+    background-color: #acdaff !important;
+}
+
+.primer-columna{
+    width: 3% !important;
 }
