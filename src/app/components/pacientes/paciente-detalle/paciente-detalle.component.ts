@@ -273,9 +273,9 @@ export class PacienteDetalleComponent implements OnInit {
     err => console.log("error: "+ err)
   )}
 
-  selectedIdCita(id: string) {
+  selectedIdPaciente(id: string) {
     console.log("id cita seleccionado: "+id)
-    this.router.navigate(['/detalle-visita', id]);
+    this.router.navigate(['/diagnostico/tratamiento/paciente', id]);
     //this.router.navigate(['/pacientes']);
   }
 

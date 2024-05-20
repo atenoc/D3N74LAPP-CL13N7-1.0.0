@@ -39,6 +39,7 @@ import { EventFormComponent } from './components/calendario/event-form/event-for
 import { SettingComponent } from './shared/setting/setting.component';
 import { PlanesListComponent } from './components/planes/planes-list/planes-list.component';
 import { DetalleVisitaComponent } from './components/visitas/detalle-visita/detalle-visita.component';
+import { DiagnosticoTratamientoComponent } from './components/pacientes/diagnostico-tratamiento/diagnostico-tratamiento.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { DetalleVisitaComponent } from './components/visitas/detalle-visita/deta
     EventFormComponent,
     SettingComponent,
     PlanesListComponent,
-    DetalleVisitaComponent
+    DetalleVisitaComponent,
+    DiagnosticoTratamientoComponent
   ],
   imports: [
     BrowserModule,

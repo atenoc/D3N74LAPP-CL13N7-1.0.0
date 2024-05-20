@@ -34,7 +34,7 @@
                 <a class="nav-link" id="custom-tabs-tratamientos-realizados" data-toggle="pill" href="#tab-tratamientos-realizados"><i class="fas fa-tooth"></i> Tratamientos realizados</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="custom-tabs-historial-pagos" data-toggle="pill" href="#tab-historial-pagos"><i class="fas fa-money-check-alt"></i> Historial de pagos</a>
+                <a class="nav-link" id="custom-tabs-historial-pagos" data-toggle="pill" href="#tab-historial-pagos"><i class="fas fa-dollar-sign"></i> Historial de pagos</a>
               </li>
             </ul>
             <div class="card-tools" style="margin-top: -35px;">
@@ -98,7 +98,7 @@
     
                       <div class="col-sm">
                           <div class="form-group">
-                              <span class="text-muted">Sexo</span>
+                              <span class="text-muted">Género </span>
                               <select class="form-select" formControlName="sexo" [class.sin-borde]="!editando" [disabled]="!editando">
                                   <option selected disabled [value]="0">Selecciona una opción:</option>
                                   <option *ngFor="let item of catSexo" [value]="item.id">{{ item.descripcion }}</option>
@@ -141,15 +141,15 @@
                   <hr/>
     
                   <div *ngIf="!editando" class="card-header p-0 border-bottom-0">
-                    <small class="text-muted">Fecha de creación:</small>
-                    <small class="text-muted"> {{ fecha_creacion }} </small>
+                    <small class="text-muted">Creado por:</small>
+                    <small class="text-muted"> {{ nombre_usuario_creador }} </small>
                     <div class="card-tools">
                       <button class="btn btn-outline-primary" (click)="editando = true"> <i class="nav-icon fas fa-edit"></i> Editar</button>
                     </div>
     
                     <br>
-                    <small class="text-muted">Creado por:</small>
-                    <small class="text-muted"> {{ nombre_usuario_creador }} </small>
+                    <small class="text-muted">Fecha de creación:</small>
+                    <small class="text-muted"> {{ fecha_creacion }} </small>
                   </div>
     
                   <div *ngIf="editando">
@@ -218,93 +218,9 @@
 
 
 
-        <div class="card card-primary card-outline collapsed-card">
+        <div class="card">
           <div class="card-header">
-            <h3 class="card-title"><i class="fas fa-book-medical"></i> Historia dental</h3>
-    
-            <div class="card-tools">
-              <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
-                </button>
-              </div>
-            </div>
-    
-          </div>
-          <div class="card-body">
-            <form>
-              <h5 class="text-primary">Historia dental</h5>
-              <div class="form-group mt-3">
-              <span>1.- ¿Cuándo fue su última visita al dentista y qué se realizó en esa consulta?</span>
-              <input type="text" class="form-control">
-              </div>
-              <div class="form-group">
-              <span>2.- ¿Ha experimentado problemas dentales en el pasado?, Si/No, ¿Cuáles?</span>
-              <input type="text" class="form-control">
-              </div>
-              <div class="form-group">
-              <span>3.- ¿Experimenta algún dolor o sensibilidad en sus dientes o encías actualmente?</span>
-              <input type="text" class="form-control">
-              </div>
-              <div class="form-group">
-              <span>4.- ¿Ha recibido algún tratamiento dental previo?, Si/No, ¿Cuál y cuándo fue?</span>
-              <input type="text" class="form-control">
-              </div>
-    
-              <hr>
-              <h5 class="text-primary">Condición médica</h5>
-    
-              <div class="form-group mt-3">
-              <span>1.- ¿Tiene alguna condición médica que pueda afectar su salud bucal?</span>
-              <input type="text" class="form-control">
-              </div>
-              <div class="form-group">
-              <span>2.- ¿Está tomando algún medicamento actualmente?, Si/No, ¿Alguno de estos puede influir en su salud bucal?</span>
-              <input type="text" class="form-control">
-              </div>
-              <div class="form-group">
-              <span>3.- ¿Tiene alguna alergia conocida?, Si/No, ¿Alguna de ellas está relacionada con materiales dentales?</span>
-              <input type="text" class="form-control">
-              </div>
-              <div class="form-group">
-              <span>4.- ¿Ha tenido alguna cirugía o ha sufrido de alguna enfermedad grave en el pasado que pueda afectar su tratamiento dental?</span>
-              <input type="text" class="form-control">
-              </div>
-    
-              <hr>
-              <h5 class="text-primary">Hábitos de salud dental</h5>
-    
-              <div class="form-group mt-3">
-              <span>1.- ¿Con qué frecuencia cepilla sus dientes?</span>
-              <input type="text" class="form-control">
-              </div>
-              <div class="form-group">
-              <span>2.- ¿Utiliza hilo dental regularmente como parte de su rutina de higiene bucal?</span>
-              <input type="text" class="form-control">
-              </div>
-              <div class="form-group">
-              <span>3.- ¿Ha tenido alguna cirugía o ha sufrido de alguna enfermedad grave en el pasado que pueda afectar su tratamiento dental?</span>
-              <input type="text" class="form-control">
-              </div>
-              <div class="form-group">
-              <span>4.- ¿Fuma tabaco o utiliza productos de tabaco?, Si/No, ¿Con qué frecuencia?</span>
-              <input type="text" class="form-control">
-              </div>
-              <div class="form-group">
-              <span>5.- ¿Tiene algún hábito alimenticio o de consumo de bebidas que pueda afectar su salud bucal?</span>
-              <input type="text" class="form-control">
-              </div>
-    
-              <div class="card-header p-0 border-bottom-0">
-    
-    
-              <div class="card-tools">
-                <button type="button" class="btn btn-primary">
-                  <i class="fas fa-save"></i> Guardar
-                </button>
-              </div>
-            </div>
-    
-            </form>
+            <h5> <a class="link-opacity-100 cursor-pointer" (click)="selectedIdPaciente(paciente.id)"><u>Diagnóstico y tratamiento</u></a></h5>
           </div>
         </div>
 
@@ -324,7 +240,7 @@
             
             <div *ngIf="citas">
               <div *ngFor="let cita of citas">
-                <a class="link-opacity-100 cursor-pointer" (click)="selectedIdCita(cita.id)">{{ cita.titulo }} / {{cita.motivo}} / {{ cita.fecha_hora_inicio}}</a>
+                <span> {{ cita.titulo }} / {{cita.motivo}} / {{ cita.fecha_hora_inicio}}</span>
               </div>
             </div>
         

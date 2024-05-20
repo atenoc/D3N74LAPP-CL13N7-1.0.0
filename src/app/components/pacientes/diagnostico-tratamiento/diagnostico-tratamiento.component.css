@@ -1,0 +1,23 @@
+.nav-link.active {
+    background-color: #f9f9f9;
+    font-weight: 600;
+    color: #007bff
+}
+
+.nav-link {
+    color: #565d65
+}
+
+
+.accordion-button{
+    background: #e8f1fe !important;
+}
+
+.accordion-button:not(.collapsed) {
+    color: black !important;
+    background-color: white;
+}
+
+.collapsed{
+    background: #e8f1fe !important;
+}
