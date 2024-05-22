@@ -9,7 +9,7 @@ export const Mensajes = {
 
     // Registro
     REGISTRO_VALIDACION: 'Por favor, rellena todos los campos ',
-    REGISTRO_EXITOSO: 'Todo listo para administrar tu clínica/consultorio dental ',
+    REGISTRO_EXITOSO: 'Todo listo para administrar tu clínica dental ',
     REGISTRO_ERROR: 'No pudimos registrar tu información ',
     
     // Validaciones de formulario
@@ -26,7 +26,7 @@ export const Mensajes = {
     CONTRASENA_ACTUALIZAR: 'Por favor, actualiza tu contraseña ', 
     CONTRASENA_VERIFICAR: 'Por favor, verifica tu correo y/o contraseña ', 
     CONTRASENA_CONFIRMACION: 'Por favor confirma tu nueva contraseña ',
-    CONTRASENAS_NO_COINCIDEN: 'Las contraseñas no coinciden, verifica que sean iguales',
+    CONTRASENAS_NO_COINCIDEN: 'Las contraseñas no coinciden, verifica que sean iguales ',
 
     // Usuarios
     USUARIO_EXISTENTE: 'Este usuario ya se encuentra registrado ',
@@ -40,13 +40,13 @@ export const Mensajes = {
     USUARIO_NO_ELIMINADO: 'No se pudo eliminar el usuario ',
 
     // Clinicas
-    CLINICA_REGISTRADA: 'La clínica/consultorio se registró correctamente ',
-    CLINICA_NO_REGISTRADA: 'No se pudo registrar tu clínica/consultorio ',
-    CLINICA_ACTUALIZADA: 'La información de tu clínica/consultorio se actualizó correctamente ',
-    CLINICA_NO_ACTUALIZADA: 'No se pudo actualizar la información de tu clínica/consultorio ',
-    CLINICA_ELIMINAR_QUESTION: '¿Estás seguro que quieres eliminar tu clínica/consultorio?',
-    CLINICA_ELIMINADA: 'La clínica/consultorio se eliminó correctamente ',
-    CLINICA_NO_ELIMINADA: 'No se pudo eliminar tu clínica/consultorio ',
+    CLINICA_REGISTRADA: 'La clínica se registró correctamente ',
+    CLINICA_NO_REGISTRADA: 'No se pudo registrar tu clínica ',
+    CLINICA_ACTUALIZADA: 'La información de tu clínica se actualizó correctamente ',
+    CLINICA_NO_ACTUALIZADA: 'No se pudo actualizar la información de tu clínica ',
+    CLINICA_ELIMINAR_QUESTION: '¿Estás seguro que quieres eliminar tu clínica? ',
+    CLINICA_ELIMINADA: 'La clínica se eliminó correctamente ',
+    CLINICA_NO_ELIMINADA: 'No se pudo eliminar tu clínica ',
 
     //Citas
     FECHA_INICIO_REQUERIDA: 'Esta fecha es obligatoria ',
@@ -77,5 +77,12 @@ export const Mensajes = {
     PRUEBA_GRATUITA_30: 'Prueba gratuita por 30 días ',
     PRUEBA_TERMINADA: 'Tu prueba gratuita ha terminado ', 
     PRUEBA_TERMINADA_USER: 'Algunas funcionalidades no están disponibles, contacta a tu administrador ', 
+
+    //Historias dentales
+    HISTORIA_REGISTRADA: 'La información se guardó correctamente ',
+    HISTORIA_NO_REGISTRADA: 'No se pudo guardar la información ',
+    HISTORIA_ACTUALIZADA: 'La información se actualizó correctamente ',
+    HISTORIA_NO_ACTUALIZADA: 'No se pudo actualizar la información ',
+
 
 };

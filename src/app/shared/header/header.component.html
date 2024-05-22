@@ -152,7 +152,7 @@
   </nav>
   <!-- /.navbar -->
 
-  <div *ngIf="mostrarCambiarContrasena" class="text-center change-pass">
+  <div *ngIf="mostrarCambiarContrasena" class="text-center change-pass" style="background: #353a40;">
     <strong><small class="text-warning"> {{ mensajeContrasena }}</small> <a ngbTooltip="Cambiar contraseña" class="text-primary cursor-pointer" (click)="selectedIdUser()"><small>{{ enlaceContrasena }}</small></a> </strong>
   </div>
   <div *ngIf="isDisabled" class="text-center prueba-terminada" style="background-color: #343a40">
