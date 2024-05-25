@@ -9,15 +9,20 @@
 }
 
 
+
 .accordion-button{
-    background: #e8f1fe !important;
+    background: #007bff !important;
 }
 
 .accordion-button:not(.collapsed) {
-    color: black !important;
+    color: rgb(255, 255, 255) !important;
     background-color: white;
 }
 
 .collapsed{
-    background: #e8f1fe !important;
+    background: #007bff !important;
+}
+
+.my-color{
+    color: white !important;
 }

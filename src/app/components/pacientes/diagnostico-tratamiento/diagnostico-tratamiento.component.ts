@@ -3,10 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Diagnostico } from 'src/app/models/Diagnostico.model';
 import { Historia } from 'src/app/models/Historia.model';
 import { Paciente } from 'src/app/models/Paciente.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
+import { DiagnosticoService } from 'src/app/services/diagnosticos/diagnostico.service';
 import { HistoriaDentalService } from 'src/app/services/historias/historia-dental.service';
 import { PacienteService } from 'src/app/services/pacientes/paciente.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
@@ -22,6 +24,7 @@ export class DiagnosticoTratamientoComponent implements OnInit {
   id: string;
   rol:string
   date: Date;
+  fecha_hoy:string
   fecha_actual:string;
   tituloPagina:string
   paciente:Paciente;
@@ -39,6 +42,12 @@ export class DiagnosticoTratamientoComponent implements OnInit {
   botonActualizar:boolean = false
 
 
+  formularioDiagnostico:FormGroup;
+  existenDiagnosticos:boolean=false
+  diagnosticos:Diagnostico[] = [];
+  mensajeDiagnostico:string
+
+
   constructor(
     private formBuilder:FormBuilder, 
     private authService:AuthService,
@@ -46,8 +55,13 @@ export class DiagnosticoTratamientoComponent implements OnInit {
     private activatedRoute: ActivatedRoute, 
     private pacienteService:PacienteService,
     private historiaService:HistoriaDentalService,
+    private diagnosticoService:DiagnosticoService,
     private spinner: NgxSpinnerService, 
-  ) { }
+  ) {
+    this.date = new Date();
+    const mes = this.date.getMonth() +1
+    this.fecha_hoy = this.date.getDate()+"/"+mes+"/"+this.date.getFullYear()
+  }
 
   ngOnInit(): void {
 
@@ -65,7 +79,13 @@ export class DiagnosticoTratamientoComponent implements OnInit {
       uso_productos_especializados: [''], 
       tabaco_frecuencia: [''], 
       habito_alimenticio: [''], 
+    })
 
+    this.formularioDiagnostico = this.formBuilder.group({
+      descripcion_problema: [''],
+      codigo_diagnostico: [''],
+      evidencias: [''],
+      fecha_creacion: [this.fecha_hoy],
     })
 
     if(this.authService.validarSesionActiva()){
@@ -75,6 +95,7 @@ export class DiagnosticoTratamientoComponent implements OnInit {
 
         this.activatedRoute.params.subscribe(params => {
           this.id = params['id'];
+          console.log("id paciente recuperado: " +this.id)
           this.pacienteService.getPacienteById$(this.id).subscribe(res => {   //volver a llamar los datos con el id recibido
             this.paciente = res;
             this.tituloPagina = res.nombre +" "+ res.apellidop +" " +res.apellidom
@@ -83,55 +104,10 @@ export class DiagnosticoTratamientoComponent implements OnInit {
             console.log("error: " + err)
           })
 
-          this.spinner.show();
-          this.historiaService.getHistoriaByIdPaciente(this.id).subscribe(res => {   //volver a llamar los datos con el id recibido
-            this.spinner.hide();
-            this.historia = res;
-            console.log("Historia obtenida")
-            this.id_historia = res.id
+          /////
 
-            this.formularioHistoria.patchValue({
-              ultima_visita_dentista: this.historia.ultima_visita_dentista,
-              problemas_dentales_pasados: this.historia.problemas_dentales_pasados,
-              tratamientos_previos_cuando: this.historia.tratamientos_previos_cuando,
-              dolor_sensibilidad: this.historia.dolor_sensibilidad,
-
-              condicion_medica_actual: this.historia.condicion_medica_actual,
-              medicamentos_actuales: this.historia.medicamentos_actuales,
-              alergias_conocidas: this.historia.alergias_conocidas,
-              cirugias_enfermedades_graves: this.historia.cirugias_enfermedades_graves,
-
-              frecuencia_cepillado: this.historia.frecuencia_cepillado,
-              uso_hilo_dental: this.historia.uso_hilo_dental,
-              uso_productos_especializados: this.historia.uso_productos_especializados,
-              tabaco_frecuencia: this.historia.tabaco_frecuencia,
-              habito_alimenticio: this.historia.habito_alimenticio
-            })
-
-            this.nombre_usuario_creador = this.historia.nombre_usuario_creador
-            this.fecha_creacion = this.historia.fecha_creacion
-            this.nombre_usuario_actualizo = this.historia.nombre_usuario_actualizo
-            this.fecha_actualizacion = this.historia.fecha_actualizacion 
-
-            this.mostrar_creacion=true
-            this.botonActualizar = true
-
-            if(this.historia.nombre_usuario_actualizo ==null || this.historia.nombre_usuario_actualizo ==''){
-              this.botonGuardar = false
-            }else{
-              this.mostrar_actualizacion = true
-            }
-
-          },
-          (error: HttpErrorResponse) => {
-            this.spinner.hide();
-            if (error.status === 404) {
-              console.log("El error es 404")
-              this.botonGuardar = true
-            } else {
-              console.log("error: " + error.message)
-            }
-          });
+          this.getHistoriaDental()
+          this.getDiagnosticos()
 
         }),
         err => console.log("error: " + err)
@@ -145,7 +121,7 @@ export class DiagnosticoTratamientoComponent implements OnInit {
     historiaJson.id_paciente = this.id;
     historiaJson.id_usuario_creador=localStorage.getItem('_us') 
     historiaJson.id_clinica=localStorage.getItem('_cli') 
-    historiaJson.fecha_creacion = this.obtenerFechaHoy()
+    historiaJson.fecha_creacion = this.obtenerFechaHoraHoy()
 
     this.spinner.show();
     this.historiaService.createHistoria(historiaJson).subscribe(res =>{
@@ -185,11 +161,65 @@ export class DiagnosticoTratamientoComponent implements OnInit {
     }
   }
 
+
+  getHistoriaDental(){
+
+    this.historiaService.getHistoriaByIdPaciente(this.id).subscribe(res => {   
+        
+      this.historia = res;
+      console.log("Historia obtenida")
+      this.id_historia = res.id
+
+      this.formularioHistoria.patchValue({
+        ultima_visita_dentista: this.historia.ultima_visita_dentista,
+        problemas_dentales_pasados: this.historia.problemas_dentales_pasados,
+        tratamientos_previos_cuando: this.historia.tratamientos_previos_cuando,
+        dolor_sensibilidad: this.historia.dolor_sensibilidad,
+
+        condicion_medica_actual: this.historia.condicion_medica_actual,
+        medicamentos_actuales: this.historia.medicamentos_actuales,
+        alergias_conocidas: this.historia.alergias_conocidas,
+        cirugias_enfermedades_graves: this.historia.cirugias_enfermedades_graves,
+
+        frecuencia_cepillado: this.historia.frecuencia_cepillado,
+        uso_hilo_dental: this.historia.uso_hilo_dental,
+        uso_productos_especializados: this.historia.uso_productos_especializados,
+        tabaco_frecuencia: this.historia.tabaco_frecuencia,
+        habito_alimenticio: this.historia.habito_alimenticio
+      })
+
+      this.nombre_usuario_creador = this.historia.nombre_usuario_creador
+      this.fecha_creacion = this.historia.fecha_creacion
+      this.nombre_usuario_actualizo = this.historia.nombre_usuario_actualizo
+      this.fecha_actualizacion = this.historia.fecha_actualizacion 
+
+      this.mostrar_creacion=true
+      this.botonActualizar = true
+
+      if(this.historia.nombre_usuario_actualizo ==null || this.historia.nombre_usuario_actualizo ==''){
+        this.botonGuardar = false
+      }else{
+        this.mostrar_actualizacion = true
+      }
+
+    },
+    (error: HttpErrorResponse) => {
+
+      if (error.status === 404) {
+        console.log("El error es 404")
+        this.botonGuardar = true
+      } else {
+        console.log("error: " + error.message)
+      }
+    });
+          
+  }
+
   actualizarHistoria(){
     var historiaJson = JSON.parse(JSON.stringify(this.formularioHistoria.value))
     historiaJson.id_paciente = this.id;
     historiaJson.id_usuario_actualizo=localStorage.getItem('_us') 
-    historiaJson.fecha_actualizacion = this.obtenerFechaHoy()
+    historiaJson.fecha_actualizacion = this.obtenerFechaHoraHoy()
 
     this.spinner.show();
     this.historiaService.updateHistoria(this.id_historia, historiaJson).subscribe(res =>{
@@ -229,11 +259,88 @@ export class DiagnosticoTratamientoComponent implements OnInit {
 
   }
 
-  obtenerFechaHoy(){
+  ////////////////////////////////////////
+
+  crearDiagnostico(){
+    console.log("CREAR Diagnostico")
+
+    var nuevoDiagnosticoJson = JSON.parse(JSON.stringify(this.formularioDiagnostico.value))
+    nuevoDiagnosticoJson.id_paciente=this.id 
+    nuevoDiagnosticoJson.id_clinica=localStorage.getItem('_cli') 
+    nuevoDiagnosticoJson.id_usuario_creador=localStorage.getItem('_us') 
+    nuevoDiagnosticoJson.fecha_creacion = this.obtenerFechaHoraHoy()
+
+    console.log("Diagnostico.")
+    console.log(nuevoDiagnosticoJson)
+
+    this.spinner.show();
+    this.diagnosticoService.createDiagnostico(nuevoDiagnosticoJson).subscribe(
+      res => {
+        this.spinner.hide();
+        console.log("Diagnostico creado")
+        this.ngOnInit();
+        Swal.fire({
+          position: 'top-end',
+          html:
+            `<h5>${ Mensajes.DIAGNOSTICO_REGISTRADO }</h5>`+
+            `<span>Paciente: ${this.paciente.nombre} ${this.paciente.apellidop}</span>`, 
+          showConfirmButton: false,
+          backdrop: false,
+          width: 400,
+          background: 'rgb(40, 167, 69, .90)',
+          color:'white',
+          timerProgressBar:true,
+          timer: 3000,
+        })
+      },
+      err => {
+        this.spinner.hide();
+        console.log("error: " + err.error.message)
+        Swal.fire({
+          icon: 'error',
+          html:
+            `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
+            `<span>${ Mensajes.DIAGNOSTICO_NO_REGISTRADO }</span></br>`+
+            `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
+          showConfirmButton: false,
+          timer: 3000
+        })
+        
+      }
+    )
+  }// end method
+
+  getDiagnosticos(){
+    this.diagnosticoService
+      .getDiagnosticosByIpPaciente(this.id).subscribe((res) => {
+        console.log(res)
+        this.diagnosticos = res
+        if(this.diagnosticos.length <= 0){
+          this.mensajeDiagnostico='No hay diagnósticos para mostrar'
+        }else{
+          this.existenDiagnosticos = true;
+        }
+      },
+      err => {
+        this.mensajeDiagnostico='No se pudo obtener la información'
+        console.log(err.error.message)
+        console.log(err)
+      }
+      );
+  }
+
+
+
+
+
+
+
+  obtenerFechaHoraHoy(){
     this.date = new Date();
     const mes = this.date.getMonth() +1
     this.fecha_actual = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
     return this.fecha_actual
   }
+
 
 }

@@ -84,5 +84,12 @@ export const Mensajes = {
     HISTORIA_ACTUALIZADA: 'La información se actualizó correctamente ',
     HISTORIA_NO_ACTUALIZADA: 'No se pudo actualizar la información ',
 
+    //Diagnosticos
+    DIAGNOSTICO_REGISTRADO: 'El diagnóstico se guardó correctamente ',
+    DIAGNOSTICO_NO_REGISTRADO: 'No se pudo guardar el diagnóstico ',
+    DIAGNOSTICO_ACTUALIZADO: 'El diagnóstico se actualizó correctamente ',
+    DIAGNOSTICO_NO_ACTUALIZADO: 'No se pudo actualizar el diagnóstico ',
+    DIAGNOSTICO_ELIMINADO: 'El diagnóstico se eliminó correctamente ',
+    DIAGNOSTICO_NO_ELIMINADO: 'No se pudo eliminar el diagnóstico ',
 
 };

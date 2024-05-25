@@ -18,7 +18,6 @@ export class HistoriaDentalService {
   }
 
   getHistoriaByIdPaciente(id: string) {
-    console.log("id paciente service: "+id)
     return this.http.get<Historia>(`${this.URI}/paciente/${id}`);
   }
 

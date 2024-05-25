@@ -15,6 +15,7 @@ export const environment = {
   urlApiPacientes: ipHost+'/api/pacientes',
   urlApiCitas: ipHost+'/api/citas',
   urlApiHistorias: ipHost+'/api/historias',
+  urlApiDiagnosticos: ipHost+'/api/diagnosticos',
   urlApiPlanes: ipHost+'/api/planes',
   secretKey: '123456'
 };
