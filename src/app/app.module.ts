@@ -38,8 +38,12 @@ import { PacienteFormComponent } from './components/pacientes/paciente-form/paci
 import { EventFormComponent } from './components/calendario/event-form/event-form.component';
 import { SettingComponent } from './shared/setting/setting.component';
 import { PlanesListComponent } from './components/planes/planes-list/planes-list.component';
-import { DetalleVisitaComponent } from './components/visitas/detalle-visita/detalle-visita.component';
-import { DiagnosticoTratamientoComponent } from './components/pacientes/diagnostico-tratamiento/diagnostico-tratamiento.component';
+import { ExpedienteComponent } from './components/expediente/expediente.component';
+import { HistoriaComponent } from './components/expediente/historia/historia.component';
+import { DiagnosticoComponent } from './components/expediente/diagnostico/diagnostico.component';
+import { TratamientoComponent } from './components/expediente/tratamiento/tratamiento.component';
+import { SeguimientoComponent } from './components/expediente/seguimiento/seguimiento.component';
+import { VisitasComponent } from './components/expediente/visitas/visitas.component';
 
 @NgModule({
   declarations: [
@@ -71,8 +75,12 @@ import { DiagnosticoTratamientoComponent } from './components/pacientes/diagnost
     EventFormComponent,
     SettingComponent,
     PlanesListComponent,
-    DetalleVisitaComponent,
-    DiagnosticoTratamientoComponent
+    ExpedienteComponent,
+    HistoriaComponent,
+    DiagnosticoComponent,
+    TratamientoComponent,
+    SeguimientoComponent,
+    VisitasComponent
   ],
   imports: [
     BrowserModule,

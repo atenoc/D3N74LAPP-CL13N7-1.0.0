@@ -56,7 +56,7 @@ export class DetalleEventoComponent implements OnInit {
   atenderPaciente(id_paciente:string){
     console.log("id paciente: "+ id_paciente)
     this.closeModal()
-    this.router.navigate(['/paciente-detalle', id_paciente]);
+    this.router.navigate(['/expediente/paciente', id_paciente]);
   }
 
   eliminarCita(){

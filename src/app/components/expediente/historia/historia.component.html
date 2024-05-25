@@ -1,0 +1,84 @@
+<div class="container">
+    <form [formGroup]="formularioHistoria">
+        <h5 class="text-primary">Historia dental</h5>
+        <div class="form-group mt-3">
+          <span>1.- ¿Cuándo fue su última visita al dentista y qué se realizó en esa consulta?</span>
+          <input type="text" class="form-control" formControlName="ultima_visita_dentista">
+        </div>
+        <div class="form-group">
+          <span>2.- ¿Ha experimentado problemas dentales en el pasado?, Si/No, ¿Cuáles?</span>
+          <input type="text" class="form-control" formControlName="problemas_dentales_pasados">
+        </div>
+        <div class="form-group">
+          <span>3.- ¿Ha recibido algún tratamiento dental previo?, Si/No, ¿Cuál y cuándo fue?</span>
+          <input type="text" class="form-control" formControlName="tratamientos_previos_cuando">
+        </div>
+        <div class="form-group">
+          <span>4.- ¿Experimenta algún dolor o sensibilidad en sus dientes o encías actualmente?</span>
+          <input type="text" class="form-control" formControlName="dolor_sensibilidad">
+        </div>
+        
+        <hr>
+        <h5 class="text-primary">Condición médica</h5>
+
+        <div class="form-group mt-3">
+          <span>1.- ¿Tiene alguna condición médica que pueda afectar su salud bucal?</span>
+          <input type="text" class="form-control" formControlName="condicion_medica_actual">
+        </div>
+        <div class="form-group">
+          <span>2.- ¿Está tomando algún medicamento actualmente?, Si/No, ¿Alguno de estos puede influir en su salud bucal?</span>
+          <input type="text" class="form-control" formControlName="medicamentos_actuales">
+        </div>
+        <div class="form-group">
+          <span>3.- ¿Tiene alguna alergia conocida?, Si/No, ¿Alguna de ellas está relacionada con materiales dentales?</span>
+          <input type="text" class="form-control" formControlName="alergias_conocidas">
+        </div>
+        <div class="form-group">
+          <span>4.- ¿Ha tenido alguna cirugía o ha sufrido de alguna enfermedad grave en el pasado que pueda afectar su tratamiento dental?</span>
+          <input type="text" class="form-control" formControlName="cirugias_enfermedades_graves">
+        </div>
+
+        <hr>
+        <h5 class="text-primary">Hábitos de salud dental</h5>
+
+        <div class="form-group mt-3">
+          <span>1.- ¿Con qué frecuencia cepilla sus dientes?</span>
+          <input type="text" class="form-control" formControlName="frecuencia_cepillado">
+        </div>
+        <div class="form-group">
+          <span>2.- ¿Utiliza hilo dental regularmente como parte de su rutina de higiene bucal?</span>
+          <input type="text" class="form-control" formControlName="uso_hilo_dental">
+        </div>
+        <div class="form-group">
+          <span>3.- ¿Ha tenido alguna cirugía o ha sufrido de alguna enfermedad grave en el pasado que pueda afectar su tratamiento dental?</span>
+          <input type="text" class="form-control" formControlName="uso_productos_especializados">
+        </div>
+        <div class="form-group">
+          <span>4.- ¿Fuma tabaco o utiliza productos de tabaco?, Si/No, ¿Con qué frecuencia?</span>
+          <input type="text" class="form-control" formControlName="tabaco_frecuencia">
+        </div>
+        <div class="form-group">
+          <span>5.- ¿Tiene algún hábito alimenticio o de consumo de bebidas que pueda afectar su salud bucal?</span>
+          <input type="text" class="form-control" formControlName="habito_alimenticio">
+        </div>
+        
+        <hr>
+        <div class="card-header p-0 border-bottom-0">
+
+          <small *ngIf="mostrar_creacion" class="text-muted"><strong>Creado por:</strong> {{ nombre_usuario_creador }}</small>
+          <small *ngIf="mostrar_creacion" class="text-muted">| <strong> Fecha creacion:</strong> {{ fecha_creacion }}</small> <br>
+          <small *ngIf="mostrar_actualizacion" class="text-muted"><strong>Actualizado por:</strong> {{ nombre_usuario_actualizo }}</small>
+          <small *ngIf="mostrar_actualizacion" class="text-muted">| <strong>Última actualización:</strong> {{ fecha_actualizacion }}</small>
+
+          <div class="card-tools">
+            <button *ngIf="botonActualizar" type="button" class="btn btn-primary" (click)="actualizarHistoria()">
+              <i class="fas fa-save"></i> Actualizar
+            </button>
+            <button *ngIf="botonGuardar" type="button" class="btn btn-primary" (click)="guardarHistoria()">
+              <i class="fas fa-save"></i> Guardar
+            </button>
+          </div>
+        </div>
+
+      </form>
+</div>

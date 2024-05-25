@@ -50,7 +50,8 @@ export class PacientesListComponent implements OnInit {
 
   selectedIdUser(id: string) {
     console.log("id seleccionado: "+id)
-    this.router.navigate(['/paciente-detalle', id]);
+    //this.router.navigate(['/paciente-detalle', id]);
+    this.router.navigate(['/expediente/paciente', id]);
   }
 
   getPacientesByIdClinicaPaginados(){

@@ -1,0 +1,113 @@
+<div class="container">
+  <div class="accordion">
+      <div class="card">
+
+            <button class="accordion-button" type="button" data-toggle="collapse" data-target="#collapseDiagnostico" >
+              <span class="my-color"><i class="fas fa-plus"></i> Nuevo diagnóstico</span> 
+            </button>
+    
+        <div id="collapseDiagnostico" class="collapse">
+          <div class="card-body">
+
+            <!-- Diagnóstico -->
+            <form [formGroup]="formularioDiagnostico">
+              <div class="mb-3">
+                <label class="form-label">Código de diagnóstico (CIE-10)</label>
+                <input formControlName="codigo_diagnostico" type="text" class="form-control" id="codigoDiagnostico">
+            </div>
+              <div class="mb-3">
+                  <label class="form-label">Descripción del problema</label>
+                  <textarea formControlName="descripcion_problema" class="form-control" id="descripcionProblema" rows="3"></textarea>
+              </div>
+              <div class="mb-3">
+                  <label class="form-label">Subir archivos de evidencia</label>
+                  <input formControlName="evidencias" class="form-control" type="file" id="fileInput" multiple>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Fecha del diagnóstico</label>
+                <input formControlName="fecha_creacion" type="text" class="form-control" id="codigoDiagnostico" readonly>
+                <!-- <input formControlName="nombre" type="date" class="form-control" id="fechaDiagnostico"> -->
+            </div>
+
+              <div class="card-header p-0 border-bottom-0">
+                <div class="card-tools">
+                  <button type="button" class="btn btn-primary" (click)="crearDiagnostico()">
+                    <i class="fas fa-save"></i> Guardar
+                  </button>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <hr>
+
+
+    <div *ngIf="existenDiagnosticos; else mostrar_mensaje">
+
+      <div class="card card-info card-outline" *ngFor="let diagnostico of diagnosticos">
+        <div class="card-header">
+            <strong><i class="fas fa-sticky-note"></i> No. {{ diagnostico.contador }}</strong>
+            <small class="text-muted"> | </small>
+            <strong class="text-primary"> {{ diagnostico.codigo_diagnostico }}</strong>
+            <small class="text-muted"> | </small>
+            <span class="text-muted"> {{ diagnostico.fecha_creacion }}</span>
+
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+
+        </div>
+
+        <div class="card-body">
+
+          <p>{{ diagnostico.descripcion_problema }}</p>
+
+          <!-- Attachment -->
+          <div class="attachment-block clearfix">
+            <img class="attachment-img" src="../../../../assets/images/odontograma.png" alt="Attachment Image">
+
+            <div class="attachment-pushed">
+              <h4 class="attachment-heading"><a >Evidencia</a></h4>
+
+              <div class="attachment-text">
+                Alguna descripcion...
+              </div>
+
+            </div> 
+
+          </div>
+
+          <div class="card-header p-0 border-bottom-0">
+            <small class="text-muted">Creado por:</small>
+            <small class="text-muted"> {{ diagnostico.nombre_usuario_creador }} </small>
+            <div class="card-tools">
+              <button class="btn btn-outline-primary"> <i class="nav-icon fas fa-edit"></i> Editar</button>
+            </div>
+
+            <br>
+            <small class="text-muted">Fecha de creación:</small>
+            <small class="text-muted"> {{ diagnostico.fecha_creacion }} </small>
+          </div>
+        </div>
+
+        
+      </div>
+
+    </div>
+    <ng-template #mostrar_mensaje>
+
+      <div class="container">
+        <div class="text-center">
+          <span class="text-muted">{{ mensaje }}</span>
+        </div>
+      </div>
+  
+    </ng-template>
+</div>

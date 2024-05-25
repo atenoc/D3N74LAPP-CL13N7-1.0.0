@@ -38,7 +38,7 @@ export class PacienteDetalleComponent implements OnInit {
   soloLetras: string;
 
   catSexo:CatalogoSexo[] = [];
-  citas:CitaPaciente[] = []
+  //citas:CitaPaciente[] = []
 
   constructor(
     private catalogoService:CatalogoService,
@@ -48,7 +48,7 @@ export class PacienteDetalleComponent implements OnInit {
     private router: Router,
     private cifradoService: CifradoService,
     private spinner: NgxSpinnerService,
-    private citasService: CitaService
+    //private citasService: CitaService
 
   ) {
     this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
@@ -105,7 +105,7 @@ export class PacienteDetalleComponent implements OnInit {
         });
 
         this.cargarCatSexo()
-        this.cargarCitas()
+        //this.cargarCitas()
       },
       err => {
         this.spinner.hide();
@@ -261,7 +261,7 @@ export class PacienteDetalleComponent implements OnInit {
     )
   }
 
-  cargarCitas(){
+  /*cargarCitas(){
     console.log("This id: "+this.id)
 
     this.citasService.getCitasByIdPaciente(this.id).subscribe (res => {
@@ -271,12 +271,6 @@ export class PacienteDetalleComponent implements OnInit {
 
     },
     err => console.log("error: "+ err)
-  )}
-
-  selectedIdPaciente(id: string) {
-    console.log("id cita seleccionado: "+id)
-    this.router.navigate(['/diagnostico/tratamiento/paciente', id]);
-    //this.router.navigate(['/pacientes']);
-  }
+  )}*/
 
 }

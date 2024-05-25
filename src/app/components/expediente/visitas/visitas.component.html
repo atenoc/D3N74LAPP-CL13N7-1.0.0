@@ -1,0 +1,27 @@
+<div class="container">
+
+  <div *ngIf="existenVisitas; else mostrar_mensaje">
+
+    <div *ngIf="citas">
+      <div *ngFor="let cita of citas">
+        <strong class="text-muted"> {{ cita.titulo }} </strong>
+        <small class="text-muted"> |</small> 
+        <strong class="text-muted"> {{cita.motivo}} </strong>
+        <small class="text-muted"> |</small> 
+        <strong class="text-muted"> {{ cita.fecha_hora_inicio}}</strong>
+      </div>
+    </div>
+
+  </div>
+  <ng-template #mostrar_mensaje>
+
+    <div class="container">
+      <div class="text-center">
+        <span class="text-muted">{{ mensaje }}</span>
+      </div>
+    </div>
+
+  </ng-template>
+
+      
+</div>
