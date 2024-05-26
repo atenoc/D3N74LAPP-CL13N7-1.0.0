@@ -192,7 +192,7 @@ export class CitaEditComponent implements OnInit {
     this.spinner.show();
     this.citaService.updateCita(
       this.id,
-      "Cita. "+this.nombrePaciente+" "+this.apellidoPaternoPaciente,
+      "Cita · "+this.nombrePaciente+" "+this.apellidoPaternoPaciente,
       this.motivo,
       this.fecha_hora_inicio,
       this.fecha_hora_fin,

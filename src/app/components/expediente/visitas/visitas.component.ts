@@ -41,6 +41,7 @@ export class VisitasComponent implements OnInit {
       this.spinner.hide();
       console.log("Citas:")
       this.citas = res
+      console.log("Visitas")
       console.log(this.citas)
 
       if(this.citas.length <= 0){
