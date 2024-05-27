@@ -2,45 +2,8 @@
   <div class="accordion">
       <div class="card">
 
-            <button class="accordion-button" type="button" data-toggle="collapse" data-target="#collapseDiagnostico" >
-              <span class="my-color"><i class="fas fa-plus"></i> Nuevo diagnóstico</span> 
-            </button>
-    
-        <div id="collapseDiagnostico" class="collapse">
-          <div class="card-body">
+        <button class="btn btn-primary mb-2 me-2" (click)="openXl(content)"><i class="fas fa-plus"></i> Nuevo diagnóstico</button>
 
-            <!-- Diagnóstico -->
-            <form [formGroup]="formularioDiagnostico">
-              <div class="mb-3">
-                <label class="form-label">Código de diagnóstico (CIE-10)</label>
-                <input formControlName="codigo_diagnostico" type="text" class="form-control" id="codigoDiagnostico">
-            </div>
-              <div class="mb-3">
-                  <label class="form-label">Descripción del problema</label>
-                  <textarea formControlName="descripcion_problema" class="form-control" id="descripcionProblema" rows="3"></textarea>
-              </div>
-              <div class="mb-3">
-                  <label class="form-label">Subir archivos de evidencia</label>
-                  <input formControlName="evidencias" class="form-control" type="file" id="fileInput" multiple>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">Fecha del diagnóstico</label>
-                <input formControlName="fecha_creacion" type="text" class="form-control" id="codigoDiagnostico" readonly>
-                <!-- <input formControlName="nombre" type="date" class="form-control" id="fechaDiagnostico"> -->
-            </div>
-
-              <div class="card-header p-0 border-bottom-0">
-                <div class="card-tools">
-                  <button type="button" class="btn btn-primary" (click)="crearDiagnostico()">
-                    <i class="fas fa-save"></i> Guardar
-                  </button>
-                </div>
-              </div>
-
-            </form>
-          </div>
-        </div>
       </div>
 
     </div>
@@ -110,4 +73,76 @@
       </div>
   
     </ng-template>
+
+
+    <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title">Nuevo diagnóstico</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        
+        <!-- Diagnóstico -->
+        <form [formGroup]="formularioDiagnostico">
+          <div class="row mb-3">
+            <div class="col-6">
+              <span>Código de diagnóstico (CIE-10)</span>
+              <input formControlName="codigo_diagnostico" type="text" class="form-control" id="codigoDiagnostico">
+            </div>
+            <div class="col-6">
+              <span>Fecha del diagnóstico</span>
+              <input formControlName="fecha_creacion" type="text" class="form-control" id="codigoDiagnostico" readonly>
+            </div>
+          </div>
+
+          <div class="mb-3">
+              <span>Descripción del problema</span>
+              <textarea formControlName="descripcion_problema" class="form-control" id="descripcionProblema" rows="3"></textarea>
+          </div>
+          <div class="mb-3">
+              <span>Subir archivos de evidencia</span>
+              <input formControlName="evidencias" class="form-control" type="file" id="fileInput" multiple>
+          </div>
+
+          <div class="card collapsed-card">
+            <div class="card-header">
+              <i class="fas fa-teeth-open"></i> <span> Odontograma</span>
+          
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-plus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                  <i class="fas fa-expand"></i>
+                </button>
+              </div>
+          
+            </div>
+            <div class="card-body">
+              
+              Odontograma...
+ 
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="card-header p-0 border-bottom-0">
+            <div class="card-tools">
+              <button type="button" class="btn btn-secondary mr-2" (click)="modal.close('Close click')">Cancelar</button>
+              <button type="button" class="btn btn-primary mr-2" (click)="crearDiagnostico()">
+                <i class="fas fa-save"></i> Guardar
+              </button>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+      </div> -->
+    </ng-template>
+
+    
 </div>

@@ -21,6 +21,17 @@
 .modal-backdrop {
     z-index: 1040 !important; /* Asegúrate de que sea menor que el z-index del modal-window */
 }
+/* Asegurar el full scream, sólo para la case full scream */
+@media (min-width: 576px) {
+    .modal-fullscreen {
+        max-width: none !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}
+
 
 .cursor-pointer{
     cursor: pointer;

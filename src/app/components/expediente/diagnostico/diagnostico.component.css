@@ -1,4 +1,9 @@
-.accordion-button{
+.card-tools {
+    margin: 0 -10px 0px !important;
+}
+
+
+/*.accordion-button{
     background: #007bff !important;
 }
 
@@ -13,9 +18,4 @@
 
 .my-color{
     color: white !important;
-}
-
-
-.card-tools {
-    margin: 0 -10px 0px !important;
-}
+}*/

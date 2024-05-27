@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { NgbModal, NgbModalConfig, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Diagnostico } from 'src/app/models/Diagnostico.model';
 import { DiagnosticoService } from 'src/app/services/diagnosticos/diagnostico.service';
-import { PacienteService } from 'src/app/services/pacientes/paciente.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
 import Swal from 'sweetalert2';
 
@@ -24,15 +24,22 @@ export class DiagnosticoComponent implements OnInit {
   diagnosticos:Diagnostico[] = [];
   mensaje:string
 
+  private modalRef: NgbModalRef | undefined;
+
   constructor(
     private formBuilder:FormBuilder,
     private activatedRoute: ActivatedRoute, 
     private diagnosticoService:DiagnosticoService,
     private spinner: NgxSpinnerService, 
+    private modalService: NgbModal,
+    config: NgbModalConfig,
   ) { 
     this.date = new Date();
     const mes = this.date.getMonth() +1
     this.fecha_hoy = this.date.getDate()+"/"+mes+"/"+this.date.getFullYear()
+
+    config.backdrop = 'static';
+		config.keyboard = false;
   }
 
   ngOnInit(): void {
@@ -73,6 +80,7 @@ export class DiagnosticoComponent implements OnInit {
       res => {
         this.spinner.hide();
         console.log("Diagnostico creado")
+        this.closeModal();
         this.ngOnInit();
         Swal.fire({
           position: 'top-end',
@@ -128,6 +136,19 @@ export class DiagnosticoComponent implements OnInit {
     const mes = this.date.getMonth() +1
     this.fecha_hora_actual = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
     return this.fecha_hora_actual
+  }
+
+  openXl(content: TemplateRef<any>) {
+		this.modalRef = this.modalService.open(content, { size: 'xl', centered: true });
+    console.log('Modal abierto:', this.modalRef);
+	}
+
+  closeModal() {
+    if (this.modalRef) {
+      this.modalRef.close();
+    } else {
+      console.log("No hay referencia modal");
+    }
   }
 
 }
