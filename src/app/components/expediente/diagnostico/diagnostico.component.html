@@ -1,10 +1,13 @@
 <div class="container">
 
-    <button class="btn btn-primary" (click)="openXl(content)"><i class="fas fa-plus"></i> Nuevo diagnóstico</button>
+    <button class="btn btn-primary" (click)="openModalNuevo(content)"><i class="fas fa-plus"></i> Nuevo diagnóstico</button>
     <hr>
     <div *ngIf="existenDiagnosticos; else mostrar_mensaje">
 
-      <div class="card card-info card-outline" *ngFor="let diagnostico of diagnosticos">
+
+      <!-- listar Diagnósticos --------------------------------------------------------------------------------------->
+
+      <div class="card card-info card-outline bg-light" *ngFor="let diagnostico of diagnosticos">
         <div class="card-header">
             <strong><i class="fas fa-sticky-note"></i> No. {{ diagnostico.contador }}</strong>
             <small class="text-muted"> | </small>
@@ -28,7 +31,7 @@
             <img class="attachment-img" src="../../../../assets/images/odontograma.png" alt="Attachment Image">
 
             <div class="attachment-pushed">
-              <h4 class="attachment-heading"><a >Evidencia</a></h4>
+              <h5 class="attachment-heading"><a >Evidencia</a></h5>
 
               <div class="attachment-text">
                 Alguna descripcion...
@@ -36,16 +39,17 @@
 
             </div> 
           </div>
-
+          <hr>
           <div class="card-header p-0 border-bottom-0">
-            <small class="text-muted">Creado por:</small>
-            <small class="text-muted"> {{ diagnostico.nombre_usuario_creador }} </small>
-            <div class="card-tools">
-              <button class="btn btn-outline-primary" (click)="editar(diagnostico.id); openXl(contentEdit)"> <i class="nav-icon fas fa-edit"></i> Editar</button>
+            <small class="text-muted">Creado por: {{ diagnostico.nombre_usuario_creador }} el {{ diagnostico.fecha_creacion }}</small>
+            
+            <div class="card-tools" style="margin-top: 10px !important;">
+              <button class="btn btn-outline-primary btn-sm" (click)="getDiagnosticoEditar(diagnostico.id); openModalEdit(contentEdit)"> 
+                <i class="nav-icon fas fa-edit"></i> Editar
+              </button>
             </div>
             <br>
-            <small class="text-muted">Fecha de creación:</small>
-            <small class="text-muted"> {{ diagnostico.fecha_creacion }} </small>
+            <small *ngIf="diagnostico.fecha_actualizacion" class="text-muted">Última actualización: {{ diagnostico.fecha_actualizacion }}</small> 
           </div>
         </div>
 
@@ -62,12 +66,9 @@
 
 
 
+    <!-- Modal Nuevo Diagnóstico --------------------------------------------------------------------------------------->
 
-
-
-
-
-
+    
     <ng-template #content let-modal>
       <div class="modal-header">
         <h4 class="modal-title">Nuevo diagnóstico</h4>
@@ -75,7 +76,6 @@
       </div>
       <div class="modal-body">
         
-        <!-- Diagnóstico -->
         <form [formGroup]="formularioDiagnostico">
           <div class="row mb-3">
             <div class="col-6">
@@ -83,8 +83,8 @@
               <input formControlName="codigo_diagnostico" type="text" class="form-control" id="codigoDiagnostico">
             </div>
             <div class="col-6">
-              <span>Fecha</span>
-              <input formControlName="fecha_creacion" type="text" class="form-control" id="codigoDiagnostico" readonly>
+              <span>Fecha</span> <br>
+              <span>{{ fecha_hoy }}</span>
             </div>
           </div>
 
@@ -139,14 +139,11 @@
         </form>
 
       </div>
-      <!-- <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
-      </div> -->
     </ng-template>
 
 
 
-
+    <!-- Modal Editar Diagnóstico --------------------------------------------------------------------------------------->
 
 
     <ng-template #contentEdit let-modal>
@@ -156,7 +153,6 @@
       </div>
       <div class="modal-body">
         
-        <!-- Diagnóstico -->
         <form [formGroup]="formularioDiagnostico">
           <div class="row mb-3">
             <div class="col-6">
@@ -165,7 +161,8 @@
             </div>
             <div class="col-6">
               <span>Fecha</span>
-              <input formControlName="fecha_creacion" type="text" class="form-control" id="codigoDiagnostico" readonly>
+              <br>
+              <span>{{ fecha_creacion }}</span>
             </div>
           </div>
 
@@ -206,8 +203,19 @@
  
             </div>
           </div>
-
           <hr>
+          <div class="d-flex mt-2">
+            <div><small class="text-muted">Creado por: {{ nombre_usuario_creador }}</small></div>
+            <div class="ml-auto">
+              <small *ngIf="mostrar_actualizacion" class="text-muted">Actualizado por: {{ nombre_usuario_actualizo }}</small>
+            </div>
+          </div>
+          <div class="d-flex mb-3">
+            <div><small class="text-muted">Fecha creación: {{ fecha_creacion }} </small></div>
+            <div class="ml-auto">
+              <small *ngIf="mostrar_actualizacion" class="text-muted">Última actualización: {{ fecha_actualizacion }} </small>
+            </div>
+          </div>
 
           <div class="card-header p-0 border-bottom-0">
             <span class="text-danger mr-2 cursor-pointer" (click)="deleteDiagnostico()">Borrar</span>

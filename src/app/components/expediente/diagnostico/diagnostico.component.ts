@@ -24,9 +24,13 @@ export class DiagnosticoComponent implements OnInit {
   diagnostico:Diagnostico;
   diagnosticos:Diagnostico[] = [];
   mensaje:string
-
+  mostrar_actualizacion:boolean=false
   maxCharacters: number = 1500; // Número máximo de caracteres permitidos
   remainingCharacters: number = this.maxCharacters;
+  nombre_usuario_creador:string
+  nombre_usuario_actualizo:string
+  fecha_creacion:string
+  fecha_actualizacion:string
 
   private modalRef: NgbModalRef | undefined;
 
@@ -52,7 +56,6 @@ export class DiagnosticoComponent implements OnInit {
       descripcion_problema: [''],
       codigo_diagnostico: [''],
       evidencias: [''],
-      fecha_creacion: [this.fecha_hoy],
     })
 
     this.activatedRoute.params.subscribe(params => {
@@ -63,8 +66,7 @@ export class DiagnosticoComponent implements OnInit {
 
     }),
     err => console.log("error: " + err)
-
-    
+ 
   }
 
   crearDiagnostico(){
@@ -114,11 +116,10 @@ export class DiagnosticoComponent implements OnInit {
         
       }
     )
-  }// end method
+  }
 
   getDiagnosticos(){
-    this.diagnosticoService
-      .getDiagnosticosByIpPaciente(this.id).subscribe(res => {
+    this.diagnosticoService.getDiagnosticosByIpPaciente(this.id).subscribe(res => {
         console.log(res)
         this.diagnosticos = res
         if(this.diagnosticos.length <= 0){
@@ -131,8 +132,7 @@ export class DiagnosticoComponent implements OnInit {
         this.mensaje='No se pudo obtener la información'
         console.log(err.error.message)
         console.log(err)
-      }
-      );
+      });
   }
 
   obtenerFechaHoraHoy(){
@@ -142,9 +142,15 @@ export class DiagnosticoComponent implements OnInit {
     return this.fecha_hora_actual
   }
 
-  openXl(content: TemplateRef<any>) {
+  openModalNuevo(content: TemplateRef<any>) {
+    this.formularioDiagnostico.reset()
 		this.modalRef = this.modalService.open(content, { size: 'xl', centered: true });
-    console.log('Modal abierto:', this.modalRef);
+    console.log('Modal abierto Nuevo:', this.modalRef);
+	}
+
+  openModalEdit(content: TemplateRef<any>) {
+		this.modalRef = this.modalService.open(content, { size: 'xl', centered: true });
+    console.log('Modal abierto Editar:', this.modalRef);
 	}
 
   closeModal() {
@@ -160,7 +166,7 @@ export class DiagnosticoComponent implements OnInit {
     this.remainingCharacters = this.maxCharacters - input.value.length;
   }
 
-  editar(id:string){
+  getDiagnosticoEditar(id:string){
     this.spinner.show();
     this.diagnosticoService.getDiagnosticoById(id).subscribe(res => {   //volver a llamar los datos con el id recibido
       this.spinner.hide();
@@ -171,9 +177,18 @@ export class DiagnosticoComponent implements OnInit {
         descripcion_problema: this.diagnostico.descripcion_problema,
         codigo_diagnostico: this.diagnostico.codigo_diagnostico,
         evidencias: this.diagnostico.evidencias,
-        fecha_creacion: this.diagnostico.fecha_creacion
-
       });
+
+      this.nombre_usuario_creador = this.diagnostico.nombre_usuario_creador
+      this.fecha_creacion = this.diagnostico.fecha_creacion
+      this.nombre_usuario_actualizo = this.diagnostico.nombre_usuario_actualizo
+      this.fecha_actualizacion = this.diagnostico.fecha_actualizacion
+
+      if(this.diagnostico.nombre_usuario_actualizo ==null || this.diagnostico.nombre_usuario_actualizo ==''){
+        this.mostrar_actualizacion = false
+      }else{
+        this.mostrar_actualizacion = true
+      }
 
     },
     err => {
@@ -185,9 +200,10 @@ export class DiagnosticoComponent implements OnInit {
   actualizarDiagnostico(){
     console.log("Actualizar Diagnostico:")
     console.log(this.formularioDiagnostico)
-    console.log("diagnostico: "+this.diagnostico.id)
 
     var diagnosticoJson = JSON.parse(JSON.stringify(this.formularioDiagnostico.value))
+    diagnosticoJson.id_usuario_actualizo=localStorage.getItem('_us') 
+    diagnosticoJson.fecha_actualizacion = this.obtenerFechaHoraHoy()
     
     this.spinner.show();
     this.diagnosticoService.updatediagnostico(this.diagnostico.id, diagnosticoJson).subscribe(res => {
@@ -213,7 +229,6 @@ export class DiagnosticoComponent implements OnInit {
         err => {
           this.spinner.hide();
           console.log("error: " + err)
-          //err.error.message
           Swal.fire({
             icon: 'error',
             html:
@@ -231,7 +246,6 @@ export class DiagnosticoComponent implements OnInit {
 
 
   deleteDiagnostico() {
-
     Swal.fire({
       html:
         `<h5>${ Mensajes.DIAGNOSTICO_ELIMINAR_QUESTION }</h5> <br/> `,
@@ -264,7 +278,7 @@ export class DiagnosticoComponent implements OnInit {
           this.closeModal();
           this.ngOnInit()
         },
-          err => { 
+        err => { 
             this.spinner.hide();
             console.log("error: " + err)
             Swal.fire({
@@ -276,8 +290,7 @@ export class DiagnosticoComponent implements OnInit {
               showConfirmButton: false,
               timer: 3000
             }) 
-          }
-        )
+        })
     
       }
     })
