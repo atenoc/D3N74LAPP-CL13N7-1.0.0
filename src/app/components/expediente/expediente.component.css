@@ -1,5 +1,6 @@
 .nav-link.active {
-    background-color: #f9f9f9;
+    /*background-color: #f9f9f9;*/
+    background-color: #dce8fd;;
     font-weight: 600;
     color: #007bff
 }

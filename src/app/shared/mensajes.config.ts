@@ -89,6 +89,7 @@ export const Mensajes = {
     DIAGNOSTICO_NO_REGISTRADO: 'No se pudo guardar el diagnóstico ',
     DIAGNOSTICO_ACTUALIZADO: 'El diagnóstico se actualizó correctamente ',
     DIAGNOSTICO_NO_ACTUALIZADO: 'No se pudo actualizar el diagnóstico ',
+    DIAGNOSTICO_ELIMINAR_QUESTION: '¿Estás seguro que quieres eliminar el diagnóstico?',
     DIAGNOSTICO_ELIMINADO: 'El diagnóstico se eliminó correctamente ',
     DIAGNOSTICO_NO_ELIMINADO: 'No se pudo eliminar el diagnóstico ',
 

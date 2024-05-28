@@ -21,8 +21,12 @@ export class DiagnosticoComponent implements OnInit {
   fecha_hora_actual:string;
   formularioDiagnostico:FormGroup;
   existenDiagnosticos:boolean=false
+  diagnostico:Diagnostico;
   diagnosticos:Diagnostico[] = [];
   mensaje:string
+
+  maxCharacters: number = 1500; // Número máximo de caracteres permitidos
+  remainingCharacters: number = this.maxCharacters;
 
   private modalRef: NgbModalRef | undefined;
 
@@ -149,6 +153,135 @@ export class DiagnosticoComponent implements OnInit {
     } else {
       console.log("No hay referencia modal");
     }
+  }
+
+  updateCharacterCount(event: Event): void {
+    const input = event.target as HTMLTextAreaElement;
+    this.remainingCharacters = this.maxCharacters - input.value.length;
+  }
+
+  editar(id:string){
+    this.spinner.show();
+    this.diagnosticoService.getDiagnosticoById(id).subscribe(res => {   //volver a llamar los datos con el id recibido
+      this.spinner.hide();
+      this.diagnostico = res;
+      console.log(res)
+
+      this.formularioDiagnostico.patchValue({
+        descripcion_problema: this.diagnostico.descripcion_problema,
+        codigo_diagnostico: this.diagnostico.codigo_diagnostico,
+        evidencias: this.diagnostico.evidencias,
+        fecha_creacion: this.diagnostico.fecha_creacion
+
+      });
+
+    },
+    err => {
+      this.spinner.hide();
+      console.log("error: " + err)
+    })
+  }
+
+  actualizarDiagnostico(){
+    console.log("Actualizar Diagnostico:")
+    console.log(this.formularioDiagnostico)
+    console.log("diagnostico: "+this.diagnostico.id)
+
+    var diagnosticoJson = JSON.parse(JSON.stringify(this.formularioDiagnostico.value))
+    
+    this.spinner.show();
+    this.diagnosticoService.updatediagnostico(this.diagnostico.id, diagnosticoJson).subscribe(res => {
+        console.log("Diagnostico actualizado: "+res);
+        this.closeModal();
+        this.ngOnInit()
+        this.spinner.hide();
+        Swal.fire({
+          position: 'top-end',
+          html:
+            `<h5>${ Mensajes.DIAGNOSTICO_ACTUALIZADO }</h5>`, 
+            
+          showConfirmButton: false,
+          backdrop: false, 
+          width: 400,
+          background: 'rgb(40, 167, 69, .90)',
+          color:'white',
+          timerProgressBar:true,
+          timer: 3000,
+        })
+
+      },
+        err => {
+          this.spinner.hide();
+          console.log("error: " + err)
+          //err.error.message
+          Swal.fire({
+            icon: 'error',
+            html:
+              `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
+              `<span>${ Mensajes.DIAGNOSTICO_NO_ACTUALIZADO }</span></br>`+
+              `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
+            showConfirmButton: false,
+            timer: 3000
+          })
+        }
+      );
+
+    return false;
+  }
+
+
+  deleteDiagnostico() {
+
+    Swal.fire({
+      html:
+        `<h5>${ Mensajes.DIAGNOSTICO_ELIMINAR_QUESTION }</h5> <br/> `,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#dc3545',
+      cancelButtonColor: '#aeaeae',
+      confirmButtonText: 'Si, eliminar',
+      cancelButtonText: 'No, cancelar'
+    }).then((result) => {
+      if (result.value) {
+        this.spinner.show();
+        this.diagnosticoService.deleteDiagnostico(this.diagnostico.id).subscribe(res => {
+          this.spinner.hide();
+          console.log("Diagnostico eliminado:" + JSON.stringify(res))
+
+          Swal.fire({
+            position: 'top-end',
+            html:
+              `<h5>${ Mensajes.DIAGNOSTICO_ELIMINADO }</h5>`,
+            showConfirmButton: false,
+            backdrop: false, 
+            width: 400,
+            background: 'rgb(40, 167, 69, .90)',
+            color:'white',
+            timerProgressBar:true,
+            timer: 3000,
+          })
+
+          this.closeModal();
+          this.ngOnInit()
+        },
+          err => { 
+            this.spinner.hide();
+            console.log("error: " + err)
+            Swal.fire({
+              icon: 'error',
+              html:
+                `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
+                `<span>${ Mensajes.DIAGNOSTICO_NO_ELIMINADO}</span></br>`+
+                `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
+              showConfirmButton: false,
+              timer: 3000
+            }) 
+          }
+        )
+    
+      }
+    })
+
   }
 
 }

@@ -21,8 +21,8 @@ export class DiagnosticoService {
     return this.http.get<Diagnostico[]>(`${this.URI}/paciente/${id_paciente}`);
   }
 
-  getDiagnosticoByIdPaciente(id: string) {
-    return this.http.get<Diagnostico>(`${this.URI}/paciente/${id}`);
+  getDiagnosticoById(id: string) {
+    return this.http.get<Diagnostico>(`${this.URI}/${id}`);
   }
 
   updatediagnostico(id, diagnostico: Diagnostico): Observable<Diagnostico> {
