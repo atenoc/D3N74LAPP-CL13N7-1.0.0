@@ -122,7 +122,7 @@ export class TratamientoComponent implements OnInit {
 
   getTratamientos(){
     console.log("get tratamientos")
-    this.tratamientoService.getTratamientosByIpPaciente(this.id).subscribe(res => {
+    this.tratamientoService.getTratamientosByIdPaciente(this.id).subscribe(res => {
         console.log(res)
         this.tratamientos = res
         if(this.tratamientos.length <= 0){
@@ -174,7 +174,7 @@ export class TratamientoComponent implements OnInit {
     this.remainingCharacters2 = this.maxCharacters2 - input.value.length;
   }
 
-  gettratamientoEditar(id:string){
+  getTratamientoEditar(id:string){
     this.spinner.show();
     this.tratamientoService.getTratamientById(id).subscribe(res => {   //volver a llamar los datos con el id recibido
       this.spinner.hide();
@@ -214,7 +214,7 @@ export class TratamientoComponent implements OnInit {
     tratamientoJson.fecha_actualizacion = this.obtenerFechaHoraHoy()
     
     this.spinner.show();
-    this.tratamientoService.updateTratamient(this.tratamiento.id, tratamientoJson).subscribe(res => {
+    this.tratamientoService.updateTratamiento(this.tratamiento.id, tratamientoJson).subscribe(res => {
         console.log("tratamiento actualizado: "+res);
         this.closeModal();
         this.ngOnInit()
@@ -268,7 +268,7 @@ export class TratamientoComponent implements OnInit {
         this.spinner.show();
         this.tratamientoService.deleteTratamient(this.tratamiento.id).subscribe(res => {
           this.spinner.hide();
-          console.log("Tratamientos eliminado:" + JSON.stringify(res))
+          console.log("Tratamiento eliminado:" + JSON.stringify(res))
 
           Swal.fire({
             position: 'top-end',

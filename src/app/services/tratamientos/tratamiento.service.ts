@@ -17,7 +17,7 @@ export class TratamientoService {
     return this.http.post<Tratamiento>(`${this.URI}`, tratamiento);
   }
 
-  getTratamientosByIpPaciente(id_paciente:string): Observable<Tratamiento[]>{
+  getTratamientosByIdPaciente(id_paciente:string): Observable<Tratamiento[]>{
     return this.http.get<Tratamiento[]>(`${this.URI}/paciente/${id_paciente}`);
   }
 
@@ -25,7 +25,7 @@ export class TratamientoService {
     return this.http.get<Tratamiento>(`${this.URI}/${id}`);
   }
 
-  updateTratamient(id, tratamiento: Tratamiento): Observable<Tratamiento> {
+  updateTratamiento(id, tratamiento: Tratamiento): Observable<Tratamiento> {
     return this.http.patch<Tratamiento>(`${this.URI}/${id}`, tratamiento);
   }
 

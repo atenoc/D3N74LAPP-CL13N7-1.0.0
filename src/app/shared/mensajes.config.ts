@@ -102,4 +102,13 @@ export const Mensajes = {
     TRATAMIENTO_ELIMINADO: 'El tratamiento se eliminó correctamente ',
     TRATAMIENTO_NO_ELIMINADO: 'No se pudo eliminar el tratamiento ',
 
+    //Seguimientos
+    SEGUIMIENTO_REGISTRADO: 'El seguimiento se guardó correctamente ',
+    SEGUIMIENTO_NO_REGISTRADO: 'No se pudo guardar el seguimiento ',
+    SEGUIMIENTO_ACTUALIZADO: 'El seguimiento se actualizó correctamente ',
+    SEGUIMIENTO_NO_ACTUALIZADO: 'No se pudo actualizar el seguimiento ',
+    SEGUIMIENTO_ELIMINAR_QUESTION: '¿Estás seguro que quieres eliminar el seguimiento?',
+    SEGUIMIENTO_ELIMINADO: 'El seguimiento se eliminó correctamente ',
+    SEGUIMIENTO_NO_ELIMINADO: 'No se pudo eliminar el seguimiento ',
+
 };
