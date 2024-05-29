@@ -22,7 +22,7 @@
 
         <div class="floating-component">
           <div class="table-container" *ngIf="mostrarTablaResultados">
-            <table class="table table-bordered table-info">
+            <table class="table table-bordered table-success">
               <tbody>
                 <tr *ngFor="let paciente of pacientes" (click)="seleccionarPaciente(paciente.id, paciente.nombre, paciente.apellidop, paciente.apellidom, paciente.edad, paciente.telefono)">
                   <td>{{ paciente.nombre }} {{ paciente.apellidop }} {{ paciente.apellidom }}</td>
@@ -30,6 +30,13 @@
               </tbody>
             </table>
           </div>
+          <div *ngIf="mostrarAlerta" class="alert alert-secondary alert-dismissible fade show" role="alert">
+            <div style="margin-top: -10px !important;">
+              No hay coincidencias
+              <button type="button" class="btn-close" (click)="cerrarAlerta()" aria-label="Close" style="margin-top: -13px !important;"></button>
+            </div>
+          </div>
+          
         </div>
       </div>
     </div>
@@ -52,7 +59,7 @@
       </div>
       <div class="col-sm">
         <div class="form-group">
-          <span> <small class="text-muted">Ap. Materno (opcional)</small></span>
+          <span> <small class="text-muted">Ap. Materno </small></span>
             <input type="text" class="form-control" [(ngModel)]="apellidoMaternoPaciente" >
         </div>
       </div>
@@ -60,13 +67,13 @@
     </div>
 
     <div class="row">
-      <div class="col-sm-3">
+      <div class="col-sm-2">
         <div class="form-group">
-          <span> <small class="text-muted">Edad (opcional)</small></span>
+          <span> <small class="text-muted">Edad </small></span>
           <input type="text" class="form-control" [(ngModel)]="edadPaciente" maxlength="3">
         </div>
       </div>
-      <div class="col-sm-3">
+      <div class="col-sm-4">
         <div class="form-group">
           <span><strong> Teléfono * </strong></span>
             <input type="text" class="form-control" [(ngModel)]="telefonoPaciente" (ngModelChange)="validaTelefono()" maxlength="10" placeholder="10 dígitos">
@@ -152,6 +159,50 @@
           <textarea class="form-control"  rows="2" maxlength="130" [(ngModel)]="nota"></textarea>
         </div> -->
     </div>
+
+    <div class="row">
+      <div class="col-sm">
+        <div class="form-group">
+          <span class="text-muted">Buscar médico especialista</span>
+          <i class="fas fa-info-circle cursor-pointer text-muted ml-1" 
+            triggers="click" [autoClose]="'outside'" placement="end" 
+            ngbTooltip="Buscar médicos registrados"></i>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-search"></i></span>
+            </div>
+            <input type="text" [(ngModel)]="queryMedicos" (input)="buscarMedicos()" class="form-control" placeholder="Buscar por nombre o apellidos...">
+          </div>
+  
+          <div class="floating-component">
+            <div class="table-container" *ngIf="mostrarTablaResultadosMedicos">
+              <table class="table table-bordered table-success">
+                <tbody>
+                  <tr *ngFor="let medico of medicos" (click)="seleccionarMedico(medico.id, medico.nombre, medico.apellidop, medico.apellidom, medico.titulo, medico.especialidad)">
+                    <td>{{ medico.titulo }} {{ medico.nombre }} {{ medico.apellidop }} {{ medico.apellidom }} | {{ medico.especialidad }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div *ngIf="mostrarAlertaMedicos" class="alert alert-secondary alert-dismissible fade show" role="alert">
+              <div style="margin-top: -10px !important;">
+                No hay coincidencias
+                <button type="button" class="btn-close" (click)="cerrarAlertaMedicos()" aria-label="Close" style="margin-top: -13px !important;"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="col-sm">
+      <div class="form-group">
+          <span><strong> Médico seleccionado * </strong></span>
+          <input type="text" class="form-control" [(ngModel)]="nombreMedico" (ngModelChange)="validaMedico()" readonly>
+          <div *ngIf="mostrarMensajeMedico" class="invalid-input-message">Selecciona un médico especialista</div>
+      </div>
+    </div>
+
     <div class="row">
       <div class="d-flex mt-2">
         <div class="ml-auto">

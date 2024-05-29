@@ -28,33 +28,7 @@
           </li>
         </ul>
 
-        <!-- <div class="row row-width">
-          <div class="col-10 text-center mt-2">
-            <a routerLink="/perfil" data-bs-toggle="tooltip" data-bs-placement="right" title="Ver mi perfil">{{ nombreUsuario }} </a>  
-          </div>
-          
-          <div class="col-2">
-            <div class="info">
-              <div class="btn btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="right" title="Cerrar sesión" (click)="salir()">
-                <i class="fas fa-sign-out-alt" style="padding: 5px;"></i>
-              </div>
-            </div>
-          </div>
-        </div> -->
-
       </div>
-
-      <!-- SidebarSearch Form -->
-      <!-- <div class="form-inline">
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" placeholder="Buscar" aria-label="Search">
-          <div class="input-group-append">
-            <button class="btn btn-sidebar">
-              <i class="fas fa-search fa-fw"></i>
-            </button>
-          </div>
-        </div>
-      </div> -->
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
@@ -85,6 +59,11 @@
                   </ul>
                 </li>
                 
+                <li><div class="link"><i class="fas fa-user-md"></i><span class="noneBlock">Médicos</span><i class="fa fa-chevron-down"></i></div>
+                  <ul class="submenu">
+                    <li><a routerLink="/medicos"><i class="fas fa-list-ol"></i><span class="noneBlock">Ver médicos</span></a></li>
+                  </ul>
+                </li>
 
                 <li class="default open">
                   <div class="link"> <i class="fas fa-clock "></i> <span class="noneBlock">Citas</span> <i class="fa fa-chevron-down"></i></div>
@@ -101,30 +80,7 @@
                     <li><a routerLink="/paciente-form"><i class="fas fa-user-plus nav-icon"></i> <span class="noneBlock">Agregar Paciente</span></a></li>
                   </ul>
                 </li>
-                <li><div class="link"><i class="fas fa-user-md"></i><span class="noneBlock">Médicos</span><i class="fa fa-chevron-down"></i></div>
-                  <ul class="submenu">
-                    <li><a routerLink="/medicos"><i class="fas fa-list-ol"></i><span class="noneBlock">Ver médicos</span></a></li>
-                    <!-- <li><a href="#">Bing</a></li>
-                    <li><a href="#">Yahoo</a></li>
-                    <li><a href="#">Other</a></li>
-                    <li><a href="#">Google</a></li>
-                    <li><a href="#">Bing</a></li>
-                    <li><a href="#">Yahoo</a></li>
-                    <li><a href="#">Other</a></li>
-                    <li><a href="#">Google</a></li>
-                    <li><a href="#">Bing</a></li>
-                    <li><a href="#">Yahoo</a></li>
-                    <li><a href="#">Other</a></li>
-                    <li><a href="#">Google</a></li>
-                    <li><a href="#">Bing</a></li>
-                    <li><a href="#">Yahoo</a></li>
-                    <li><a href="#">Other</a></li>
-                    <li><a href="#">Google</a></li>
-                    <li><a href="#">Bing</a></li>
-                    <li><a href="#">Yahoo</a></li>
-                    <li><a href="#">Other</a></li> -->
-                  </ul>
-                </li>
+    
               </ul>
 
         </ul>

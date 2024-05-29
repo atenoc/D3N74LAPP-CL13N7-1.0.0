@@ -10,6 +10,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
+import { Usuario } from 'src/app/models/Usuario.model';
+import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
 
 @Component({
   selector: 'app-cita-form',
@@ -19,9 +21,13 @@ import { CifradoService } from 'src/app/services/cifrado.service';
 export class CitaFormComponent implements OnInit {
 
   query = '';
+  queryMedicos = '';
   mostrarTablaResultados = false;
-
+  mostrarTablaResultadosMedicos = false;
+  mostrarAlerta = false;
+  mostrarAlertaMedicos = false;
   pacientes: Paciente[] = [];
+  medicos: Usuario[] = [];
 
   date: Date;
   fecha_creacion:string
@@ -30,6 +36,7 @@ export class CitaFormComponent implements OnInit {
   selectedTimeInicio: { hour: number, minute: number } = { hour: 0, minute: 0 };
   selectedTimeFin: { hour: number, minute: number } = { hour: 0, minute: 0 };
 
+  id_paciente:string
   nombrePaciente:string=""
   apellidoPaternoPaciente:string=""
   apellidoMaternoPaciente:string=""
@@ -41,15 +48,17 @@ export class CitaFormComponent implements OnInit {
   fecha_hora_fin:string
   nota:string=""
 
-  id_paciente:string
+  id_usuario_medico:string=""
+  nombreMedico:string=""
 
   mostrarMensajeNombre:boolean = true
   mostrarMensajeApPaterno:boolean = true
-  mostrarMensajeTitulo:boolean = true
+  //mostrarMensajeTitulo:boolean = true
   mostrarMensajeMotivo:boolean = true
   mostrarMensajeFechaInicio:boolean = true
   mostrarMensajeHoraInicio:boolean = true
   mostrarMensajeTelefono:boolean = true
+  mostrarMensajeMedico:boolean = true
 
   //mensajes
   campoRequerido: string;
@@ -69,6 +78,7 @@ export class CitaFormComponent implements OnInit {
     private spinner: NgxSpinnerService, 
     private activeModal: NgbActiveModal, 
     private pacienteService:PacienteService, 
+    private usuarioService:UsuarioService, 
     private citaService:CitaService,
     private router: Router, 
     config: NgbDatepickerConfig
@@ -108,13 +118,15 @@ export class CitaFormComponent implements OnInit {
     console.log("Fecha Inicio: "+ JSON.stringify(this.fechaModelInicio))
     console.log("Hora Inicio: "+ JSON.stringify(this.selectedTimeInicio))
 
-    if(this.mostrarMensajeTitulo && this.mostrarMensajeMotivo && this.mostrarMensajeFechaInicio && this.mostrarMensajeHoraInicio && this.mostrarMensajeTelefono){
+    if(this.mostrarMensajeMotivo && this.mostrarMensajeFechaInicio && this.mostrarMensajeHoraInicio && this.mostrarMensajeTelefono){
       console.log("Vuelve a validar")
-      this.validaTitulo()
+      //this.validaTitulo()
       this.validaMotivo()
       this.validarFechaInicio()
       this.validaHoraInicio()
+      this.validaHoraInicio()
       this.validaTelefono()
+      this.validaMedico()
     
     }else{
       console.log("Todo valido")
@@ -248,8 +260,10 @@ export class CitaFormComponent implements OnInit {
         console.log(this.pacientes)
         if(this.pacientes.length > 0){
           this.mostrarTablaResultados = true;
+          this.mostrarAlerta = false;
         }else{
           this.mostrarTablaResultados = false;
+          this.mostrarAlerta = true;
         }
       },
       (error) => {
@@ -271,12 +285,46 @@ export class CitaFormComponent implements OnInit {
     this.edadPaciente = edad
     this.telefonoPaciente = telefono
 
-    this.query=nombre +" "+apellidop+" "+apellidom 
+    //this.query=nombre +" "+apellidop+" "+apellidom
+    this.query="" 
     this.id_paciente = id_seleccionado
    
     this.validaNombre()
     this.validaApPaterno()
     this.validaTelefono()
+  }
+
+  buscarMedicos() {
+    this.usuarioService.buscarMedicos(localStorage.getItem('_cli'), this.queryMedicos).subscribe(
+      (res) => {
+        this.medicos = res;
+        console.log(this.medicos)
+        if(this.medicos.length > 0){
+          this.mostrarTablaResultadosMedicos = true;
+          this.mostrarAlertaMedicos = false;
+        }else{
+          this.mostrarTablaResultadosMedicos = false;
+          this.mostrarAlertaMedicos = true;
+        }
+      },
+      (error) => {
+        console.error('Error al buscar medicos: ', error);
+      }
+    );
+  }
+
+  seleccionarMedico(id_seleccionado: string, nombre:string, apellidop:string, apellidom:string, edad:string, telefono:string): void {
+    console.log("Id seleccionado: " + id_seleccionado);
+    console.log("Teléfono seleccionado: " + telefono);
+    //this.queryMedicos=nombre +" "+apellidop+" "+apellidom 
+    this.queryMedicos=""
+    this.mostrarTablaResultadosMedicos = false;
+    this.nombreMedico = nombre +" "+apellidop+" "+apellidom;
+    this.id_usuario_medico = id_seleccionado
+    console.log("id usuario médico seleccionado: "+this.id_usuario_medico)
+
+    this.validaMedico()
+
   }
 
   validaNombre(){
@@ -295,13 +343,13 @@ export class CitaFormComponent implements OnInit {
     }
   }
 
-  validaTitulo(){
+  /*validaTitulo(){
     if(this.titulo==""){
       this.mostrarMensajeTitulo = true
     }else{
       this.mostrarMensajeTitulo = false
     }
-  }
+  }*/
 
   validaMotivo(){
     if(this.motivo==""){
@@ -340,4 +388,19 @@ export class CitaFormComponent implements OnInit {
     this.activeModal.close('Modal cerrado');
   }
 
+  cerrarAlerta() {
+    this.mostrarAlerta = false;
+  }
+
+  cerrarAlertaMedicos() {
+    this.mostrarAlertaMedicos = false;
+  }
+
+  validaMedico(){
+    if(this.nombreMedico==""){
+      this.mostrarMensajeMedico = true
+    }else{
+      this.mostrarMensajeMedico = false
+    }
+  }
 }

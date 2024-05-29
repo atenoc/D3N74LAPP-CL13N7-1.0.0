@@ -121,4 +121,8 @@ export class UsuarioService {
     return this.http.get<UsuariosPaginados>(`${this.URI}/paginacion/clinica/${id_clinica}`, { params });
   }
 
+  buscarMedicos(id_clinica: string, query: string, ): Observable<any> {
+    return this.http.post(`${this.URI}/buscador/${id_clinica}`, { query });
+  }
+
 }
