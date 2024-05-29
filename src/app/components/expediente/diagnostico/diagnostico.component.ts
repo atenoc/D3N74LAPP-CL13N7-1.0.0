@@ -206,7 +206,7 @@ export class DiagnosticoComponent implements OnInit {
     diagnosticoJson.fecha_actualizacion = this.obtenerFechaHoraHoy()
     
     this.spinner.show();
-    this.diagnosticoService.updatediagnostico(this.diagnostico.id, diagnosticoJson).subscribe(res => {
+    this.diagnosticoService.updateDiagnostico(this.diagnostico.id, diagnosticoJson).subscribe(res => {
         console.log("Diagnostico actualizado: "+res);
         this.closeModal();
         this.ngOnInit()

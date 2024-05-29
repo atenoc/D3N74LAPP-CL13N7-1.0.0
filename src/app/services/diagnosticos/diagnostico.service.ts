@@ -25,7 +25,7 @@ export class DiagnosticoService {
     return this.http.get<Diagnostico>(`${this.URI}/${id}`);
   }
 
-  updatediagnostico(id, diagnostico: Diagnostico): Observable<Diagnostico> {
+  updateDiagnostico(id, diagnostico: Diagnostico): Observable<Diagnostico> {
     return this.http.patch<Diagnostico>(`${this.URI}/${id}`, diagnostico);
   }
 

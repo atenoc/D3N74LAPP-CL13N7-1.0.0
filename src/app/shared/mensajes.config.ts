@@ -93,4 +93,13 @@ export const Mensajes = {
     DIAGNOSTICO_ELIMINADO: 'El diagnóstico se eliminó correctamente ',
     DIAGNOSTICO_NO_ELIMINADO: 'No se pudo eliminar el diagnóstico ',
 
+    //Tratamientos
+    TRATAMIENTO_REGISTRADO: 'El tratamiento se guardó correctamente ',
+    TRATAMIENTO_NO_REGISTRADO: 'No se pudo guardar el tratamiento ',
+    TRATAMIENTO_ACTUALIZADO: 'El tratamiento se actualizó correctamente ',
+    TRATAMIENTO_NO_ACTUALIZADO: 'No se pudo actualizar el tratamiento ',
+    TRATAMIENTO_ELIMINAR_QUESTION: '¿Estás seguro que quieres eliminar el tratamiento?',
+    TRATAMIENTO_ELIMINADO: 'El tratamiento se eliminó correctamente ',
+    TRATAMIENTO_NO_ELIMINADO: 'No se pudo eliminar el tratamiento ',
+
 };

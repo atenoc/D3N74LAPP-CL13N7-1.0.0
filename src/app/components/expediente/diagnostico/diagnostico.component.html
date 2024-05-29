@@ -24,8 +24,12 @@
         </div>
 
         <div class="card-body">
-          <p>{{ diagnostico.descripcion_problema }}</p>
 
+          <div>
+            <strong><i class="far fa-comment"></i> Descripción</strong>
+            <p>{{ diagnostico.descripcion_problema }}</p>
+          </div>
+          
           <!-- Attachment -->
           <div class="attachment-block clearfix">
             <img class="attachment-img" src="../../../../assets/images/odontograma.png" alt="Attachment Image">
@@ -80,7 +84,7 @@
           <div class="row mb-3">
             <div class="col-6">
               <span>Código de diagnóstico (CIE-10)</span>
-              <input formControlName="codigo_diagnostico" type="text" class="form-control" id="codigoDiagnostico">
+              <input formControlName="codigo_diagnostico" type="text" class="form-control">
             </div>
             <div class="col-6">
               <span>Fecha</span> <br>
@@ -89,8 +93,8 @@
           </div>
 
           <div class="mb-3">
-              <span>Descripción del problema</span>
-              <textarea formControlName="descripcion_problema" class="form-control" id="descripcionProblema" rows="3" 
+              <span><i class="far fa-comment"></i> Descripción del problema</span>
+              <textarea formControlName="descripcion_problema" class="form-control" rows="3" 
                 (input)="updateCharacterCount($event)" [attr.maxlength]="maxCharacters"></textarea>
                 <div class="d-flex">
                   <div></div>
@@ -100,8 +104,8 @@
                 </div>
           </div>
           <div class="mb-3">
-              <span>Subir archivos de evidencia</span>
-              <input formControlName="evidencias" class="form-control" type="file" id="fileInput" multiple>
+              <span><i class="far fa-images"></i> Subir archivos de evidencia</span>
+              <input formControlName="evidencias" class="form-control" type="file" multiple>
           </div>
 
           <div class="card collapsed-card">
@@ -157,18 +161,18 @@
           <div class="row mb-3">
             <div class="col-6">
               <span>Código de diagnóstico (CIE-10)</span>
-              <input formControlName="codigo_diagnostico" type="text" class="form-control" id="codigoDiagnostico">
+              <input formControlName="codigo_diagnostico" type="text" class="form-control">
             </div>
             <div class="col-6">
-              <span>Fecha</span>
+              <span>Fecha para actualización</span> 
               <br>
-              <span>{{ fecha_creacion }}</span>
+              <span>{{ fecha_hoy }}</span>
             </div>
           </div>
 
           <div class="mb-3">
               <span>Descripción del problema</span>
-              <textarea formControlName="descripcion_problema" class="form-control" id="descripcionProblema" rows="3" 
+              <textarea formControlName="descripcion_problema" class="form-control" rows="3" 
                 (input)="updateCharacterCount($event)" [attr.maxlength]="maxCharacters"></textarea>
                 <div class="d-flex">
                   <div></div>

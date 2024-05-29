@@ -24,6 +24,8 @@ import { PacienteFormComponent } from './components/pacientes/paciente-form/paci
 import { PlanesListComponent } from './components/planes/planes-list/planes-list.component';
 import { ExpedienteComponent } from './components/expediente/expediente.component';
 import { VisitasComponent } from './components/expediente/visitas/visitas.component';
+import { DiagnosticoComponent } from './components/expediente/diagnostico/diagnostico.component';
+import { TratamientoComponent } from './components/expediente/tratamiento/tratamiento.component';
 
 const routes: Routes = [
   {path:'', redirectTo:'/home', pathMatch:'full'},
@@ -47,6 +49,8 @@ const routes: Routes = [
   {path:'centro-detalle/:id', component: CentroDetalleComponent, canActivate:[AuthGuard]},
   {path:'perfil', component: PerfilComponent, canActivate:[AuthGuard]},
   {path:'visitas/:id', component: VisitasComponent, canActivate:[AuthGuard]},
+  {path:'diagnosticos/:id', component: DiagnosticoComponent, canActivate:[AuthGuard]},
+  {path:'tratamientos/:id', component: TratamientoComponent, canActivate:[AuthGuard]},
   {path:'planes', component: PlanesListComponent, canActivate:[AuthGuard]},
   {path:'password/:id', component: ContrasenaComponent, canActivate:[AuthGuard]},
   {path:'pagina/404/no-encontrada', component: PageNotFoundComponent, canActivate:[AuthGuard]},
