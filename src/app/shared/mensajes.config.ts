@@ -49,7 +49,7 @@ export const Mensajes = {
     CLINICA_NO_ELIMINADA: 'No se pudo eliminar tu clínica ',
 
     //Citas
-    FECHA_INICIO_REQUERIDA: 'Esta fecha es obligatoria ',
+    FECHA_INICIO_REQUERIDA: 'La fecha inicio es obligatoria ',
     HORARIO_INICIO_REQUERIDO: 'El horario de inicio es obligatorio ',
     HORARIO_INICIO_VALIDO: 'Elije un horario válido ',
     CITA_REGISTRADA: 'La cita se registró correctamente ',
@@ -59,6 +59,7 @@ export const Mensajes = {
     CITA_ELIMINAR_QUESTION: '¿Estás seguro que quieres eliminar... ?',
     CITA_ELIMINADA: 'La cita se eliminó correctamente ',
     CITA_NO_ELIMINADA: 'No se pudo eliminar la cita ',
+    CITA_CAMPOS_OBLIGATORIOS: 'Por favor, verifica todos los campos obligatorios',
 
     //Pacientes
     PACIENTE_REGISTRADO: 'El paciente se registró correctamente ',
