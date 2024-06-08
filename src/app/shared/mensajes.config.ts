@@ -19,6 +19,8 @@ export const Mensajes = {
     TELEFONO_LONGITUD:'El teléfono debe contener al menos 10 dígitos ',
     SOLO_NUMEROS: 'Por favor, ingresa sólo números ', 
     SOLO_LETRAS: 'Por favor, ingresa sólo letras ', 
+    BUSQUEDA_NO_COINCIDENCIAS: 'No hay coincidencias ',
+    CAMPOS_OBLIGATORIOS: 'Los campos marcados con (*) son obligatorios ',
 
     //Contraseña
     CONTRASENA_INVALIDA: 'La contraseña debe contener al menos una letra mayúscula (A-Z), un número (0-9) y un caracter especial (#, $, %, &, ect) ',
@@ -50,8 +52,10 @@ export const Mensajes = {
 
     //Citas
     FECHA_INICIO_REQUERIDA: 'La fecha inicio es obligatoria ',
+    FECHAS_NO_VALIDAS: 'La fecha fin debe ser igual o posterior a la fecha de inicio',
     HORARIO_INICIO_REQUERIDO: 'El horario de inicio es obligatorio ',
-    HORARIO_INICIO_VALIDO: 'Elije un horario válido ',
+    HORARIO_INICIO_NO_VALIDO: 'Selecciona un horario válido ',
+    HORARIOS_NO_VALIDOS: 'El horario fin debe ser posterior al horario de inicio',
     CITA_REGISTRADA: 'La cita se registró correctamente ',
     CITA_NO_REGISTRADA: 'La cita no se puedo registrar ',
     CITA_ACTUALIZADA: 'La cita se actualizó correctamente ',
@@ -60,6 +64,7 @@ export const Mensajes = {
     CITA_ELIMINADA: 'La cita se eliminó correctamente ',
     CITA_NO_ELIMINADA: 'No se pudo eliminar la cita ',
     CITA_CAMPOS_OBLIGATORIOS: 'Por favor, verifica todos los campos obligatorios',
+    SELECCIONA_MEDICO_ESPECIALISTA: 'Selecciona un médico especialista',
 
     //Pacientes
     PACIENTE_REGISTRADO: 'El paciente se registró correctamente ',

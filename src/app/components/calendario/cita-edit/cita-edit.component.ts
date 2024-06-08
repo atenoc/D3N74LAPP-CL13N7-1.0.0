@@ -56,7 +56,7 @@ export class CitaEditComponent implements OnInit {
   //mensajes
   campoRequerido: string;
   fechaRequerida: string;
-  horarioValido: string;
+  horarioNoValido: string;
   soloNumeros: string;
 
   pacienteJson = {}
@@ -74,7 +74,7 @@ export class CitaEditComponent implements OnInit {
     ) {
     this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
     this.fechaRequerida = Mensajes.FECHA_INICIO_REQUERIDA;
-    this.horarioValido = Mensajes.HORARIO_INICIO_VALIDO;
+    this.horarioNoValido = Mensajes.HORARIO_INICIO_NO_VALIDO;
     this.soloNumeros = "Ingresa sólo números";
 
     config.markDisabled = (date: NgbDateStruct) => {

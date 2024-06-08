@@ -22,20 +22,14 @@ export class CitaFormComponent implements OnInit {
 
   queryPacientes = '';
   queryMedicos = '';
-  mostrarTablaResultadosPacientes = false;
-  mostrarTablaResultadosMedicos = false;
-  mostrarAvisoPacientes = false;
-  mostrarAvisoMedicos = false;
   pacientes: Paciente[] = [];
   medicos: Usuario[] = [];
-
   date: Date;
   fecha_creacion:string
   fechaModelInicio: NgbDateStruct;
   fechaModelFin: NgbDateStruct;
   selectedTimeInicio: { hour: number, minute: number } = { hour: 0, minute: 0 };
   selectedTimeFin: { hour: number, minute: number } = { hour: 0, minute: 0 };
-
   id_paciente:string
   nombrePaciente:string=""
   apellidoPaternoPaciente:string=""
@@ -46,39 +40,39 @@ export class CitaFormComponent implements OnInit {
   fecha_hora_inicio:string
   fecha_hora_fin:string
   nota:string=""
-
   id_usuario_medico:string=""
   nombreMedico:string=""
-  mostrarMensajeSelleccionarMedico:boolean=false
+  pacienteJson = {}
 
+  mostrarTablaResultadosPacientes:boolean = false;
+  mostrarTablaResultadosMedicos:boolean = false;
+  mostrarAvisoPacientes:boolean = false;
+  mostrarAvisoMedicos:boolean = false;
+  existePaciente:boolean = false;
+  isDisabled:boolean = false
+  isDisabledInput:boolean = false
+  compararHorarios:boolean = false
   mostrarMensajeNombre:boolean = false
   mostrarMensajeApPaterno:boolean = false
+  mostrarMensajeEdad:boolean = false
   mostrarMensajeTelefono:boolean = false
   mostrarMensajeMotivo:boolean = false
   mostrarMensajeFechaInicio:boolean = false
   mostrarMensajeHoraInicio:boolean = false
+  mostrarMensajeFechasInvalidas = false
+  mostrarMensajeHorariosInvalidos:boolean = false
+  mostrarMensajeSeleccionarMedico:boolean=false
 
   //mensajes
   campoRequerido: string;
   fechaRequerida: string;
-  horarioValido: string;
+  horarioNoValido: string;
   soloNumeros: string;
-  mensajeSeleccionarMedico="Selecciona un médico especialista"
-
-  pacienteJson = {}
-  //citaJson = {}
-  existePaciente:boolean;
-
-  isDisabled:boolean = false
-  isDisabledInput:boolean = false
-  sonFechasValidas:boolean = false
-  compararHorarios:boolean = false
-
-  mostrarMensajeFechasInvalidas = false
-  mostrarMensajeHorariosInvalidos:boolean = false
-  mensajeFechasInvalidas = 'La fecha fin debe ser igual o posterior a la fecha de inicio'
-  mensajeHorariosInvalidos = 'El horario fin debe ser posterior al horario de inicio'
-  mensaje
+  mensajeSeleccionarMedico: string;
+  mensajeFechasInvalidas: string;
+  mensajeHorariosInvalidos: string;
+  mensajeBusquedaNoCoincidencias: string;
+  mensajeCamposObligatorios: string;
 
   constructor(
     private authService:AuthService,
@@ -93,15 +87,20 @@ export class CitaFormComponent implements OnInit {
     ){ 
     this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
     this.fechaRequerida = Mensajes.FECHA_INICIO_REQUERIDA;
-    this.horarioValido = Mensajes.HORARIO_INICIO_VALIDO;
-    this.soloNumeros = "Ingresa sólo números";
+    this.horarioNoValido = Mensajes.HORARIO_INICIO_NO_VALIDO;
+    this.soloNumeros = Mensajes.SOLO_NUMEROS;
+    this.mensajeSeleccionarMedico = Mensajes.SELECCIONA_MEDICO_ESPECIALISTA;
+    this.mensajeFechasInvalidas = Mensajes.FECHAS_NO_VALIDAS;
+    this.mensajeHorariosInvalidos = Mensajes.HORARIOS_NO_VALIDOS;
+    this.mensajeBusquedaNoCoincidencias = Mensajes.BUSQUEDA_NO_COINCIDENCIAS;
+    this.mensajeCamposObligatorios = Mensajes.CAMPOS_OBLIGATORIOS;
 
     config.markDisabled = (date: NgbDateStruct) => {
       const currentDate = new Date();
       const selectedDate = new Date(date.year, date.month - 1, date.day);
 
       // Deshabilitar los días domingos y fechas anteriores a la actual
-      return selectedDate.getDay() === 0 || selectedDate < currentDate;
+      return selectedDate.getDay() === 0 || selectedDate < new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
     };
   }
 
@@ -128,21 +127,26 @@ export class CitaFormComponent implements OnInit {
 
     this.validaNombre() 
     this.validaApPaterno()
+    this.validaEdad()
     this.validaTelefono()
     this.validaMotivo()
     this.validarFechaInicio()
     this.validaHoraInicio()
     this.validaMedico()
     this.compararFechas1()
+    this.validarHorarios()
 
     if(
       this.mostrarMensajeNombre || 
       this.mostrarMensajeApPaterno || 
+      this.mostrarMensajeEdad ||
       this.mostrarMensajeTelefono ||
       this.mostrarMensajeMotivo ||
       this.mostrarMensajeFechaInicio ||
       this.mostrarMensajeHoraInicio ||
-      this.mostrarMensajeSelleccionarMedico
+      this.mostrarMensajeSeleccionarMedico ||
+      this.mostrarMensajeFechasInvalidas ||
+      this.mostrarMensajeHorariosInvalidos
     ){
       console.log("Vuelve a validar")
       Swal.fire({
@@ -318,10 +322,9 @@ export class CitaFormComponent implements OnInit {
     this.isDisabledInput=true
     this.mostrarMensajeNombre=false
     this.mostrarMensajeApPaterno=false
-   
-    //this.validaNombre()
-    //this.validaApPaterno()
-    //this.validaTelefono()
+
+    this.validaEdad()
+    this.validaTelefono()
   }
 
   buscarMedicos() {
@@ -344,9 +347,6 @@ export class CitaFormComponent implements OnInit {
   }
 
   seleccionarMedico(id_seleccionado: string, nombre:string, apellidop:string, apellidom:string, edad:string, telefono:string): void {
-    //console.log("Id seleccionado: " + id_seleccionado);
-    //console.log("Teléfono seleccionado: " + telefono);
-    //this.queryMedicos=nombre +" "+apellidop+" "+apellidom 
     this.queryMedicos=""
     this.mostrarTablaResultadosMedicos = false;
     this.nombreMedico = nombre +" "+apellidop+" "+apellidom;
@@ -354,7 +354,6 @@ export class CitaFormComponent implements OnInit {
     console.log("id usuario médico seleccionado: "+this.id_usuario_medico)
 
     this.validaMedico()
-
   }
 
   validaNombre(){
@@ -397,6 +396,19 @@ export class CitaFormComponent implements OnInit {
     }
   }
 
+  validaEdad(){
+    if(this.edadPaciente ===null || this.edadPaciente===""){
+      this.mostrarMensajeEdad = false
+    }else{
+      const esNumero = /^\d+$/.test(this.edadPaciente);
+      if(!esNumero || this.edadPaciente.length > 3){
+        this.mostrarMensajeEdad = true
+      }else{
+        this.mostrarMensajeEdad = false
+      }
+    }
+  }
+
   validaTelefono(){
     const esNumero = /^\d+$/.test(this.telefonoPaciente);
     if(!esNumero || this.telefonoPaciente.length < 10){
@@ -420,9 +432,9 @@ export class CitaFormComponent implements OnInit {
 
   validaMedico(){
     if(this.nombreMedico==""){
-      this.mostrarMensajeSelleccionarMedico = true
+      this.mostrarMensajeSeleccionarMedico = true
     }else{
-      this.mostrarMensajeSelleccionarMedico = false
+      this.mostrarMensajeSeleccionarMedico = false
     }
   }
 
@@ -439,8 +451,6 @@ export class CitaFormComponent implements OnInit {
     this.selectedTimeInicio = { hour: 0, minute: 0 };
     this.selectedTimeFin = { hour: 0, minute: 0 };
     this.nombreMedico=""
-    this.mostrarMensajeHoraInicio=false;
-
     this.queryPacientes=""
     this.queryMedicos=""
     this.isDisabledInput = false
@@ -465,43 +475,59 @@ export class CitaFormComponent implements OnInit {
       this.mostrarMensajeFechaInicio=false;
       console.log("Comparar fechas")
       if (end.year >= start.year) {
-        //console.log("El año fin es mayor")
-        this.sonFechasValidas = true
         this.mostrarMensajeFechasInvalidas = false
         this.compararHorarios = true
 
         if (end.month >= start.month) {
-          //console.log("El mes fin es mayor")
-          this.sonFechasValidas = true
           this.mostrarMensajeFechasInvalidas = false
           this.compararHorarios = true
 
           if (end.day >= start.day) {
-            //console.log("El dia fin es mayor")
-            this.sonFechasValidas = true
             this.mostrarMensajeFechasInvalidas = false
             this.compararHorarios = true
           }else{
-
-            //console.log("El DIA FIN es MENOR X")
-            this.sonFechasValidas = false
             this.mostrarMensajeFechasInvalidas = true
           }
         } else{
-          this.sonFechasValidas=false
           this.mostrarMensajeFechasInvalidas = true
-          //console.log("El MES FIN es MENOR X")
         }
       } else{
-        this.sonFechasValidas=false
         this.mostrarMensajeFechasInvalidas = true
-        //console.log("El AÑO FIN es MENOR X")
       }
     }else{
-      //console.log("No comparar fechas")
-      console.log("Selecciona una fecha de inicio")
+      //console.log("Selecciona una fecha de inicio")
       this.mostrarMensajeFechaInicio = true
     }
-        
+
+    if(this.compararHorarios == true){
+      setTimeout(() => {
+        //esperar a que this.fechaModelFin se inicialice
+        this.validarHorarios()
+      }, 250);
+    }
+  }
+
+  validarHorarios(){
+    console.log("Validar horarios")
+    const start = this.selectedTimeInicio;
+    const end = this.selectedTimeFin;
+    //console.log("this.fechaModelFin:: "+this.fechaModelFin)
+    if(this.fechaModelFin != null){
+      if (end.hour < start.hour) {
+        this.mostrarMensajeHorariosInvalidos = true
+      }else{
+        this.mostrarMensajeHorariosInvalidos = false
+      }
+  
+      if(end.hour == start.hour){
+        if(end.minute <= start.minute){
+          this.mostrarMensajeHorariosInvalidos = true
+        }else{
+          this.mostrarMensajeHorariosInvalidos = false
+        }
+      }
+    }else{
+      console.log("this.fechaModelFin No inicializado")
+    }
   }
 }

@@ -53,3 +53,9 @@
 .table-success td, .table-success th, .table-success thead th {
   border-color: #ffffff !important;
 }
+
+.alert-secondary{
+  background-color: #f3f3f3 !important;
+    color: #000 !important;
+    border-color: #e7e7e7 !important;
+}

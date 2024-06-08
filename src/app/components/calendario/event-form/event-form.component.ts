@@ -29,7 +29,7 @@ export class EventFormComponent implements OnInit {
   //mensajes
   campoRequerido: string;
   fechaRequerida: string;
-  horarioValido: string;
+  horarioNoValido: string;
 
   mostrarMensajeTitulo:boolean = true
   mostrarMensajeFechaInicio:boolean = true
@@ -51,7 +51,7 @@ export class EventFormComponent implements OnInit {
 
     this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
     this.fechaRequerida = Mensajes.FECHA_INICIO_REQUERIDA;
-    this.horarioValido = Mensajes.HORARIO_INICIO_VALIDO;
+    this.horarioNoValido = Mensajes.HORARIO_INICIO_NO_VALIDO;
 
     config.markDisabled = (date: NgbDateStruct) => {
       const currentDate = new Date();

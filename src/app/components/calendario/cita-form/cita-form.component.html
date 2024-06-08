@@ -9,7 +9,7 @@
   <div class="row">
     <div class="col-sm">
       <div class="form-group">
-        <span class="text-muted">Buscar y seleccionar paciente</span>
+        <span class="text-muted">Buscar y seleccionar un paciente existente</span>
         <i class="fas fa-info-circle cursor-pointer text-muted ml-1" 
           triggers="click" [autoClose]="'outside'" placement="end" 
           ngbTooltip="Buscar pacientes existentes"></i>
@@ -32,7 +32,7 @@
           </div>
           <div *ngIf="mostrarAvisoPacientes" class="alert alert-secondary alert-dismissible fade show" role="alert">
             <div style="margin-top: -10px !important;">
-              No hay coincidencias
+              <strong>{{ mensajeBusquedaNoCoincidencias }}</strong> 
               <button type="button" class="btn-close" (click)="cerrarAlerta()" aria-label="Close" style="margin-top: -13px !important;"></button>
             </div>
           </div>
@@ -72,7 +72,8 @@
       <div class="col-sm-2">
         <div class="form-group">
           <span class="text-muted">Edad </span>
-          <input type="text" class="form-control" [(ngModel)]="edadPaciente" maxlength="3">
+          <input type="text" class="form-control" [(ngModel)]="edadPaciente" maxlength="3" (ngModelChange)="validaEdad()">
+          <div *ngIf="mostrarMensajeEdad" class="invalid-input-message">{{ soloNumeros }}</div>
         </div>
       </div>
       <div class="col-sm-4">
@@ -124,7 +125,7 @@
             <div class="form-group">
                 <!-- <pre>Selected time: {{selectedTimeInicio | json}}</pre> -->
                 <ngb-timepicker [(ngModel)]="selectedTimeInicio" [meridian]="true" (ngModelChange)="validaHoraInicio()"></ngb-timepicker>
-                <div *ngIf="mostrarMensajeHoraInicio" class="invalid-input-message">{{ horarioValido }}</div>
+                <div *ngIf="mostrarMensajeHoraInicio" class="invalid-input-message">{{ horarioNoValido }}</div>
             </div>
             
         </div>
@@ -137,7 +138,7 @@
             <small class="text-muted">Fecha fin (opcional )</small>
             <i class="fas fa-info-circle cursor-pointer text-muted ml-1" 
               triggers="click" [autoClose]="'outside'" placement="end" 
-              ngbTooltip="De no seleccionar esta opción, la cita será de 1 hora"></i>
+              ngbTooltip="De no seleccionar esta fecha, la cita será de 1 hora"></i>
             <div class="input-group">
                 <input
                   (ngModelChange)="compararFechasHtml($event)"
@@ -163,22 +164,17 @@
         </div>
         <div class="col-sm">
             <div class="form-group">
-                <ngb-timepicker [(ngModel)]="selectedTimeFin" [meridian]="true"></ngb-timepicker>
+                <ngb-timepicker [(ngModel)]="selectedTimeFin" [meridian]="true" (ngModelChange)="validarHorarios()"></ngb-timepicker>
+                <div *ngIf="mostrarMensajeHorariosInvalidos" class="invalid-input-message">{{ mensajeHorariosInvalidos }}</div>
             </div>
-            <!-- <pre>Selected time: {{selectedTimeFin | json}}</pre> -->
-            <div *ngIf="mostrarMensajeHorariosInvalidos" class="invalid-input-message">{{ mensajeHorariosInvalidos }}</div>
+            <!-- <pre>Selected time: {{selectedTimeFin | json}}</pre> -->     
         </div>
-        
-        <!-- <div class="form-group">
-          <small>Nota / comentarios</small>
-          <textarea class="form-control"  rows="2" maxlength="130" [(ngModel)]="nota"></textarea>
-        </div> -->
     </div>
 
-    <div class="row">
+    <div class="row mt-2">
       <div class="col-sm">
         <div class="form-group">
-          <span class="text-muted">Buscar médico especialista</span>
+          <strong>Buscar y seleccionar médico especialista *</strong>
           <i class="fas fa-info-circle cursor-pointer text-muted ml-1" 
             triggers="click" [autoClose]="'outside'" placement="end" 
             ngbTooltip="Buscar médicos registrados"></i>
@@ -201,10 +197,11 @@
             </div>
             <div *ngIf="mostrarAvisoMedicos" class="alert alert-secondary alert-dismissible fade show" role="alert">
               <div style="margin-top: -10px !important;">
-                No hay coincidencias
+                <strong>{{ mensajeBusquedaNoCoincidencias }}</strong> 
                 <button type="button" class="btn-close" (click)="cerrarAlertaMedicos()" aria-label="Close" style="margin-top: -13px !important;"></button>
               </div>
             </div>
+            <div *ngIf="mostrarMensajeSeleccionarMedico" class="invalid-input-message">{{ mensajeSeleccionarMedico }}</div>
           </div>
         </div>
       </div>
@@ -212,16 +209,15 @@
 
     <div class="row">
       <div class="form-group">
-          <span><strong> Médico seleccionado * </strong></span>
+          <span>Médico seleccionado</span>
           <input type="text" class="form-control" [(ngModel)]="nombreMedico" (ngModelChange)="validaMedico()" readonly>
-          <div *ngIf="mostrarMensajeSelleccionarMedico" class="invalid-input-message">{{ mensajeSeleccionarMedico }}</div>
       </div>
     </div>
 
     <div class="row">
       <div class="d-flex mt-2">
         <div class="ml-auto">
-            <small class="text-muted">Los campos marcados con (*) son obligatorios</small>
+            <small class="text-muted">{{ mensajeCamposObligatorios }}</small>
         </div>
       </div>
       <div class="col-sm-4">

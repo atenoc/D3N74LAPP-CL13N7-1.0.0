@@ -132,7 +132,7 @@
                             <div class="form-group">
                                 <!-- <pre>Selected time: {{selectedTimeInicio | json}}</pre> -->
                                 <ngb-timepicker [(ngModel)]="selectedTimeInicio" [meridian]="true" (ngModelChange)="validaHoraInicio()"></ngb-timepicker>
-                                <div *ngIf="mostrarMensajeHoraInicio" class="invalid-input-message">{{ horarioValido }}</div>
+                                <div *ngIf="mostrarMensajeHoraInicio" class="invalid-input-message">{{ horarioNoValido }}</div>
                             </div>
                             
                         </div>
