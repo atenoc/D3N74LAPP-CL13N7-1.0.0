@@ -61,21 +61,19 @@
                       <div class="col-sm">
                         <div class="form-group">
                             <span><strong> Nombre(s) * </strong></span>
-                            <input type="text" class="form-control" [(ngModel)]="nombrePaciente" (ngModelChange)="validaNombre()">
-                            <div *ngIf="mostrarMensajeNombre" class="invalid-input-message">{{ campoRequerido }}</div>
+                            <input type="text" class="form-control" [(ngModel)]="nombrePaciente" readonly>
                         </div>
                       </div>
                       <div class="col-sm">
                         <div class="form-group">
                           <span><strong> Ap. Paterno * </strong></span>
-                            <input type="text" class="form-control" [(ngModel)]="apellidoPaternoPaciente" (ngModelChange)="validaApPaterno()">
-                            <div *ngIf="mostrarMensajeApPaterno" class="invalid-input-message">{{ campoRequerido }}</div>
+                            <input type="text" class="form-control" [(ngModel)]="apellidoPaternoPaciente" readonly>
                         </div>
                       </div>
                       <div class="col-sm">
                         <div class="form-group">
                           <span> <small class="text-muted">Ap. Materno (opcional)</small></span>
-                            <input type="text" class="form-control" [(ngModel)]="apellidoMaternoPaciente" >
+                            <input type="text" class="form-control" [(ngModel)]="apellidoMaternoPaciente" readonly>
                         </div>
                       </div>
                       
@@ -85,7 +83,7 @@
                       <div class="col-sm-3">
                         <div class="form-group">
                           <span> <small class="text-muted">Edad (opcional)</small></span>
-                            <input type="text" class="form-control" [(ngModel)]="edadPaciente" maxlength="3">
+                            <input type="text" class="form-control" [(ngModel)]="edadPaciente" maxlength="3" readonly>
                         </div>
                       </div>
                       <div class="col-sm-3">
@@ -175,8 +173,9 @@
                           <textarea class="form-control"  rows="2" maxlength="130" [(ngModel)]="nota"></textarea>
                         </div> -->
                     </div>
+                    <div *ngIf="mostrarMensajeNoExistenCambios"> <span class="text-muted">{{ mensajeNoExistenCambios }}</span></div>
                     <div class="row">
-                      <button type="submit" class="btn btn-primary btn-block" (click)="updateCita()">Guardar</button>
+                      <button type="submit" class="btn btn-primary btn-block" (click)="compararDatos()">Guardar</button>
                     </div>
   
             </div>
