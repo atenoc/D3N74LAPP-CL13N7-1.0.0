@@ -11,8 +11,8 @@
 }
 
 .sin-borde{
-    border: 0 !important;
-    background: #f8f9fa !important;
+    /*border: 0 !important;
+    background: #f8f9fa !important;*/
     color: #007bff !important;
     font-weight: 500 !important;
 }
@@ -21,6 +21,17 @@
 .modal-backdrop {
     z-index: 1040 !important; /* Asegúrate de que sea menor que el z-index del modal-window */
 }
+/* Asegurar el full scream, sólo para la case full scream */
+@media (min-width: 576px) {
+    .modal-fullscreen {
+        max-width: none !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}
+
 
 .cursor-pointer{
     cursor: pointer;
@@ -42,4 +53,65 @@
     .table-responsive{
         display: none !important;
     }
+}
+
+
+/* Calendar */
+
+:root {
+    --fc-button-bg-color: #007bff;
+    --fc-button-border-color: #ffffff;
+
+    --fc-button-hover-bg-color: #0064cf;
+    --fc-button-hover-border-color: #0064cf;
+
+    --fc-button-active-bg-color: #004889;
+    --fc-button-active-border-color: #007fff;
+}
+
+/* Estilos para el scrollbar */
+::-webkit-scrollbar {
+    width: 13px; /* Ancho total del scrollbar incluyendo "margen" */
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;  
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a5a5a5;
+}
+
+
+/* estilo para las tablas */
+
+.table-responsive {
+    /*display: inline-table !important;*/
+    border-collapse: separate !important;
+    border-spacing: 3px !important;
+}
+
+.table-responsive thead {
+    color: white !important;
+    /*background-color: #0472c9 !important;*/
+    background-color: #3f9ffb;
+    height: 50px !important;
+}
+
+/*.table-striped tbody tr:nth-child(odd) {
+    background-color: #f0f8ff !important;
+}*/
+
+.table-hover tbody tr:hover {
+    color: #000000 !important;
+    background-color: #acdaff !important;
+}
+
+.primer-columna{
+    width: 3% !important;
 }

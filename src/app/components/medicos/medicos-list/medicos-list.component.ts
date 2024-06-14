@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { MedicoService } from 'src/app/services/medicos/medico.service';
-import { CifradoService } from 'src/app/services/shared/cifrado.service';
+import { CifradoService } from 'src/app/services/cifrado.service';
 
 @Component({
   selector: 'app-medicos-list',

@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
-import { UsuarioService } from './services/usuario.service';
+import { UsuarioService } from './services/usuarios/usuario.service';
 import { SharedService } from './services/shared.service';
 //import { Usuario } from './models/Usuario.model';
 import { Router } from '@angular/router';

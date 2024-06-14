@@ -5,14 +5,14 @@ import { environment } from 'src/environments/environment.prod';
 import Swal from 'sweetalert2';
 //import { SharedService } from './shared.service';
 import { Usuario } from '../models/Usuario.model';
-import { Subject, catchError, throwError } from 'rxjs';
+//import { Subject, catchError, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private usuario$: Subject<Usuario>;
+  //private usuario$: Subject<Usuario>;
 
   //URI = 'http://localhost:4000/api/seguridad';
   URI = environment.urlApiSeguridad
@@ -66,6 +66,8 @@ export class AuthService {
         localStorage.removeItem('_us')
         localStorage.removeItem('_em')
         localStorage.removeItem('_cli')
+        localStorage.removeItem('_plan')
+        localStorage.removeItem('dias_restantes_p_g')
         this.router.navigate(['/login'])
 
         // Se manda un mensaje para validar el cierre de sesion y refrescar el menu 
@@ -91,9 +93,9 @@ export class AuthService {
     return this.http.get<Usuario>(`${this.URI}/usuario/correo/${correo}`)
   }
 
-  // verificar usuario activo - After Login 3 - Sidebar/Footer
-  validarUsuarioActivo$(id: string, correo: string) {
-    return this.http.get<Usuario>(`${this.URI}/verificar/usuario/${id}/correo/${correo}`)
+  // verificar usuario activo - After Login 3 - Sidebar/Header/Footer
+  validarUsuarioActivo$(id: string, correo: string, id_clinica) {
+    return this.http.get<Usuario>(`${this.URI}/verificar/usuario/${id}/correo/${correo}/clinica/${id_clinica}`)
   }
 
   

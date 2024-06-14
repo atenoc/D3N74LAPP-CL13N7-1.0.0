@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Paciente } from 'src/app/models/Paciente.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { PacienteService } from 'src/app/services/pacientes/paciente.service';
+import { CifradoService } from 'src/app/services/cifrado.service';
 
 @Component({
   selector: 'app-pacientes-list',
@@ -22,8 +23,11 @@ export class PacientesListComponent implements OnInit {
   way = 'asc';          // direccion 
   totalElements:number  // total 
 
+  isDisabled:boolean = false
+
   constructor(
     private authService:AuthService,
+    private cifradoService: CifradoService,
     private pacienteService:PacienteService, 
     private router: Router,
   ) { }
@@ -31,13 +35,23 @@ export class PacientesListComponent implements OnInit {
   ngOnInit(): void {
 
     if(this.authService.validarSesionActiva()){
+
+      if(this.cifradoService.getDecryptedIdPlan() == '0402PF3T'){
+        this.isDisabled = true
+        console.log("Prueba 30 terminada");
+      }
+      
       this.getPacientesByIdClinicaPaginados()
+    
+    }else{
+      this.router.navigate(['/pagina/404/no-encontrada'])
     }
   }
 
   selectedIdUser(id: string) {
     console.log("id seleccionado: "+id)
-    this.router.navigate(['/paciente-detalle', id]);
+    //this.router.navigate(['/paciente-detalle', id]);
+    this.router.navigate(['/expediente/paciente', id]);
   }
 
   getPacientesByIdClinicaPaginados(){

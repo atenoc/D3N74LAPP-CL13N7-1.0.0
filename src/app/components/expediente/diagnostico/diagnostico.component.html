@@ -1,0 +1,240 @@
+<div class="container">
+
+    <button class="btn btn-primary" (click)="openModalNuevo(content)"><i class="fas fa-plus"></i> Nuevo diagnóstico</button>
+    <hr>
+    <div *ngIf="existenDiagnosticos; else mostrar_mensaje">
+
+
+      <!-- listar Diagnósticos --------------------------------------------------------------------------------------->
+
+      <div class="card card-info card-outline bg-light" *ngFor="let diagnostico of diagnosticos">
+        <div class="card-header">
+            <strong><i class="fas fa-sticky-note"></i> No. {{ diagnostico.contador }}</strong>
+            <small class="text-muted"> | </small>
+            <strong class="text-primary"> {{ diagnostico.codigo_diagnostico }}</strong>
+            <small class="text-muted"> | </small>
+            <span class="text-muted"> {{ diagnostico.fecha_creacion }}</span>
+
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+
+        </div>
+
+        <div class="card-body">
+
+          <div>
+            <strong><i class="far fa-comment"></i> Descripción</strong>
+            <p>{{ diagnostico.descripcion_problema }}</p>
+          </div>
+          
+          <!-- Attachment -->
+          <div class="attachment-block clearfix">
+            <img class="attachment-img" src="../../../../assets/images/odontograma.png" alt="Attachment Image">
+
+            <div class="attachment-pushed">
+              <h5 class="attachment-heading"><a >Evidencia</a></h5>
+
+              <div class="attachment-text">
+                Alguna descripcion...
+              </div>
+
+            </div> 
+          </div>
+          <hr>
+          <div class="card-header p-0 border-bottom-0">
+            <small class="text-muted">Creado por: {{ diagnostico.nombre_usuario_creador }} el {{ diagnostico.fecha_creacion }}</small>
+            
+            <div class="card-tools" style="margin-top: 10px !important;">
+              <button class="btn btn-outline-primary btn-sm" (click)="getDiagnosticoEditar(diagnostico.id); openModalEdit(contentEdit)"> 
+                <i class="nav-icon fas fa-edit"></i> Editar
+              </button>
+            </div>
+            <br>
+            <small *ngIf="diagnostico.fecha_actualizacion" class="text-muted">Última actualización: {{ diagnostico.fecha_actualizacion }}</small> 
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <ng-template #mostrar_mensaje>
+      <div class="container">
+        <div class="text-center">
+          <span class="text-muted">{{ mensaje }}</span>
+        </div>
+      </div>
+    </ng-template>
+
+
+
+    <!-- Modal Nuevo Diagnóstico --------------------------------------------------------------------------------------->
+
+    
+    <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title">Nuevo diagnóstico</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        
+        <form [formGroup]="formularioDiagnostico">
+          <div class="row mb-3">
+            <div class="col-6">
+              <span>Código de diagnóstico (CIE-10)</span>
+              <input formControlName="codigo_diagnostico" type="text" class="form-control">
+            </div>
+            <div class="col-6">
+              <span>Fecha</span> <br>
+              <span>{{ fecha_hoy }}</span>
+            </div>
+          </div>
+
+          <div class="mb-3">
+              <span><i class="far fa-comment"></i> Descripción del problema</span>
+              <textarea formControlName="descripcion_problema" class="form-control" rows="3" 
+                (input)="updateCharacterCount($event)" [attr.maxlength]="maxCharacters"></textarea>
+                <div class="d-flex">
+                  <div></div>
+                  <div class="ml-auto">
+                    <small class="char-count text-muted">{{ remainingCharacters }} caracteres disponibles</small>
+                  </div>
+                </div>
+          </div>
+          <div class="mb-3">
+              <span><i class="far fa-images"></i> Subir archivos de evidencia</span>
+              <input formControlName="evidencias" class="form-control" type="file" multiple>
+          </div>
+
+          <div class="card collapsed-card">
+            <div class="card-header">
+              <i class="fas fa-teeth-open"></i> <span> Odontograma</span>
+          
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-plus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                  <i class="fas fa-expand"></i>
+                </button>
+              </div>
+          
+            </div>
+            <div class="card-body">
+              
+              Odontograma...
+ 
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="card-header p-0 border-bottom-0">
+            <div class="card-tools">
+              <button type="button" class="btn btn-secondary mr-2" (click)="modal.close('Close click')">Cancelar</button>
+              <button type="button" class="btn btn-primary mr-2" (click)="crearDiagnostico()">
+                <i class="fas fa-save"></i> Guardar
+              </button>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+    </ng-template>
+
+
+
+    <!-- Modal Editar Diagnóstico --------------------------------------------------------------------------------------->
+
+
+    <ng-template #contentEdit let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title">Editar diagnóstico</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        
+        <form [formGroup]="formularioDiagnostico">
+          <div class="row mb-3">
+            <div class="col-6">
+              <span>Código de diagnóstico (CIE-10)</span>
+              <input formControlName="codigo_diagnostico" type="text" class="form-control">
+            </div>
+            <div class="col-6">
+              <span>Fecha para actualización</span> 
+              <br>
+              <span>{{ fecha_hoy }}</span>
+            </div>
+          </div>
+
+          <div class="mb-3">
+              <span>Descripción del problema</span>
+              <textarea formControlName="descripcion_problema" class="form-control" rows="3" 
+                (input)="updateCharacterCount($event)" [attr.maxlength]="maxCharacters"></textarea>
+                <div class="d-flex">
+                  <div></div>
+                  <div class="ml-auto">
+                    <small class="char-count text-muted">{{ remainingCharacters }} caracteres disponibles</small>
+                  </div>
+                </div>
+              
+          </div>
+          <div class="mb-3">
+              <span>Subir archivos de evidencia</span>
+              <input formControlName="evidencias" class="form-control" type="text">
+          </div>
+
+          <div class="card collapsed-card">
+            <div class="card-header">
+              <i class="fas fa-teeth-open"></i> <span> Odontograma</span>
+          
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-plus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                  <i class="fas fa-expand"></i>
+                </button>
+              </div>
+          
+            </div>
+            <div class="card-body">
+              
+              Odontograma...
+ 
+            </div>
+          </div>
+          <hr>
+          <div class="d-flex mt-2">
+            <div><small class="text-muted">Creado por: {{ nombre_usuario_creador }}</small></div>
+            <div class="ml-auto">
+              <small *ngIf="mostrar_actualizacion" class="text-muted">Actualizado por: {{ nombre_usuario_actualizo }}</small>
+            </div>
+          </div>
+          <div class="d-flex mb-3">
+            <div><small class="text-muted">Fecha creación: {{ fecha_creacion }} </small></div>
+            <div class="ml-auto">
+              <small *ngIf="mostrar_actualizacion" class="text-muted">Última actualización: {{ fecha_actualizacion }} </small>
+            </div>
+          </div>
+
+          <div class="card-header p-0 border-bottom-0">
+            <span class="text-danger mr-2 cursor-pointer" (click)="deleteDiagnostico()">Borrar</span>
+            <div class="card-tools">
+              <button type="button" class="btn btn-secondary mr-2" (click)="modal.close('Close click')">Cancelar</button>
+              <button type="button" class="btn btn-primary mr-2" (click)="actualizarDiagnostico()">
+                <i class="fas fa-save"></i> Actualizar
+              </button>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+    </ng-template>
+
+    
+</div>

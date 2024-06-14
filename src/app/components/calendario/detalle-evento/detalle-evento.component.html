@@ -1,5 +1,6 @@
 <div class="modal-header">
-    <strong class="my-txt-color"> {{ title }}</strong>
+    <!-- <strong class="my-txt-color"> {{ title }}</strong> -->
+    <strong class="text-primary">{{data.nombre_paciente}}</strong>
     <button type="button" class="close" aria-label="Close" (click)="closeModal()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -7,21 +8,21 @@
   <div class="modal-body">
 
     <!-- <div class="card-body"> -->
-      <div class="row" *ngIf="mostrarPaciente">
+      <!-- <div class="row" *ngIf="mostrarPaciente">
         <div class="col-sm-3">
           <span class="text-muted">Paciente: </span>
         </div>
         <div class="col-sm-9 text-center">
           <strong class="text-primary">{{data.nombre_paciente}}</strong>
         </div>
-      </div>
+      </div> -->
 
         <div class="row mt-2">
           <div class="col-sm-3">
             <span class="text-muted">Inicia: </span>
           </div>
           <div class="col-sm-9 text-center">
-            <h5><strong class="text-primary">{{inicio}}</strong></h5>
+            <h5><strong class="text-success">{{inicio}}</strong></h5>
           </div>
         </div>
         <div class="row">
@@ -29,7 +30,7 @@
             <span class="text-muted">Termina: </span>
           </div>
           <div class="col-sm-9 text-center">
-            <strong class="text-primary">{{fin}}</strong>
+            <strong class="text-success">{{fin}}</strong>
           </div>
         </div>
         <hr/>
@@ -51,9 +52,9 @@
         </div>
         
         <hr/>
-        <small class="text-muted"><strong>Creado por:</strong> {{ data.nombre_usuario_creador }}</small>
+        <small class="text-muted">Creado por: {{ data.nombre_usuario_creador }}</small>
         <br>
-        <small class="text-muted"><strong>Fecha creación:</strong> {{ data.fecha_creacion }}</small>
+        <small class="text-muted">Fecha creación: {{ data.fecha_creacion }}</small>
     <!-- </div> -->
 
     <hr/>
@@ -64,6 +65,9 @@
       <div class="ml-auto">
          <button *ngIf="mostrarBotonEditar" class="btn btn-outline-primary btn-sm" (click)="editarCita()"> <i class="nav-icon fas fa-edit"></i> Editar</button>
       </div>
+      <div class="ml-auto">
+        <button *ngIf="mostrarBotonEditar" class="btn btn-outline-success btn-sm" (click)="atenderPaciente(data.id_paciente)"> <i class="far fa-hand-paper"></i> Atender</button>
+     </div>
     </div>
 
    </div>

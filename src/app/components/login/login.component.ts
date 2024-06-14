@@ -6,9 +6,10 @@ import { AuthService } from '../../services/auth.service'
 import Swal from 'sweetalert2';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Mensajes } from 'src/app/shared/mensajes.config';
-import { CifradoService } from 'src/app/services/shared/cifrado.service';
-import { CentroService } from 'src/app/services/centro.service';
+import { CifradoService } from 'src/app/services/cifrado.service';
+import { CentroService } from 'src/app/services/clinicas/centro.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { PlanesService } from 'src/app/services/planes/planes.service';
 
 @Component({
   selector: 'app-login',
@@ -28,6 +29,9 @@ export class LoginComponent implements OnInit {
   mostrarError: Boolean
   mensajeDetalleError: String
 
+  date: Date;
+  fecha_hoy:string
+
   constructor(
     private sharedService:SharedService, 
     private centroService:CentroService,
@@ -36,7 +40,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private spinner: NgxSpinnerService, 
     private el: ElementRef,
-    private cifradoService: CifradoService
+    private cifradoService: CifradoService,
+    private planService: PlanesService
     ) {
       this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
       this.correoValido = Mensajes.CORREO_VALIDO;
@@ -72,9 +77,6 @@ export class LoginComponent implements OnInit {
     this.authService.login(newUserJson).subscribe(
       res => {
         //Obtenemos el token de la sesion
-        console.log(res)
-
-        //Almacenamos token
         this.cifradoService.setEncryptedToken(res.token)
 
         //Almacenamos el correo 
@@ -93,11 +95,18 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('_us', res.id)
             this.cifradoService.setEncryptedRol(res.rol)
 
+            console.log("id Plan a localstorage 2: " +res.id_plan)
+            this.cifradoService.setEncryptedIdPlan(res.id_plan)
+            console.log("id_plan: " +this.cifradoService.getDecryptedIdPlan())
+
             if(res.rol =="suadmin" || res.rol =="sop"){
+
               this.centroService.getCentroByIdUser$(res.id).subscribe(
                 res => {
+                  
                   this.sharedService.setNombreClinica(res.nombre);
                   console.log("Si existe Centro")
+                  this.validarPlanGratuito()
                   this.router.navigate(['/calendario'])
                 },
                 err => {
@@ -109,7 +118,9 @@ export class LoginComponent implements OnInit {
             }else{
               this.centroService.getCentro$(res.id_clinica).subscribe(
                 res => {
+                  
                   this.sharedService.setNombreClinica(res.nombre);
+                  //this.validarPlanGratuito()
                   console.log("Si pertenece a un centro")
                   this.router.navigate(['/calendario'])
                 },
@@ -171,4 +182,36 @@ export class LoginComponent implements OnInit {
 
   }
 
+  validarPlanGratuito(){
+    console.log("Desencripar para validar...")
+    const id_plan = this.cifradoService.getDecryptedIdPlan()  
+    //console.log("Validar vigencia de plan gratuito:: " +id_plan);
+
+    if(id_plan == '0401PF30'){
+      //Validar vigencia de plan gratuito
+
+      this.date = new Date();
+      const mes = this.date.getMonth() +1
+      this.fecha_hoy = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()
+
+      this.planService.validarPlanGratuito(localStorage.getItem('_cli'), this.fecha_hoy).subscribe(
+          res => {
+            console.log("Validando Plan")
+            //console.log(res)
+
+            const diasUsados = Number(res);
+            const diasRestantes = 30 - diasUsados;
+
+            this.sharedService.setDiasRestantesPlanGratuito(diasRestantes.toString());
+            localStorage.setItem('dias_restantes_p_g', diasRestantes.toString())
+          },
+          err => {
+            console.log("Error al invocar el plan")
+          }
+      )
+
+    }
+
+  }
+ 
 }

@@ -20,6 +20,8 @@ export interface Usuario{
     id_usuario:string;
     nombre_usuario_creador:string;
     id_clinica:string;
+    id_plan:string
+    plan :string
 }
 
 export interface UsuariosPaginados {

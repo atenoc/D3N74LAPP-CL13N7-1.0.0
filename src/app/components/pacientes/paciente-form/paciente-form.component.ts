@@ -4,9 +4,10 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CatalogoSexo } from 'src/app/models/Catalogo.model';
 import { Paciente } from 'src/app/models/Paciente.model';
-import { CatalogoService } from 'src/app/services/catalogo.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { CatalogoService } from 'src/app/services/catalogos/catalogo.service';
 import { PacienteService } from 'src/app/services/pacientes/paciente.service';
-import { CifradoService } from 'src/app/services/shared/cifrado.service';
+import { CifradoService } from 'src/app/services/cifrado.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
 import Swal from 'sweetalert2';
 
@@ -18,7 +19,6 @@ import Swal from 'sweetalert2';
 export class PacienteFormComponent implements OnInit {
 
   rol:string
-
   formularioPaciente:FormGroup;
   date: Date;
   fecha_creacion:string
@@ -31,10 +31,12 @@ export class PacienteFormComponent implements OnInit {
   soloLetras: string;
 
   paciente:Paciente
-
   catSexo:CatalogoSexo[] = [];
 
+  isDisabled:boolean = false
+
   constructor(
+    private authService:AuthService,
     private catalogoService:CatalogoService,
     private cifradoService: CifradoService,
     private formBuilder:FormBuilder, 
@@ -51,28 +53,43 @@ export class PacienteFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.rol = this.cifradoService.getDecryptedRol();
-    this.el.nativeElement.querySelector('input').focus();
-    this.formularioPaciente = this.formBuilder.group({
-      nombre: ['', [Validators.required, Validators.minLength(3), this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
-      apellidop: ['', [Validators.required, Validators.minLength(3), this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
-      apellidom: ['', [this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
-      edad: ['', [Validators.pattern('^[0-9]+$'), Validators.maxLength(3)]],
-      sexo: [''],
-      telefono: ['', [Validators.required, Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
-      correo: ['', Validators.compose([
-        //Validators.required, 
-        this.emailValidator
-      ])],
-      direccion: [''],
-    })
+    console.log("PACIENTE FORM")
 
-    this.catalogoService.getSexo$().subscribe(res => { 
-      this.catSexo = res
-      //console.log("Especialidades: "+this.catEspecialidades.length)
-    },
-    err => console.log("error: " + err)
-  )
+    if(this.authService.validarSesionActiva()){
+
+      if(this.cifradoService.getDecryptedIdPlan() == '0402PF3T'){
+        this.isDisabled = true
+        console.log("Prueba 30 terminada");
+      }
+
+      this.rol = this.cifradoService.getDecryptedRol();
+      this.el.nativeElement.querySelector('input').focus();
+      this.formularioPaciente = this.formBuilder.group({
+        nombre: ['', [Validators.required, Validators.minLength(3), this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
+        apellidop: ['', [Validators.required, Validators.minLength(3), this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
+        apellidom: ['', [this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
+        edad: ['', [Validators.pattern('^[0-9]+$'), Validators.maxLength(3)]],
+        sexo: [''],
+        telefono: ['', [Validators.required, Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
+        correo: ['', [Validators.minLength(5), // Hacer que el campo sea opcional
+                  (control: AbstractControl) => { // Validación condicional del correo electrónico
+                    if (control.value && control.value.trim() !== '') {
+                      return this.emailValidator(control);
+                    } else {
+                      return null; // Si el campo está vacío, no aplicar la validación del correo electrónico
+                    }
+                  }]],
+        direccion: [''],
+      })
+
+      this.catalogoService.getSexo$().subscribe(res => { 
+        this.catSexo = res
+      },
+      err => console.log("error: " + err))
+
+    }else{
+      this.router.navigate(['/pagina/404/no-encontrada'])
+    }
   }
 
   validarTexto(regex: RegExp) {

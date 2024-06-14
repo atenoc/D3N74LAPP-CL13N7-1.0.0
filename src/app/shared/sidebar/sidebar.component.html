@@ -1,5 +1,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4 hide-on-mobile">
+    <div #medidor style="height: 30px;"></div>
+
     <!-- Brand Logo -->
     <div class="brand-link d-flex my-bg">
       <!-- <img src="../../../assets/images/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8"> -->
@@ -18,41 +20,15 @@
         <ul id="accordion2" class="accordion2">
 
           <li>
-            <div class="link"><i class="fas fa-user text-success"></i>{{ nombreUsuario }}<i class="fa fa-chevron-down"></i></div>
+            <div class="link"><i class="fas fa-user colorIconUser"></i><span class="noneBlock">{{ nombreUsuario }}</span><i class="fa fa-chevron-down"></i></div>
             <ul class="submenu">
-              <li><a routerLink="/perfil"><i class="fas fa-user-circle"></i>Mi perfil</a></li>
-              <li (click)="salir()" class="cursor-pointer"><a><i class="fas fa-sign-out-alt"></i>Salir</a></li>
+              <li (click)="irAPerfil()" class="cursor-pointer"><a><i class="fas fa-user-circle"></i><span class="noneBlock">Mi perfil</span></a></li>
+              <li (click)="salir()" class="cursor-pointer"><a><i class="fas fa-sign-out-alt colorIconLogout"></i><span class="noneBlock">Salir</span></a></li>
             </ul>
           </li>
         </ul>
 
-        <!-- <div class="row row-width">
-          <div class="col-10 text-center mt-2">
-            <a routerLink="/perfil" data-bs-toggle="tooltip" data-bs-placement="right" title="Ver mi perfil">{{ nombreUsuario }} </a>  
-          </div>
-          
-          <div class="col-2">
-            <div class="info">
-              <div class="btn btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="right" title="Cerrar sesión" (click)="salir()">
-                <i class="fas fa-sign-out-alt" style="padding: 5px;"></i>
-              </div>
-            </div>
-          </div>
-        </div> -->
-
       </div>
-
-      <!-- SidebarSearch Form -->
-      <!-- <div class="form-inline">
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" placeholder="Buscar" aria-label="Search">
-          <div class="input-group-append">
-            <button class="btn btn-sidebar">
-              <i class="fas fa-search fa-fw"></i>
-            </button>
-          </div>
-        </div>
-      </div> -->
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
@@ -63,91 +39,61 @@
                <ul id="accordion" class="accordion">
 
                 <li *ngIf="mostrarClinicas">
-                  <div class="link"><i class="fas fa-building"></i>Clínicas<i class="fa fa-chevron-down"></i></div>
+                  <div class="link"><i class="fas fa-building"></i><div> <span class="noneBlock">Clínicas</span></div><i class="fa fa-chevron-down"></i></div>
                   <ul class="submenu">
                     <!-- <li><button routerLink="/centros"><i class="fas fa-list"></i>Ver clínicas</button></li> -->
-                    <li><a routerLink="/centros"><i class="fas fa-list"></i>Ver clínicas</a></li>
-                    <li><a routerLink="/centro-form"><i class="fas fa-plus"></i>Agregar clínica</a></li>
+                    <li><a routerLink="/centros"><i class="fas fa-list"></i> <span class="noneBlock">Ver clínicas</span></a></li>
+                    <li><a routerLink="/centro-form"><i class="fas fa-plus"></i> <span class="noneBlock">Agregar clínica</span></a></li>
                   </ul>
                 </li>
 
-                <div >
+                
                 <li *ngIf="mostrarUsuarios">
-                  <div class="link"><i class="fas fa-user-lock"></i>Administrar Usuarios<i class="fa fa-chevron-down"></i></div>
+                  <!-- <div class="link"><i class="fas fa-user-lock"></i><span #spanUsuarios>Gestionar usuarios</span><i class="fa fa-chevron-down"></i></div> -->
+                  <div class="link"><i class="fas fa-user-lock"></i> <span class="noneBlock">Acceso usuarios </span><i class="fa fa-chevron-down"></i></div>
                   <ul class="submenu">
-                    <li><a routerLink="/usuarios"><i class="fas fa-users"></i>Ver usuarios</a></li>
+                    <li><a routerLink="/usuarios"><i class="fas fa-user-friends"></i> <span class="noneBlock">Ver usuarios</span> </a></li>
                     <li>
-                      <a routerLink="/usuario-form"><i class="fas fa-user-plus nav-icon"></i>Agregar usuario</a>
+                      <a routerLink="/usuario-form"><i class="fas fa-user-plus nav-icon"></i> <span class="noneBlock">Agregar usuario</span> </a>
                     </li>
                   </ul>
                 </li>
-                </div>
+                
+                <li><div class="link"><i class="fas fa-user-md"></i><span class="noneBlock">Médicos</span><i class="fa fa-chevron-down"></i></div>
+                  <ul class="submenu">
+                    <li><a routerLink="/medicos"><i class="fas fa-list-ol"></i><span class="noneBlock">Ver médicos</span></a></li>
+                  </ul>
+                </li>
 
                 <li class="default open">
-                  <div class="link"> <i class="fas fa-clock "></i>Citas<i class="fa fa-chevron-down"></i></div>
+                  <div class="link"> <i class="fas fa-clock "></i> <span class="noneBlock">Citas</span> <i class="fa fa-chevron-down"></i></div>
                   <ul class="submenu">
                     <!-- <li><a routerLink="/agenda"><i class="far fa-calendar-alt"></i>Calendario</a></li> -->
-                    <li><a routerLink="/calendario"><i class="far fa-calendar-alt"></i>Calendario</a></li>
-                    <li><a routerLink="/citas"><i class="fas fa-list-alt"></i>Agenda</a></li>
+                    <li><a routerLink="/calendario"><i class="far fa-calendar-alt"></i> <span class="noneBlock">Calendario</span> </a></li>
+                    <li><a routerLink="/agenda"><i class="far fa-list-alt"></i> <span class="noneBlock">Agenda</span></a></li>
                   </ul>
                 </li>
                 <li>
-                  <div class="link"><i class="fas fa-user"></i>Pacientes<i class="fa fa-chevron-down"></i></div>
+                  <div class="link"><i class="fas fa-users"></i> <span class="noneBlock"> Pacientes </span> <i class="fa fa-chevron-down"></i></div>
                   <ul class="submenu">
-                    <li><a routerLink="/pacientes"><i class="fas fa-users"></i>Ver pacientes</a></li>
-                    <li><a routerLink="/paciente-form"><i class="fas fa-user-plus nav-icon"></i>Agregar Paciente</a></li>
+                    <li><a routerLink="/pacientes"><i class="fas fa-list-ol"></i><span class="noneBlock">Ver pacientes</span></a></li>
+                    <li><a routerLink="/paciente-form"><i class="fas fa-user-plus nav-icon"></i> <span class="noneBlock">Agregar Paciente</span></a></li>
                   </ul>
                 </li>
-                <li><div class="link"><i class="fas fa-user-md"></i>Médicos<i class="fa fa-chevron-down"></i></div>
-                  <ul class="submenu">
-                    <li><a routerLink="/medicos"><i class="fas fa-users"></i>Ver médicos</a></li>
-                    <!-- <li><a href="#">Bing</a></li>
-                    <li><a href="#">Yahoo</a></li>
-                    <li><a href="#">Other</a></li>
-                    <li><a href="#">Google</a></li>
-                    <li><a href="#">Bing</a></li>
-                    <li><a href="#">Yahoo</a></li>
-                    <li><a href="#">Other</a></li>
-                    <li><a href="#">Google</a></li>
-                    <li><a href="#">Bing</a></li>
-                    <li><a href="#">Yahoo</a></li>
-                    <li><a href="#">Other</a></li>
-                    <li><a href="#">Google</a></li>
-                    <li><a href="#">Bing</a></li>
-                    <li><a href="#">Yahoo</a></li>
-                    <li><a href="#">Other</a></li>
-                    <li><a href="#">Google</a></li>
-                    <li><a href="#">Bing</a></li>
-                    <li><a href="#">Yahoo</a></li>
-                    <li><a href="#">Other</a></li> -->
-                  </ul>
-                </li>
+    
               </ul>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         </ul>
       </nav>
-      <!-- /.sidebar-menu -->
+
+      <div class="brand-link d-flex my-bg mt-1"></div>
+
+      <div class="ml-2 m-2">
+        <p class="text-warning"> <small> {{ mensajeVigencia }} </small> </p>
+        <span class="text-warning"> <small> {{ mensajeRestanDias }} </small> </span>  
+        <a class="text-primary cursor-pointer" routerLink="/planes">{{ linkPlanes }}</a>
+      </div>
+
     </div>
-    <!-- /.sidebar -->
+    
   </aside>

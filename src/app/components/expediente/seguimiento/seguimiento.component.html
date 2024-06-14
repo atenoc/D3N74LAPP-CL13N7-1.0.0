@@ -1,0 +1,181 @@
+<div class="container">
+
+    <button class="btn btn-primary" (click)="openModalNuevo(content)"><i class="fas fa-plus"></i> Nuevo seguimiento</button>
+    <hr>
+    <div *ngIf="existenSeguimientos; else mostrar_mensaje">
+
+
+      <!-- listar Seguimientos --------------------------------------------------------------------------------------->
+
+      <div class="card card-info card-outline bg-light" *ngFor="let seguimiento of seguimientos">
+        <div class="card-header">
+            <strong><i class="fas fa-sticky-note"></i> No. {{ seguimiento.contador }}</strong>
+            <small class="text-muted"> | </small>
+            <span class="text-muted"> {{ seguimiento.fecha_creacion }}</span>
+
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+
+        </div>
+
+        <div class="card-body">
+            <div>
+                <strong><i class="fas fa-comment-medical"></i> Próxima cita</strong>
+                <p>{{ seguimiento.proxima_cita }}</p>
+            </div>
+    
+            <div class="mt-2">
+                <strong><i class="fas fa-sticky-note"></i> Notas de seguimiento</strong>
+                <p>{{ seguimiento.notas_seguimiento }}</p>
+            </div>
+            
+          <hr>
+          <div class="card-header p-0 border-bottom-0">
+            <small class="text-muted">Creado por: {{ seguimiento.nombre_usuario_creador }} el {{ seguimiento.fecha_creacion }}</small>
+            
+            <div class="card-tools" style="margin-top: 10px !important;">
+              <button class="btn btn-outline-primary btn-sm" (click)="getSeguimientoEditar(seguimiento.id); openModalEdit(contentEdit)"> 
+                <i class="nav-icon fas fa-edit"></i> Editar
+              </button>
+            </div>
+            <br>
+            <small *ngIf="seguimiento.fecha_actualizacion" class="text-muted">Última actualización: {{ seguimiento.fecha_actualizacion }}</small> 
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <ng-template #mostrar_mensaje>
+      <div class="container">
+        <div class="text-center">
+          <span class="text-muted">{{ mensaje }}</span>
+        </div>
+      </div>
+    </ng-template>
+
+
+
+    <!-- Modal Nuevo Seguimiento --------------------------------------------------------------------------------------->
+
+    
+    <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title">Nuevo Seguimiento</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+
+        <form [formGroup]="formularioSeguimiento">
+            <div class="row mb-3">
+                <div class="col-6">
+                    <span><i class="fas fa-dollar-sign"></i> Próxima cita</span>
+                    <input formControlName="proxima_cita" type="text" class="form-control">
+                </div>
+                <div class="col-6">
+                  <span>Fecha</span> <br>
+                  <span>{{ fecha_hoy }}</span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <span><i class="fas fa-comment-medical"></i> Notas de seguimiento</span>
+                <textarea formControlName="notas_seguimiento" class="form-control" rows="3" 
+                  (input)="updateCharacterCount($event)" [attr.maxlength]="maxCharacters"></textarea>
+                  <div class="d-flex">
+                    <div></div>
+                    <div class="ml-auto">
+                      <small class="char-count text-muted">{{ remainingCharacters }} caracteres disponibles</small>
+                    </div>
+                  </div>
+            </div>
+        
+          <hr>
+
+          <div class="card-header p-0 border-bottom-0">
+            <div class="card-tools">
+              <button type="button" class="btn btn-secondary mr-2" (click)="modal.close('Close click')">Cancelar</button>
+              <button type="button" class="btn btn-primary mr-2" (click)="crearSeguimiento()">
+                <i class="fas fa-save"></i> Guardar
+              </button>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+    </ng-template>
+
+
+
+    <!-- Modal Editar Seguimiento --------------------------------------------------------------------------------------->
+
+
+    <ng-template #contentEdit let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title">Editar seguimiento</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        
+        <form [formGroup]="formularioSeguimiento">
+
+            <div class="row mb-3">
+                <div class="col-6">
+                    <span><i class="fas fa-dollar-sign"></i> proxima_cita</span>
+                    <input formControlName="proxima_cita" type="text" class="form-control">
+                </div>
+                <div class="col-6">
+                  <span>Fecha para actualización</span> 
+                  <br>
+                  <span>{{ fecha_hoy }}</span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <span><i class="fas fa-comment-medical"></i> notas_seguimiento</span>
+                <textarea formControlName="notas_seguimiento" class="form-control" rows="3" 
+                  (input)="updateCharacterCount($event)" [attr.maxlength]="maxCharacters"></textarea>
+                  <div class="d-flex">
+                    <div></div>
+                    <div class="ml-auto">
+                      <small class="char-count text-muted">{{ remainingCharacters }} caracteres disponibles</small>
+                    </div>
+                  </div>
+                
+            </div>
+          
+          <hr>
+          <div class="d-flex mt-2">
+            <div><small class="text-muted">Creado por: {{ nombre_usuario_creador }}</small></div>
+            <div class="ml-auto">
+              <small *ngIf="mostrar_actualizacion" class="text-muted">Actualizado por: {{ nombre_usuario_actualizo }}</small>
+            </div>
+          </div>
+          <div class="d-flex mb-3">
+            <div><small class="text-muted">Fecha creación: {{ fecha_creacion }} </small></div>
+            <div class="ml-auto">
+              <small *ngIf="mostrar_actualizacion" class="text-muted">Última actualización: {{ fecha_actualizacion }} </small>
+            </div>
+          </div>
+
+          <div class="card-header p-0 border-bottom-0">
+            <span class="text-danger mr-2 cursor-pointer" (click)="deleteSeguimiento()">Borrar</span>
+            <div class="card-tools">
+              <button type="button" class="btn btn-secondary mr-2" (click)="modal.close('Close click')">Cancelar</button>
+              <button type="button" class="btn btn-primary mr-2" (click)="actualizarSeguimiento()">
+                <i class="fas fa-save"></i> Actualizar
+              </button>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+    </ng-template>
+
+    
+</div>

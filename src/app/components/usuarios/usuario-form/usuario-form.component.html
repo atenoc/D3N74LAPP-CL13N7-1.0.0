@@ -9,8 +9,8 @@
         </div>
         <div class="col-sm-6 hide-on-mobile">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a routerLink="/medicos">Medicos</a></li>
             <li class="breadcrumb-item"><a routerLink="/usuarios">Usuarios</a></li>
+            <li class="breadcrumb-item"><a routerLink="/medicos">Medicos</a></li>
             <li class="breadcrumb-item active">Nuevo</li>
           </ol>
         </div>
@@ -59,7 +59,7 @@
                 
                         <div class="col-sm">                         
                             <div class="form-group">
-                                <small><strong> Rol * </strong></small>
+                                <small><strong> Cargo/Rol * </strong></small>
                                 <select class="form-select" formControlName="rol">
                                     <option selected disabled [value]="0">Selecciona una opción:</option>
                                     <option *ngFor="let item of catRoles" [value]="item.id">{{ item.descripcion }}</option>
@@ -110,6 +110,9 @@
                             <div class="form-group">
                                 <small class="text-muted"> Apellido Materno </small>
                                 <input type="text" class="form-control" formControlName="apellidom" placeholder="">
+                                <div *ngIf="formularioUsuario.controls['apellidom'].invalid" class="invalid-input-message">
+                                    <span *ngIf="formularioUsuario.controls['apellidom'].errors.invalidRegex">{{ soloLetras }}</span>
+                                </div>
                             </div>
                         </div>
                 
@@ -154,7 +157,7 @@
                             <button type="button" class="btn btn-outline-secondary" (click)="limpiarForm()">Limpiar campos</button>
                         </div>
                         <div class="ml-auto">
-                           <button type="submit" class="btn btn-primary btn-block" (click)="crearUsuario()" [disabled]="formularioUsuario.invalid">Guardar</button>
+                           <button type="submit" class="btn btn-primary btn-block" (click)="crearUsuario()" [disabled]="formularioUsuario.invalid || isDisabled">Guardar</button>
                         </div>
                     </div>
                 </form>

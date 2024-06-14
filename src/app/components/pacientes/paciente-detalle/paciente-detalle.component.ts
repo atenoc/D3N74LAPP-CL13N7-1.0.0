@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { error } from 'console';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CatalogoSexo } from 'src/app/models/Catalogo.model';
 import { Paciente } from 'src/app/models/Paciente.model';
-import { CatalogoService } from 'src/app/services/catalogo.service';
+import { CatalogoService } from 'src/app/services/catalogos/catalogo.service';
 import { PacienteService } from 'src/app/services/pacientes/paciente.service';
-import { CifradoService } from 'src/app/services/shared/cifrado.service';
+import { CifradoService } from 'src/app/services/cifrado.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
 import Swal from 'sweetalert2';
 
@@ -17,6 +18,7 @@ import Swal from 'sweetalert2';
 })
 export class PacienteDetalleComponent implements OnInit {
 
+  rol:string
   id: string;
   paciente:Paciente;
   formularioPaciente:FormGroup;
@@ -31,10 +33,10 @@ export class PacienteDetalleComponent implements OnInit {
   correoValido: string;
   telefonoLongitud: string;
   soloNumeros: string;
-
-  rol:string
+  soloLetras: string;
 
   catSexo:CatalogoSexo[] = [];
+  //citas:CitaPaciente[] = []
 
   constructor(
     private catalogoService:CatalogoService,
@@ -44,12 +46,14 @@ export class PacienteDetalleComponent implements OnInit {
     private router: Router,
     private cifradoService: CifradoService,
     private spinner: NgxSpinnerService,
+    //private citasService: CitaService
 
   ) {
     this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
       this.correoValido = Mensajes.CORREO_VALIDO;
       this.telefonoLongitud = Mensajes.TELEFONO_LONGITUD;
       this.soloNumeros = Mensajes.SOLO_NUMEROS;
+      this.soloLetras = Mensajes.SOLO_LETRAS;
    }
 
   ngOnInit(): void {
@@ -58,14 +62,18 @@ export class PacienteDetalleComponent implements OnInit {
     this.formularioPaciente = this.formBuilder.group({
       nombre: ['', [Validators.required, Validators.minLength(3)]],
       apellidop: ['', [Validators.required, Validators.minLength(3)]],
-      apellidom: [''],
-      edad: [''],
+      apellidom: ['', [this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
+      edad: ['', [Validators.pattern('^[0-9]+$'), Validators.maxLength(3)]],
       sexo: [''],
       telefono: ['', [Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
-      correo: ['', Validators.compose([
-        //Validators.required, 
-        this.emailValidator
-      ])],
+      correo: ['', [Validators.minLength(5), // Hacer que el campo sea opcional
+                  (control: AbstractControl) => { // Validación condicional del correo electrónico
+                    if (control.value && control.value.trim() !== '') {
+                      return this.emailValidator(control);
+                    } else {
+                      return null; // Si el campo está vacío, no aplicar la validación del correo electrónico
+                    }
+                  }]],
       direccion: [''],
     })
 
@@ -95,6 +103,7 @@ export class PacienteDetalleComponent implements OnInit {
         });
 
         this.cargarCatSexo()
+        //this.cargarCitas()
       },
       err => {
         this.spinner.hide();
@@ -105,6 +114,18 @@ export class PacienteDetalleComponent implements OnInit {
     err => console.log("error: " + err)
     );
 
+  }
+
+  validarTexto(regex: RegExp) {
+    return (control: AbstractControl) => {
+      const value = control.value;
+  
+      if (value && !regex.test(value)) {
+        return { 'invalidRegex': true };
+      }
+  
+      return null;
+    };
   }
 
   emailValidator(control) {
@@ -144,7 +165,7 @@ export class PacienteDetalleComponent implements OnInit {
           position: 'top-end',
           html:
             `<h5>${ Mensajes.PACIENTE_ACTUALIZADO }</h5>`+
-            `<span>${this.paciente.nombre} ${this.paciente.apellidop}</span>`, 
+            `<span>${ res.nombre } ${ res.apellidop }</span>`, 
             
           showConfirmButton: false,
           backdrop: false, 

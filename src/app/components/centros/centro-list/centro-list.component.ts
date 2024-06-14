@@ -4,8 +4,8 @@ import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Centro } from 'src/app/models/Centro.model';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from 'src/app/services/auth.service';
-import { CentroService } from 'src/app/services/centro.service';
-import { CifradoService } from 'src/app/services/shared/cifrado.service';
+import { CentroService } from 'src/app/services/clinicas/centro.service';
+import { CifradoService } from 'src/app/services/cifrado.service';
 import Swal from 'sweetalert2';
 
 @Component({

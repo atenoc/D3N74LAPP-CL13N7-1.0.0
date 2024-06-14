@@ -152,6 +152,9 @@
   </nav>
   <!-- /.navbar -->
 
-  <div *ngIf="mostrarCambiarContrasena" class="text-center change-pass" >
-    <a> <small class="text-primary mr-3" style="cursor: pointer;" (click)="selectedIdUser()" ngbTooltip="cambiar contraseña"> {{ mensajeContrasena }}</small> </a>
+  <div *ngIf="mostrarCambiarContrasena" class="text-center change-pass" style="background: #353a40;">
+    <strong><small class="text-warning"> {{ mensajeContrasena }}</small> <a ngbTooltip="Cambiar contraseña" class="text-primary cursor-pointer" (click)="selectedIdUser()"><small>{{ enlaceContrasena }}</small></a> </strong>
+  </div>
+  <div *ngIf="isDisabled" class="text-center prueba-terminada" style="background-color: #343a40">
+    <strong><span class="text-warning"><i class="fas fa-exclamation-triangle"></i> {{ mensajePruebaTerminada }}</span> <a ngbTooltip="Suscribete a un plan y sigue disfrutando de nuestro servicios" class="text-primary cursor-pointer" routerLink="/planes">{{mensajeLink}}</a> </strong>
   </div>

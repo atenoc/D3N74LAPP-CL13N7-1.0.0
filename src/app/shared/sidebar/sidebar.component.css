@@ -188,8 +188,10 @@ a {
  -----------------------------*/
  .submenu {
  	display: none;
- 	background: #343a40;
+ 	/*background: #343a40;*/
+	background: #ff4f60;
  	font-size: 14px;
+	border-radius: 5px;
  }
 
  .submenu li {
@@ -205,17 +207,18 @@ a {
  .submenu a {
  	display: block;
  	text-decoration: none;
- 	color: #d9d9d9;
+ 	/*color: #d9d9d9;*/
+	 color: #ffffff;
     font-size: 15px;
  	padding: 12px;
- 	padding-left: 42px;
+ 	padding-left: 30px;
  	-webkit-transition: all 0.25s ease;
  	-o-transition: all 0.25s ease;
  	transition: all 0.25s ease;
  }
 
  .submenu a:hover {
- 	background: rgba(255,255,255,.1);;
+ 	background: rgba(255,255,255,.3);;
  	color: #FFF;
     border-radius: 5px;
  }
@@ -226,4 +229,18 @@ a {
 	float: right;
     margin-top: 6px;
     margin-right: 8px;
+ }
+
+ /******************/
+
+ .noneBlock{
+	/* IMPORTANT: N0 borrar, esta clase se llena al cargarse en Siebar */
+ }
+
+ .colorIconUser{
+	color: #15d340 !important;
+ }
+
+ .colorIconLogout{
+	color: #ffe000 !important;
  }

@@ -1,14 +1,15 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Usuario } from 'src/app/models/Usuario.model';
-import { UsuarioService } from 'src/app/services/usuario.service';
+import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
 import Swal from 'sweetalert2';
 import { Mensajes } from 'src/app/shared/mensajes.config';
 import { CatalogoEspecialidad, CatalogoRol, CatalogoTitulo } from 'src/app/models/Catalogo.model';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { CatalogoService } from 'src/app/services/catalogo.service';
-import { CifradoService } from 'src/app/services/shared/cifrado.service';
+import { CatalogoService } from 'src/app/services/catalogos/catalogo.service';
+import { CifradoService } from 'src/app/services/cifrado.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-usuario-form',
@@ -31,67 +32,99 @@ export class UsuarioFormComponent implements OnInit {
   contrasenaLongitud: string;
   telefonoLongitud: string;
   soloNumeros: string;
+  soloLetras: string;
 
   rol:string
 
+  date: Date;
+  fecha_creacion:string
+
+  isDisabled:boolean = false
+
   constructor(
+    private authService:AuthService,
+    private cifradoService: CifradoService,
     private formBuilder:FormBuilder, 
     private usuarioService:UsuarioService, 
     private router: Router, 
     private el: ElementRef,
     private catalogoService:CatalogoService,
     private spinner: NgxSpinnerService, 
-    private cifradoService: CifradoService,
     ) {
       this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
       this.correoValido = Mensajes.CORREO_VALIDO;
       this.contrasenaLongitud = Mensajes.CONTRASENA_LONGITUD;
       this.telefonoLongitud = Mensajes.TELEFONO_LONGITUD;
       this.soloNumeros = Mensajes.SOLO_NUMEROS;
+      this.soloLetras = Mensajes.SOLO_LETRAS;
     }
 
   ngOnInit() {
     console.log("USUARIO FORM")
-    this.rol = this.cifradoService.getDecryptedRol();
+    
+    if(this.authService.validarSesionActiva()){
 
-    if(this.rol == "sop" || this.rol == "suadmin" || this.rol == "adminn1"){
-      this.el.nativeElement.querySelector('input').focus();
-      this.formularioUsuario = this.formBuilder.group({
-        correo: ['', Validators.compose([
-          Validators.required, this.emailValidator
-        ])],
-        llave: ['', [Validators.required, Validators.minLength(6)]],
-        rol: ['', Validators.required],
-        titulo: [''],
-        nombre: ['', [Validators.required, Validators.minLength(3)]],
-        apellidop: ['', [Validators.required, Validators.minLength(3)]],
-        apellidom: [''],
-        especialidad: [''],
-        telefono: ['', [Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
-      })
+      if(this.cifradoService.getDecryptedIdPlan() == '0402PF3T'){
+        this.isDisabled = true
+        console.log("Prueba 30 terminada");
+      }
 
-      // carga Catálogos
-      this.catalogoService.getRoles$(localStorage.getItem('_us')).subscribe(res => { 
-          this.catRoles = res
-          //console.log("Roles: "+this.catRoles.length)
-        },
-        err => console.log("error: " + err)
-      )
-      this.catalogoService.getTitulos$().subscribe(res => { 
-          this.catTitulos = res
-          //console.log("Titulos: "+this.catTitulos.length)
-        },
-        err => console.log("error: " + err)
-      )
-      this.catalogoService.getEspecialidades$().subscribe(res => { 
-          this.catEspecialidades = res
-          //console.log("Especialidades: "+this.catEspecialidades.length)
-        },
-        err => console.log("error: " + err)
-      )
+      this.rol = this.cifradoService.getDecryptedRol();
+
+      if(this.rol == "sop" || this.rol == "suadmin" || this.rol == "adminn1"){
+        this.el.nativeElement.querySelector('input').focus();
+        this.formularioUsuario = this.formBuilder.group({
+          correo: ['', Validators.compose([
+            Validators.required, this.emailValidator
+          ])],
+          llave: ['', [Validators.required, Validators.minLength(6)]],
+          rol: ['', Validators.required],
+          titulo: [''],
+          nombre: ['', [Validators.required, Validators.minLength(3), this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/) ]],
+          apellidop: ['', [Validators.required, Validators.minLength(3), this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
+          apellidom: ['', [this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
+          especialidad: [''],
+          telefono: ['', [Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
+        })
+
+        // carga Catálogos
+        this.catalogoService.getRoles$(localStorage.getItem('_us')).subscribe(res => { 
+            this.catRoles = res
+            //console.log("Roles: "+this.catRoles.length)
+          },
+          err => console.log("error: " + err)
+        )
+        this.catalogoService.getTitulos$().subscribe(res => { 
+            this.catTitulos = res
+            //console.log("Titulos: "+this.catTitulos.length)
+          },
+          err => console.log("error: " + err)
+        )
+        this.catalogoService.getEspecialidades$().subscribe(res => { 
+            this.catEspecialidades = res
+            //console.log("Especialidades: "+this.catEspecialidades.length)
+          },
+          err => console.log("error: " + err)
+        )
+      }else{
+        this.router.navigate(['/pagina/404/no-encontrada'])
+      }
+
     }else{
       this.router.navigate(['/pagina/404/no-encontrada'])
     }
+  }
+
+  validarTexto(regex: RegExp) {
+    return (control: AbstractControl) => {
+      const value = control.value;
+  
+      if (value && !regex.test(value)) {
+        return { 'invalidRegex': true };
+      }
+  
+      return null;
+    };
   }
 
   emailValidator(control) {
@@ -111,6 +144,12 @@ export class UsuarioFormComponent implements OnInit {
 
     var nuevoUsuarioJson = JSON.parse(JSON.stringify(this.formularioUsuario.value))
     nuevoUsuarioJson.id_usuario=localStorage.getItem('_us') 
+
+    this.date = new Date();
+    const mes = this.date.getMonth()+1;
+    this.fecha_creacion = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
+
+    nuevoUsuarioJson.fecha_creacion = this.fecha_creacion
     
     if(this.rol == "suadmin" || this.rol == "adminn1"){
       nuevoUsuarioJson.id_clinica=localStorage.getItem('_cli') 

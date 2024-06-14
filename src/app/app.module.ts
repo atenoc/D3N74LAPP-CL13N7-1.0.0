@@ -4,13 +4,11 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
-import { NavigateComponent } from './components/navigate/navigate.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthGuard } from './auth.guard';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { HomeComponent } from './components/home/home.component';
-import { AgendaComponent } from './components/agenda/agenda.component';
 import { UsuariosListComponent } from './components/usuarios/usuarios-list/usuarios-list.component';
 import { UsuarioFormComponent } from './components/usuarios/usuario-form/usuario-form.component';
 import { UsuarioDetalleComponent } from './components/usuarios/usuario-detalle/usuario-detalle.component';
@@ -27,26 +25,31 @@ import { HeaderComponent } from './shared/header/header.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
 import { ConfigPerfilUsuarioComponent } from './components/perfil/config-perfil-usuario/config-perfil-usuario.component';
-import { CalendarioComponent } from './components/calendario/calendario.component';
+import { CalendarioComponent } from './components/calendario/calendario/calendario.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { DetalleEventoComponent } from './components/calendario/detalle-evento/detalle-evento.component';
 import { CitaFormComponent } from './components/calendario/cita-form/cita-form.component';
 import { MedicosListComponent } from './components/medicos/medicos-list/medicos-list.component';
 import { PacientesListComponent } from './components/pacientes/pacientes-list/pacientes-list.component';
 import { CitaEditComponent } from './components/calendario/cita-edit/cita-edit.component';
-import { CitasListComponent } from './components/calendario/citas-list/citas-list.component';
+import { CitasListComponent } from './components/calendario/agenda/citas-list.component';
 import { PacienteDetalleComponent } from './components/pacientes/paciente-detalle/paciente-detalle.component';
 import { PacienteFormComponent } from './components/pacientes/paciente-form/paciente-form.component';
 import { EventFormComponent } from './components/calendario/event-form/event-form.component';
 import { SettingComponent } from './shared/setting/setting.component';
+import { PlanesListComponent } from './components/planes/planes-list/planes-list.component';
+import { ExpedienteComponent } from './components/expediente/expediente.component';
+import { HistoriaComponent } from './components/expediente/historia/historia.component';
+import { DiagnosticoComponent } from './components/expediente/diagnostico/diagnostico.component';
+import { TratamientoComponent } from './components/expediente/tratamiento/tratamiento.component';
+import { SeguimientoComponent } from './components/expediente/seguimiento/seguimiento.component';
+import { VisitasComponent } from './components/expediente/visitas/visitas.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    NavigateComponent,
     HomeComponent,
-    AgendaComponent,
     UsuariosListComponent,
     UsuarioFormComponent,
     UsuarioDetalleComponent,
@@ -70,7 +73,14 @@ import { SettingComponent } from './shared/setting/setting.component';
     PacienteDetalleComponent,
     PacienteFormComponent,
     EventFormComponent,
-    SettingComponent
+    SettingComponent,
+    PlanesListComponent,
+    ExpedienteComponent,
+    HistoriaComponent,
+    DiagnosticoComponent,
+    TratamientoComponent,
+    SeguimientoComponent,
+    VisitasComponent
   ],
   imports: [
     BrowserModule,

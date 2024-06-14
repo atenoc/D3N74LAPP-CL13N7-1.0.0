@@ -1,0 +1,206 @@
+<div class="container">
+
+    <button class="btn btn-primary" (click)="openModalNuevo(content)"><i class="fas fa-plus"></i> Nuevo tratamiento</button>
+    <hr>
+    <div *ngIf="existenTratamientos; else mostrar_mensaje">
+
+
+      <!-- listar Tratamientos --------------------------------------------------------------------------------------->
+
+      <div class="card card-info card-outline bg-light" *ngFor="let tratamiento of tratamientos">
+        <div class="card-header">
+            <strong><i class="fas fa-sticky-note"></i> No. {{ tratamiento.contador }}</strong>
+            <small class="text-muted"> | </small>
+            <span class="text-muted"> {{ tratamiento.fecha_creacion }}</span>
+
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+
+        </div>
+
+        <div class="card-body">
+            <div>
+                <strong><i class="fas fa-comment-medical"></i> Tratamiento propuesto</strong>
+                <p>{{ tratamiento.tratamiento_propuesto }}</p>
+            </div>
+    
+            <div class="mt-2">
+                <strong><i class="fas fa-pills"></i> Medicamentos prescritos</strong>
+                <p>{{ tratamiento.medicamentos_prescritos }}</p>
+            </div>
+            <div class="mt-2">
+                <strong><i class="fas fa-dollar-sign"></i> Costo estimado</strong>
+                <p>{{ tratamiento.costo_estimado | currency:'MXN':'symbol':'1.2-2' }}</p>
+            </div>
+            
+          <hr>
+          <div class="card-header p-0 border-bottom-0">
+            <small class="text-muted">Creado por: {{ tratamiento.nombre_usuario_creador }} el {{ tratamiento.fecha_creacion }}</small>
+            
+            <div class="card-tools" style="margin-top: 10px !important;">
+              <button class="btn btn-outline-primary btn-sm" (click)="getTratamientoEditar(tratamiento.id); openModalEdit(contentEdit)"> 
+                <i class="nav-icon fas fa-edit"></i> Editar
+              </button>
+            </div>
+            <br>
+            <small *ngIf="tratamiento.fecha_actualizacion" class="text-muted">Última actualización: {{ tratamiento.fecha_actualizacion }}</small> 
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <ng-template #mostrar_mensaje>
+      <div class="container">
+        <div class="text-center">
+          <span class="text-muted">{{ mensaje }}</span>
+        </div>
+      </div>
+    </ng-template>
+
+
+
+    <!-- Modal Nuevo Tratamiento --------------------------------------------------------------------------------------->
+
+    
+    <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title">Nuevo tratamiento</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        
+        <form [formGroup]="formularioTratamiento">
+            <div class="mb-3">
+                <span><i class="fas fa-comment-medical"></i> Tratamiento propuesto</span>
+                <textarea formControlName="tratamiento_propuesto" class="form-control" rows="3" 
+                  (input)="updateCharacterCount($event)" [attr.maxlength]="maxCharacters"></textarea>
+                  <div class="d-flex">
+                    <div></div>
+                    <div class="ml-auto">
+                      <small class="char-count text-muted">{{ remainingCharacters }} caracteres disponibles</small>
+                    </div>
+                  </div>
+            </div>
+
+          <div class="mb-3">
+            <span><i class="fas fa-pills"></i> Medicamentos prescritos</span>
+              <textarea formControlName="medicamentos_prescritos" class="form-control" rows="3" 
+                (input)="updateCharacterCount2($event)" [attr.maxlength]="maxCharacters2"></textarea>
+                <div class="d-flex">
+                  <div></div>
+                  <div class="ml-auto">
+                    <small class="char-count text-muted">{{ remainingCharacters2 }} caracteres disponibles</small>
+                  </div>
+                </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-6">
+                <span><i class="fas fa-dollar-sign"></i> Costo</span>
+                <input formControlName="costo_estimado" type="text" class="form-control">
+            </div>
+            <div class="col-6">
+              <span>Fecha</span> <br>
+              <span>{{ fecha_hoy }}</span>
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="card-header p-0 border-bottom-0">
+            <div class="card-tools">
+              <button type="button" class="btn btn-secondary mr-2" (click)="modal.close('Close click')">Cancelar</button>
+              <button type="button" class="btn btn-primary mr-2" (click)="crearTratamiento()">
+                <i class="fas fa-save"></i> Guardar
+              </button>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+    </ng-template>
+
+
+
+    <!-- Modal Editar Tratamiento --------------------------------------------------------------------------------------->
+
+
+    <ng-template #contentEdit let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title">Editar tratamiento</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        
+        <form [formGroup]="formularioTratamiento">
+            <div class="mb-3">
+                <span><i class="fas fa-comment-medical"></i> Tratamiento propuesto</span>
+                <textarea formControlName="tratamiento_propuesto" class="form-control" rows="3" 
+                  (input)="updateCharacterCount($event)" [attr.maxlength]="maxCharacters"></textarea>
+                  <div class="d-flex">
+                    <div></div>
+                    <div class="ml-auto">
+                      <small class="char-count text-muted">{{ remainingCharacters }} caracteres disponibles</small>
+                    </div>
+                  </div>
+                
+            </div>
+
+          <div class="mb-3">
+            <span><i class="fas fa-pills"></i> Medicamentos prescritos</span>
+              <textarea formControlName="medicamentos_prescritos" class="form-control" rows="3" 
+                (input)="updateCharacterCount2($event)" [attr.maxlength]="maxCharacters2"></textarea>
+                <div class="d-flex">
+                  <div></div>
+                  <div class="ml-auto">
+                    <small class="char-count text-muted">{{ remainingCharacters2 }} caracteres disponibles</small>
+                  </div>
+                </div>
+              
+          </div>
+          <div class="row mb-3">
+            <div class="col-6">
+                <span><i class="fas fa-dollar-sign"></i> Costo</span>
+                <input formControlName="costo_estimado" type="text" class="form-control">
+            </div>
+            <div class="col-6">
+              <span>Fecha para actualización</span> 
+              <br>
+              <span>{{ fecha_hoy }}</span>
+            </div>
+          </div>
+          <hr>
+          <div class="d-flex mt-2">
+            <div><small class="text-muted">Creado por: {{ nombre_usuario_creador }}</small></div>
+            <div class="ml-auto">
+              <small *ngIf="mostrar_actualizacion" class="text-muted">Actualizado por: {{ nombre_usuario_actualizo }}</small>
+            </div>
+          </div>
+          <div class="d-flex mb-3">
+            <div><small class="text-muted">Fecha creación: {{ fecha_creacion }} </small></div>
+            <div class="ml-auto">
+              <small *ngIf="mostrar_actualizacion" class="text-muted">Última actualización: {{ fecha_actualizacion }} </small>
+            </div>
+          </div>
+
+          <div class="card-header p-0 border-bottom-0">
+            <span class="text-danger mr-2 cursor-pointer" (click)="deleteTratamiento()">Borrar</span>
+            <div class="card-tools">
+              <button type="button" class="btn btn-secondary mr-2" (click)="modal.close('Close click')">Cancelar</button>
+              <button type="button" class="btn btn-primary mr-2" (click)="actualizarTratamiento()">
+                <i class="fas fa-save"></i> Actualizar
+              </button>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+    </ng-template>
+
+    
+</div>

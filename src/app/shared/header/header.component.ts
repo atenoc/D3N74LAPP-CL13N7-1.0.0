@@ -1,10 +1,12 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
-import { CentroService } from 'src/app/services/centro.service';
-import { UsuarioService } from 'src/app/services/usuario.service';
+import { CentroService } from 'src/app/services/clinicas/centro.service';
+import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
 import { Mensajes } from '../mensajes.config';
 import { SharedService } from 'src/app/services/shared.service';
+import { CifradoService } from 'src/app/services/cifrado.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -15,22 +17,29 @@ export class HeaderComponent implements OnInit {
 
   usuario:Usuario
   idUsuario:string
-  rolUsuario:string
+  rol:string
   nombreUsuario:string
   llaveStatus:number
   nombreCentro:string
   mostrarCambiarContrasena:boolean=true
-  mensajeContrasena:string
-
+  mensajeContrasena:string 
+  enlaceContrasena:string
+  
   isDarkMode = false;
   menuOculto = false;
 
+  id_plan:string
+  isDisabled:boolean 
+  mensajePruebaTerminada:string
+  mensajeLink:string
+
   constructor(
+    public authService: AuthService, 
     private sharedService:SharedService,
     public usuarioService: UsuarioService, 
     private centroService:CentroService,
     private router: Router,
-    private renderer: Renderer2
+    private renderer: Renderer2,
     ) { }
 
   ngOnInit(): void {
@@ -44,15 +53,38 @@ export class HeaderComponent implements OnInit {
       this.nombreCentro = nombreCentro;
     });
 
-    this.usuarioService.getUsuario$(localStorage.getItem('_us')).subscribe(
+    this.authService.validarUsuarioActivo$(localStorage.getItem('_us'), localStorage.getItem('_em'), localStorage.getItem('_cli')).subscribe(
       res => {
+        
         this.usuario = res;
         this.idUsuario=this.usuario.id
+        this.rol=this.usuario.rol
+        this.id_plan=this.usuario.id_plan
+        console.log("U Plan Header: "+this.id_plan)
+
         if(this.usuario.llave_status == 0){
           this.mostrarCambiarContrasena=true
           this.mensajeContrasena=Mensajes.CONTRASENA_ACTUALIZAR;
+          this.enlaceContrasena='Cambiar'
         }else{
           this.mostrarCambiarContrasena=false
+          this.mensajeContrasena=''
+          this.enlaceContrasena=''
+        }
+
+        if(this.id_plan == '0402PF3T'){
+          this.isDisabled=true
+          if(this.rol=="suadmin"){
+            this.mensajePruebaTerminada = Mensajes.PRUEBA_TERMINADA
+            this.mensajeLink="Ver planes"
+            console.log("Prueba 30 terminada");
+          }else if(this.rol=="adminn1" ||this.rol=="adminn2" || this.rol=="medic" || this.rol=="caja" || this.rol=="recepcion"){
+            this.mensajePruebaTerminada = Mensajes.PRUEBA_TERMINADA_USER
+            this.mensajeLink=""
+            console.log("Funcionalidades no disponibles para User");
+          }
+
+          
         }
 
         this.centroService.getCentro$(localStorage.getItem('_cli')).subscribe(

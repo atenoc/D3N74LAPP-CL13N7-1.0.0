@@ -5,10 +5,10 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { CatalogoEspecialidad, CatalogoRol, CatalogoTitulo } from 'src/app/models/Catalogo.model';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from 'src/app/services/auth.service';
-import { CatalogoService } from 'src/app/services/catalogo.service';
+import { CatalogoService } from 'src/app/services/catalogos/catalogo.service';
 import { SharedService } from 'src/app/services/shared.service';
-import { CifradoService } from 'src/app/services/shared/cifrado.service';
-import { UsuarioService } from 'src/app/services/usuario.service';
+import { CifradoService } from 'src/app/services/cifrado.service';
+import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
 import { Mensajes } from 'src/app/shared/mensajes.config';
 import Swal from 'sweetalert2';
 
@@ -168,7 +168,9 @@ export class UsuarioDetalleComponent implements OnInit {
       this.formularioUsuario.value.especialidad,
       this.formularioUsuario.value.telefono,
       ).subscribe(res => {
-        console.log("Usuario actualizado: "+res);
+        console.log("Usuario actualizado ");
+        console.log(res)
+        console.log(res.nombre)
         this.sharedService.setNombreUsuario(this.formularioUsuario.value.nombre);
         this.editando=false
         this.ngOnInit()
@@ -177,7 +179,7 @@ export class UsuarioDetalleComponent implements OnInit {
           position: 'top-end',
           html:
             `<h5>${ Mensajes.USUARIO_ACTUALIZADO }</h5>`+
-            `<span>${ this.usuario.correo }</span>`, 
+            `<span>${ res.nombre } ${ res.apellidop }</span>`, 
             
           showConfirmButton: false,
           backdrop: false, 

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Cita, CitaEditar } from 'src/app/models/Cita.model';
+import { Cita, CitaEditar, CitaPaciente } from 'src/app/models/Cita.model';
 import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
@@ -56,6 +56,10 @@ export class CitaService {
 
   deleteCita(id: string): Observable<void> {
     return this.http.delete<void>(`${this.URI}/${id}`);
+  }
+
+  getCitasByIdPaciente(id_paciente): Observable<CitaPaciente[]>{
+    return this.http.get<CitaPaciente[]>(`${this.URI}/paciente/${id_paciente}`);
   }
 
 }

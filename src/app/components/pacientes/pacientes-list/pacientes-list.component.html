@@ -10,7 +10,7 @@
         <div class="col-sm-6 hide-on-mobile">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a routerLink="/calendario">Calendario</a></li>
-            <li class="breadcrumb-item"><a routerLink="/citas">Agenda</a></li>
+            <li class="breadcrumb-item"><a routerLink="/agenda">Agenda</a></li>
             <li class="breadcrumb-item active">Pacientes</li>
           </ol>
         </div>
@@ -25,7 +25,7 @@
           <div class="card card-primary card-outline">
             <div class="card-header hide-on-mobile">
               <h3 class="card-title">
-                <button class="btn btn-outline-primary btn-sm" (click)="irPacienteForm()">
+                <button class="btn btn-outline-primary btn-sm" (click)="irPacienteForm()" [disabled]="isDisabled">
                   <i class="fas fa-plus"></i> Agregar paciente 
                 </button>
               </h3>
@@ -36,8 +36,8 @@
                 <table class="table-responsive table-hover table-striped hide-on-mobile">
                   <thead>
                     <tr>
-                      <th class="col-1">#</th> 
-                      <th class="col-1 cursor-pointer" (click)="onSortChange('nombre')">
+                      <th class="primer-columna">#</th> 
+                      <th class="col-2 cursor-pointer" (click)="onSortChange('nombre')">
                         Nombre(s)
                         <span *ngIf="orderBy === 'nombre' && way === 'asc'">▲</span>
                         <span *ngIf="orderBy === 'nombre' && way === 'desc'">▼</span>
@@ -54,13 +54,13 @@
                       </th>
                       <th class="col-1">Edad</th>
                       <th class="col-1">Teléfono</th>
-                      <th class="col-1">Correo</th>
+                      <th class="col-2">Correo</th>
                       <th class="col-1">Opción</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let paciente of pacientes">
-                      <td scope="row" class="text-muted">{{ paciente.contador }}</td>
+                      <th scope="row" class="text-muted">{{ paciente.contador }}</th>
                       <td>{{ paciente.nombre }}</td>
                       <td>{{ paciente.apellidop }}</td>
                       <td>{{ paciente.apellidom }}</td>
@@ -69,8 +69,8 @@
                       <td>{{ paciente.correo }}</td>
                       <td class="text-center">
                         <button class="btn btn-outline-primary btn-sm" (click)="selectedIdUser(paciente.id)"
-                          ngbTooltip="Información del paciente"><i class="fas fa-info-circle"></i> 
-                          <span> Ver</span>
+                          ngbTooltip="Información del paciente">
+                          <i class="fas fa-book-medical"></i> Expediente
                         </button>
                       </td>
                     </tr>

@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Centro } from 'src/app/models/Centro.model';
-import { CentroService } from 'src/app/services/centro.service';
+import { CentroService } from 'src/app/services/clinicas/centro.service';
 import Swal from 'sweetalert2';
 import { Mensajes } from 'src/app/shared/mensajes.config';
 import { AuthService } from 'src/app/services/auth.service';
-import { CifradoService } from 'src/app/services/shared/cifrado.service';
+import { CifradoService } from 'src/app/services/cifrado.service';
 import { Router } from '@angular/router';
 
 @Component({

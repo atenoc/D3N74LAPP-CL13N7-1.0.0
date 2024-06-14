@@ -28,7 +28,6 @@ export interface DetalleCita{
 }
 
 export interface CitaEditar{
-
     id:string;
     title: string;
     start: string; 
@@ -40,5 +39,12 @@ export interface CitaEditar{
     apellidom:string
     edad: string
     telefono:string;
-    id_paciente;
+    id_paciente:string;
+}
+
+export interface CitaPaciente{
+    id:string;
+    titulo: string;
+    fecha_hora_inicio:string;
+    motivo: string;
 }

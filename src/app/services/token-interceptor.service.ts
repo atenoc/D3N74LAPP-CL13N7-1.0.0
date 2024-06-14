@@ -1,7 +1,7 @@
 import { HttpInterceptor } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
-import { CifradoService } from './shared/cifrado.service';
+import { CifradoService } from './cifrado.service';
 
 @Injectable({
   providedIn: 'root'
