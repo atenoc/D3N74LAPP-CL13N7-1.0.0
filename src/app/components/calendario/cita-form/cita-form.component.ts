@@ -132,9 +132,9 @@ export class CitaFormComponent implements OnInit {
     this.validaMotivo()
     this.validarFechaInicio()
     this.validaHoraInicio()
-    this.validaMedico()
     this.compararFechas1()
     this.validarHorarios()
+    this.validaMedico()
 
     if(
       this.mostrarMensajeNombre || 
@@ -422,11 +422,11 @@ export class CitaFormComponent implements OnInit {
     this.activeModal.close('Modal cerrado');
   }
 
-  cerrarAlerta() {
+  cerrarAvisoPacientes() {
     this.mostrarAvisoPacientes = false;
   }
 
-  cerrarAlertaMedicos() {
+  cerrarAvisoMedicos() {
     this.mostrarAvisoMedicos = false;
   }
 
