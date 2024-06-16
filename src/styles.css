@@ -79,7 +79,8 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
+    /*background: #c1c1c1;*/
+    background: #4c658d !important;
     border-radius: 10px;  
 }
 
@@ -117,7 +118,7 @@
 }
 
 
-/* input deshabilitado */
+/* input deshabilitado general */
 
 .form-control:disabled, .form-control[readonly] {
     /*background-color: #e9ecef;*/
@@ -125,6 +126,55 @@
     color: #1a1a1a !important;
 }
 
-/*.dark-mode a {
-    color: #ff0404 !important;
-}*/
+/* Modo oscuro **********************************************/
+
+.dark-mode a {
+    color: #ffffff !important;
+}
+
+.dark-mode .fc-theme-standard .fc-list-day-cushion {
+    background-color: #46668f !important;
+}
+
+.dark-mode .navbar-white {
+    background-color: #1f2020 !important;
+}
+
+.dark-mode .nav-link{
+    color: #03a9f4 !important;
+}
+
+.dark-mode .btn-primary {
+    background-color: #3087cd !important;
+    border-color: #3087cd !important;
+}
+
+.dark-mode .btn-outline-primary {
+    color: #569ef7 !important;
+    border-color: #569ef7 !important;
+}
+
+
+.dark-mode .table-responsive thead {
+    color: white !important;
+    background-color: #3087cd;
+    height: 50px !important;
+}
+
+.dark-mode .table-hover tbody tr:hover {
+    color: #03a9f4 !important;
+    background-color: #505f75 !important;
+}
+
+
+/* Modo claro ************************************************ /
+
+    /* columna titulo agenda */
+.fc-theme-standard .fc-list-day-cushion {
+    background-color: #e9f2f9 !important
+}
+
+    /* dia hoy del calendario */
+.fc .fc-daygrid-day.fc-day-today {
+    background-color: rgb(255 213 0 / 30%) !important;
+}
