@@ -115,3 +115,16 @@
 .primer-columna{
     width: 3% !important;
 }
+
+
+/* input deshabilitado */
+
+.form-control:disabled, .form-control[readonly] {
+    /*background-color: #e9ecef;*/
+    background-color: #e9ecef7d !important;
+    color: #1a1a1a !important;
+}
+
+/*.dark-mode a {
+    color: #ff0404 !important;
+}*/

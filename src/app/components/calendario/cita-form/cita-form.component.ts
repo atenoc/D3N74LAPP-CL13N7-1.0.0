@@ -62,6 +62,8 @@ export class CitaFormComponent implements OnInit {
   mostrarMensajeFechasInvalidas = false
   mostrarMensajeHorariosInvalidos:boolean = false
   mostrarMensajeSeleccionarMedico:boolean=false
+  deshabilitarTimePickerInicio:boolean=true
+  deshabilitarTimePickerFin:boolean=true
 
   //mensajes
   campoRequerido: string;
@@ -383,8 +385,18 @@ export class CitaFormComponent implements OnInit {
   validarFechaInicio(){
     if(this.fechaModelInicio ==null){
       this.mostrarMensajeFechaInicio = true;
+      this.deshabilitarTimePickerInicio = true
     }else{
       this.mostrarMensajeFechaInicio = false;
+      this.deshabilitarTimePickerInicio = false
+    }
+  }
+
+  validarFechaFin(){
+    if(this.fechaModelFin ==null){
+      this.deshabilitarTimePickerFin = true
+    }else{
+      this.deshabilitarTimePickerFin = false
     }
   }
 
@@ -454,6 +466,8 @@ export class CitaFormComponent implements OnInit {
     this.queryPacientes=""
     this.queryMedicos=""
     this.isDisabledInput = false
+    this.deshabilitarTimePickerInicio = true
+    this.deshabilitarTimePickerFin = true
   }
 
   compararFechas1(){

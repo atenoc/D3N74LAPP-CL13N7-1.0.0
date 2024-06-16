@@ -79,6 +79,8 @@ export class CitaEditComponent implements OnInit {
   mostrarTablaResultadosMedicos:boolean = false;
   mostrarAvisoMedicos:boolean = false;
   mostrarAvisoPacientes:boolean = false;
+  deshabilitarTimePickerInicio:boolean=true
+  deshabilitarTimePickerFin:boolean=true
 
   mensajeFechasInvalidas: string;
   mensajeHorariosInvalidos: string;
@@ -428,8 +430,18 @@ export class CitaEditComponent implements OnInit {
   validarFechaInicio(){
     if(this.fechaModelInicio ==null){
       this.mostrarMensajeFechaInicio = true;
+      this.deshabilitarTimePickerInicio = true
     }else{
       this.mostrarMensajeFechaInicio = false;
+      this.deshabilitarTimePickerInicio = false
+    }
+  }
+
+  validarFechaFin(){
+    if(this.fechaModelFin ==null){
+      this.deshabilitarTimePickerFin = true
+    }else{
+      this.deshabilitarTimePickerFin = false
     }
   }
 
