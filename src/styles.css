@@ -123,7 +123,14 @@
 .form-control:disabled, .form-control[readonly] {
     /*background-color: #e9ecef;*/
     background-color: #e9ecef7d !important;
-    color: #1a1a1a !important;
+    color: #7f7f7f !important;
+    border-color: #f1f1f1   !important;
+}
+
+.form-select:disabled {
+    background-color: #e9ecef7d !important;
+    color: #7f7f7f !important;
+    border-color: #f1f1f1   !important;
 }
 
 /* Modo oscuro **********************************************/
@@ -166,6 +173,22 @@
     background-color: #505f75 !important;
 }
 
+.dark-mode .form-control{
+    /*background: #343a40 !important;*/
+    border-color: #6c757d  !important;
+    color: white  !important;
+    font-family: cursive !important;
+    font-size: large !important;
+}
+
+.dark-mode .form-select{
+    /*background: #343a40 !important;*/
+    border-color: #6c757d  !important;
+    color: white  !important;
+    font-family: cursive !important;
+    font-size: medium !important;
+}
+
 
 /* Modo claro ************************************************ /
 
@@ -177,4 +200,20 @@
     /* dia hoy del calendario */
 .fc .fc-daygrid-day.fc-day-today {
     background-color: rgb(255 213 0 / 30%) !important;
+}
+
+.form-control{
+    /*background: #eef7fe !important;*/
+    border-color: #84bfff  !important;
+    color: #005fde  !important;
+    font-family: cursive !important;
+    font-size: large !important;
+}
+
+.form-select{
+    /*background: #eef7fe !important;*/
+    border-color: #84bfff  !important;
+    color: #005fde  !important;
+    font-family: cursive !important;
+    font-size: medium !important;
 }
