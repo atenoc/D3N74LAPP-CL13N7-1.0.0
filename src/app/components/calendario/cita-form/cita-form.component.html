@@ -33,7 +33,7 @@
           <div *ngIf="mostrarAvisoPacientes" class="alert alert-secondary alert-dismissible fade show" role="alert">
             <div style="margin-top: -10px !important;">
               <strong>{{ mensajeBusquedaNoCoincidencias }}</strong> 
-              <button type="button" class="btn-close" (click)="cerrarAlerta()" aria-label="Close" style="margin-top: -13px !important;"></button>
+              <button type="button" class="btn-close" (click)="cerrarAvisoPacientes()" aria-label="Close" style="margin-top: -13px !important;"></button>
             </div>
           </div>
           
@@ -95,7 +95,7 @@
       <!-- <div class="col-sm"></div> -->
     </div>
     <div class="row">
-        <div class="col-sm-6 my-mt">
+        <div class="col-sm-5 my-mt">
             <span><strong> Fecha de inicio * </strong></span>
             <div class="input-group">
                 <input
@@ -112,29 +112,32 @@
                   <i class="far fa-calendar-alt"></i>
                 </button>
               </div>
-              <div *ngIf="mostrarMensajeFechaInicio" class="invalid-input-message">{{ fechaRequerida }}</div>
-              
+              <div *ngIf="mostrarMensajeFechaInicio" class="invalid-input-message">{{ fechaRequerida }}</div>      
         </div>
-        <div class="col-sm-2">
+
+        <div class="col-sm-3">
           <div class="mt-3" style="margin-top: 45px !important; text-align: center;">
-            <span><strong> Horario inicio * </strong></span>
+            <span>
+              <strong> Horario inicio * </strong>
+              <i class="fas fa-info-circle cursor-pointer text-muted ml-1" 
+                    triggers="click" [autoClose]="'outside'" placement="end" 
+                    ngbTooltip="Entre 7:00 AM hasta 22:00 PM"></i>
+            </span>
           </div>
         </div>
-        <div class="col-sm">
-    
-            <div class="form-group">
+        <div class="col-sm d-flex justify-content-center">
+            <div class="form-group text-center">
                 <!-- <pre>Selected time: {{selectedTimeInicio | json}}</pre> -->
-                <ngb-timepicker [(ngModel)]="selectedTimeInicio" [meridian]="true" (ngModelChange)="validaHoraInicio()"></ngb-timepicker>
+                <ngb-timepicker [(ngModel)]="selectedTimeInicio" [meridian]="true" (ngModelChange)="validaHoraInicio()" [disabled]="deshabilitarTimePickerInicio"></ngb-timepicker>
                 <div *ngIf="mostrarMensajeHoraInicio" class="invalid-input-message">{{ horarioNoValido }}</div>
             </div>
-            
         </div>
     </div>
 
     <hr/>
 
     <div class="row">
-        <div class="col-sm-6 my-mt">
+        <div class="col-sm-5 my-mt">
             <small class="text-muted">Fecha fin (opcional )</small>
             <i class="fas fa-info-circle cursor-pointer text-muted ml-1" 
               triggers="click" [autoClose]="'outside'" placement="end" 
@@ -146,6 +149,7 @@
                   placeholder="aaaa-mm-dd"
                   name="dp2"
                   [(ngModel)]="fechaModelFin"
+                  (ngModelChange)="validarFechaFin()"
                   ngbDatepicker
                   #d2="ngbDatepicker" 
                   readonly
@@ -157,14 +161,14 @@
               <div *ngIf="mostrarMensajeFechasInvalidas" class="invalid-input-message">{{ mensajeFechasInvalidas }}</div>
         </div>
 
-        <div class="col-sm-2">
+        <div class="col-sm-3">
           <div class="mt-3" style="margin-top: 45px !important; text-align: center;">
             <span class="text-muted"> Horario fin</span>
           </div>
         </div>
-        <div class="col-sm">
-            <div class="form-group">
-                <ngb-timepicker [(ngModel)]="selectedTimeFin" [meridian]="true" (ngModelChange)="validarHorarios()"></ngb-timepicker>
+        <div class="col-sm d-flex justify-content-center">
+          <div class="form-group text-center">
+                <ngb-timepicker [(ngModel)]="selectedTimeFin" [meridian]="true" (ngModelChange)="validarHorarios()" [disabled]="deshabilitarTimePickerFin"></ngb-timepicker>
                 <div *ngIf="mostrarMensajeHorariosInvalidos" class="invalid-input-message">{{ mensajeHorariosInvalidos }}</div>
             </div>
             <!-- <pre>Selected time: {{selectedTimeFin | json}}</pre> -->     
@@ -198,7 +202,7 @@
             <div *ngIf="mostrarAvisoMedicos" class="alert alert-secondary alert-dismissible fade show" role="alert">
               <div style="margin-top: -10px !important;">
                 <strong>{{ mensajeBusquedaNoCoincidencias }}</strong> 
-                <button type="button" class="btn-close" (click)="cerrarAlertaMedicos()" aria-label="Close" style="margin-top: -13px !important;"></button>
+                <button type="button" class="btn-close" (click)="cerrarAvisoMedicos()" aria-label="Close" style="margin-top: -13px !important;"></button>
               </div>
             </div>
             <div *ngIf="mostrarMensajeSeleccionarMedico" class="invalid-input-message">{{ mensajeSeleccionarMedico }}</div>
@@ -209,8 +213,8 @@
 
     <div class="row">
       <div class="form-group">
-          <span>Médico seleccionado</span>
-          <input type="text" class="form-control" [(ngModel)]="nombreMedico" (ngModelChange)="validaMedico()" readonly>
+        <span>Médico seleccionado para atender paciente</span>
+          <input type="text" class="form-control" [(ngModel)]="nombreMedico" readonly>
       </div>
     </div>
 

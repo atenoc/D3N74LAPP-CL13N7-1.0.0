@@ -5,7 +5,7 @@
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        <button class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></button>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <span class="nav-link font_titulo">{{ nombreCentro }} </span> 
@@ -19,9 +19,9 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar Search -->
       <li class="nav-item">
-        <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+        <button class="nav-link" data-widget="navbar-search" href="#" role="button">
           <i class="fas fa-search"></i>
-        </a>
+        </button>
         <div class="navbar-search-block">
           <form class="form-inline">
             <div class="input-group input-group-sm">
@@ -126,9 +126,9 @@
         </div>
       </li> -->
       <li class="nav-item">
-        <a class="nav-link" data-widget="fullscreen" role="button">
+        <button class="nav-link" data-widget="fullscreen" role="button">
           <i class="fas fa-expand-arrows-alt"></i>
-        </a>
+        </button>
       </li>
       <!-- Botón que muestra el panel de configuración -->
       <!-- <li class="nav-item">
@@ -137,9 +137,9 @@
         </a>
       </li> -->
       <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
+        <button class="nav-link" data-toggle="dropdown" href="#">
           <i class="fas fa-tools"></i>
-        </a>
+        </button>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <small *ngIf="!isDarkMode" class="dropdown-item cursor-pointer text-primary" (click)="toggleDarkMode()">Cambiar a modo oscuro</small>
           <small *ngIf="isDarkMode" class="dropdown-item cursor-pointer text-primary" (click)="toggleDarkMode()">Cambiar a modo claro</small>

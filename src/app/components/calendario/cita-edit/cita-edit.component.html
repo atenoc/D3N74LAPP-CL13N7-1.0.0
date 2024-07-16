@@ -4,14 +4,14 @@
       <div class="row mb-2">
         <div class="col-sm-6">
           <h5>
-            Editar cita
+            Modificar cita
           </h5>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a routerLink="/calendario">Calendario</a></li>
             <li class="breadcrumb-item"><a routerLink="/agenda">Agenda</a></li>
-            <li class="breadcrumb-item active">Editar cita</li>
+            <li class="breadcrumb-item active">Modificar cita</li>
           </ol>
         </div>
       </div>
@@ -27,6 +27,11 @@
               <h3 class="card-title text-primary">
                 <strong>{{ tituloCard }}</strong> 
               </h3>
+              <div class="card-tools">
+                <i class="fas fa-info-circle cursor-pointer text-muted ml-1" 
+                    triggers="click" [autoClose]="'outside'" placement="start" 
+                    ngbTooltip="Modifica el paciente, el médico, la fecha o el horario"></i>
+              </div>
             </div>
             <div class="card-body">
   
@@ -34,17 +39,21 @@
                 <div class="row">
                     <div class="col-sm">
                       <div class="form-group">
-                        <span><strong class="text-muted">Buscar paciente</strong></span>
+
+                        <span class="text-muted">Buscar y seleccionar un paciente existente</span>
+                            <i class="fas fa-info-circle cursor-pointer text-muted ml-1" 
+                              triggers="click" [autoClose]="'outside'" placement="end" 
+                              ngbTooltip="Busca pacientes existentes"></i>
                         <div class="input-group">
                           <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-search"></i></span>
                           </div>
-                          <input type="text" [(ngModel)]="query" (input)="buscarPacientes()" class="form-control" placeholder="Buscar por nombre o apellidos...">
+                          <input type="text" [(ngModel)]="queryPacientes" (input)="buscarPacientes()" class="form-control" placeholder="Buscar por nombre o apellidos...">
                         </div>
                 
                         <div class="floating-component">
-                          <div class="table-container" *ngIf="mostrarTablaResultados">
-                            <table class="table table-bordered table-info">
+                          <div class="table-container" *ngIf="mostrarTablaResultadosPacientes">
+                            <table class="table table-bordered table-success">
                               <tbody>
                                 <tr *ngFor="let paciente of pacientes" (click)="seleccionarPaciente(paciente.id, paciente.nombre, paciente.apellidop, paciente.apellidom, paciente.edad, paciente.telefono)">
                                   <td>{{ paciente.nombre }} {{ paciente.apellidop }} {{ paciente.apellidom }}</td>
@@ -52,10 +61,18 @@
                               </tbody>
                             </table>
                           </div>
+                          <div *ngIf="mostrarAvisoPacientes" class="alert alert-secondary alert-dismissible fade show" role="alert">
+                            <div style="margin-top: -10px !important;">
+                              <strong>{{ mensajeBusquedaNoCoincidencias }}</strong> 
+                              <button type="button" class="btn-close" (click)="cerrarAvisoPacientes()" aria-label="Close" style="margin-top: -13px !important;"></button>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
+
+                  <hr>
                   
                     <div class="row">
                       <div class="col-sm">
@@ -72,7 +89,7 @@
                       </div>
                       <div class="col-sm">
                         <div class="form-group">
-                          <span> <small class="text-muted">Ap. Materno (opcional)</small></span>
+                          <span class="text-muted">Ap. Materno</span>
                             <input type="text" class="form-control" [(ngModel)]="apellidoMaternoPaciente" readonly>
                         </div>
                       </div>
@@ -82,7 +99,7 @@
                     <div class="row">
                       <div class="col-sm-3">
                         <div class="form-group">
-                          <span> <small class="text-muted">Edad (opcional)</small></span>
+                          <span class="text-muted">Edad</span>
                             <input type="text" class="form-control" [(ngModel)]="edadPaciente" maxlength="3" readonly>
                         </div>
                       </div>
@@ -105,8 +122,8 @@
                       <!-- <div class="col-sm"></div> -->
                     </div>
                     <div class="row">
-                        <div class="col-sm my-mt">
-                            <span><strong> Fecha y hora de inicio * </strong></span>
+                        <div class="col-sm-5 my-mt">
+                            <span><strong> Fecha de inicio * </strong></span>
                             <div class="input-group">
                                 <input
                                   class="form-control"
@@ -125,32 +142,41 @@
                               <div *ngIf="mostrarMensajeFechaInicio" class="invalid-input-message">{{ fechaRequerida }}</div>
                               
                         </div>
-                        <div class="col-sm">
-                    
-                            <div class="form-group">
+                        <div class="col-sm-3">
+                          <div class="mt-3" style="margin-top: 45px !important; text-align: center;">
+                            <span>
+                              <strong> Horario inicio * </strong>
+                              <i class="fas fa-info-circle cursor-pointer text-muted ml-1" 
+                                    triggers="click" [autoClose]="'outside'" placement="end" 
+                                    ngbTooltip="Entre 7:00 AM hasta 22:00 PM"></i>
+                            </span>
+                          </div>
+                        </div>
+                        <div class="col-sm d-flex justify-content-center">
+                          <div class="form-group text-center">
                                 <!-- <pre>Selected time: {{selectedTimeInicio | json}}</pre> -->
-                                <ngb-timepicker [(ngModel)]="selectedTimeInicio" [meridian]="true" (ngModelChange)="validaHoraInicio()"></ngb-timepicker>
+                                <ngb-timepicker [(ngModel)]="selectedTimeInicio" [meridian]="true" (ngModelChange)="validaHoraInicio()" [disabled]="deshabilitarTimePickerInicio"></ngb-timepicker>
                                 <div *ngIf="mostrarMensajeHoraInicio" class="invalid-input-message">{{ horarioNoValido }}</div>
                             </div>
-                            
                         </div>
                     </div>
                 
                     <hr/>
-                    <small class="text-muted">Opcional</small>
-                
+
                     <div class="row">
-                        <div class="col-sm my-mt">
-                            <small class="text-muted">Fecha y hora de termino</small>
+                        <div class="col-sm-5 my-mt">
+                            <small class="text-muted">Fecha fin (opcional)</small>
                             <i class="fas fa-info-circle cursor-pointer text-muted ml-1" 
                               triggers="click" [autoClose]="'outside'" placement="end" 
                               ngbTooltip="De no seleccionar esta opción, la cita será de 1 hora"></i>
                             <div class="input-group">
                                 <input
+                                  (ngModelChange)="compararFechasHtml($event)"
                                   class="form-control"
                                   placeholder="aaaa-mm-dd"
                                   name="dp2"
                                   [(ngModel)]="fechaModelFin"
+                                  (ngModelChange)="validarFechaFin()"
                                   ngbDatepicker
                                   #d2="ngbDatepicker"
                                   readonly
@@ -159,23 +185,80 @@
                                   <i class="far fa-calendar-alt"></i>
                                 </button>
                               </div>
+                              <div *ngIf="mostrarMensajeFechasInvalidas" class="invalid-input-message">{{ mensajeFechasInvalidas }}</div>
                         </div>
-                        <div class="col-sm">
-                    
-                            <div class="form-group">
-                                <ngb-timepicker [(ngModel)]="selectedTimeFin" [meridian]="true"></ngb-timepicker>
+
+                        <div class="col-sm-3">
+                          <div class="mt-3" style="margin-top: 45px !important; text-align: center;">
+                            <span class="text-muted"> Horario fin</span>
+                          </div>
+                        </div>
+                        <div class="col-sm d-flex justify-content-center">
+                            <div class="form-group text-center">
+                                <ngb-timepicker [(ngModel)]="selectedTimeFin" [meridian]="true" (ngModelChange)="validarHorarios()" [disabled]="deshabilitarTimePickerFin"></ngb-timepicker>
+                                <div *ngIf="mostrarMensajeHorariosInvalidos" class="invalid-input-message">{{ mensajeHorariosInvalidos }}</div>
                             </div>
-                            <!-- <pre>Selected time: {{selectedTimeFin | json}}</pre> -->
-                            
+                            <!-- <pre>Selected time: {{selectedTimeFin | json}}</pre> -->         
                         </div>
-                        <!-- <div class="form-group">
-                          <small>Nota / comentarios</small>
-                          <textarea class="form-control"  rows="2" maxlength="130" [(ngModel)]="nota"></textarea>
-                        </div> -->
                     </div>
-                    <div *ngIf="mostrarMensajeNoExistenCambios"> <span class="text-muted">{{ mensajeNoExistenCambios }}</span></div>
+
+                    <div class="row mt-2">
+                      <div class="col-sm">
+                        <div class="form-group">
+                          <strong>Buscar y seleccionar un médico especialista *</strong>
+                          <i class="fas fa-info-circle cursor-pointer text-muted ml-1" 
+                            triggers="click" [autoClose]="'outside'" placement="end" 
+                            ngbTooltip="Busca médicos registrados"></i>
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fas fa-search"></i></span>
+                            </div>
+                            <input type="text" [(ngModel)]="queryMedicos" (input)="buscarMedicos()" class="form-control" placeholder="Buscar por nombre o apellidos...">
+                          </div>
+                  
+                          <div class="floating-component">
+                            <div class="table-container" *ngIf="mostrarTablaResultadosMedicos">
+                              <table class="table table-bordered table-success">
+                                <tbody>
+                                  <tr *ngFor="let medico of medicos" (click)="seleccionarMedico(medico.id, medico.nombre, medico.apellidop, medico.apellidom, medico.titulo, medico.especialidad)">
+                                    <td>{{ medico.titulo }} {{ medico.nombre }} {{ medico.apellidop }} {{ medico.apellidom }} | {{ medico.especialidad }}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div *ngIf="mostrarAvisoMedicos" class="alert alert-secondary alert-dismissible fade show" role="alert">
+                              <div style="margin-top: -10px !important;">
+                                <strong>{{ mensajeBusquedaNoCoincidencias }}</strong> 
+                                <button type="button" class="btn-close" (click)="cerrarAvisoMedicos()" aria-label="Close" style="margin-top: -13px !important;"></button>
+                              </div>
+                            </div>
+                            <div *ngIf="mostrarMensajeSeleccionarMedico" class="invalid-input-message">{{ mensajeSeleccionarMedico }}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                     <div class="row">
-                      <button type="submit" class="btn btn-primary btn-block" (click)="compararDatos()">Guardar</button>
+                      <div class="form-group">
+                          <span>Médico seleccionado para atender paciente</span>
+                          <input type="text" class="form-control" [(ngModel)]="nombreMedico" readonly>
+                      </div>
+                    </div>
+
+                    <div *ngIf="mostrarMensajeNoExistenCambios" class="d-flex mt-2 ">
+                      <div></div>
+                      <div class="ml-auto">
+                        <span class="text-muted">{{ mensajeNoExistenCambios }}</span>
+                      </div>
+                    </div>
+
+                    <div class="row mt-3">
+                      <div class="col-md-6">
+                        <button type="submit" class="btn btn-outline-danger btn-block" (click)="eliminarCita()"><i class="fas fa-trash-alt"></i> Eliminar</button>
+                      </div>
+                      <div class="col-md-6">
+                        <button type="submit" class="btn btn-primary btn-block" (click)="compararDatos()"><i class="fas fa-save"></i> Guardar cambios</button>
+                      </div>
                     </div>
   
             </div>

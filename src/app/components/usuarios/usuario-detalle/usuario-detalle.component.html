@@ -10,9 +10,9 @@
         </div>
         <div class="col-sm-6 hide-on-mobile">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a routerLink="/medicos">Medicos</a></li>
+            <li class="breadcrumb-item"><a routerLink="/medicos">Médicos</a></li>
             <li class="breadcrumb-item"><a routerLink="/usuarios">Usuarios</a></li>
-            <li class="breadcrumb-item active">Detalle</li>
+            <li class="breadcrumb-item active">Usuario</li>
           </ol>
         </div>
       </div>
@@ -23,13 +23,13 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <div class="card card-primary">
+          <div class="card card-outline">
             <div class="card-header">
-              <h3 class="card-title">
-                Información del usuario
-              </h3>
+              <div class="card-title">
+                <h5>Información de usuario</h5>
+              </div>
               <div class="card-tools">
-                <button class="btn btn-light btn-sm" (click)="editando = true"> <i class="nav-icon fas fa-edit"></i> Editar</button>
+                <!--  -->
               </div>
             </div>
             <div class="card-body">
@@ -39,21 +39,21 @@
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <small class="text-muted">Correo</small>
+                                <span class="text-muted">Correo</span>
                                 <input type="email" class="form-control sin-borde" formControlName="correo" placeholder="ejemplo@correo.com" readonly>
                             </div>
                         </div>
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <small class="text-muted">Contraseña</small>
+                                <span class="text-muted">Contraseña</span>
                                 <input type="password" class="form-control sin-borde" formControlName="llave" placeholder="******" readonly>
                             </div>
                         </div>
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <small class="text-muted">Rol</small>
+                                <span class="text-muted">Rol</span>
                                 <input type="text" class="form-control sin-borde" value="{{descRol}}" readonly>
                             </div>
                         </div>
@@ -65,7 +65,7 @@
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <small class="text-muted"> Título </small>
+                                <span class="text-muted"> Título </span>
                                 <select class="form-select sin-borde" formControlName="titulo" disabled>
                                     <option selected disabled [value]="0">Selecciona una opción:</option>
                                     <option *ngFor="let item of catTitulos" [value]="item.id">{{ item.titulo }} - {{ item.descripcion }}</option>
@@ -75,14 +75,14 @@
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <small class="text-muted">Nombre (s)</small>
+                                <span class="text-muted">Nombre (s)</span>
                                 <input type="text" class="form-control sin-borde" formControlName="nombre" readonly>
                             </div>
                         </div>
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <small class="text-muted">Apellido Paterno</small>
+                                <span class="text-muted">Apellido Paterno</span>
                                 <input type="text" class="form-control sin-borde" formControlName="apellidop" readonly>
                             </div>
                         </div>
@@ -92,14 +92,14 @@
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <small class="text-muted"> Apellido Materno </small>
+                                <span class="text-muted"> Apellido Materno </span>
                                 <input type="text" class="form-control sin-borde" formControlName="apellidom" readonly>
                             </div>
                         </div>
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <small class="text-muted"> Especialidad </small>
+                                <span class="text-muted"> Especialidad </span>
                                 <select class="form-select sin-borde" formControlName="especialidad" disabled>
                                     <option selected disabled [value]="0">Selecciona una opción:</option>
                                     <option *ngFor="let item of catEspecialidades" [value]="item.id">{{ item.especialidad }}</option>
@@ -109,21 +109,26 @@
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <small class="text-muted"> Teléfono</small>
+                                <span class="text-muted"> Teléfono</span>
                                 <input type="text" class="form-control sin-borde" formControlName="telefono" maxlength="10" readonly>
                             </div>
                         </div>
                 
                     </div>
+                    <hr/> 
                     <div class="row">
                         <div class="col-sm">
-                            <!-- <small class="text-muted">Id de usuario:</small>
-                            <small class="text-muted"> {{ idUsuario }} </small> <br> -->
-                            <small class="text-muted">Fecha de creación:</small>
-                            <small class="text-muted"> {{ fecha_creacion }} </small><br>
-                            <small class="text-muted">Creado por:</small>
-                            <small class="text-muted"> {{ nombre_usuario_creador }} </small>
-                            <hr/> 
+                            <small class="text-muted">Creado por: {{ nombre_usuario_creador }} </small>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div>
+                            <small class="text-muted">Fecha de creación: {{ fecha_creacion }}</small>
+                        </div>
+                        <div class="ml-auto">
+                            <button class="btn btn-outline-secondary" (click)="editando = true" style="margin-top: -20px;"> 
+                                <i class="nav-icon fas fa-edit"></i> Editar
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -143,13 +148,13 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <div class="card card-outline">
+          <div class="card card-primary">
             <div class="card-header">
               <h3 class="card-title">
-                Editar...
+                Modificar...
               </h3>
               <div class="card-tools">
-                <button class="btn btn-outline-secondary btn-sm" (click)="editando = false">Cancelar</button>
+                <!--  -->
               </div>
             </div>
             <div class="card-body">
@@ -159,14 +164,14 @@
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <small class="text-muted"><strong> Correo * </strong></small>
+                                <strong class="text-muted"> Correo * </strong>
                                 <input type="email" class="form-control" formControlName="correo" [ngClass]="getInputClass('correo')" placeholder="ejemplo@correo.com" readonly>
                             </div>
                         </div>
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <small class="text-muted"><strong> Contraseña * </strong></small>
+                                <strong class="text-muted"> Contraseña * </strong>
                                 <input type="password" class="form-control" formControlName="llave" [ngClass]="getInputClass('llave')" placeholder="******" readonly>
                                 <a> <small class="text-primary" style="cursor: pointer;" (click)="selectedIdUser()">Cambiar contraseña...</small> </a>
                             </div>
@@ -175,7 +180,7 @@
                         <div class="col-sm">
                             <div class="form-group">
                                 <div class="form-group">
-                                    <small><strong> Rol * </strong></small>
+                                    <strong class="text-muted"> Rol * </strong>
                                     <ng-container *ngIf="mismoUsuario; else habilitado">
                                         <input type="text" class="form-control" value="{{descRol}}" readonly>
                                     </ng-container>
@@ -198,7 +203,7 @@
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <small class="text-muted"> Título </small>
+                                <span class="text-muted"> Título </span>
                                 <select class="form-select" formControlName="titulo">
                                     <option selected disabled [value]="0">Selecciona una opción:</option>
                                     <option *ngFor="let item of catTitulos" [value]="item.id">{{ item.titulo }} - {{ item.descripcion }}</option>
@@ -208,7 +213,7 @@
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <small><strong> Nombre(s) * </strong></small>
+                                <strong> Nombre(s) * </strong>
                                 <input type="text" class="form-control" formControlName="nombre" [ngClass]="getInputClass('nombre')" placeholder="">
                                 <div *ngIf="formularioUsuario.controls['nombre'].invalid && formularioUsuario.controls['nombre'].dirty" class="invalid-input-message">
                                     <span *ngIf="formularioUsuario.controls['nombre'].errors.required">{{ campoRequerido }}</span> 
@@ -218,7 +223,7 @@
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <small><strong> Apellido Paterno * </strong></small>
+                                <strong> Apellido Paterno * </strong>
                                 <input type="text" class="form-control" formControlName="apellidop" [ngClass]="getInputClass('apellidop')" placeholder="">
                                 <div *ngIf="formularioUsuario.controls['apellidop'].invalid && formularioUsuario.controls['apellidop'].dirty" class="invalid-input-message">
                                     <span *ngIf="formularioUsuario.controls['apellidop'].errors.required">{{ campoRequerido }}</span> 
@@ -231,14 +236,14 @@
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <small class="text-muted"> Apellido Materno </small>
+                                <span class="text-muted"> Apellido Materno </span>
                                 <input type="text" class="form-control" formControlName="apellidom" placeholder="">
                             </div>
                         </div>
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <small class="text-muted"> Especialidad </small>
+                                <span class="text-muted"> Especialidad </span>
                                 <select class="form-select" formControlName="especialidad">
                                     <option selected disabled [value]="0">Selecciona una opción:</option>
                                     <option *ngFor="let item of catEspecialidades" [value]="item.id">{{ item.especialidad }}</option>
@@ -248,7 +253,7 @@
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <small class="text-muted"> Teléfono</small>
+                                <span class="text-muted"> Teléfono</span>
                                 <input type="text" class="form-control" formControlName="telefono" [ngClass]="getInputClass('telefono')" placeholder="10 dígitos" maxlength="10">
                                 <div *ngIf="formularioUsuario.controls['telefono'].invalid && formularioUsuario.controls['telefono'].dirty" class="invalid-input-message">
                                     <div>
@@ -260,20 +265,16 @@
                                 </div> 
                             </div>
                         </div>
-                        <hr/> 
                     </div>
+                    <hr/> 
                     <div class="row">
-                        <div class="col-sm">
-                            <!-- <small class="text-muted">Id de usuario:</small>
-                            <small class="text-muted"> {{ idUsuario }} </small> <br> -->
-                            <small class="text-muted">Fecha de creación:</small>
-                            <small class="text-muted"> {{ fecha_creacion }} </small><br>
-                            <small class="text-muted">Creado por:</small>
-                            <small class="text-muted"> {{ nombre_usuario_creador }} </small>
-                            
+                        <div class="col-sm mb-3">
+                            <small class="text-muted">Creado por: {{ nombre_usuario_creador }}</small>
+                            <br>
+                            <small class="text-muted">Fecha de creación: {{ fecha_creacion }}</small>
                         </div>
                         <hr/> 
-                        <div class="d-flex mt-2">
+                        <div class="d-flex">
                             <div *ngIf="!mismoUsuario">
                                 <small *ngIf="rol=='suadmin' || rol=='sop'" class="text-muted">Eliminar usuario</small>
                             </div>
@@ -281,21 +282,20 @@
                                 <small class="text-muted">Los campos marcados con (*) son obligatorios</small>
                             </div>
                         </div>
-                    
-                        <div class="d-flex mt-2 ">
-                            <div>
-                                <ng-container *ngIf="!mismoUsuario">
-                                    <button *ngIf="rol=='suadmin' || rol=='sop'" class="btn btn-outline-secondary my-2 my-sm-0 btn-sm ml-2" (click)="deleteUser(usuario.id, usuario.correo)"
-                                    ngbTooltip="Eliminar usuario de forma permanente"><i class="fas fa-trash-alt"></i>
-                                </button>
-                                </ng-container>
 
-                                
-                            </div>
-                            <div class="ml-auto">
-                            <button type="submit" class="btn btn-primary btn-block" (click)="actualizarUsuario()" [disabled]="formularioUsuario.invalid">Guardar</button>
+                        <div class="card-header p-0 border-bottom-0 mt-2">
+                            <ng-container *ngIf="!mismoUsuario">
+                                <button *ngIf="rol=='suadmin' || rol=='sop'" class="btn btn-outline-secondary my-2 my-sm-0 ml-2" 
+                                    (click)="deleteUser(usuario.id, usuario.correo)" ngbTooltip="Eliminar usuario de forma permanente"><i class="fas fa-trash-alt"></i>
+                                </button>
+                            </ng-container>
+                    
+                            <div class="card-tools">
+                                <button class="btn btn-outline-secondary mr-3" (click)="editando = false">Cancelar</button>
+                                <button type="submit" class="btn btn-primary mr-3" (click)="actualizarUsuario()" [disabled]="formularioUsuario.invalid">Guardar</button>
                             </div>
                         </div>
+
                     </div>
                 </form>
             </div>

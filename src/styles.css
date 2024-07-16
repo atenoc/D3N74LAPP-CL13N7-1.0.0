@@ -79,7 +79,8 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
+    /*background: #c1c1c1;*/
+    background: #4c658d !important;
     border-radius: 10px;  
 }
 
@@ -114,4 +115,105 @@
 
 .primer-columna{
     width: 3% !important;
+}
+
+
+/* input deshabilitado general */
+
+.form-control:disabled, .form-control[readonly] {
+    /*background-color: #e9ecef;*/
+    background-color: #e9ecef7d !important;
+    color: #7f7f7f !important;
+    border-color: #f1f1f1   !important;
+}
+
+.form-select:disabled {
+    background-color: #e9ecef7d !important;
+    color: #7f7f7f !important;
+    border-color: #f1f1f1   !important;
+}
+
+/* Modo oscuro **********************************************/
+
+.dark-mode a {
+    color: #ffffff !important;
+}
+
+.dark-mode .fc-theme-standard .fc-list-day-cushion {
+    background-color: #46668f !important;
+}
+
+.dark-mode .navbar-white {
+    background-color: #1f2020 !important;
+}
+
+.dark-mode .nav-link{
+    color: #03a9f4 !important;
+}
+
+.dark-mode .btn-primary {
+    background-color: #3087cd !important;
+    border-color: #3087cd !important;
+}
+
+.dark-mode .btn-outline-primary {
+    color: #569ef7 !important;
+    border-color: #569ef7 !important;
+}
+
+
+.dark-mode .table-responsive thead {
+    color: white !important;
+    background-color: #3087cd;
+    height: 50px !important;
+}
+
+.dark-mode .table-hover tbody tr:hover {
+    color: #03a9f4 !important;
+    background-color: #505f75 !important;
+}
+
+.dark-mode .form-control{
+    /*background: #343a40 !important;*/
+    border-color: #6c757d  !important;
+    color: white  !important;
+    font-family: cursive !important;
+    font-size: large !important;
+}
+
+.dark-mode .form-select{
+    /*background: #343a40 !important;*/
+    border-color: #6c757d  !important;
+    color: white  !important;
+    font-family: cursive !important;
+    font-size: medium !important;
+}
+
+
+/* Modo claro ************************************************ /
+
+    /* columna titulo agenda */
+.fc-theme-standard .fc-list-day-cushion {
+    background-color: #e9f2f9 !important
+}
+
+    /* dia hoy del calendario */
+.fc .fc-daygrid-day.fc-day-today {
+    background-color: rgb(255 213 0 / 30%) !important;
+}
+
+.form-control{
+    /*background: #eef7fe !important;*/
+    border-color: #84bfff  !important;
+    color: #005fde  !important;
+    font-family: cursive !important;
+    font-size: large !important;
+}
+
+.form-select{
+    /*background: #eef7fe !important;*/
+    border-color: #84bfff  !important;
+    color: #005fde  !important;
+    font-family: cursive !important;
+    font-size: medium !important;
 }
