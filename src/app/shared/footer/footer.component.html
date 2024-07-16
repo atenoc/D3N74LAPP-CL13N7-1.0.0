@@ -1,72 +1,72 @@
 <footer class="main-footer">
-    <div class="content-footer hide-on-mobile">
-      <div class="float-right d-none d-sm-block">
-        <b>Version</b> 1.0
-      </div>
-      <!-- <strong>Copyright &copy; {{ numberAnio }} <a href="">Dental App</a>.</strong> <span>All rights reserved.</span>  -->
-      <strong>Copyright &copy; {{ numberAnio }} <a href="">Dental App</a></strong> <span> Todos los derechos reservados</span> 
+  <div class="content-footer hide-on-mobile">
+    <div class="float-right d-none d-sm-block">
+      <b>Version</b> 1.2
     </div>
+    <!-- <strong>Copyright &copy; {{ numberAnio }} <a href="">Dental App</a>.</strong> <span>All rights reserved.</span>  -->
+    <strong>Copyright &copy; {{ numberAnio }} <a href="">Dental App</a></strong> <span> Todos los derechos reservados</span> 
+  </div>
 </footer>
 
 <div class="horizontal-footer my-footer">
 
-    <div class="mb-2 text-center">
-        
-      <div ngbDropdown placement="top-start" class="d-inline-block" *ngIf="mostrarUsuarios">
-        <button type="button" class="btn btn-outline-primary btn-sm d-flex flex-column align-items-center custom-dropdown" id="dropdownBasic1" ngbDropdownToggle>
-          <i class="fas fa-users" style="margin-bottom: 5px;"></i> 
-          <small>Usuarios</small>
-        </button>
-        <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
-          <button ngbDropdownItem routerLink="/usuarios"><i class="fas fa-list-ol"></i> Ver usuarios</button>
-          <button ngbDropdownItem routerLink="/usuario-form"><i class="fas fa-plus"></i> Agregar usuario</button>
-        </div>
+  <div class="mb-2 text-center">
+      
+    <div ngbDropdown placement="top-start" class="d-inline-block" *ngIf="mostrarUsuarios">
+      <button type="button" class="btn btn-outline-primary btn-sm d-flex flex-column align-items-center custom-dropdown" id="dropdownBasic1" ngbDropdownToggle>
+        <i class="fas fa-users" style="margin-bottom: 5px;"></i> 
+        <small>Usuarios</small>
+      </button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+        <button ngbDropdownItem routerLink="/usuarios"><i class="fas fa-list-ol"></i> Ver usuarios</button>
+        <button ngbDropdownItem routerLink="/usuario-form"><i class="fas fa-plus"></i> Agregar usuario</button>
       </div>
+    </div>
 
-      <div ngbDropdown placement="top" class="d-inline-block">
-        <button type="button" class="btn btn-outline-primary btn-sm d-flex flex-column align-items-center custom-dropdown" id="dropdownBasic2" ngbDropdownToggle>
-          <i class="fas fa-user-md" style="margin-bottom: 5px;"></i> 
-          <small>Médicos</small>
-        </button>
-        <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
-          <button ngbDropdownItem routerLink="/medicos"><i class="fas fa-list-ol"></i> Ver médicos</button>
-        </div>
+    <div ngbDropdown placement="top" class="d-inline-block">
+      <button type="button" class="btn btn-outline-primary btn-sm d-flex flex-column align-items-center custom-dropdown" id="dropdownBasic2" ngbDropdownToggle>
+        <i class="fas fa-user-md" style="margin-bottom: 5px;"></i> 
+        <small>Médicos</small>
+      </button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+        <button ngbDropdownItem routerLink="/medicos"><i class="fas fa-list-ol"></i> Ver médicos</button>
       </div>
+    </div>
 
-      <div ngbDropdown placement="top" class="d-inline-block">
-        <button type="button" class="btn btn-outline-primary btn-sm d-flex flex-column align-items-center custom-dropdown" id="dropdownBasic3" ngbDropdownToggle>
-          <i class="fas fa-clock" style="margin-bottom: 5px;"></i> 
-          <small>Citas</small>
-        </button>
-        <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
-          <button ngbDropdownItem routerLink="/calendario"><i class="far fa-calendar-alt"></i> Calendario</button>
-          <button ngbDropdownItem routerLink="/agenda"><i class="far fa-list-alt"></i> Agenda</button>
-        </div>
+    <div ngbDropdown placement="top" class="d-inline-block">
+      <button type="button" class="btn btn-outline-primary btn-sm d-flex flex-column align-items-center custom-dropdown" id="dropdownBasic3" ngbDropdownToggle>
+        <i class="fas fa-clock" style="margin-bottom: 5px;"></i> 
+        <small>Citas</small>
+      </button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+        <button ngbDropdownItem routerLink="/calendario"><i class="far fa-calendar-alt"></i> Calendario</button>
+        <button ngbDropdownItem routerLink="/agenda"><i class="far fa-list-alt"></i> Agenda</button>
       </div>
+    </div>
 
-      <div ngbDropdown placement="top" class="d-inline-block">
-        <button type="button" class="btn btn-outline-primary btn-sm d-flex flex-column align-items-center custom-dropdown" id="dropdownBasic4" ngbDropdownToggle>
-          <i class="fas fa-user" style="margin-bottom: 5px;"></i> 
-          <small>Pacientes</small>
-        </button>
-        <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
-          <button ngbDropdownItem routerLink="/pacientes"><i class="fas fa-list-ol"></i> Ver pacientes</button>
-          <button ngbDropdownItem routerLink="/paciente-form"><i class="fas fa-plus"></i> Agregar paciente</button>
-        </div>
+    <div ngbDropdown placement="top" class="d-inline-block">
+      <button type="button" class="btn btn-outline-primary btn-sm d-flex flex-column align-items-center custom-dropdown" id="dropdownBasic4" ngbDropdownToggle>
+        <i class="fas fa-user" style="margin-bottom: 5px;"></i> 
+        <small>Pacientes</small>
+      </button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+        <button ngbDropdownItem routerLink="/pacientes"><i class="fas fa-list-ol"></i> Ver pacientes</button>
+        <button ngbDropdownItem routerLink="/paciente-form"><i class="fas fa-plus"></i> Agregar paciente</button>
       </div>
+    </div>
 
-      <div ngbDropdown placement="top-end" class="d-inline-block">
-        <button type="button" class="btn btn-outline-primary btn-sm d-flex flex-column align-items-center custom-dropdown" id="dropdownBasic5" ngbDropdownToggle>
-          <i class="fas fa-user-circle" style="margin-bottom: 5px;"></i> 
-          <small>Cuenta</small>
-        </button>
-        <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
-          <button *ngIf="!isDarkMode" ngbDropdownItem (click)="toggleDarkMode()"><i class="fas fa-fill-drip"></i> Modo oscuro</button>
-          <button *ngIf="isDarkMode" ngbDropdownItem (click)="toggleDarkMode()"><i class="fas fa-fill-drip"></i> Modo claro</button>
-          <button ngbDropdownItem routerLink="/centros" *ngIf="mostrarClinicas"><i class="fas fa-building"></i> Clinicas</button>
-          <button ngbDropdownItem routerLink="/perfil"><i class="fas fa-address-card"></i> Mi perfil</button>
-          <button ngbDropdownItem (click)="salir()"><i class="fas fa-sign-out-alt"></i> Salir</button>
-        </div>
+    <div ngbDropdown placement="top-end" class="d-inline-block">
+      <button type="button" class="btn btn-outline-primary btn-sm d-flex flex-column align-items-center custom-dropdown" id="dropdownBasic5" ngbDropdownToggle>
+        <i class="fas fa-user-circle" style="margin-bottom: 5px;"></i> 
+        <small>Cuenta</small>
+      </button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+        <button *ngIf="!isDarkMode" ngbDropdownItem (click)="toggleDarkMode()"><i class="fas fa-fill-drip"></i> Modo oscuro</button>
+        <button *ngIf="isDarkMode" ngbDropdownItem (click)="toggleDarkMode()"><i class="fas fa-fill-drip"></i> Modo claro</button>
+        <button ngbDropdownItem routerLink="/centros" *ngIf="mostrarClinicas"><i class="fas fa-building"></i> Clinicas</button>
+        <button ngbDropdownItem routerLink="/perfil"><i class="fas fa-address-card"></i> Mi perfil</button>
+        <button ngbDropdownItem (click)="salir()"><i class="fas fa-sign-out-alt"></i> Salir</button>
       </div>
+    </div>
 
 </div>

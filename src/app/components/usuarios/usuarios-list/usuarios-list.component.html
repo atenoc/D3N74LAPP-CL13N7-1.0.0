@@ -19,13 +19,13 @@
 </section>
 
 <section class="content">
-  <div class="container-fluid">
+  <div class="container">
     <div class="row">
       <div class="col-md-12">
         <div class="card card-primary card-outline">
           <div class="card-header hide-on-mobile">
             <h3 class="card-title">
-              <button class="btn btn-outline-primary btn-sm" (click)="irUsuarioForm()" [disabled]="isDisabled">
+              <button class="btn btn-outline-primary" (click)="irUsuarioForm()" [disabled]="isDisabled">
                 <i class="fas fa-plus"></i> Agregar usuario 
               </button>
             </h3>
@@ -33,11 +33,32 @@
           <div class="card-body">
 
             <div *ngIf="existenUsuarios; else ver_mensaje">
+
+              <div class="row">
+                <div *ngFor="let usuario of usuarios" class="col-md-4 mb-2">
+                  <div class="card card-primary card-outline">
+                    <div class="card-header">
+                      <strong class="text-muted"><i class="fas fa-user-lock"></i> {{ usuario.titulo }} {{ usuario.nombre }} {{ usuario.apellidop }} {{ usuario.apellidom }}</strong>
+                    </div>
+                    <div class="card-body">
+                      <p class="card-text text-muted">Cargo: {{ usuario.desc_rol }}</p>
+                      <span class="card-title text-muted">Especialidad:</span> <span class="card-title text-primary ml-1"> {{ usuario.especialidad }} </span>
+                      
+                    </div>
+                    <div class="card-footer">
+                      <button class="btn btn-outline-primary my-2 my-sm-0" (click)="selectedIdUser(usuario.id)"
+                        ngbTooltip="Información del usuario"><i class="fas fa-info-circle"></i> Ver información
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 
               <table class="table-responsive table-hover table-striped hide-on-mobile">
                 <thead class="thead-dark">
                   <tr>
                     <th class="primer-columna">#</th> 
-                    <!-- <th class="col-1">Título</th> -->
                     <th class="col-2 cursor-pointer" (click)="onSortChange('nombre')">
                       Nombre(s)
                       <span *ngIf="orderBy === 'nombre' && way === 'asc'">▲</span>
@@ -58,17 +79,12 @@
                     <th class="col-2">Rol</th>
                     <th class="col-1">Especialidad</th>
                     <th class="col-1">Teléfono</th>
-                    <!-- <th class="col-1">Id Usuario Creador</th> -->
-                    <!-- <th class="col-1">Creado por</th> -->
-                    <!-- <th class="col-1">Fecha creación</th> -->
                     <th class="col-1">Opción</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let usuario of usuarios">
-                    <!-- <th class="text-muted"><small><strong>{{ usuario.id }}</strong></small></th> -->
                     <th scope="row" class="text-muted">{{ usuario.contador }}</th>
-                    <!-- <td>{{ usuario.titulo }}</td> -->
                     <td>{{ usuario.nombre }}</td>
                     <td>{{ usuario.apellidop }}</td>
                     <td>{{ usuario.apellidom }}</td>
@@ -76,17 +92,12 @@
                     <td>{{ usuario.desc_rol }}</td>
                     <td>{{ usuario.especialidad }}</td>
                     <td>{{ usuario.telefono }}</td>
-                    <!-- <td>{{ usuario.id_usuario }}</td> -->
-                    <!-- <td>{{ usuario.nombre_usuario_creador }}</td> -->
-                    <!-- <td> <small>{{ usuario.fecha_creacion }}</small> </td> -->
                     <td class="text-center">
                       
                       <button class="btn btn-outline-primary my-2 my-sm-0 btn-sm" (click)="selectedIdUser(usuario.id)"
                         ngbTooltip="Información del usuario"><i class="fas fa-info-circle"></i> Ver
                       </button>
-                      <!-- <button class="btn btn-outline-secondary my-2 my-sm-0 btn-sm ml-2" (click)="deleteUser(usuario.id, usuario.correo)"
-                        ngbTooltip="Eliminar usuario"><i class="fas fa-trash-alt"></i>
-                      </button> -->
+
                   </td>
                   </tr>
                 </tbody>
@@ -98,7 +109,6 @@
                     <div class="d-flex">
                       <div> <strong> {{ usuario.nombre }} {{ usuario.apellidop }} {{ usuario.apellidom }} </strong></div>
                       <div class="ml-auto">
-                        <!-- <h4 class="text-muted" (click)="selectedIdUser(usuario.id)"><strong></strong>...</h4> -->
                         <div ngbDropdown class="d-inline-block">
                           <h4 id="dropdownBasic1" ngbDropdownToggle>
                             ...
@@ -163,6 +173,8 @@
                   </div>
                 </div>
               </div>
+              -->
+
 
             </div>
 
