@@ -78,12 +78,12 @@ export class UsuarioFormComponent implements OnInit {
             Validators.required, this.emailValidator
           ])],
           llave: ['', [Validators.required, Validators.minLength(6)]],
-          rol: ['', Validators.required],
-          titulo: [''],
+          rol: ['null', Validators.required],
+          titulo: ['null'],
           nombre: ['', [Validators.required, Validators.minLength(3), this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/) ]],
           apellidop: ['', [Validators.required, Validators.minLength(3), this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
           apellidom: ['', [this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
-          especialidad: [''],
+          especialidad: ['null'],
           telefono: ['', [Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
         })
 
@@ -143,7 +143,7 @@ export class UsuarioFormComponent implements OnInit {
     console.log("CREAR USUARIO")
 
     var nuevoUsuarioJson = JSON.parse(JSON.stringify(this.formularioUsuario.value))
-    nuevoUsuarioJson.id_usuario=localStorage.getItem('_us') 
+    nuevoUsuarioJson.id_usuario_creador=localStorage.getItem('_us') 
 
     this.date = new Date();
     const mes = this.date.getMonth()+1;

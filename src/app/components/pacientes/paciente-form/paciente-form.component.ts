@@ -69,7 +69,7 @@ export class PacienteFormComponent implements OnInit {
         apellidop: ['', [Validators.required, Validators.minLength(3), this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
         apellidom: ['', [this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
         edad: ['', [Validators.pattern('^[0-9]+$'), Validators.maxLength(3)]],
-        sexo: [''],
+        sexo: ['null'],
         telefono: ['', [Validators.required, Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
         correo: ['', [Validators.minLength(5), // Hacer que el campo sea opcional
                   (control: AbstractControl) => { // Validación condicional del correo electrónico
@@ -120,7 +120,7 @@ export class PacienteFormComponent implements OnInit {
     console.log("CREAR Paciente")
 
     var nuevoPacienteJson = JSON.parse(JSON.stringify(this.formularioPaciente.value))
-    nuevoPacienteJson.id_usuario=localStorage.getItem('_us') 
+    nuevoPacienteJson.id_usuario_creador=localStorage.getItem('_us') 
     nuevoPacienteJson.id_clinica=localStorage.getItem('_cli') 
  
     this.date = new Date();

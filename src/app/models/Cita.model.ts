@@ -21,10 +21,13 @@ export interface DetalleCita{
     id_tipo_pago:string;
     id_medico:string;
     id_paciente:string;
+    nombre_usuario_medico:string;
     id_clinica:string;
-    id_usuario:string;
+    id_usuario_creador:string;
     nombre_usuario_creador:string;
     fecha_creacion:Date;
+    nombre_usuario_actualizo:string;
+    fecha_actualizacion:string
 }
 
 export interface CitaEditar{
@@ -40,6 +43,12 @@ export interface CitaEditar{
     edad: string
     telefono:string;
     id_paciente:string;
+    id_usuario_medico:string;
+    nombre_usuario_medico:string;
+    nombre_usuario_creador:string;
+    fecha_creacion:string;
+    nombre_usuario_actualizo:string;
+    fecha_actualizacion:string
 }
 
 export interface CitaPaciente{
@@ -47,4 +56,5 @@ export interface CitaPaciente{
     titulo: string;
     fecha_hora_inicio:string;
     motivo: string;
+    nombre_usuario_medico:string;
 }

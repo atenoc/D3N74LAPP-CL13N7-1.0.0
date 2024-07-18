@@ -25,7 +25,7 @@ export class UsuarioDetalleComponent implements OnInit {
   editando: boolean = false;
   tituloCard: string;
   idUsuario:string;
-  fecha_creacion:Date;
+  fecha_creacion:string;
   nombre_usuario_creador:string;
 
   catRoles:CatalogoRol[] = [];
@@ -43,6 +43,12 @@ export class UsuarioDetalleComponent implements OnInit {
   descRol:string
 
   mismoUsuario:boolean;
+
+  date: Date;
+  fecha_actual:string;
+  mostrar_actualizacion:boolean=false
+  nombre_usuario_actualizo:string
+  fecha_actualizacion:string
 
   constructor(
     private authService:AuthService,
@@ -76,12 +82,12 @@ export class UsuarioDetalleComponent implements OnInit {
             Validators.required, Validators.email
           ])],
           llave: [''],
-          rol: ['', Validators.required],
-          titulo: [''],
+          rol: ['null', Validators.required],
+          titulo: ['null'],
           nombre: ['', [Validators.required, Validators.minLength(3)]],
           apellidop: ['', [Validators.required, Validators.minLength(3)]],
           apellidom: [''],
-          especialidad: [''],
+          especialidad: ['null'],
           telefono: ['', [Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
         })
     
@@ -105,6 +111,8 @@ export class UsuarioDetalleComponent implements OnInit {
             this.idUsuario=this.usuario.id
             this.fecha_creacion=this.usuario.fecha_creacion
             this.nombre_usuario_creador = this.usuario.nombre_usuario_creador
+            this.nombre_usuario_actualizo = this.usuario.nombre_usuario_actualizo
+            this.fecha_actualizacion = this.usuario.fecha_actualizacion
     
             this.formularioUsuario.patchValue({
               correo: this.usuario.correo,
@@ -117,6 +125,12 @@ export class UsuarioDetalleComponent implements OnInit {
               especialidad: this.usuario.id_especialidad,
               telefono: this.usuario.telefono
             });
+
+            if(this.usuario.nombre_usuario_actualizo ==null || this.usuario.nombre_usuario_actualizo ==''){
+              this.mostrar_actualizacion = false
+            }else{
+              this.mostrar_actualizacion = true
+            }
     
             // carga Catálogos
             this.cargarRoles()
@@ -157,6 +171,10 @@ export class UsuarioDetalleComponent implements OnInit {
     console.log("Actualizar usuario:")
     console.log(this.formularioUsuario)
 
+    this.date = new Date();
+    const mes = this.date.getMonth()+1;
+    this.fecha_actual = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
+
     this.usuarioService.updateUsuario(
       this.usuario.id, 
       this.formularioUsuario.value.correo,
@@ -167,6 +185,8 @@ export class UsuarioDetalleComponent implements OnInit {
       this.formularioUsuario.value.apellidom,
       this.formularioUsuario.value.especialidad,
       this.formularioUsuario.value.telefono,
+      localStorage.getItem("_us"),
+      this.fecha_actual
       ).subscribe(res => {
         console.log("Usuario actualizado ");
         console.log(res)

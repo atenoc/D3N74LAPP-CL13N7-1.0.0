@@ -25,7 +25,7 @@ export class PacienteDetalleComponent implements OnInit {
   editando: boolean = false;
   tituloCard: string;
   idUsuario:string;
-  fecha_creacion:Date;
+  fecha_creacion:string;
   nombre_usuario_creador:string;
 
   //mensajes
@@ -37,6 +37,12 @@ export class PacienteDetalleComponent implements OnInit {
 
   catSexo:CatalogoSexo[] = [];
   //citas:CitaPaciente[] = []
+
+  date: Date;
+  fecha_actual:string
+  mostrar_actualizacion:boolean=false
+  nombre_usuario_actualizo:string
+  fecha_actualizacion:string
 
   constructor(
     private catalogoService:CatalogoService,
@@ -64,7 +70,7 @@ export class PacienteDetalleComponent implements OnInit {
       apellidop: ['', [Validators.required, Validators.minLength(3)]],
       apellidom: ['', [this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
       edad: ['', [Validators.pattern('^[0-9]+$'), Validators.maxLength(3)]],
-      sexo: [''],
+      sexo: [{value:'null', disabled: !this.editando}],
       telefono: ['', [Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
       correo: ['', [Validators.minLength(5), // Hacer que el campo sea opcional
                   (control: AbstractControl) => { // Validación condicional del correo electrónico
@@ -87,10 +93,12 @@ export class PacienteDetalleComponent implements OnInit {
         console.log(res)
 
         this.tituloCard = this.paciente.nombre+' '+this.paciente.apellidop+' '+this.paciente.apellidom
-        this.idUsuario=this.paciente.id
-        this.fecha_creacion=this.paciente.fecha_creacion
+        this.idUsuario=this.paciente.id    
         this.nombre_usuario_creador = this.paciente.nombre_usuario_creador
-
+        this.fecha_creacion=this.paciente.fecha_creacion
+        this.nombre_usuario_actualizo = this.paciente.nombre_usuario_actualizo
+        this.fecha_actualizacion = this.paciente.fecha_actualizacion
+        console.log("this.paciente.id_sexo: "+this.paciente.id_sexo)
         this.formularioPaciente.patchValue({
           nombre: this.paciente.nombre,
           apellidop: this.paciente.apellidop,
@@ -101,6 +109,12 @@ export class PacienteDetalleComponent implements OnInit {
           correo: this.paciente.correo,
           direccion: this.paciente.direccion,
         });
+
+        if(this.paciente.nombre_usuario_actualizo ==null || this.paciente.nombre_usuario_actualizo ==''){
+          this.mostrar_actualizacion = false
+        }else{
+          this.mostrar_actualizacion = true
+        }
 
         this.cargarCatSexo()
         //this.cargarCitas()
@@ -145,6 +159,10 @@ export class PacienteDetalleComponent implements OnInit {
     console.log("Actualizar paciente:")
     console.log(this.formularioPaciente)
 
+    this.date = new Date();
+    const mes = this.date.getMonth()+1;
+    this.fecha_actual = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
+
     this.pacienteService.updatePaciente(
       this.paciente.id, 
       this.formularioPaciente.value.nombre,
@@ -155,6 +173,8 @@ export class PacienteDetalleComponent implements OnInit {
       this.formularioPaciente.value.telefono,
       this.formularioPaciente.value.correo,
       this.formularioPaciente.value.direccion,
+      localStorage.getItem("_us"),
+      this.fecha_actual
       ).subscribe(res => {
         console.log("Paciente actualizado: "+res);
 
@@ -257,6 +277,17 @@ export class PacienteDetalleComponent implements OnInit {
     },
     err => console.log("error: " + err)
     )
+  }
+
+
+  cambiarEstadoEditando() {
+    this.editando = !this.editando;
+    console.log("valor editando:: "+this.editando)
+    if (this.editando) {
+      this.formularioPaciente.get('sexo').enable();
+    } else {
+      this.formularioPaciente.get('sexo').disable();
+    }
   }
 
 }

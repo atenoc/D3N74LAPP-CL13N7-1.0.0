@@ -30,7 +30,7 @@
               </tbody>
             </table>
           </div>
-          <div *ngIf="mostrarAvisoPacientes" class="alert alert-secondary alert-dismissible fade show" role="alert">
+          <div *ngIf="mostrarAvisoPacientes" class="alert alert-warning alert-dismissible fade show" role="alert">
             <div style="margin-top: -10px !important;">
               <strong>{{ mensajeBusquedaNoCoincidencias }}</strong> 
               <button type="button" class="btn-close" (click)="cerrarAvisoPacientes()" aria-label="Close" style="margin-top: -13px !important;"></button>
@@ -199,7 +199,7 @@
                 </tbody>
               </table>
             </div>
-            <div *ngIf="mostrarAvisoMedicos" class="alert alert-secondary alert-dismissible fade show" role="alert">
+            <div *ngIf="mostrarAvisoMedicos" class="alert alert-warning alert-dismissible fade show" role="alert">
               <div style="margin-top: -10px !important;">
                 <strong>{{ mensajeBusquedaNoCoincidencias }}</strong> 
                 <button type="button" class="btn-close" (click)="cerrarAvisoMedicos()" aria-label="Close" style="margin-top: -13px !important;"></button>

@@ -21,7 +21,9 @@ export class DetalleEventoComponent implements OnInit {
 
   mostrarPaciente:boolean
   mostrarMotivo:boolean
+  mostrarMedico:boolean
   mostrarBotonEditar:boolean
+  mostrar_actualizacion:boolean=false
 
   constructor(
     private spinner: NgxSpinnerService, 
@@ -37,13 +39,21 @@ export class DetalleEventoComponent implements OnInit {
     if(this.data.nombre_paciente){
       this.mostrarPaciente = true
       this.mostrarMotivo = true
+      this.mostrarMedico = true
       this.mostrarBotonEditar = true
       console.log("true")
     } else {
       this.mostrarPaciente = false
       this.mostrarMotivo = false
+      this.mostrarMedico = false
       this.mostrarBotonEditar = false
       console.log("false")
+    }
+
+    if(this.data.nombre_usuario_actualizo ==null || this.data.nombre_usuario_actualizo ==''){
+      this.mostrar_actualizacion = false
+    }else{
+      this.mostrar_actualizacion = true
     }
   }
 

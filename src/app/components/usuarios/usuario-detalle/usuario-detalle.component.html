@@ -67,7 +67,7 @@
                             <div class="form-group">
                                 <span class="text-muted"> Título </span>
                                 <select class="form-select sin-borde" formControlName="titulo" disabled>
-                                    <option selected disabled [value]="0">Selecciona una opción:</option>
+                                    <option selected disabled [value]="null">Selecciona una opción:</option>
                                     <option *ngFor="let item of catTitulos" [value]="item.id">{{ item.titulo }} - {{ item.descripcion }}</option>
                                 </select>
                             </div>
@@ -101,7 +101,7 @@
                             <div class="form-group">
                                 <span class="text-muted"> Especialidad </span>
                                 <select class="form-select sin-borde" formControlName="especialidad" disabled>
-                                    <option selected disabled [value]="0">Selecciona una opción:</option>
+                                    <option selected disabled [value]="null">Selecciona una opción:</option>
                                     <option *ngFor="let item of catEspecialidades" [value]="item.id">{{ item.especialidad }}</option>
                                 </select>
                             </div>
@@ -118,12 +118,14 @@
                     <hr/> 
                     <div class="row">
                         <div class="col-sm">
-                            <small class="text-muted">Creado por: {{ nombre_usuario_creador }} </small>
+                            <small class="text-muted">Creado por: {{ nombre_usuario_creador }}</small>
+                            <small class="text-muted"> | Fecha de creación: {{ fecha_creacion }}</small>
                         </div>
                     </div>
                     <div class="d-flex">
-                        <div>
-                            <small class="text-muted">Fecha de creación: {{ fecha_creacion }}</small>
+                        <div *ngIf="mostrar_actualizacion">
+                            <small class="text-muted">Actualizado por: {{ nombre_usuario_actualizo }}</small>
+                            <small class="text-muted"> | Fecha actualización: {{ fecha_actualizacion }}</small>
                         </div>
                         <div class="ml-auto">
                             <button class="btn btn-outline-secondary" (click)="editando = true" style="margin-top: -20px;"> 
@@ -186,7 +188,7 @@
                                     </ng-container>
                                     <ng-template #habilitado>
                                         <select class="form-select" formControlName="rol">
-                                            <option selected disabled [value]="0">Selecciona una opción:</option>
+                                            <option selected disabled [value]="null">Selecciona una opción:</option>
                                             <option *ngFor="let item of catRoles" [value]="item.id">{{ item.descripcion }}</option>
                                         </select>
                                     </ng-template>
@@ -205,7 +207,7 @@
                             <div class="form-group">
                                 <span class="text-muted"> Título </span>
                                 <select class="form-select" formControlName="titulo">
-                                    <option selected disabled [value]="0">Selecciona una opción:</option>
+                                    <option selected disabled [value]="null">Selecciona una opción:</option>
                                     <option *ngFor="let item of catTitulos" [value]="item.id">{{ item.titulo }} - {{ item.descripcion }}</option>
                                 </select>
                             </div>
@@ -245,7 +247,7 @@
                             <div class="form-group">
                                 <span class="text-muted"> Especialidad </span>
                                 <select class="form-select" formControlName="especialidad">
-                                    <option selected disabled [value]="0">Selecciona una opción:</option>
+                                    <option selected disabled [value]="null">Selecciona una opción:</option>
                                     <option *ngFor="let item of catEspecialidades" [value]="item.id">{{ item.especialidad }}</option>
                                 </select>
                             </div>
@@ -268,12 +270,13 @@
                     </div>
                     <hr/> 
                     <div class="row">
-                        <div class="col-sm mb-3">
-                            <small class="text-muted">Creado por: {{ nombre_usuario_creador }}</small>
-                            <br>
-                            <small class="text-muted">Fecha de creación: {{ fecha_creacion }}</small>
-                        </div>
-                        <hr/> 
+                        <small class="text-muted">Creado por: {{ nombre_usuario_creador }} | Fecha de creación: {{ fecha_creacion }}</small>
+                    </div>
+                    <div *ngIf="mostrar_actualizacion" class="row">
+                        <small class="text-muted">Actualizado por: {{ nombre_usuario_actualizo }} | Fecha actualización: {{ fecha_actualizacion }}</small>
+                    </div>
+                    <hr/> 
+                    <div class="row">
                         <div class="d-flex">
                             <div *ngIf="!mismoUsuario">
                                 <small *ngIf="rol=='suadmin' || rol=='sop'" class="text-muted">Eliminar usuario</small>

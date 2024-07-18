@@ -29,7 +29,7 @@ export class CitaEditComponent implements OnInit {
   citaEditar:CitaEditar
 
   date: Date;
-  fecha_creacion:string
+  fecha_actual:string
 
   fechaModelInicio: NgbDateStruct;
   fechaModelFin?: NgbDateStruct;
@@ -87,8 +87,15 @@ export class CitaEditComponent implements OnInit {
   mensajeBusquedaNoCoincidencias: string;
   mensajeSeleccionarMedico: string;
 
-  nombreMedico:string=""
   id_usuario_medico:string=""
+  nombreMedico:string=""
+  nombreMedicoObtenido:string;
+
+  nombre_usuario_creador:string
+  nombre_usuario_actualizo:string
+  fecha_creacion:string
+  fecha_actualizacion:string
+  mostrar_actualizacion:boolean=false
 
   constructor(
     private spinner: NgxSpinnerService, 
@@ -129,7 +136,7 @@ export class CitaEditComponent implements OnInit {
       
         this.citaEditar = res;
         this.tituloCard = this.citaEditar.nombre+' '+this.citaEditar.apellidop+' '+this.citaEditar.apellidom
-        //console.log(this.citaEditar);
+        console.log("id_usuario_medico: "+ this.citaEditar.id_usuario_medico);
 
         this.motivo = this.citaEditar.motivo
         this.motivoObtenido = this.citaEditar.motivo
@@ -140,6 +147,14 @@ export class CitaEditComponent implements OnInit {
         this.telefonoPaciente = this.citaEditar.telefono
         this.telefonoPacienteObtenido = this.citaEditar.telefono
         this.id_paciente=this.citaEditar.id_paciente
+        this.id_usuario_medico=this.citaEditar.id_usuario_medico
+        this.nombreMedico=this.citaEditar.nombre_usuario_medico
+        this.nombreMedicoObtenido=this.citaEditar.nombre_usuario_medico
+        
+        this.nombre_usuario_creador=this.citaEditar.nombre_usuario_creador
+        this.nombre_usuario_actualizo=this.citaEditar.nombre_usuario_actualizo
+        this.fecha_creacion=this.citaEditar.fecha_creacion
+        this.fecha_actualizacion=this.citaEditar.fecha_actualizacion
 
         //this.fechaModelInicio = { year: 1789, month: 7, day: 14 };
         const fechaInicioCita: NgbDateStruct = this.ngbDateParserFormatter.parse(this.citaEditar.start);
@@ -163,6 +178,12 @@ export class CitaEditComponent implements OnInit {
           const [hourEnd, minuteEnd, secondEnd] = horaEnd.split(':');
           this.selectedTimeFin = { hour: +hourEnd, minute: +minuteEnd };
           this.selectedTimeFinObtenido = { hour: +hourEnd, minute: +minuteEnd };
+        }
+
+        if(this.citaEditar.nombre_usuario_actualizo ==null || this.citaEditar.nombre_usuario_actualizo ==''){
+          this.mostrar_actualizacion = false
+        }else{
+          this.mostrar_actualizacion = true
         }
 
         this.validaMotivo()
@@ -231,8 +252,9 @@ export class CitaEditComponent implements OnInit {
       : this.selectedTimeFin === this.selectedTimeFinObtenido;
 
     const motivoIgual = this.motivo === this.motivoObtenido;
+    const nombreMedicoIgual = this.nombreMedico === this.nombreMedicoObtenido;
 
-    return fechaInicioIgual && fechaFinIgual && horaInicioIgual && horaFinIgual && motivoIgual;
+    return fechaInicioIgual && fechaFinIgual && horaInicioIgual && horaFinIgual && motivoIgual && nombreMedicoIgual;
   }
 
   esIgualPaciente(): boolean {
@@ -296,6 +318,11 @@ export class CitaEditComponent implements OnInit {
   }  
 
   updateCita(){
+    this.date = new Date();
+    const mes = this.date.getMonth() +1
+    this.fecha_actual = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
+    console.log("fecha_actualizacion:: "+this.fecha_actual)
+
     this.fecha_hora_inicio = this.fechaModelInicio.year+"-"+this.fechaModelInicio.month+"-"+this.fechaModelInicio.day+" "+this.selectedTimeInicio.hour+":"+this.selectedTimeInicio.minute+":00"
     console.log("fecha_hora_inicio a guardar: " +this.fecha_hora_inicio)
 
@@ -313,7 +340,10 @@ export class CitaEditComponent implements OnInit {
       this.fecha_hora_inicio,
       this.fecha_hora_fin,
       this.nota,
-      this.id_paciente
+      this.id_paciente,
+      this.id_usuario_medico,
+      localStorage.getItem("_us"), 
+      this.fecha_actual
     ).subscribe(
       res=>{
         this.spinner.hide();
@@ -468,6 +498,10 @@ export class CitaEditComponent implements OnInit {
 
   cerrarAvisoMedicos() {
     this.mostrarAvisoMedicos = false;
+  }
+
+  cerrarAvisoNoHayCambios() {
+    this.mostrarMensajeNoExistenCambios = false;
   }
 
   validaMedico(){

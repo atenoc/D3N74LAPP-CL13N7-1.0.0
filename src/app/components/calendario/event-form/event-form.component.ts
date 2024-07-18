@@ -109,7 +109,7 @@ export class EventFormComponent implements OnInit {
         color: this.selectedColor,
         fecha_creacion: this.fecha_creacion,
         id_clinica: localStorage.getItem('_cli'),
-        id_usuario: localStorage.getItem('_us')
+        id_usuario_creador: localStorage.getItem('_us')
       };
   
       console.log(eventoJson)

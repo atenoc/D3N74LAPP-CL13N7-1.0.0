@@ -217,3 +217,13 @@
     font-family: cursive !important;
     font-size: medium !important;
 }
+
+
+/* Alert */
+
+.alert-warning{
+    color: #4f4f4f  !important;
+    background-color: #ffe8a3  !important;
+    border-color: #edb100 !important;
+}
+

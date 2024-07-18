@@ -50,8 +50,8 @@ export class CitaService {
     return this.nuevaCitaSubject.asObservable();
   }
 
-  updateCita(id: string, title: string, motivo:string, start:string, end:string, nota:string, id_paciente:string) {
-    return this.http.patch<CitaEditar>(`${this.URI}/${id}`, {title, motivo, start, end, nota, id_paciente});
+  updateCita(id: string, title: string, motivo:string, start:string, end:string, nota:string, id_paciente:string, id_usuario_medico:string, id_usuario_actualizo:string, fecha_actualizacion:string) {
+    return this.http.patch<CitaEditar>(`${this.URI}/${id}`, {title, motivo, start, end, nota, id_paciente, id_usuario_medico, id_usuario_actualizo, fecha_actualizacion});
   }
 
   deleteCita(id: string): Observable<void> {

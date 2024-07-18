@@ -48,10 +48,10 @@
         <div class="col-sm">
             <div class="form-group">
                 <span class="text-muted">Género </span>
-                <select class="form-select" formControlName="sexo" [class.sin-borde]="!editando" [disabled]="!editando">
-                    <option selected disabled [value]="0">Selecciona una opción:</option>
+                <select class="form-select" formControlName="sexo"  [disabled]="!editando">
+                    <option selected disabled [value]="null">Selecciona una opción:</option>
                     <option *ngFor="let item of catSexo" [value]="item.id">{{ item.descripcion }}</option>
-                </select>
+                </select> 
             </div>
         </div>
 
@@ -90,15 +90,17 @@
     <hr/>
 
     <div *ngIf="!editando" class="card-header p-0 border-bottom-0">
-      <small class="text-muted">Creado por:</small>
-      <small class="text-muted"> {{ nombre_usuario_creador }} </small>
+      <small class="text-muted">Creado por: {{ nombre_usuario_creador }}</small>
+      <small class="text-muted">| Fecha de creación: {{ fecha_creacion }}  </small>
       <div class="card-tools">
-        <button class="btn btn-outline-primary" (click)="editando = true"> <i class="nav-icon fas fa-edit"></i> Editar</button>
+        <button class="btn btn-outline-primary" (click)="cambiarEstadoEditando()"> <i class="nav-icon fas fa-edit"></i> Editar</button>
       </div>
 
       <br>
-      <small class="text-muted">Fecha de creación:</small>
-      <small class="text-muted"> {{ fecha_creacion }} </small>
+      <div *ngIf="mostrar_actualizacion">
+        <small class="text-muted">Actualizado por: {{ nombre_usuario_actualizo }}</small>
+        <small class="text-muted">| Fecha actualización: {{ fecha_actualizacion }} </small>
+      </div>
     </div>
 
     <div *ngIf="editando">
@@ -117,7 +119,7 @@
         </button>
 
         <div class="card-tools">
-          <button type="button" class="btn btn-outline-secondary mr-3" (click)="editando = false">
+          <button type="button" class="btn btn-outline-secondary mr-3" (click)="cambiarEstadoEditando()">
             Cancelar
           </button>
           <button type="button" class="btn btn-primary" (click)="actualizarPaciente()" [disabled]="formularioPaciente.invalid">

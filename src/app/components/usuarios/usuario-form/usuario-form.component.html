@@ -61,7 +61,7 @@
                             <div class="form-group">
                                 <strong> Cargo/Rol * </strong>
                                 <select class="form-select" formControlName="rol">
-                                    <option selected disabled [value]="0">Selecciona una opción:</option>
+                                    <option selected disabled [value]="null">Selecciona una opción:</option>
                                     <option *ngFor="let item of catRoles" [value]="item.id">{{ item.descripcion }}</option>
                                 </select>
                 
@@ -80,7 +80,7 @@
                             <div class="form-group">
                                 <span class="text-muted"> Título </span>
                                 <select class="form-select" formControlName="titulo">
-                                    <option selected disabled [value]="0">Selecciona una opción:</option>
+                                    <option selected disabled [value]="null">Selecciona una opción:</option>
                                     <option *ngFor="let item of catTitulos" [value]="item.id">{{ item.titulo }} - {{ item.descripcion }}</option>
                                 </select>
                             </div>
@@ -123,7 +123,7 @@
                             <div class="form-group">
                                 <span class="text-muted"> Especialidad </span>
                                 <select class="form-select" formControlName="especialidad">
-                                    <option selected disabled [value]="0">Selecciona una opción:</option>
+                                    <option selected disabled [value]="null">Selecciona una opción:</option>
                                     <option *ngFor="let item of catEspecialidades" [value]="item.id">{{ item.especialidad }}</option>
                                 </select>
                             </div>

@@ -15,13 +15,15 @@ export interface Usuario{
     id_especialidad:string,
     especialidad:string, 
     telefono:string,
-    fecha_creacion:Date;
     llave_status:number
-    id_usuario:string;
-    nombre_usuario_creador:string;
     id_clinica:string;
     id_plan:string
     plan :string
+    id_usuario_creador:string;
+    nombre_usuario_creador:string;
+    fecha_creacion:string;
+    nombre_usuario_actualizo:string;
+    fecha_actualizacion:string;
 }
 
 export interface UsuariosPaginados {

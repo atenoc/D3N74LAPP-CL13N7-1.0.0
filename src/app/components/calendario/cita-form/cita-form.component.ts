@@ -191,7 +191,7 @@ export class CitaFormComponent implements OnInit {
       telefono: this.telefonoPaciente,
       fecha_creacion: this.fecha_creacion,
       id_clinica: localStorage.getItem('_cli'),
-      id_usuario: localStorage.getItem('_us')
+      id_usuario_creador: localStorage.getItem('_us')
     };
 
     this.spinner.show();
@@ -240,10 +240,12 @@ export class CitaFormComponent implements OnInit {
       color: '#00a65a',
       start: this.fecha_hora_inicio,
       end: this.fecha_hora_fin,
-      fecha_creacion: this.fecha_creacion,
+      
       id_paciente: this.id_paciente,
+      id_usuario_medico: this.id_usuario_medico,
       id_clinica: localStorage.getItem('_cli'),
-      id_usuario: localStorage.getItem('_us')
+      id_usuario_creador: localStorage.getItem('_us'),
+      fecha_creacion: this.fecha_creacion,
     };
 
     console.log("Todoooo listo para registrar cita")

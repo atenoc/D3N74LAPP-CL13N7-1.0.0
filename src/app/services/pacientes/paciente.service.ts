@@ -63,8 +63,8 @@ export class PacienteService {
     return this.http.patch<Paciente>(`${this.URI}/cita/${id}`, {nombre, apellidop, apellidom, edad, telefono});
   }
 
-  updatePaciente(id: string, nombre:string, apellidop:string, apellidom:string, edad:string, sexo:string, telefono:string, correo:string, direccion:string) {
-    return this.http.patch<Paciente>(`${this.URI}/${id}`, {nombre, apellidop, apellidom, edad, sexo, telefono, correo, direccion});
+  updatePaciente(id: string, nombre:string, apellidop:string, apellidom:string, edad:string, sexo:string, telefono:string, correo:string, direccion:string, id_usuario_actualizo:string, fecha_actualizacion:string) {
+    return this.http.patch<Paciente>(`${this.URI}/${id}`, {nombre, apellidop, apellidom, edad, sexo, telefono, correo, direccion, id_usuario_actualizo, fecha_actualizacion});
   }
 
   deletePaciente(id: string): Observable<void> {
