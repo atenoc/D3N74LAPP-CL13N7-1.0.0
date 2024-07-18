@@ -3,11 +3,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Centro } from 'src/app/models/Centro.model';
 import { CentroService } from 'src/app/services/clinicas/centro.service';
-import Swal from 'sweetalert2';
-import { Mensajes } from 'src/app/shared/mensajes.config';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 import { AuthService } from 'src/app/services/auth.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
 import { Router } from '@angular/router';
+import { Alerts } from 'src/app/shared/utils/alerts';
 
 @Component({
   selector: 'app-centro-form',
@@ -86,33 +86,11 @@ export class CentroFormComponent implements OnInit {
         console.log("Centro creado")
         this.modalService.dismissAll()
 
-        Swal.fire({
-          position: 'top-end',
-          html:
-            `<h5>${ Mensajes.CLINICA_REGISTRADA }</h5>`+
-            `<span>${ this.centroRes.nombre }</span>`, 
-          showConfirmButton: false,
-          backdrop: false, 
-          width: 400,
-          background: 'rgb(40, 167, 69, .90)',
-          color:'white',
-          timerProgressBar:true,
-          timer: 3000,
-        })
-
+        Alerts.success(Mensajes.CLINICA_REGISTRADA, `Correo: ${ this.centroRes.nombre}`);
       },
       err => {
         console.log("error: " + err.error.message)
-        Swal.fire({
-          icon: 'error',
-          html:
-            `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-            `<span>${ Mensajes.CLINICA_NO_REGISTRADA }</span></br>`+
-            `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-          showConfirmButton: false,
-          //confirmButtonColor: '#28a745',
-          timer: 3000
-        })
+        Alerts.error(Mensajes.ERROR_500, Mensajes.CLINICA_NO_REGISTRADA, Mensajes.INTENTAR_MAS_TARDE);
       }
     )
   }

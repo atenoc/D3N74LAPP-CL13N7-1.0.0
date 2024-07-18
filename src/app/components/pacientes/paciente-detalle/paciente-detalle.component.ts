@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { error } from 'console';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CatalogoSexo } from 'src/app/models/Catalogo.model';
 import { Paciente } from 'src/app/models/Paciente.model';
 import { CatalogoService } from 'src/app/services/catalogos/catalogo.service';
 import { PacienteService } from 'src/app/services/pacientes/paciente.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
-import { Mensajes } from 'src/app/shared/mensajes.config';
-import Swal from 'sweetalert2';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
+import { Alerts } from 'src/app/shared/utils/alerts';
 
 @Component({
   selector: 'app-paciente-detalle',
@@ -176,98 +175,42 @@ export class PacienteDetalleComponent implements OnInit {
       localStorage.getItem("_us"),
       this.fecha_actual
       ).subscribe(res => {
-        console.log("Paciente actualizado: "+res);
-
+        this.spinner.hide();
+        this.paciente=res
+        console.log("Paciente actualizado: "+this.paciente);
         this.editando=false
         this.ngOnInit()
-        this.spinner.hide();
-        Swal.fire({
-          position: 'top-end',
-          html:
-            `<h5>${ Mensajes.PACIENTE_ACTUALIZADO }</h5>`+
-            `<span>${ res.nombre } ${ res.apellidop }</span>`, 
-            
-          showConfirmButton: false,
-          backdrop: false, 
-          width: 400,
-          background: 'rgb(40, 167, 69, .90)',
-          color:'white',
-          timerProgressBar:true,
-          timer: 3000,
-        })
 
+        Alerts.success(Mensajes.PACIENTE_ACTUALIZADO, `${this.paciente.nombre} ${this.paciente.apellidop} ${this.paciente.apellidom}`);
       },
         err => {
           this.spinner.hide();
           console.log("error: " + err)
-          //err.error.message
-          Swal.fire({
-            icon: 'error',
-            html:
-              `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-              `<span>${ Mensajes.PACIENTE_NO_ACTUALIZADO }</span></br>`+
-              `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-            showConfirmButton: false,
-            timer: 3000
-          })
+          Alerts.error(Mensajes.ERROR_500, Mensajes.PACIENTE_NO_ACTUALIZADO, Mensajes.INTENTAR_MAS_TARDE);
         }
       );
 
     return false;
   }
 
-  deletePaciente(id: string, nombre:string, apellidop:string) {
-
-    Swal.fire({
-      html:
-        `<h5>${ Mensajes.USUARIO_ELIMINAR_QUESTION }</h5> <br/> ` +
-        `<strong> ${nombre} ${apellidop} </strong>`,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#dc3545',
-      cancelButtonColor: '#aeaeae',
-      confirmButtonText: 'Si, eliminar',
-      cancelButtonText: 'No, cancelar'
-    }).then((result) => {
+  deletePaciente(id: string) {
+    Alerts.confirmDelete(Mensajes.PACIENTE_ELIMINAR_QUESTION, `${this.paciente.nombre} ${this.paciente.apellidop} ${this.paciente.apellidom}`).then((result) => {
       if (result.value) {
+        // Confirm
         this.spinner.show();
         this.pacienteService.deletePaciente(id).subscribe(res => {
           this.spinner.hide();
           console.log("Paciente eliminado:" + JSON.stringify(res))
-
-          Swal.fire({
-            position: 'top-end',
-            html:
-              `<h5>${ Mensajes.USUARIO_ELIMINADO }</h5>`,
-            showConfirmButton: false,
-            backdrop: false, 
-            width: 400,
-            background: 'rgb(40, 167, 69, .90)',
-            color:'white',
-            timerProgressBar:true,
-            timer: 3000,
-          })
-
+          Alerts.success(Mensajes.PACIENTE_ELIMINADO, `${this.paciente.nombre} ${this.paciente.apellidop} ${this.paciente.apellidom}`);
           this.router.navigate(['/pacientes']);
         },
           err => { 
-            this.spinner.hide();
-            console.log("error: " + err)
-            Swal.fire({
-              icon: 'error',
-              html:
-                `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-                `<span>${ Mensajes.USUARIO_NO_ELIMINADO }</span></br>`+
-                `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-              showConfirmButton: false,
-              timer: 3000
-            }) 
+            console.log("error: " + err);
+            Alerts.error(Mensajes.ERROR_500, Mensajes.PACIENTE_NO_ELIMINADO, Mensajes.INTENTAR_MAS_TARDE);
           }
-        )
-    
+        );
       }
-    })
-
+    });
   }
 
   cargarCatSexo(){

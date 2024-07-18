@@ -5,8 +5,8 @@ import { NgbModal, NgbModalConfig, NgbModalRef } from '@ng-bootstrap/ng-bootstra
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Diagnostico } from 'src/app/models/Diagnostico.model';
 import { DiagnosticoService } from 'src/app/services/diagnosticos/diagnostico.service';
-import { Mensajes } from 'src/app/shared/mensajes.config';
-import Swal from 'sweetalert2';
+import { Alerts } from 'src/app/shared/utils/alerts';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 
 @Component({
   selector: 'app-diagnostico',
@@ -88,31 +88,13 @@ export class DiagnosticoComponent implements OnInit {
         console.log("Diagnostico creado")
         this.closeModal();
         this.ngOnInit();
-        Swal.fire({
-          position: 'top-end',
-          html:
-            `<h5>${ Mensajes.DIAGNOSTICO_REGISTRADO }</h5>`, 
-          showConfirmButton: false,
-          backdrop: false,
-          width: 400,
-          background: 'rgb(40, 167, 69, .90)',
-          color:'white',
-          timerProgressBar:true,
-          timer: 3000,
-        })
+
+        Alerts.success(Mensajes.DIAGNOSTICO_REGISTRADO, ``);
       },
       err => {
         this.spinner.hide();
         console.log("error: " + err.error.message)
-        Swal.fire({
-          icon: 'error',
-          html:
-            `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-            `<span>${ Mensajes.DIAGNOSTICO_NO_REGISTRADO }</span></br>`+
-            `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-          showConfirmButton: false,
-          timer: 3000
-        })
+        Alerts.error(Mensajes.ERROR_500, Mensajes.DIAGNOSTICO_NO_REGISTRADO, Mensajes.INTENTAR_MAS_TARDE);
         
       }
     )
@@ -207,94 +189,44 @@ export class DiagnosticoComponent implements OnInit {
     
     this.spinner.show();
     this.diagnosticoService.updateDiagnostico(this.diagnostico.id, diagnosticoJson).subscribe(res => {
+        this.spinner.hide();
         console.log("Diagnostico actualizado: "+res);
         this.closeModal();
         this.ngOnInit()
-        this.spinner.hide();
-        Swal.fire({
-          position: 'top-end',
-          html:
-            `<h5>${ Mensajes.DIAGNOSTICO_ACTUALIZADO }</h5>`, 
-            
-          showConfirmButton: false,
-          backdrop: false, 
-          width: 400,
-          background: 'rgb(40, 167, 69, .90)',
-          color:'white',
-          timerProgressBar:true,
-          timer: 3000,
-        })
-
+        
+        Alerts.success(Mensajes.DIAGNOSTICO_ACTUALIZADO, ``);
       },
         err => {
           this.spinner.hide();
           console.log("error: " + err)
-          Swal.fire({
-            icon: 'error',
-            html:
-              `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-              `<span>${ Mensajes.DIAGNOSTICO_NO_ACTUALIZADO }</span></br>`+
-              `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-            showConfirmButton: false,
-            timer: 3000
-          })
+
+          Alerts.error(Mensajes.ERROR_500, Mensajes.DIAGNOSTICO_NO_ACTUALIZADO, Mensajes.INTENTAR_MAS_TARDE);
         }
       );
 
     return false;
   }
 
-
   deleteDiagnostico() {
-    Swal.fire({
-      html:
-        `<h5>${ Mensajes.DIAGNOSTICO_ELIMINAR_QUESTION }</h5> <br/> `,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#dc3545',
-      cancelButtonColor: '#aeaeae',
-      confirmButtonText: 'Si, eliminar',
-      cancelButtonText: 'No, cancelar'
-    }).then((result) => {
+    Alerts.confirmDelete(Mensajes.DIAGNOSTICO_ELIMINAR_QUESTION, ``).then((result) => {
       if (result.value) {
+        // Confirm
         this.spinner.show();
         this.diagnosticoService.deleteDiagnostico(this.diagnostico.id).subscribe(res => {
           this.spinner.hide();
           console.log("Diagnostico eliminado:" + JSON.stringify(res))
 
-          Swal.fire({
-            position: 'top-end',
-            html:
-              `<h5>${ Mensajes.DIAGNOSTICO_ELIMINADO }</h5>`,
-            showConfirmButton: false,
-            backdrop: false, 
-            width: 400,
-            background: 'rgb(40, 167, 69, .90)',
-            color:'white',
-            timerProgressBar:true,
-            timer: 3000,
-          })
-
+          Alerts.success(Mensajes.DIAGNOSTICO_ELIMINADO, ``);
           this.closeModal();
           this.ngOnInit()
         },
-        err => { 
-            this.spinner.hide();
-            console.log("error: " + err)
-            Swal.fire({
-              icon: 'error',
-              html:
-                `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-                `<span>${ Mensajes.DIAGNOSTICO_NO_ELIMINADO}</span></br>`+
-                `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-              showConfirmButton: false,
-              timer: 3000
-            }) 
-        })
-    
+          err => { 
+            console.log("error: " + err);
+            Alerts.error(Mensajes.ERROR_500, Mensajes.DIAGNOSTICO_NO_ELIMINADO, Mensajes.INTENTAR_MAS_TARDE);
+          }
+        );
       }
-    })
-
+    });
   }
 
 }

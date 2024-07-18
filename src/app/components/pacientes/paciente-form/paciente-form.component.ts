@@ -8,8 +8,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { CatalogoService } from 'src/app/services/catalogos/catalogo.service';
 import { PacienteService } from 'src/app/services/pacientes/paciente.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
-import { Mensajes } from 'src/app/shared/mensajes.config';
-import Swal from 'sweetalert2';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
+import { Alerts } from 'src/app/shared/utils/alerts';
 
 @Component({
   selector: 'app-paciente-form',
@@ -139,46 +139,17 @@ export class PacienteFormComponent implements OnInit {
         this.spinner.hide();
         this.paciente = res;
         console.log("Paciente creado")
-        //this.modalService.dismissAll()
-      
         this.router.navigate(['/pacientes'])
-        Swal.fire({
-          position: 'top-end',
-          html:
-            `<h5>${ Mensajes.PACIENTE_REGISTRADO }</h5>`+
-            `<span>Paciente: ${this.paciente.nombre} ${this.paciente.apellidop}</span>`, 
-          showConfirmButton: false,
-          backdrop: false,
-          width: 400,
-          background: 'rgb(40, 167, 69, .90)',
-          color:'white',
-          timerProgressBar:true,
-          timer: 3000,
-        })
+        Alerts.success(Mensajes.PACIENTE_REGISTRADO, `Correo: ${this.paciente.nombre} ${this.paciente.apellidop }`);
       },
       err => {
         this.spinner.hide();
         console.log("error: " + err.error.message)
         if(err.error.message=="400"){
           this.el.nativeElement.querySelector('input').focus();
-          Swal.fire({
-            icon: 'warning',
-            html:
-              `<strong> ${ Mensajes.WARNING } </strong><br/>` +
-              `<span>${ Mensajes.PACIENTE_EXISTENTE }</span>`,
-            showConfirmButton: false,
-            timer: 2000
-          })
+          Alerts.warning(Mensajes.WARNING, Mensajes.PACIENTE_EXISTENTE);
         }else{
-          Swal.fire({
-            icon: 'error',
-            html:
-              `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-              `<span>${ Mensajes.PACIENTE_NO_REGISTRADO }</span></br>`+
-              `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-            showConfirmButton: false,
-            timer: 3000
-          })
+          Alerts.error(Mensajes.ERROR_500, Mensajes.PACIENTE_NO_REGISTRADO, Mensajes.INTENTAR_MAS_TARDE);
         }
         
       }

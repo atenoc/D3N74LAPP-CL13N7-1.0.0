@@ -7,6 +7,10 @@ export const Mensajes = {
     INTENTAR_MAS_TARDE: 'Por favor inténtalo más tarde ',
     SIN_CONEXION_RED: 'Lo sentimos, no pudimos conectarnos',
 
+    // Cuenta
+    CUENTA_ELIMINADA:'Tu cuenta ha sido eliminada de forma permanente',
+    CUENTA_NO_ELIMINADA:'No se puedo eliminar tu cuenta',
+
     // Registro
     REGISTRO_VALIDACION: 'Por favor, rellena todos los campos ',
     REGISTRO_EXITOSO: 'Todo listo para administrar tu clínica dental ',
@@ -29,6 +33,8 @@ export const Mensajes = {
     CONTRASENA_VERIFICAR: 'Por favor, verifica tu correo y/o contraseña ', 
     CONTRASENA_CONFIRMACION: 'Por favor confirma tu nueva contraseña ',
     CONTRASENAS_NO_COINCIDEN: 'Las contraseñas no coinciden, verifica que sean iguales ',
+    CONTRASENA_ACTUALIZADA: 'La contraseña se actualizó correctamente',
+    CONTRASENA_NO_ACTUALIZADA: 'No se pudo actualizar la contraseña',
 
     // Usuarios
     USUARIO_EXISTENTE: 'Este usuario ya se encuentra registrado ',
@@ -47,8 +53,8 @@ export const Mensajes = {
     CLINICA_ACTUALIZADA: 'La información de tu clínica se actualizó correctamente ',
     CLINICA_NO_ACTUALIZADA: 'No se pudo actualizar la información de tu clínica ',
     CLINICA_ELIMINAR_QUESTION: '¿Estás seguro que quieres eliminar tu clínica? ',
-    CLINICA_ELIMINADA: 'La clínica se eliminó correctamente ',
-    CLINICA_NO_ELIMINADA: 'No se pudo eliminar tu clínica ',
+    CLINICA_ELIMINADA: 'La información de la clínica se eliminó correctamente ',
+    CLINICA_NO_ELIMINADA: 'No se pudo eliminar la información de la clínica ',
 
     //Citas
     FECHA_INICIO_REQUERIDA: 'La fecha inicio es obligatoria ',
@@ -60,7 +66,7 @@ export const Mensajes = {
     CITA_NO_REGISTRADA: 'La cita no se puedo registrar ',
     CITA_ACTUALIZADA: 'La cita se actualizó correctamente ',
     CITA_NO_ACTUALIZADA: 'No se pudo actualizar la cita ',
-    CITA_ELIMINAR_QUESTION: '¿Estás seguro que quieres eliminar... ?',
+    CITA_ELIMINAR_QUESTION: '¿Estás seguro que quieres eliminar?',
     CITA_ELIMINADA: 'La cita se eliminó correctamente ',
     CITA_NO_ELIMINADA: 'No se pudo eliminar la cita ',
     CITA_CAMPOS_OBLIGATORIOS: 'Por favor, verifica todos los campos obligatorios',
@@ -72,6 +78,7 @@ export const Mensajes = {
     PACIENTE_EXISTENTE: 'Este paciente ya se encuentra registrado. ',
     PACIENTE_ACTUALIZADO: 'La información del paciente se actualizó correctamente ',
     PACIENTE_NO_ACTUALIZADO: 'No se pudo actualizar la información del paciente ',
+    PACIENTE_ELIMINAR_QUESTION: '¿Estás seguro que quieres eliminar el paciente?',
     PACIENTE_ELIMINADO: 'El paciente se eliminó correctamente ',
     PACIENTE_NO_ELIMINADO: 'No se pudo eliminar el paciente ',
 

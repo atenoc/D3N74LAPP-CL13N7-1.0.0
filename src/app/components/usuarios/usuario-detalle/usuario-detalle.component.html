@@ -289,7 +289,7 @@
                         <div class="card-header p-0 border-bottom-0 mt-2">
                             <ng-container *ngIf="!mismoUsuario">
                                 <button *ngIf="rol=='suadmin' || rol=='sop'" class="btn btn-outline-secondary my-2 my-sm-0 ml-2" 
-                                    (click)="deleteUser(usuario.id, usuario.correo)" ngbTooltip="Eliminar usuario de forma permanente"><i class="fas fa-trash-alt"></i>
+                                    (click)="deleteUser(usuario.id)" ngbTooltip="Eliminar usuario de forma permanente"><i class="fas fa-trash-alt"></i>
                                 </button>
                             </ng-container>
                     

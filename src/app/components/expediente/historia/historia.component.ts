@@ -5,8 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Historia } from 'src/app/models/Historia.model';
 import { HistoriaDentalService } from 'src/app/services/historias/historia-dental.service';
-import { Mensajes } from 'src/app/shared/mensajes.config';
-import Swal from 'sweetalert2';
+import { Alerts } from 'src/app/shared/utils/alerts';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 
 @Component({
   selector: 'app-historia',
@@ -85,34 +85,13 @@ export class HistoriaComponent implements OnInit {
       this.spinner.hide();
       console.log("Se guardó la historia")
       this.ngOnInit();
-
-      Swal.fire({
-        position: 'top-end',
-        html:
-          `<h5>${ Mensajes.HISTORIA_REGISTRADA }</h5>`,  
-        showConfirmButton: false,
-        backdrop: false, 
-        width: 400,
-        background: 'rgb(40, 167, 69, .90)',
-        color:'white',
-        timerProgressBar:true,
-        timer: 3000,
-      })
+      Alerts.success(Mensajes.HISTORIA_REGISTRADA, ``);
 
     }),
     err => {
       this.spinner.hide();
       console.log("error: " + err)
-
-      Swal.fire({
-        icon: 'error',
-        html:
-          `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-          `<span>${ Mensajes.HISTORIA_NO_REGISTRADA }</span></br>`+
-          `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-        showConfirmButton: false,
-        timer: 3000
-      })
+      Alerts.error(Mensajes.ERROR_500, Mensajes.HISTORIA_NO_REGISTRADA, Mensajes.INTENTAR_MAS_TARDE);
     }
   }
 
@@ -160,7 +139,7 @@ export class HistoriaComponent implements OnInit {
     (error: HttpErrorResponse) => {
 
       if (error.status === 404) {
-        console.log("El error es 404")
+        console.log("El error es 404: No cuenta con historia")
         this.botonGuardar = true
       } else {
         console.log("error: " + error.message)
@@ -181,34 +160,13 @@ export class HistoriaComponent implements OnInit {
       console.log("Se actualizó la historia")
       this.ngOnInit();
 
-      Swal.fire({
-        position: 'top-end',
-        html:
-          `<h5>${ Mensajes.HISTORIA_ACTUALIZADA }</h5>`, 
-        showConfirmButton: false,
-        backdrop: false, 
-        width: 400,
-        background: 'rgb(40, 167, 69, .90)',
-        color:'white',
-        timerProgressBar:true,
-        timer: 3000,
-      })
+      Alerts.success(Mensajes.HISTORIA_ACTUALIZADA, ``);
     }),
     err => {
       this.spinner.hide();
       console.log("error: " + err)
-
-      Swal.fire({
-        icon: 'error',
-        html:
-          `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-          `<span>${ Mensajes.HISTORIA_NO_ACTUALIZADA }</span></br>`+
-          `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-        showConfirmButton: false,
-        timer: 3000
-      })
+      Alerts.error(Mensajes.ERROR_500, Mensajes.HISTORIA_NO_ACTUALIZADA, Mensajes.INTENTAR_MAS_TARDE);
     } 
-
   }
 
 

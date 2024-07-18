@@ -8,8 +8,9 @@ import { AuthService } from 'src/app/services/auth.service';
 import { CentroService } from 'src/app/services/clinicas/centro.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
 import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
-import { Mensajes } from 'src/app/shared/mensajes.config';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 import Swal from 'sweetalert2';
+import { Alerts } from 'src/app/shared/utils/alerts';
 
 @Component({
   selector: 'app-perfil',
@@ -108,13 +109,8 @@ export class PerfilComponent implements OnInit {
             this.spinner.hide();
             console.log("Centro eliminado:" + res)
             
-            Swal.fire({
-              icon: 'success',
-              showConfirmButton: false,
-              html:
-                  `<strong>Tu cuenta ha sido eliminada</strong>`,
-              timer: 2000
-            })
+            Alerts.success(Mensajes.CUENTA_ELIMINADA, Mensajes.CLINICA_ELIMINADA);
+
             setTimeout(() => {
               console.log("Cuenta eliminada")
               localStorage.removeItem('_enc_t')
@@ -130,15 +126,7 @@ export class PerfilComponent implements OnInit {
             err => { 
               this.spinner.hide();
               console.log("error: " + err)
-              Swal.fire({
-                icon: 'error',
-                html:
-                  `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-                  `<span>${ Mensajes.CLINICA_NO_ELIMINADA }</span></br>`+
-                  `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-                showConfirmButton: false,
-                timer: 3000
-              }) 
+              Alerts.error(Mensajes.ERROR_500, Mensajes.CLINICA_NO_ELIMINADA, Mensajes.INTENTAR_MAS_TARDE);
             }
           )
           

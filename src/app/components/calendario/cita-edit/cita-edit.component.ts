@@ -1,4 +1,3 @@
-import { compileNgModule } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbDateParserFormatter, NgbDateStruct, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -9,8 +8,8 @@ import { Usuario } from 'src/app/models/Usuario.model';
 import { CitaService } from 'src/app/services/citas/cita.service';
 import { PacienteService } from 'src/app/services/pacientes/paciente.service';
 import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
-import { Mensajes } from 'src/app/shared/mensajes.config';
-import Swal from 'sweetalert2';
+import { Alerts } from 'src/app/shared/utils/alerts';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 
 @Component({
   selector: 'app-cita-edit',
@@ -24,6 +23,7 @@ export class CitaEditComponent implements OnInit {
   queryMedicos = '';
   mostrarTablaResultadosPacientes = false;
   pacientes: Paciente[] = [];
+  paciente: Paciente
   medicos: Usuario[] = [];
   tituloCard: string;
   citaEditar:CitaEditar
@@ -208,14 +208,7 @@ export class CitaEditComponent implements OnInit {
 
     if(this.mostrarMensajeMotivo || this.mostrarMensajeSeleccionarMedico || this.mostrarMensajeTelefono){
       console.log("Vuelve a validar")
-      Swal.fire({
-        icon: 'warning',
-        html:
-          `<strong>Aviso</strong></br>`+
-          `<span>${ Mensajes.CITA_CAMPOS_OBLIGATORIOS }</span></br>`,
-        showConfirmButton: false,
-        timer: 3000
-      })
+      Alerts.warning(Mensajes.WARNING, Mensajes.CITA_CAMPOS_OBLIGATORIOS);
 
     }else{
 
@@ -283,36 +276,16 @@ export class CitaEditComponent implements OnInit {
       this.telefonoPaciente
     ).subscribe(res =>{
       this.spinner.hide();
+      this.paciente = res
       console.log("Se actualizó la información del paciente")
-      console.log(res)
+      console.log(this.paciente)
 
       this.router.navigate(['/calendario'])
-      Swal.fire({
-        position: 'top-end',
-        html:
-          `<h5>Paciente actualizado correctamente</h5>`+
-          `<span>${res.nombre} ${res.apellidop} ${res.apellidom}</span>`, 
-        showConfirmButton: false,
-        backdrop: false,
-        width: 400,
-        background: 'rgb(40, 167, 69, .90)',
-        color:'white',
-        timerProgressBar:true,
-        timer: 3000,
-      })
-        
+      Alerts.success(Mensajes.PACIENTE_ACTUALIZADO, `${this.paciente.nombre} ${this.paciente.apellidop} ${this.paciente.apellidom}`);  
     },
     err =>{
       this.spinner.hide();
-      Swal.fire({
-        icon: 'error',
-        html:
-          `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-          `<span>${ Mensajes.PACIENTE_NO_ACTUALIZADO }</span></br>`+
-          `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-        showConfirmButton: false,
-        timer: 3000
-      })
+      Alerts.error(Mensajes.ERROR_500, Mensajes.PACIENTE_NO_ACTUALIZADO, Mensajes.INTENTAR_MAS_TARDE);
     })
 
   }  
@@ -346,39 +319,18 @@ export class CitaEditComponent implements OnInit {
       this.fecha_actual
     ).subscribe(
       res=>{
+        this.citaEditar=res
         this.spinner.hide();
         console.log("Cita actualizada")
-        console.log(res)
+        console.log(this.citaEditar)
         this.citaService.emitirNuevaCita(); // Emitir el evento de nueva cita
 
         this.router.navigate(['/calendario'])
-
-        Swal.fire({
-          position: 'top-end',
-          html:
-            `<h5>${ Mensajes.CITA_ACTUALIZADA }</h5>`+
-            `<span>${ res.title }</span>`, 
-          showConfirmButton: false,
-          backdrop: false,
-          width: 400,
-          background: 'rgb(40, 167, 69, .90)',
-          color:'white',
-          timerProgressBar:true,
-          timer: 3000,
-        })
-
+        Alerts.success(Mensajes.CITA_ACTUALIZADA, `Correo: ${this.citaEditar.title}`);
       },
       err =>{
         this.spinner.hide();
-        Swal.fire({
-          icon: 'error',
-          html:
-            `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-            `<span>${ Mensajes.CITA_NO_ACTUALIZADA }</span></br>`+
-            `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-          showConfirmButton: false,
-          timer: 3000
-        })
+        Alerts.error(Mensajes.ERROR_500, Mensajes.CITA_NO_ACTUALIZADA, Mensajes.INTENTAR_MAS_TARDE);
       })
   }
 
@@ -588,62 +540,25 @@ export class CitaEditComponent implements OnInit {
     }
   }
 
-  eliminarCita(){
-    console.log("Eliminar cita")
-    console.log("id cita: "+this.id)
-
-    Swal.fire({
-      html:
-        `<h5>${ Mensajes.CITA_ELIMINAR_QUESTION }</h5>` +
-        `<strong> ${this.citaEditar.nombre} ${this.citaEditar.apellidop} ${this.citaEditar.apellidom} </strong>`,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#dc3545',
-      cancelButtonColor: '#aeaeae',
-      confirmButtonText: 'Si, eliminar',
-      cancelButtonText: 'No, cancelar'
-    }).then((result) => {
+  eliminarCita() {
+    Alerts.confirmDelete(Mensajes.CITA_ELIMINAR_QUESTION, `Cita · ${this.citaEditar.nombre} ${this.citaEditar.apellidop} ${this.citaEditar.apellidom}`).then((result) => {
       if (result.value) {
+        // Confirm
         this.spinner.show();
         this.citaService.deleteCita(this.id).subscribe(res=>{
-          console.log("Cita eliminada")
           this.spinner.hide();
-
-          Swal.fire({
-            position: 'top-end',
-            html:
-              `<h5>${ Mensajes.CITA_ELIMINADA }</h5>`+
-              `<span>${this.citaEditar.nombre} ${this.citaEditar.apellidop} ${this.citaEditar.apellidom}</span>`, 
-            showConfirmButton: false,
-            backdrop: false, 
-            width: 400,
-            background: 'rgb(40, 167, 69, .90)',
-            color:'white',
-            timerProgressBar:true,
-            timer: 3000,
-          })
-
-          //this.citaService.emitirNuevaCita();
-          this.router.navigate(['/calendario'])
+          console.log("Cita eliminada")
+          
+          Alerts.success(Mensajes.CITA_ELIMINADA, `${this.citaEditar.nombre} ${this.citaEditar.apellidop} ${this.citaEditar.apellidom}`);
+          this.router.navigate(['/calendario']);
         },
           err => { 
-            this.spinner.hide();
-            console.log("error: " + err)
-            Swal.fire({
-              icon: 'error',
-              html:
-                `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-                `<span>${ Mensajes.CITA_NO_ELIMINADA }</span></br>`+
-                `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-              showConfirmButton: false,
-              timer: 3000
-            }) 
+            console.log("error: " + err);
+            Alerts.error(Mensajes.ERROR_500, Mensajes.CITA_NO_ELIMINADA, Mensajes.INTENTAR_MAS_TARDE);
           }
-        )
-    
+        );
       }
-    })
-
+    });
   }
 
 }

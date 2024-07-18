@@ -6,7 +6,9 @@ import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { CentroService } from 'src/app/services/clinicas/centro.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
-import Swal from 'sweetalert2';
+import { Alerts } from 'src/app/shared/utils/alerts';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-centro-list',
@@ -23,6 +25,7 @@ export class CentroListComponent implements OnInit {
     private authService:AuthService,
     private cifradoService: CifradoService,
     private centroService:CentroService, 
+    private spinner: NgxSpinnerService, 
     private router: Router,
     private modalService: NgbModal, 
       config: NgbModalConfig) {
@@ -60,48 +63,26 @@ export class CentroListComponent implements OnInit {
     this.router.navigate(['/centro-detalle', id]);
   }
 
+
   deleteCentro(id: string, nombre:string) {
-
-    Swal.fire({
-      html:
-        `¿ Estás seguro de eliminar el centro dental: <br/> ` +
-        `<strong> ${ nombre } </strong> ? `,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#dc3545',
-      cancelButtonColor: '#aeaeae',
-      confirmButtonText: 'Si, eliminar',
-      cancelButtonText: 'No, cancelar'
-    }).then((result) => {
+    Alerts.confirmDelete(Mensajes.CLINICA_ELIMINAR_QUESTION, nombre).then((result) => {
       if (result.value) {
-        /* Confirm */
-
+        // Confirm
+        this.spinner.show();
         this.centroService.deleteCentro(id).subscribe(res => {
-          console.log("Centro eliminado:" + res)
-          //this.ngOnInit()
-          Swal.fire({
-            icon: 'success',
-            showConfirmButton: false,
-            text:'¡El centro dental ha sido eliminado!',
-            timer: 1500
-          })
+          this.spinner.hide();
+          console.log("Clinica eliminada:" + res)
+
+          Alerts.success(Mensajes.CLINICA_ELIMINADA, nombre);
         },
           err => { 
-            console.log("error: " + err)
-            Swal.fire({
-              icon: 'error',
-              html:
-                `<strong>¡${ err.error.message }!</strong>`,
-              showConfirmButton: true,
-              confirmButtonColor: '#28a745',
-              timer: 4000
-            }) 
+            this.spinner.hide();
+            console.log("error: " + err);
+            Alerts.error(Mensajes.ERROR_500, Mensajes.CLINICA_NO_ELIMINADA, Mensajes.INTENTAR_MAS_TARDE);
           }
-        )
-    
+        );
       }
-    })
- 
+    });
   }
 
 }

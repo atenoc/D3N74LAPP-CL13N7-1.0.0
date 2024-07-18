@@ -23,12 +23,12 @@
 
         <div class="card-body">
             <div>
-                <strong><i class="fas fa-comment-medical"></i> Próxima cita</strong>
+                <strong><i class="far fa-calendar-alt"></i> Fecha Próxima cita aaaa/mm/dd</strong>
                 <p>{{ seguimiento.proxima_cita }}</p>
             </div>
     
             <div class="mt-2">
-                <strong><i class="fas fa-sticky-note"></i> Notas de seguimiento</strong>
+                <strong><i class="fas fa-pencil-alt"></i> Notas de seguimiento</strong>
                 <p>{{ seguimiento.notas_seguimiento }}</p>
             </div>
             
@@ -72,7 +72,7 @@
         <form [formGroup]="formularioSeguimiento">
             <div class="row mb-3">
                 <div class="col-6">
-                    <span><i class="fas fa-dollar-sign"></i> Próxima cita</span>
+                    <span><i class="far fa-calendar-alt"></i> Fecha Próxima cita aaaa/mm/dd</span>
                     <input formControlName="proxima_cita" type="text" class="form-control">
                 </div>
                 <div class="col-6">
@@ -82,7 +82,7 @@
             </div>
 
             <div class="mb-3">
-                <span><i class="fas fa-comment-medical"></i> Notas de seguimiento</span>
+                <span><i class="fas fa-pencil-alt"></i> Notas de seguimiento</span>
                 <textarea formControlName="notas_seguimiento" class="form-control" rows="3" 
                   (input)="updateCharacterCount($event)" [attr.maxlength]="maxCharacters"></textarea>
                   <div class="d-flex">
@@ -125,7 +125,7 @@
 
             <div class="row mb-3">
                 <div class="col-6">
-                    <span><i class="fas fa-dollar-sign"></i> proxima_cita</span>
+                    <span><i class="far fa-calendar-alt"></i> Fecha Próxima cita aaaa/mm/dd</span>
                     <input formControlName="proxima_cita" type="text" class="form-control">
                 </div>
                 <div class="col-6">
@@ -136,7 +136,7 @@
             </div>
 
             <div class="mb-3">
-                <span><i class="fas fa-comment-medical"></i> notas_seguimiento</span>
+                <span><i class="fas fa-pencil-alt"></i> notas_seguimiento</span>
                 <textarea formControlName="notas_seguimiento" class="form-control" rows="3" 
                   (input)="updateCharacterCount($event)" [attr.maxlength]="maxCharacters"></textarea>
                   <div class="d-flex">

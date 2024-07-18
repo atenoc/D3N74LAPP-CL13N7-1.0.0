@@ -66,9 +66,9 @@
         <div class="card-header p-0 border-bottom-0">
 
           <small *ngIf="mostrar_creacion" class="text-muted"><strong>Creado por:</strong> {{ nombre_usuario_creador }}</small>
-          <small *ngIf="mostrar_creacion" class="text-muted">| <strong> Fecha creacion:</strong> {{ fecha_creacion }}</small> <br>
+          <small *ngIf="mostrar_creacion" class="text-muted"> | <strong> Fecha creacion:</strong> {{ fecha_creacion }}</small> <br>
           <small *ngIf="mostrar_actualizacion" class="text-muted"><strong>Actualizado por:</strong> {{ nombre_usuario_actualizo }}</small>
-          <small *ngIf="mostrar_actualizacion" class="text-muted">| <strong>Última actualización:</strong> {{ fecha_actualizacion }}</small>
+          <small *ngIf="mostrar_actualizacion" class="text-muted"> | <strong>Última actualización:</strong> {{ fecha_actualizacion }}</small>
 
           <div class="card-tools">
             <button *ngIf="botonActualizar" type="button" class="btn btn-primary" (click)="actualizarHistoria()">

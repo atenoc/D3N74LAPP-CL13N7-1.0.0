@@ -4,7 +4,7 @@ import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { SharedService } from 'src/app/services/shared.service';
 import * as $ from 'jquery';
-import { Mensajes } from 'src/app/shared/mensajes.config';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 
 @Component({
   selector: 'app-sidebar',

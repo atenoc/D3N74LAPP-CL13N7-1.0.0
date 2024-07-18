@@ -3,13 +3,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from '../../services/auth.service'
-import Swal from 'sweetalert2';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Mensajes } from 'src/app/shared/mensajes.config';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 import { CifradoService } from 'src/app/services/cifrado.service';
 import { CentroService } from 'src/app/services/clinicas/centro.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { PlanesService } from 'src/app/services/planes/planes.service';
+import { Alerts } from 'src/app/shared/utils/alerts';
 
 @Component({
   selector: 'app-login',
@@ -155,24 +155,10 @@ export class LoginComponent implements OnInit {
 
         if(err.error.message === undefined){
           this.mensajeDetalleError = Mensajes.SIN_CONEXION_RED +'. '+Mensajes.INTENTAR_MAS_TARDE
-          Swal.fire({
-            icon: 'error',
-            html:
-              `<strong> ${ Mensajes.ERROR_500 } </strong><br/>` +
-              `<small> ${ Mensajes.SIN_CONEXION_RED } </small> `,
-            showConfirmButton: false,
-            timer: 3000
-          }) 
+          Alerts.error(Mensajes.ERROR_500, Mensajes.SIN_CONEXION_RED, Mensajes.INTENTAR_MAS_TARDE);
         }else{
           this.mensajeDetalleError = Mensajes.CONTRASENA_VERIFICAR
-          Swal.fire({
-            icon: 'warning',
-            html:
-              `<strong> ${ Mensajes.WARNING } </strong><br/>` +
-              `<small> ${ Mensajes.CONTRASENA_VERIFICAR } </small> `,
-            showConfirmButton: false,
-            timer: 3000
-          }) 
+          Alerts.warning(Mensajes.WARNING, Mensajes.CONTRASENA_VERIFICAR);
         }
 
         this.mensajeError = this.mensajeDetalleError

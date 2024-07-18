@@ -4,8 +4,10 @@ import { NgbActiveModal, NgbDateStruct, NgbDatepickerConfig } from '@ng-bootstra
 import { AuthService } from 'src/app/services/auth.service';
 import { CitaService } from 'src/app/services/citas/cita.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
-import { Mensajes } from 'src/app/shared/mensajes.config';
-import Swal from 'sweetalert2';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
+import { Cita } from 'src/app/models/Cita.model';
+import { Alerts } from 'src/app/shared/utils/alerts';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-event-form',
@@ -14,6 +16,7 @@ import Swal from 'sweetalert2';
 })
 export class EventFormComponent implements OnInit {
 
+  cita:Cita
   fechaModelInicio: NgbDateStruct;
   fechaModelFin: NgbDateStruct;
   selectedTimeInicio: { hour: number, minute: number } = { hour: 0, minute: 0 };
@@ -43,6 +46,7 @@ export class EventFormComponent implements OnInit {
   constructor(
     private authService:AuthService,
     private cifradoService: CifradoService,
+    private spinner: NgxSpinnerService, 
     private activeModal: NgbActiveModal, 
     private citaService:CitaService,
     private router: Router,
@@ -113,40 +117,22 @@ export class EventFormComponent implements OnInit {
       };
   
       console.log(eventoJson)
-  
+      this.spinner.show();
       this.citaService.createEvento(eventoJson).subscribe(
         res=>{
+          this.spinner.hide();
+          this.cita=res
           console.log("Cita Enviada")
           console.log(res)
           this.citaService.emitirNuevaCita(); // Emitir el evento de nueva cita
   
-          Swal.fire({
-            position: 'top-end',
-            html:
-              `<h5>${ Mensajes.EVENTO_REGISTRADO }</h5>`+
-              `<span>${ res.title }</span>`, 
-            showConfirmButton: false,
-            backdrop: false,
-            width: 400,
-            background: 'rgb(40, 167, 69, .90)',
-            color:'white',
-            timerProgressBar:true,
-            timer: 3000,
-          })
-  
+          Alerts.success(Mensajes.EVENTO_REGISTRADO, `${this.cita.title}`);
           this.closeModal()
   
         },
         err =>{
-          Swal.fire({
-            icon: 'error',
-            html:
-              `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-              `<span>${ Mensajes.EVENTO_NO_REGISTRADO }</span></br>`+
-              `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-            showConfirmButton: false,
-            timer: 3000
-          })
+          this.spinner.hide();
+          Alerts.error(Mensajes.ERROR_500, Mensajes.EVENTO_NO_REGISTRADO, Mensajes.INTENTAR_MAS_TARDE);
         })
     }
  

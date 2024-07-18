@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import Swal from 'sweetalert2';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
-import { Mensajes } from 'src/app/shared/mensajes.config';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
+import { Alerts } from 'src/app/shared/utils/alerts';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-contrasena',
@@ -35,6 +36,7 @@ export class ContrasenaComponent implements OnInit {
   constructor(
     private authService:AuthService,
     private cifradoService: CifradoService,
+    private spinner: NgxSpinnerService,
     private router: Router, 
     private formBuilder:FormBuilder,
     private activatedRoute: ActivatedRoute, 
@@ -105,35 +107,20 @@ export class ContrasenaComponent implements OnInit {
 
   updateUsuarioLlave(formGroup: FormGroup): boolean {
     console.log("Actualizando contraseña...")
-    this.authService.updateUsuarioLlave(this.id, formGroup.get('nuevoPassword1').value).subscribe(res => {
-        console.log("Contraseña actualizada: "+res);
-        //this.ngOnInit()
 
-        //this.sharedService.setData(false);
+    this.spinner.show();
+    this.authService.updateUsuarioLlave(this.id, formGroup.get('nuevoPassword1').value).subscribe(res => {
+      this.spinner.hide();
+        console.log("Contraseña actualizada: "+res);
         this.router.navigate(['/usuario-detalle', res.id]);
 
-        Swal.fire({
-          icon: 'success',
-          //title: 'Usuario actualizado',
-          html:
-            //`<strong>${ this.id }</strong><br/>` +
-            '¡La contraseña se actualizó correctamente!',
-          showConfirmButton: true,
-          confirmButtonColor: '#28a745',
-          timer: 1500
-        })
-
+        Alerts.success(Mensajes.CONTRASENA_ACTUALIZADA, ``);
       },
         err => {
+          this.spinner.hide();
           console.log("error: " + err)
-          Swal.fire({
-            icon: 'error',
-            html:
-              `<strong>¡${ err.error.message }!</strong>`,
-            showConfirmButton: true,
-            confirmButtonColor: '#28a745',
-            timer: 3000
-          })
+          console.log(err.error.message )
+          Alerts.error(Mensajes.ERROR_500, Mensajes.CONTRASENA_NO_ACTUALIZADA, Mensajes.INTENTAR_MAS_TARDE);
         }
       );
 

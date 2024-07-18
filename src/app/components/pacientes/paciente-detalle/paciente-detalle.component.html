@@ -113,7 +113,7 @@
 
       <div class="card-header p-0 border-bottom-0">
         <button *ngIf="rol=='suadmin' || rol=='sop'" class="btn btn-outline-secondary mt-2" 
-            (click)="deletePaciente(paciente.id, paciente.nombre, paciente.apellidop)" 
+            (click)="deletePaciente(paciente.id)" 
             ngbTooltip="Eliminar paciente de forma permanente">
           <i class="fas fa-trash-alt"></i> Borrar
         </button>

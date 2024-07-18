@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -9,8 +9,8 @@ import { CatalogoService } from 'src/app/services/catalogos/catalogo.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
 import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
-import { Mensajes } from 'src/app/shared/mensajes.config';
-import Swal from 'sweetalert2';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
+import { Alerts } from 'src/app/shared/utils/alerts';
 
 @Component({
   selector: 'app-usuario-detalle',
@@ -188,42 +188,21 @@ export class UsuarioDetalleComponent implements OnInit {
       localStorage.getItem("_us"),
       this.fecha_actual
       ).subscribe(res => {
+        this.spinner.hide();
         console.log("Usuario actualizado ");
-        console.log(res)
-        console.log(res.nombre)
+        this.usuario=res
+        console.log(this.usuario)
+        console.log(this.usuario.nombre)
         this.sharedService.setNombreUsuario(this.formularioUsuario.value.nombre);
         this.editando=false
         this.ngOnInit()
-        this.spinner.hide();
-        Swal.fire({
-          position: 'top-end',
-          html:
-            `<h5>${ Mensajes.USUARIO_ACTUALIZADO }</h5>`+
-            `<span>${ res.nombre } ${ res.apellidop }</span>`, 
-            
-          showConfirmButton: false,
-          backdrop: false, 
-          width: 400,
-          background: 'rgb(40, 167, 69, .90)',
-          color:'white',
-          timerProgressBar:true,
-          timer: 3000,
-        })
-
+        
+        Alerts.success(Mensajes.USUARIO_ACTUALIZADO, `${this.usuario.nombre} ${this.usuario.apellidop} ${this.usuario.apellidom}`);
       },
         err => {
           this.spinner.hide();
           console.log("error: " + err)
-          //err.error.message
-          Swal.fire({
-            icon: 'error',
-            html:
-              `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-              `<span>${ Mensajes.USUARIO_NO_ACTUALIZADO }</span></br>`+
-              `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-            showConfirmButton: false,
-            timer: 3000
-          })
+          Alerts.error(Mensajes.ERROR_500, Mensajes.USUARIO_NO_ACTUALIZADO, Mensajes.INTENTAR_MAS_TARDE);
         }
       );
 
@@ -257,57 +236,23 @@ export class UsuarioDetalleComponent implements OnInit {
     )
   }
 
-  deleteUser(id: string, correo:string) {
-
-    Swal.fire({
-      html:
-        `<h5>${ Mensajes.USUARIO_ELIMINAR_QUESTION }</h5> <br/> ` +
-        `<strong> ${ correo } </strong>`,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#dc3545',
-      cancelButtonColor: '#aeaeae',
-      confirmButtonText: 'Si, eliminar',
-      cancelButtonText: 'No, cancelar'
-    }).then((result) => {
+  deleteUser(id: string) {
+    Alerts.confirmDelete(Mensajes.USUARIO_ELIMINAR_QUESTION, `${this.usuario.nombre} ${this.usuario.apellidop} ${this.usuario.apellidom}`).then((result) => {
       if (result.value) {
         // Confirm
+        this.spinner.show();
         this.usuarioService.deleteUsuario(id).subscribe(res => {
-          console.log("Usuario eliminado:" + JSON.stringify(res))
-
-          Swal.fire({
-            position: 'top-end',
-            html:
-              `<h5>${ Mensajes.USUARIO_ELIMINADO }</h5>`+
-              `<span>${ this.usuario.correo }</span>`, 
-            showConfirmButton: false,
-            backdrop: false, 
-            width: 400,
-            background: 'rgb(40, 167, 69, .90)',
-            color:'white',
-            timerProgressBar:true,
-            timer: 3000,
-          })
-
+          console.log("Usuario eliminado:" + JSON.stringify(res));
+          Alerts.success(Mensajes.USUARIO_ELIMINADO, `${this.usuario.nombre} ${this.usuario.apellidop} ${this.usuario.apellidom}`);
           this.router.navigate(['/usuarios']);
         },
           err => { 
-            console.log("error: " + err)
-            Swal.fire({
-              icon: 'error',
-              html:
-                `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-                `<span>${ Mensajes.USUARIO_NO_ELIMINADO }</span></br>`+
-                `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-              showConfirmButton: false,
-              timer: 3000
-            }) 
+            console.log("error: " + err);
+            Alerts.error(Mensajes.ERROR_500, Mensajes.USUARIO_NO_ELIMINADO, Mensajes.INTENTAR_MAS_TARDE);
           }
-        )
-    
+        );
       }
-    })
-
+    });
   }
 
 }

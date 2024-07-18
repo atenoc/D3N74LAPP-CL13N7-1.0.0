@@ -4,8 +4,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DetalleCita } from 'src/app/models/Cita.model';
 import { CitaService } from 'src/app/services/citas/cita.service';
-import { Mensajes } from 'src/app/shared/mensajes.config';
-import Swal from 'sweetalert2';
+import { Alerts } from 'src/app/shared/utils/alerts';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 
 @Component({
   selector: 'app-detalle-evento',
@@ -69,62 +69,27 @@ export class DetalleEventoComponent implements OnInit {
     this.router.navigate(['/expediente/paciente', id_paciente]);
   }
 
-  eliminarCita(){
-    console.log("Eliminar cita")
-    console.log("id cita: "+this.data.id)
-
-    Swal.fire({
-      html:
-        `<h5>${ Mensajes.CITA_ELIMINAR_QUESTION }</h5>` +
-        `<strong> ${ this.title } </strong>`,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#dc3545',
-      cancelButtonColor: '#aeaeae',
-      confirmButtonText: 'Si, eliminar',
-      cancelButtonText: 'No, cancelar'
-    }).then((result) => {
+  eliminarCita() {
+    Alerts.confirmDelete(Mensajes.CITA_ELIMINAR_QUESTION, `${this.title}`).then((result) => {
       if (result.value) {
+        // Confirm
         this.spinner.show();
         this.citaService.deleteCita(this.data.id).subscribe(res=>{
-          console.log("Cita eliminada")
           this.spinner.hide();
-
-          Swal.fire({
-            position: 'top-end',
-            html:
-              `<h5>${ Mensajes.CITA_ELIMINADA }</h5>`+
-              `<span>${ this.title }</span>`, 
-            showConfirmButton: false,
-            backdrop: false, 
-            width: 400,
-            background: 'rgb(40, 167, 69, .90)',
-            color:'white',
-            timerProgressBar:true,
-            timer: 3000,
-          })
-
+          console.log("Cita eliminada")
+          Alerts.success(Mensajes.CITA_ELIMINADA, `${this.title}`);
+          
           this.citaService.emitirNuevaCita();
           this.closeModal()
         },
           err => { 
             this.spinner.hide();
-            console.log("error: " + err)
-            Swal.fire({
-              icon: 'error',
-              html:
-                `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-                `<span>${ Mensajes.CITA_NO_ELIMINADA }</span></br>`+
-                `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-              showConfirmButton: false,
-              timer: 3000
-            }) 
+            console.log("error: " + err);
+            Alerts.error(Mensajes.ERROR_500, Mensajes.CITA_NO_ELIMINADA, Mensajes.INTENTAR_MAS_TARDE);
           }
-        )
-    
+        );
       }
-    })
-
+    });
   }
 
   closeModal() {

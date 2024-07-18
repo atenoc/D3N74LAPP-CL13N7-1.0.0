@@ -5,8 +5,9 @@ import { CentroService } from 'src/app/services/clinicas/centro.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
 import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
-import { Mensajes } from 'src/app/shared/mensajes.config';
-import Swal from 'sweetalert2';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
+import { Alerts } from 'src/app/shared/utils/alerts';
+import { NgxSpinnerService } from 'ngx-spinner';
 declare var require: any;
 
 @Component({
@@ -30,6 +31,7 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
   constructor(
     private centroService:CentroService, 
     private router:Router,
+    private spinner: NgxSpinnerService,
     private usuarioService:UsuarioService,
     private sharedService:SharedService,
     private cifradoService: CifradoService,
@@ -68,14 +70,8 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
     this.fecha_creacion = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
 
     if(this.nombre ==="" || this.apellido ==="" || this.nombreClinica ==="" || this.telefono.length !=10 || this.direccionClinica ===""){
-      Swal.fire({
-        icon: 'warning',
-        html:
-          `<strong> ${ Mensajes.WARNING } </strong><br/>` +
-          `<span>${ Mensajes.REGISTRO_VALIDACION }</span>`,
-        showConfirmButton: false,
-        timer: 2000
-      })
+      Alerts.warning(Mensajes.WARNING, Mensajes.REGISTRO_VALIDACION);
+
       return
     }
 
@@ -100,6 +96,7 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
     console.log("Usuario a actualizar ")
     //console.log(usuarioJson)
 
+    this.spinner.show();
     this.centroService.createCentro(centroJson).subscribe(
       res =>{
         console.log("Clínica registrada correctamente, id:: "+res.id)
@@ -107,45 +104,35 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
         localStorage.setItem('_cli', res.id)
         this.cifradoService.setEncryptedIdPlan(res.id_plan)
 
+        this.spinner.show();
         this.usuarioService.updateUsuarioRegister(localStorage.getItem('_us'), this.nombre, this.apellido, res.id, this.fecha_creacion).subscribe(
           res=>{
-
+            this.spinner.hide();
             this.router.navigate(['/perfil'])
-            Swal.fire({
-              title: `${ Mensajes.SUCCESS }`,
-              icon: 'success',
-              html:
-                `<strong>${ Mensajes.REGISTRO_EXITOSO }</strong></br>`,
-              showConfirmButton: true,
-              confirmButtonColor: '#28a745',
-              timer: 4000
-            })
+  
             console.log("Usuario actualizado")
             this.sharedService.setNombreUsuario(this.nombre +" "+this.apellido)
             this.sharedService.setNombreClinica(this.nombreClinica);
             this.sharedService.setMensajeVigenciaPlanGratuito("Prueba gratis por 30 días");
             this.sharedService.setDiasRestantesPlanGratuito('30');
             localStorage.setItem('dias_restantes_p_g', '30')
+
+            Alerts.success(Mensajes.SUCCESS, `Correo: ${Mensajes.REGISTRO_EXITOSO}`);
           },
           err =>{
+            this.spinner.hide();
             console.log("Error al actualizar el usuario")
             console.log(err)
+            Alerts.error(Mensajes.ERROR_500, Mensajes.REGISTRO_ERROR, Mensajes.INTENTAR_MAS_TARDE);
           }
         )
   
       },
       err =>{
-        Swal.fire({
-          icon: 'error',
-          html:
-            `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-            `<span>${ Mensajes.REGISTRO_ERROR }</span></br>`+
-            `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-          showConfirmButton: false,
-          timer: 3000
-        }) 
+        this.spinner.hide();
         console.log("Ocurrió un error al registrar la clínica")
         console.log(err)
+        Alerts.error(Mensajes.ERROR_500, Mensajes.REGISTRO_ERROR, Mensajes.INTENTAR_MAS_TARDE);
       }
     )
   }

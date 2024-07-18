@@ -2,14 +2,14 @@ import { Component, ElementRef, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
-import Swal from 'sweetalert2';
-import { Mensajes } from 'src/app/shared/mensajes.config';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 import { CatalogoEspecialidad, CatalogoRol, CatalogoTitulo } from 'src/app/models/Catalogo.model';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CatalogoService } from 'src/app/services/catalogos/catalogo.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { Alerts } from 'src/app/shared/utils/alerts';
 
 @Component({
   selector: 'app-usuario-form',
@@ -160,51 +160,23 @@ export class UsuarioFormComponent implements OnInit {
     this.spinner.show();
     this.usuarioService.createUsuario(nuevoUsuarioJson).subscribe(
       res => {
+        this.spinner.hide();
         this.usuario = res;
         console.log("Usuario creado")
         //this.modalService.dismissAll()
-      
-        this.spinner.hide();
+
         this.router.navigate(['/usuarios'])
-        Swal.fire({
-          position: 'top-end',
-          html:
-            `<h5>${ Mensajes.USUARIO_REGISTRADO }</h5>`+
-            `<span>Usuario: ${ this.usuario.correo }</span>`, 
-          showConfirmButton: false,
-          backdrop: false,
-          width: 400,
-          background: 'rgb(40, 167, 69, .90)',
-          color:'white',
-          timerProgressBar:true,
-          timer: 3000,
-        })
+        Alerts.success(Mensajes.USUARIO_REGISTRADO, `${this.usuario.correo}`);
       },
       err => {
         this.spinner.hide();
         console.log("error: " + err.error.message)
         if(err.error.message=="400"){
           this.el.nativeElement.querySelector('input').focus();
-          Swal.fire({
-            icon: 'warning',
-            html:
-              `<strong> ${ Mensajes.WARNING } </strong><br/>` +
-              `<span>${ Mensajes.CORREO_EXISTENTE }</span>`,
-            showConfirmButton: false,
-            timer: 2000
-          })
+          Alerts.warning(Mensajes.WARNING, Mensajes.CORREO_EXISTENTE);
         }else{
-          Swal.fire({
-            icon: 'error',
-            html:
-              `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-              `<span>${ Mensajes.USUARIO_NO_REGISTRADO }</span></br>`+
-              `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-            showConfirmButton: false,
-            timer: 3000
-          })
+          Alerts.error(Mensajes.ERROR_500, Mensajes.USUARIO_NO_REGISTRADO, Mensajes.INTENTAR_MAS_TARDE);
         }
-        
       }
     )
   }// end method
