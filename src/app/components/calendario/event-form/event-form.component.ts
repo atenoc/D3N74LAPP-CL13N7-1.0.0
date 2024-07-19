@@ -8,6 +8,7 @@ import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 import { Cita } from 'src/app/models/Cita.model';
 import { Alerts } from 'src/app/shared/utils/alerts';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
 
 @Component({
   selector: 'app-event-form',
@@ -26,9 +27,8 @@ export class EventFormComponent implements OnInit {
   nota:string=""
   fecha_hora_inicio:string
   fecha_hora_fin:string
-  fecha_creacion:string
-  date: Date;
-
+  fecha_actual:string
+ 
   //mensajes
   campoRequerido: string;
   fechaRequerida: string;
@@ -37,11 +37,10 @@ export class EventFormComponent implements OnInit {
   mostrarMensajeTitulo:boolean = true
   mostrarMensajeFechaInicio:boolean = true
   mostrarMensajeHoraInicio:boolean = true
+  isDisabled:boolean = false
 
   colors: string[] = ['#f56954', '#00a65a', '#0073b7', '#00c0ef', '#f39c12', '#605ca8', '#d3d3d3'];
   selectedColor: string = '';
-
-  isDisabled:boolean = false
 
   constructor(
     private authService:AuthService,
@@ -100,10 +99,7 @@ export class EventFormComponent implements OnInit {
         this.fecha_hora_fin = null
       }
 
-      this.date = new Date();
-      const mes = this.date.getMonth() +1
-      this.fecha_creacion = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
-      console.log("Fecha creación:: "+this.fecha_creacion)
+      this.fecha_actual = DateUtil.getCurrentFormattedDate()
 
       var eventoJson = {
         title: this.titulo,
@@ -111,7 +107,7 @@ export class EventFormComponent implements OnInit {
         end: this.fecha_hora_fin,
         nota: this.nota,
         color: this.selectedColor,
-        fecha_creacion: this.fecha_creacion,
+        fecha_creacion: this.fecha_actual,
         id_clinica: localStorage.getItem('_cli'),
         id_usuario_creador: localStorage.getItem('_us')
       };

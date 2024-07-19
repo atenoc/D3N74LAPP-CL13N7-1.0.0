@@ -6,6 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Seguimiento } from 'src/app/models/Seguimiento.model';
 import { SeguimientoService } from 'src/app/services/seguimientos/seguimiento.service';
 import { Alerts } from 'src/app/shared/utils/alerts';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
 import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 
 @Component({
@@ -16,9 +17,6 @@ import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 export class SeguimientoComponent implements OnInit {
 
   id: string;
-  date: Date;
-  fecha_hoy:string
-  fecha_hora_actual:string;
   formularioSeguimiento:FormGroup;
   existenSeguimientos:boolean=false
   seguimiento:Seguimiento;
@@ -29,6 +27,9 @@ export class SeguimientoComponent implements OnInit {
   remainingCharacters: number = this.maxCharacters;
   nombre_usuario_creador:string
   nombre_usuario_actualizo:string
+
+  fecha_no_time:string
+  fecha_actual:string
   fecha_creacion:string
   fecha_actualizacion:string
 
@@ -41,13 +42,11 @@ export class SeguimientoComponent implements OnInit {
     private spinner: NgxSpinnerService, 
     private modalService: NgbModal,
     config: NgbModalConfig,
-  ) { 
-    this.date = new Date();
-    const mes = this.date.getMonth() +1
-    this.fecha_hoy = this.date.getDate()+"/"+mes+"/"+this.date.getFullYear()
-
+  ) {
     config.backdrop = 'static';
 		config.keyboard = false;
+
+    this.fecha_no_time = DateUtil.getDateNoTime()
   }
 
   ngOnInit(): void {
@@ -71,11 +70,12 @@ export class SeguimientoComponent implements OnInit {
   crearSeguimiento(){
     console.log("CREAR Seguimiento")
 
+    this.fecha_actual = DateUtil.getCurrentFormattedDate()
     var nuevoSeguimientoJson = JSON.parse(JSON.stringify(this.formularioSeguimiento.value))
     nuevoSeguimientoJson.id_paciente=this.id 
     nuevoSeguimientoJson.id_clinica=localStorage.getItem('_cli') 
     nuevoSeguimientoJson.id_usuario_creador=localStorage.getItem('_us') 
-    nuevoSeguimientoJson.fecha_creacion = this.obtenerFechaHoraHoy()
+    nuevoSeguimientoJson.fecha_creacion = this.fecha_actual
 
     console.log("Seguimiento")
     console.log(nuevoSeguimientoJson)
@@ -114,13 +114,6 @@ export class SeguimientoComponent implements OnInit {
         console.log(err.error.message)
         console.log(err)
       });
-  }
-
-  obtenerFechaHoraHoy(){
-    this.date = new Date();
-    const mes = this.date.getMonth() +1
-    this.fecha_hora_actual = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
-    return this.fecha_hora_actual
   }
 
   openModalNuevo(content: TemplateRef<any>) {
@@ -181,9 +174,10 @@ export class SeguimientoComponent implements OnInit {
     console.log("Actualizar Seguimiento:")
     console.log(this.formularioSeguimiento)
 
+    this.fecha_actual = DateUtil.getCurrentFormattedDate()
     var seguimientoJson = JSON.parse(JSON.stringify(this.formularioSeguimiento.value))
     seguimientoJson.id_usuario_actualizo=localStorage.getItem('_us') 
-    seguimientoJson.fecha_actualizacion = this.obtenerFechaHoraHoy()
+    seguimientoJson.fecha_actualizacion = this.fecha_actual
     
     this.spinner.show();
     this.seguimientoService.updateSeguimiento(this.seguimiento.id, seguimientoJson).subscribe(res => {

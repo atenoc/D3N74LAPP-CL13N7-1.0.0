@@ -6,6 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Historia } from 'src/app/models/Historia.model';
 import { HistoriaDentalService } from 'src/app/services/historias/historia-dental.service';
 import { Alerts } from 'src/app/shared/utils/alerts';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
 import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 
 @Component({
@@ -17,20 +18,19 @@ export class HistoriaComponent implements OnInit {
 
   id: string;
   rol:string
-  date: Date;
   fecha_hoy:string
   fecha_actual:string;
-  //paciente:Paciente;
 
   nombre_usuario_creador:string
   nombre_usuario_actualizo:string
   fecha_creacion:string
   fecha_actualizacion:string
-  mostrar_creacion:boolean=false
-  mostrar_actualizacion:boolean=false
   historia:Historia
   id_historia:string
   formularioHistoria:FormGroup;
+
+  mostrar_creacion:boolean=false
+  mostrar_actualizacion:boolean=false
   botonGuardar:boolean=false;
   botonActualizar:boolean = false
 
@@ -39,11 +39,7 @@ export class HistoriaComponent implements OnInit {
     private activatedRoute: ActivatedRoute, 
     private historiaService:HistoriaDentalService,
     private spinner: NgxSpinnerService,
-  ) { 
-    this.date = new Date();
-    const mes = this.date.getMonth() +1
-    this.fecha_hoy = this.date.getDate()+"/"+mes+"/"+this.date.getFullYear()
-  }
+  ) { }
 
   ngOnInit(): void {
     this.formularioHistoria = this.formBuilder.group({
@@ -74,11 +70,14 @@ export class HistoriaComponent implements OnInit {
   }
 
   guardarHistoria(){
+
+    this.fecha_actual = DateUtil.getCurrentFormattedDate()
+
     var historiaJson = JSON.parse(JSON.stringify(this.formularioHistoria.value))
     historiaJson.id_paciente = this.id;
     historiaJson.id_usuario_creador=localStorage.getItem('_us') 
     historiaJson.id_clinica=localStorage.getItem('_cli') 
-    historiaJson.fecha_creacion = this.obtenerFechaHoraHoy()
+    historiaJson.fecha_creacion = this.fecha_actual
 
     this.spinner.show();
     this.historiaService.createHistoria(historiaJson).subscribe(res =>{
@@ -149,10 +148,12 @@ export class HistoriaComponent implements OnInit {
   }
 
   actualizarHistoria(){
+
+    this.fecha_actual = DateUtil.getCurrentFormattedDate()
     var historiaJson = JSON.parse(JSON.stringify(this.formularioHistoria.value))
     historiaJson.id_paciente = this.id;
     historiaJson.id_usuario_actualizo=localStorage.getItem('_us') 
-    historiaJson.fecha_actualizacion = this.obtenerFechaHoraHoy()
+    historiaJson.fecha_actualizacion = this.fecha_actual
 
     this.spinner.show();
     this.historiaService.updateHistoria(this.id_historia, historiaJson).subscribe(res =>{
@@ -167,14 +168,6 @@ export class HistoriaComponent implements OnInit {
       console.log("error: " + err)
       Alerts.error(Mensajes.ERROR_500, Mensajes.HISTORIA_NO_ACTUALIZADA, Mensajes.INTENTAR_MAS_TARDE);
     } 
-  }
-
-
-  obtenerFechaHoraHoy(){
-    this.date = new Date();
-    const mes = this.date.getMonth() +1
-    this.fecha_actual = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
-    return this.fecha_actual
   }
 
 }

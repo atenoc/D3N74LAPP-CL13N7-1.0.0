@@ -10,6 +10,7 @@ import { CentroService } from 'src/app/services/clinicas/centro.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { PlanesService } from 'src/app/services/planes/planes.service';
 import { Alerts } from 'src/app/shared/utils/alerts';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
 
 @Component({
   selector: 'app-login',
@@ -29,8 +30,7 @@ export class LoginComponent implements OnInit {
   mostrarError: Boolean
   mensajeDetalleError: String
 
-  date: Date;
-  fecha_hoy:string
+  fecha_actual:string
 
   constructor(
     private sharedService:SharedService, 
@@ -174,13 +174,9 @@ export class LoginComponent implements OnInit {
     //console.log("Validar vigencia de plan gratuito:: " +id_plan);
 
     if(id_plan == '0401PF30'){
-      //Validar vigencia de plan gratuito
+      this.fecha_actual = DateUtil.getDateNoTime()
 
-      this.date = new Date();
-      const mes = this.date.getMonth() +1
-      this.fecha_hoy = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()
-
-      this.planService.validarPlanGratuito(localStorage.getItem('_cli'), this.fecha_hoy).subscribe(
+      this.planService.validarPlanGratuito(localStorage.getItem('_cli'), this.fecha_actual).subscribe(
           res => {
             console.log("Validando Plan")
             //console.log(res)

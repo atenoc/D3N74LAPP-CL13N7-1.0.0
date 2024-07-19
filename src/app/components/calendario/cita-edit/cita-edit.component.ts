@@ -9,6 +9,7 @@ import { CitaService } from 'src/app/services/citas/cita.service';
 import { PacienteService } from 'src/app/services/pacientes/paciente.service';
 import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
 import { Alerts } from 'src/app/shared/utils/alerts';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
 import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 
 @Component({
@@ -27,9 +28,6 @@ export class CitaEditComponent implements OnInit {
   medicos: Usuario[] = [];
   tituloCard: string;
   citaEditar:CitaEditar
-
-  date: Date;
-  fecha_actual:string
 
   fechaModelInicio: NgbDateStruct;
   fechaModelFin?: NgbDateStruct;
@@ -93,6 +91,7 @@ export class CitaEditComponent implements OnInit {
 
   nombre_usuario_creador:string
   nombre_usuario_actualizo:string
+  fecha_actual:string
   fecha_creacion:string
   fecha_actualizacion:string
   mostrar_actualizacion:boolean=false
@@ -291,11 +290,8 @@ export class CitaEditComponent implements OnInit {
   }  
 
   updateCita(){
-    this.date = new Date();
-    const mes = this.date.getMonth() +1
-    this.fecha_actual = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
-    console.log("fecha_actualizacion:: "+this.fecha_actual)
-
+    console.log("Update cita")
+    
     this.fecha_hora_inicio = this.fechaModelInicio.year+"-"+this.fechaModelInicio.month+"-"+this.fechaModelInicio.day+" "+this.selectedTimeInicio.hour+":"+this.selectedTimeInicio.minute+":00"
     console.log("fecha_hora_inicio a guardar: " +this.fecha_hora_inicio)
 
@@ -304,6 +300,8 @@ export class CitaEditComponent implements OnInit {
     }else{
       this.fecha_hora_fin = null
     }
+
+    this.fecha_actual = DateUtil.getCurrentFormattedDate()
 
     this.spinner.show();
     this.citaService.updateCita(

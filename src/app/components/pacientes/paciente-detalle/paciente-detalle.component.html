@@ -91,7 +91,7 @@
 
     <div *ngIf="!editando" class="card-header p-0 border-bottom-0">
       <small class="text-muted">Creado por: {{ nombre_usuario_creador }}</small>
-      <small class="text-muted">| Fecha de creación: {{ fecha_creacion }}  </small>
+      <small class="text-muted"> | Fecha de creación: {{ fecha_creacion }}  </small>
       <div class="card-tools">
         <button class="btn btn-outline-primary" (click)="cambiarEstadoEditando()"> <i class="nav-icon fas fa-edit"></i> Editar</button>
       </div>
@@ -99,7 +99,7 @@
       <br>
       <div *ngIf="mostrar_actualizacion">
         <small class="text-muted">Actualizado por: {{ nombre_usuario_actualizo }}</small>
-        <small class="text-muted">| Fecha actualización: {{ fecha_actualizacion }} </small>
+        <small class="text-muted"> | Fecha actualización: {{ fecha_actualizacion }} </small>
       </div>
     </div>
 

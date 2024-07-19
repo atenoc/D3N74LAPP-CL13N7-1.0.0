@@ -12,6 +12,7 @@ import { Usuario } from 'src/app/models/Usuario.model';
 import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
 import { Alerts } from 'src/app/shared/utils/alerts';
 import { Cita } from 'src/app/models/Cita.model';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
 
 @Component({
   selector: 'app-cita-form',
@@ -26,8 +27,8 @@ export class CitaFormComponent implements OnInit {
   pacientes: Paciente[] = [];
   medicos: Usuario[] = [];
   cita:Cita
-  date: Date;
-  fecha_creacion:string
+
+  fecha_actual:string
   fechaModelInicio: NgbDateStruct;
   fechaModelFin: NgbDateStruct;
   selectedTimeInicio: { hour: number, minute: number } = { hour: 0, minute: 0 };
@@ -123,11 +124,7 @@ export class CitaFormComponent implements OnInit {
   }
 
   crearCita(){
-    this.date = new Date();
-
-    //console.log("Tiempo Computadora: "+ this.date)
-    //console.log("Fecha Inicio: "+ JSON.stringify(this.fechaModelInicio))
-    //console.log("Hora Inicio: "+ JSON.stringify(this.selectedTimeInicio))
+    console.log("Crear cita")
 
     this.validaNombre() 
     this.validaApPaterno()
@@ -165,9 +162,7 @@ export class CitaFormComponent implements OnInit {
         this.fecha_hora_fin = null
       }
 
-      const mes = this.date.getMonth() +1
-      this.fecha_creacion = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
-      console.log("Fecha creación:: "+this.fecha_creacion)
+      this.fecha_actual = DateUtil.getCurrentFormattedDate()
 
       if(this.existePaciente){
         this.registrarCita();
@@ -184,7 +179,7 @@ export class CitaFormComponent implements OnInit {
       apellidom: this.apellidoMaternoPaciente,
       edad: this.edadPaciente,
       telefono: this.telefonoPaciente,
-      fecha_creacion: this.fecha_creacion,
+      fecha_creacion: this.fecha_actual,
       id_clinica: localStorage.getItem('_cli'),
       id_usuario_creador: localStorage.getItem('_us')
     };
@@ -221,7 +216,7 @@ export class CitaFormComponent implements OnInit {
       id_usuario_medico: this.id_usuario_medico,
       id_clinica: localStorage.getItem('_cli'),
       id_usuario_creador: localStorage.getItem('_us'),
-      fecha_creacion: this.fecha_creacion,
+      fecha_creacion: this.fecha_actual,
     };
 
     console.log("Todoooo listo para registrar cita")

@@ -13,7 +13,6 @@ export class FooterComponent implements OnInit {
   rolUsuario:string
   mostrarClinicas:boolean=false;
   mostrarUsuarios:boolean=false;
-
   isDarkMode = false;
 
   date: Date;
@@ -28,7 +27,7 @@ export class FooterComponent implements OnInit {
     console.log("FOOTER")
     this.date = new Date();
     this.numberAnio = this.date.getFullYear()
-    //console.log("Año fotter: "+this.date.getFullYear())
+
     if(localStorage.getItem('_us') && localStorage.getItem('_em')){
       this.authService.validarUsuarioActivo$(localStorage.getItem('_us'), localStorage.getItem('_em'), localStorage.getItem('_cli')).subscribe(
         res => {

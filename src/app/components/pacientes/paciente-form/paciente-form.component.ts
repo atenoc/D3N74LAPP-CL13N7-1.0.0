@@ -10,6 +10,7 @@ import { PacienteService } from 'src/app/services/pacientes/paciente.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
 import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 import { Alerts } from 'src/app/shared/utils/alerts';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
 
 @Component({
   selector: 'app-paciente-form',
@@ -20,8 +21,9 @@ export class PacienteFormComponent implements OnInit {
 
   rol:string
   formularioPaciente:FormGroup;
-  date: Date;
-  fecha_creacion:string
+  fecha_actual:string
+  paciente:Paciente
+  catSexo:CatalogoSexo[] = [];
 
   //mensajes
   campoRequerido: string;
@@ -29,10 +31,6 @@ export class PacienteFormComponent implements OnInit {
   telefonoLongitud: string;
   soloNumeros: string;
   soloLetras: string;
-
-  paciente:Paciente
-  catSexo:CatalogoSexo[] = [];
-
   isDisabled:boolean = false
 
   constructor(
@@ -119,16 +117,11 @@ export class PacienteFormComponent implements OnInit {
   crearPaciente(){
     console.log("CREAR Paciente")
 
+    this.fecha_actual = DateUtil.getCurrentFormattedDate()
     var nuevoPacienteJson = JSON.parse(JSON.stringify(this.formularioPaciente.value))
     nuevoPacienteJson.id_usuario_creador=localStorage.getItem('_us') 
     nuevoPacienteJson.id_clinica=localStorage.getItem('_cli') 
- 
-    this.date = new Date();
-    const mes = this.date.getMonth() +1
-    this.fecha_creacion = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
-    console.log("Fecha creación:: "+this.fecha_creacion)
-
-    nuevoPacienteJson.fecha_creacion = this.fecha_creacion
+    nuevoPacienteJson.fecha_creacion = this.fecha_actual
 
     console.log("Paciente a registrar: ")
     console.log(nuevoPacienteJson)

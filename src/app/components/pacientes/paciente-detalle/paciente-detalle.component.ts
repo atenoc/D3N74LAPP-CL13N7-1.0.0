@@ -9,6 +9,7 @@ import { PacienteService } from 'src/app/services/pacientes/paciente.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
 import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 import { Alerts } from 'src/app/shared/utils/alerts';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
 
 @Component({
   selector: 'app-paciente-detalle',
@@ -21,10 +22,10 @@ export class PacienteDetalleComponent implements OnInit {
   id: string;
   paciente:Paciente;
   formularioPaciente:FormGroup;
+  catSexo:CatalogoSexo[] = [];
   editando: boolean = false;
   tituloCard: string;
   idUsuario:string;
-  fecha_creacion:string;
   nombre_usuario_creador:string;
 
   //mensajes
@@ -34,13 +35,10 @@ export class PacienteDetalleComponent implements OnInit {
   soloNumeros: string;
   soloLetras: string;
 
-  catSexo:CatalogoSexo[] = [];
-  //citas:CitaPaciente[] = []
-
-  date: Date;
-  fecha_actual:string
   mostrar_actualizacion:boolean=false
   nombre_usuario_actualizo:string
+  fecha_creacion:string;
+  fecha_actual:string
   fecha_actualizacion:string
 
   constructor(
@@ -154,14 +152,12 @@ export class PacienteDetalleComponent implements OnInit {
   }
 
   actualizarPaciente(){
-    this.spinner.show();
     console.log("Actualizar paciente:")
     console.log(this.formularioPaciente)
 
-    this.date = new Date();
-    const mes = this.date.getMonth()+1;
-    this.fecha_actual = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
+    this.fecha_actual = DateUtil.getCurrentFormattedDate()
 
+    this.spinner.show();
     this.pacienteService.updatePaciente(
       this.paciente.id, 
       this.formularioPaciente.value.nombre,

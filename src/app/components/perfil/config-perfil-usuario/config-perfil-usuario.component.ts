@@ -8,6 +8,7 @@ import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
 import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 import { Alerts } from 'src/app/shared/utils/alerts';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
 declare var require: any;
 
 @Component({
@@ -24,9 +25,7 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
   direccionClinica:string
 
   formularioCentro:FormGroup
-
-  date: Date;
-  fecha_creacion:string
+  fecha_actual:string
 
   constructor(
     private centroService:CentroService, 
@@ -65,22 +64,20 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
   validarInfo(){
     console.log("Validando info")
 
-    this.date = new Date();
-    const mes = this.date.getMonth()+1;
-    this.fecha_creacion = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
-
     if(this.nombre ==="" || this.apellido ==="" || this.nombreClinica ==="" || this.telefono.length !=10 || this.direccionClinica ===""){
       Alerts.warning(Mensajes.WARNING, Mensajes.REGISTRO_VALIDACION);
 
       return
     }
 
+    this.fecha_actual = DateUtil.getCurrentFormattedDate()
+
     const centroJson = {
       id_usuario: localStorage.getItem('_us'),
       nombre: this.nombreClinica,
       telefono: this.telefono,
       direccion: this.direccionClinica,
-      fecha_creacion: this.fecha_creacion,
+      fecha_creacion: this.fecha_actual,
       id_plan: '0401PF30'
     };
 
@@ -105,7 +102,7 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
         this.cifradoService.setEncryptedIdPlan(res.id_plan)
 
         this.spinner.show();
-        this.usuarioService.updateUsuarioRegister(localStorage.getItem('_us'), this.nombre, this.apellido, res.id, this.fecha_creacion).subscribe(
+        this.usuarioService.updateUsuarioRegister(localStorage.getItem('_us'), this.nombre, this.apellido, res.id, this.fecha_actual).subscribe(
           res=>{
             this.spinner.hide();
             this.router.navigate(['/perfil'])

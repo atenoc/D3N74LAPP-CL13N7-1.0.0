@@ -6,6 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Diagnostico } from 'src/app/models/Diagnostico.model';
 import { DiagnosticoService } from 'src/app/services/diagnosticos/diagnostico.service';
 import { Alerts } from 'src/app/shared/utils/alerts';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
 import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 
 @Component({
@@ -16,19 +17,20 @@ import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 export class DiagnosticoComponent implements OnInit {
 
   id: string;
-  date: Date;
-  fecha_hoy:string
-  fecha_hora_actual:string;
   formularioDiagnostico:FormGroup;
-  existenDiagnosticos:boolean=false
   diagnostico:Diagnostico;
   diagnosticos:Diagnostico[] = [];
   mensaje:string
+
+  existenDiagnosticos:boolean=false
   mostrar_actualizacion:boolean=false
   maxCharacters: number = 1500; // Número máximo de caracteres permitidos
   remainingCharacters: number = this.maxCharacters;
   nombre_usuario_creador:string
   nombre_usuario_actualizo:string
+
+  fecha_no_time:string
+  fecha_actual:string
   fecha_creacion:string
   fecha_actualizacion:string
 
@@ -42,12 +44,10 @@ export class DiagnosticoComponent implements OnInit {
     private modalService: NgbModal,
     config: NgbModalConfig,
   ) { 
-    this.date = new Date();
-    const mes = this.date.getMonth() +1
-    this.fecha_hoy = this.date.getDate()+"/"+mes+"/"+this.date.getFullYear()
-
     config.backdrop = 'static';
 		config.keyboard = false;
+
+    this.fecha_no_time = DateUtil.getDateNoTime()
   }
 
   ngOnInit(): void {
@@ -72,11 +72,13 @@ export class DiagnosticoComponent implements OnInit {
   crearDiagnostico(){
     console.log("CREAR Diagnostico")
 
+    this.fecha_actual = DateUtil.getCurrentFormattedDate()
+
     var nuevoDiagnosticoJson = JSON.parse(JSON.stringify(this.formularioDiagnostico.value))
     nuevoDiagnosticoJson.id_paciente=this.id 
     nuevoDiagnosticoJson.id_clinica=localStorage.getItem('_cli') 
     nuevoDiagnosticoJson.id_usuario_creador=localStorage.getItem('_us') 
-    nuevoDiagnosticoJson.fecha_creacion = this.obtenerFechaHoraHoy()
+    nuevoDiagnosticoJson.fecha_creacion = this.fecha_actual
 
     console.log("Diagnostico.")
     console.log(nuevoDiagnosticoJson)
@@ -115,13 +117,6 @@ export class DiagnosticoComponent implements OnInit {
         console.log(err.error.message)
         console.log(err)
       });
-  }
-
-  obtenerFechaHoraHoy(){
-    this.date = new Date();
-    const mes = this.date.getMonth() +1
-    this.fecha_hora_actual = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
-    return this.fecha_hora_actual
   }
 
   openModalNuevo(content: TemplateRef<any>) {
@@ -183,9 +178,10 @@ export class DiagnosticoComponent implements OnInit {
     console.log("Actualizar Diagnostico:")
     console.log(this.formularioDiagnostico)
 
+    this.fecha_actual = DateUtil.getCurrentFormattedDate()
     var diagnosticoJson = JSON.parse(JSON.stringify(this.formularioDiagnostico.value))
     diagnosticoJson.id_usuario_actualizo=localStorage.getItem('_us') 
-    diagnosticoJson.fecha_actualizacion = this.obtenerFechaHoraHoy()
+    diagnosticoJson.fecha_actualizacion = this.fecha_actual
     
     this.spinner.show();
     this.diagnosticoService.updateDiagnostico(this.diagnostico.id, diagnosticoJson).subscribe(res => {

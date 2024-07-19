@@ -10,6 +10,7 @@ import { CatalogoService } from 'src/app/services/catalogos/catalogo.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Alerts } from 'src/app/shared/utils/alerts';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
 
 @Component({
   selector: 'app-usuario-form',
@@ -35,10 +36,7 @@ export class UsuarioFormComponent implements OnInit {
   soloLetras: string;
 
   rol:string
-
-  date: Date;
-  fecha_creacion:string
-
+  fecha_actual:string
   isDisabled:boolean = false
 
   constructor(
@@ -142,14 +140,10 @@ export class UsuarioFormComponent implements OnInit {
   crearUsuario(){
     console.log("CREAR USUARIO")
 
+    this.fecha_actual = DateUtil.getCurrentFormattedDate()
     var nuevoUsuarioJson = JSON.parse(JSON.stringify(this.formularioUsuario.value))
     nuevoUsuarioJson.id_usuario_creador=localStorage.getItem('_us') 
-
-    this.date = new Date();
-    const mes = this.date.getMonth()+1;
-    this.fecha_creacion = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
-
-    nuevoUsuarioJson.fecha_creacion = this.fecha_creacion
+    nuevoUsuarioJson.fecha_creacion = this.fecha_actual
     
     if(this.rol == "suadmin" || this.rol == "adminn1"){
       nuevoUsuarioJson.id_clinica=localStorage.getItem('_cli') 
@@ -157,6 +151,7 @@ export class UsuarioFormComponent implements OnInit {
 
     console.log("Usuario a registrar: "+ nuevoUsuarioJson)
     console.log(nuevoUsuarioJson)
+    
     this.spinner.show();
     this.usuarioService.createUsuario(nuevoUsuarioJson).subscribe(
       res => {

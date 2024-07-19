@@ -6,6 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Tratamiento } from 'src/app/models/Tratamiento.model';
 import { TratamientoService } from 'src/app/services/tratamientos/tratamiento.service';
 import { Alerts } from 'src/app/shared/utils/alerts';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
 import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 
 @Component({
@@ -16,9 +17,6 @@ import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 export class TratamientoComponent implements OnInit {
 
   id: string;
-  date: Date;
-  fecha_hoy:string
-  fecha_hora_actual:string;
   formularioTratamiento:FormGroup;
   existenTratamientos:boolean=false
   tratamiento:Tratamiento;
@@ -31,6 +29,9 @@ export class TratamientoComponent implements OnInit {
   remainingCharacters2: number = this.maxCharacters2;
   nombre_usuario_creador:string
   nombre_usuario_actualizo:string
+
+  fecha_no_time:string
+  fecha_actual:string
   fecha_creacion:string
   fecha_actualizacion:string
 
@@ -44,12 +45,10 @@ export class TratamientoComponent implements OnInit {
     private modalService: NgbModal,
     config: NgbModalConfig,
   ) { 
-    this.date = new Date();
-    const mes = this.date.getMonth() +1
-    this.fecha_hoy = this.date.getDate()+"/"+mes+"/"+this.date.getFullYear()
-
     config.backdrop = 'static';
 		config.keyboard = false;
+
+    this.fecha_no_time = DateUtil.getDateNoTime()
   }
 
   ngOnInit(): void {
@@ -74,11 +73,12 @@ export class TratamientoComponent implements OnInit {
   crearTratamiento(){
     console.log("CREAR Tratamiento")
 
+    this.fecha_actual = DateUtil.getCurrentFormattedDate()
     var nuevoTratamientoJson = JSON.parse(JSON.stringify(this.formularioTratamiento.value))
     nuevoTratamientoJson.id_paciente=this.id 
     nuevoTratamientoJson.id_clinica=localStorage.getItem('_cli') 
     nuevoTratamientoJson.id_usuario_creador=localStorage.getItem('_us') 
-    nuevoTratamientoJson.fecha_creacion = this.obtenerFechaHoraHoy()
+    nuevoTratamientoJson.fecha_creacion = this.fecha_actual
 
     console.log("Tratamiento.")
     console.log(nuevoTratamientoJson)
@@ -118,13 +118,6 @@ export class TratamientoComponent implements OnInit {
         console.log(err.error.message)
         console.log(err)
       });
-  }
-
-  obtenerFechaHoraHoy(){
-    this.date = new Date();
-    const mes = this.date.getMonth() +1
-    this.fecha_hora_actual = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
-    return this.fecha_hora_actual
   }
 
   openModalNuevo(content: TemplateRef<any>) {
@@ -191,9 +184,10 @@ export class TratamientoComponent implements OnInit {
     console.log("Actualizar Tratamiento:")
     console.log(this.formularioTratamiento)
 
+    this.fecha_actual = DateUtil.getCurrentFormattedDate()
     var tratamientoJson = JSON.parse(JSON.stringify(this.formularioTratamiento.value))
     tratamientoJson.id_usuario_actualizo=localStorage.getItem('_us') 
-    tratamientoJson.fecha_actualizacion = this.obtenerFechaHoraHoy()
+    tratamientoJson.fecha_actualizacion = this.fecha_actual
     
     this.spinner.show();
     this.tratamientoService.updateTratamiento(this.tratamiento.id, tratamientoJson).subscribe(res => {

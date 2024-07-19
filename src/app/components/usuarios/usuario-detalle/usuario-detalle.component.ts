@@ -11,6 +11,7 @@ import { CifradoService } from 'src/app/services/cifrado.service';
 import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
 import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 import { Alerts } from 'src/app/shared/utils/alerts';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
 
 @Component({
   selector: 'app-usuario-detalle',
@@ -22,7 +23,6 @@ export class UsuarioDetalleComponent implements OnInit {
   id: string;
   usuario:Usuario;
   formularioUsuario:FormGroup;
-  editando: boolean = false;
   tituloCard: string;
   idUsuario:string;
   fecha_creacion:string;
@@ -41,13 +41,12 @@ export class UsuarioDetalleComponent implements OnInit {
   
   rol:string
   descRol:string
-
   mismoUsuario:boolean;
+  editando: boolean = false;
 
-  date: Date;
-  fecha_actual:string;
   mostrar_actualizacion:boolean=false
   nombre_usuario_actualizo:string
+  fecha_actual:string;
   fecha_actualizacion:string
 
   constructor(
@@ -166,15 +165,12 @@ export class UsuarioDetalleComponent implements OnInit {
     this.router.navigate(['/password', this.id]);
   }
 
-  actualizarUsuario(){
-    this.spinner.show();
+  actualizarUsuario(){  
     console.log("Actualizar usuario:")
     console.log(this.formularioUsuario)
+    this.fecha_actual = DateUtil.getCurrentFormattedDate()
 
-    this.date = new Date();
-    const mes = this.date.getMonth()+1;
-    this.fecha_actual = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
-
+    this.spinner.show();
     this.usuarioService.updateUsuario(
       this.usuario.id, 
       this.formularioUsuario.value.correo,
