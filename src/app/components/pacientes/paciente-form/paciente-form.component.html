@@ -35,10 +35,12 @@
                         <div class="col-sm">
                             <div class="form-group">
                                 <strong> Nombre(s) * </strong>
-                                <input type="text" class="form-control" formControlName="nombre" [ngClass]="getInputClass('nombre')">
+                                <input type="text" class="form-control" formControlName="nombre" [ngClass]="getInputClass('nombre')" maxlength="30">
 
                                 <div *ngIf="formularioPaciente.controls['nombre'].invalid && formularioPaciente.controls['nombre'].dirty" class="invalid-input-message">
-                                    <span *ngIf="formularioPaciente.controls['nombre'].errors.required">{{ campoRequerido }}</span>
+                                    <div><span *ngIf="formularioPaciente.controls['nombre'].errors.required">{{ campoRequerido }}</span></div>
+                                    <div><span *ngIf="formularioPaciente.controls['nombre'].errors.minlength">{{ longitudMinima }}</span></div>
+                                    <div><span *ngIf="formularioPaciente.controls['nombre'].errors.invalidText">{{ soloLetras }}</span></div>
                                 </div>
                             </div>
                         </div>
@@ -46,10 +48,12 @@
                         <div class="col-sm">
                             <div class="form-group">
                                 <strong> Apellido Paterno * </strong>
-                                <input type="text" class="form-control" formControlName="apellidop" [ngClass]="getInputClass('apellidop')">
+                                <input type="text" class="form-control" formControlName="apellidop" [ngClass]="getInputClass('apellidop')" maxlength="20">
 
                                 <div *ngIf="formularioPaciente.controls['apellidop'].invalid && formularioPaciente.controls['apellidop'].dirty" class="invalid-input-message">
-                                    <span *ngIf="formularioPaciente.controls['apellidop'].errors.required">{{ campoRequerido }}</span>
+                                    <div><span *ngIf="formularioPaciente.controls['apellidop'].errors.required">{{ campoRequerido }}</span></div>
+                                    <div><span *ngIf="formularioPaciente.controls['apellidop'].errors.minlength">{{ longitudMinima }}</span></div>
+                                    <div><span *ngIf="formularioPaciente.controls['apellidop'].errors.invalidText">{{ soloLetras }}</span></div>
                                 </div>
                             </div>
                         </div>
@@ -57,9 +61,10 @@
                         <div class="col-sm">
                             <div class="form-group">
                                 <span class="text-muted">Apellido Materno </span>
-                                <input type="text" class="form-control" formControlName="apellidom">
+                                <input type="text" class="form-control" formControlName="apellidom" maxlength="20">
                                 <div *ngIf="formularioPaciente.controls['apellidom'].invalid" class="invalid-input-message">
-                                    <span *ngIf="formularioPaciente.controls['apellidom'].errors.invalidRegex">{{ soloLetras }}</span>
+                                    <span *ngIf="formularioPaciente.controls['apellidom'].errors.minlength">{{ longitudMinima }}</span>
+                                    <span *ngIf="formularioPaciente.controls['apellidom'].errors.invalidText">{{ soloLetras }}</span>
                                 </div>
                             </div>
                         </div>
@@ -79,7 +84,6 @@
                         <div class="col-sm">
                             <div class="form-group">
                                 <span class="text-muted">Género </span>
-                                <!-- <input type="text" class="form-control" formControlName="sexo"> -->
                                 <select class="form-select" formControlName="sexo">
                                     <option selected disabled [value]="null">Selecciona una opción:</option>
                                     <option *ngFor="let item of catSexo" [value]="item.id">{{ item.descripcion }}</option>
@@ -92,15 +96,9 @@
                                 <strong>Teléfono * </strong>
                                 <input type="text" class="form-control" formControlName="telefono" [ngClass]="getInputClass('telefono')" placeholder="10 dígitos" maxlength="10">
                                 <div *ngIf="formularioPaciente.controls['telefono'].invalid && formularioPaciente.controls['telefono'].dirty" class="invalid-input-message">
-                                    <div>
-                                        <span *ngIf="formularioPaciente.controls['telefono'].errors.required">{{ campoRequerido }}</span> 
-                                    </div>
-                                    <div>
-                                        <span *ngIf="formularioPaciente.controls['telefono'].errors.pattern && !formularioPaciente.controls['telefono'].errors.required">{{ soloNumeros }}</span> 
-                                    </div>
-                                    <div>
-                                        <span *ngIf="formularioPaciente.controls['telefono'].errors.minlength">{{ telefonoLongitud }}</span> 
-                                    </div>
+                                    <div><span *ngIf="formularioPaciente.controls['telefono'].errors.required">{{ campoRequerido }}</span></div>
+                                    <div><span *ngIf="formularioPaciente.controls['telefono'].errors.pattern && !formularioPaciente.controls['telefono'].errors.required">{{ soloNumeros }}</span></div>
+                                    <div><span *ngIf="formularioPaciente.controls['telefono'].errors.minlength">{{ telefonoLongitud }}</span></div>
                                 </div> 
                             </div>
                         </div>
@@ -109,9 +107,8 @@
                         <div class="col-sm">
                             <div class="form-group">
                                 <span class="text-muted">Correo </span>
-                                <input type="email" class="form-control" formControlName="correo" [ngClass]="getInputClass('correo')" placeholder="correo@ejemplo.com">
+                                <input type="email" class="form-control" formControlName="correo" [ngClass]="getInputClass('correo')" placeholder="correo@ejemplo.com" maxlength="30">
                                 <div *ngIf="formularioPaciente.controls['correo'].invalid && formularioPaciente.controls['correo'].dirty" class="invalid-input-message">
-                                    <!-- <span *ngIf="formularioPaciente.controls['correo'].errors.email">{{ correoValido }}</span> -->
                                     <span *ngIf="formularioPaciente.controls['correo'].hasError('emailInvalido')">{{ correoValido }}</span>
                                 </div>
                             </div>
@@ -122,6 +119,10 @@
                             <div class="form-group">
                                 <span class="text-muted">Dirección </span>
                                 <textarea class="form-control" formControlName="direccion" rows="2" maxlength="130"></textarea>
+                                <div *ngIf="formularioPaciente.controls['direccion'].invalid" class="invalid-input-message">
+                                    <span *ngIf="formularioPaciente.controls['direccion'].errors.minlength">{{ longitudMinima }}</span>
+                                    <span *ngIf="formularioPaciente.controls['direccion'].errors.invalidText">{{ caracteresNoPermitidos}} </span>
+                                </div>
                             </div>
                         </div>
                     </div>

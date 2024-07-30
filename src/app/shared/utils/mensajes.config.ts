@@ -18,13 +18,15 @@ export const Mensajes = {
     
     // Validaciones de formulario
     CAMPO_REQUERIDO: 'Este campo es requerido ',
-    CORREO_VALIDO: 'Por favor, ingresa un correo válido ',
+    CORREO_VALIDO: 'Ingresa un correo válido ',
     CORREO_EXISTENTE: 'Este correo ya se encuentra registrado ',
-    TELEFONO_LONGITUD:'El teléfono debe contener al menos 10 dígitos ',
-    SOLO_NUMEROS: 'Por favor, ingresa sólo números ', 
-    SOLO_LETRAS: 'Por favor, ingresa sólo letras ', 
+    TELEFONO_LONGITUD:'Ingresa 10 dígitos ',
+    SOLO_NUMEROS: 'Escribe sólo números ', 
+    SOLO_LETRAS: 'Ingresa sólo letras ', 
+    LONGITUD_MINIMA: 'Continua escribiendo... ',
     BUSQUEDA_NO_COINCIDENCIAS: 'No hay coincidencias ',
     CAMPOS_OBLIGATORIOS: 'Los campos marcados con (*) son obligatorios ',
+    CARACTERES_NO_PERMITIDOS: 'Algunos caracteres no están permitidos ',
 
     //Contraseña
     CONTRASENA_INVALIDA: 'La contraseña debe contener al menos una letra mayúscula (A-Z), un número (0-9) y un caracter especial (#, $, %, &, ect) ',

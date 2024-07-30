@@ -37,10 +37,9 @@
                         <div class="col-sm">
                             <div class="form-group">
                                 <strong> Correo * </strong>
-                                <input type="email" class="form-control" formControlName="correo" [ngClass]="getInputClass('correo')" placeholder="ejemplo@correo.com">
+                                <input type="email" class="form-control" formControlName="correo" [ngClass]="getInputClass('correo')" maxlength="30" placeholder="ejemplo@correo.com">
                                 <div *ngIf="formularioUsuario.controls['correo'].invalid && formularioUsuario.controls['correo'].dirty" class="invalid-input-message">
                                     <span *ngIf="formularioUsuario.controls['correo'].errors.required" >{{ campoRequerido }}</span>
-                                    <!-- <span *ngIf="formularioUsuario.controls['correo'].errors.email">{{ correoValido }}</span> -->
                                     <span *ngIf="formularioUsuario.controls['correo'].hasError('emailInvalido')">{{ correoValido }}</span>
                                 </div>
                             </div>
@@ -49,7 +48,7 @@
                         <div class="col-sm">
                             <div class="form-group">
                                 <strong> Contraseña * </strong>
-                                <input type="password" class="form-control" formControlName="llave" [ngClass]="getInputClass('llave')" placeholder="Ingrese una contraseña">
+                                <input type="password" class="form-control" formControlName="llave" [ngClass]="getInputClass('llave')" maxlength="65" placeholder="Ingrese una contraseña">
                                 <div *ngIf="formularioUsuario.controls['llave'].invalid && formularioUsuario.controls['llave'].dirty" class="invalid-input-message">
                                     <span *ngIf="formularioUsuario.controls['llave'].errors.required">{{ campoRequerido }}</span>
                                     <span *ngIf="formularioUsuario.controls['llave'].errors.minlength">{{ contrasenaLongitud }}</span>  
@@ -64,7 +63,6 @@
                                     <option selected disabled [value]="null">Selecciona una opción:</option>
                                     <option *ngFor="let item of catRoles" [value]="item.id">{{ item.descripcion }}</option>
                                 </select>
-                
                                 <div *ngIf="formularioUsuario.controls['rol'].invalid && formularioUsuario.controls['rol'].dirty" class="invalid-input-message">
                                   <span *ngIf="formularioUsuario.controls['rol'].errors.required">{{ campoRequerido }}</span>
                                 </div>
@@ -89,9 +87,11 @@
                         <div class="col-sm">
                             <div class="form-group">
                                 <strong> Nombre(s) * </strong>
-                                <input type="text" class="form-control" formControlName="nombre" [ngClass]="getInputClass('nombre')" placeholder="">
+                                <input type="text" class="form-control" formControlName="nombre" [ngClass]="getInputClass('nombre')" maxlength="30">
                                 <div *ngIf="formularioUsuario.controls['nombre'].invalid && formularioUsuario.controls['nombre'].dirty" class="invalid-input-message">
-                                    <span *ngIf="formularioUsuario.controls['nombre'].errors.required">{{ campoRequerido }}</span> 
+                                    <div><span *ngIf="formularioUsuario.controls['nombre'].errors.required">{{ campoRequerido }}</span></div>
+                                    <div><span *ngIf="formularioUsuario.controls['nombre'].errors.minlength">{{ longitudMinima }}</span></div>
+                                    <div><span *ngIf="formularioUsuario.controls['nombre'].errors.invalidText">{{ soloLetras }}</span></div>
                                 </div>
                             </div>
                         </div>
@@ -99,9 +99,11 @@
                         <div class="col-sm">
                             <div class="form-group">
                                 <strong> Apellido Paterno * </strong>
-                                <input type="text" class="form-control" formControlName="apellidop" [ngClass]="getInputClass('apellidop')" placeholder="">
+                                <input type="text" class="form-control" formControlName="apellidop" [ngClass]="getInputClass('apellidop')" maxlength="20">
                                 <div *ngIf="formularioUsuario.controls['apellidop'].invalid && formularioUsuario.controls['apellidop'].dirty" class="invalid-input-message">
-                                    <span *ngIf="formularioUsuario.controls['apellidop'].errors.required">{{ campoRequerido }}</span> 
+                                    <div><span *ngIf="formularioUsuario.controls['apellidop'].errors.required">{{ campoRequerido }}</span></div>
+                                    <div><span *ngIf="formularioUsuario.controls['apellidop'].errors.minlength">{{ longitudMinima }}</span></div>
+                                    <div><span *ngIf="formularioUsuario.controls['apellidop'].errors.invalidText">{{ soloLetras }}</span></div>
                                 </div>
                             </div>
                         </div>
@@ -109,9 +111,10 @@
                         <div class="col-sm">
                             <div class="form-group">
                                 <span class="text-muted"> Apellido Materno </span>
-                                <input type="text" class="form-control" formControlName="apellidom" placeholder="">
+                                <input type="text" class="form-control" formControlName="apellidom" maxlength="20">
                                 <div *ngIf="formularioUsuario.controls['apellidom'].invalid" class="invalid-input-message">
-                                    <span *ngIf="formularioUsuario.controls['apellidom'].errors.invalidRegex">{{ soloLetras }}</span>
+                                    <span *ngIf="formularioUsuario.controls['apellidom'].errors.minlength">{{ longitudMinima }}</span>
+                                    <span *ngIf="formularioUsuario.controls['apellidom'].errors.invalidText">{{ soloLetras }}</span>
                                 </div>
                             </div>
                         </div>
@@ -134,12 +137,8 @@
                                 <span class="text-muted"> Teléfono</span>
                                 <input type="text" class="form-control" formControlName="telefono" [ngClass]="getInputClass('telefono')" placeholder="10 dígitos" maxlength="10">
                                 <div *ngIf="formularioUsuario.controls['telefono'].invalid && formularioUsuario.controls['telefono'].dirty" class="invalid-input-message">
-                                    <div>
-                                        <span *ngIf="formularioUsuario.controls['telefono'].errors.pattern && !formularioUsuario.controls['telefono'].errors.required">{{ soloNumeros }}</span> 
-                                    </div>
-                                    <div>
-                                        <span *ngIf="formularioUsuario.controls['telefono'].errors.minlength">{{ telefonoLongitud }}</span> 
-                                    </div>
+                                    <div><span *ngIf="formularioUsuario.controls['telefono'].errors.pattern && !formularioUsuario.controls['telefono'].errors.required">{{ soloNumeros }}</span></div>
+                                    <div><span *ngIf="formularioUsuario.controls['telefono'].errors.minlength">{{ telefonoLongitud }}</span></div>
                                 </div> 
                             </div>
                         </div>

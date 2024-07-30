@@ -11,6 +11,7 @@ import { CifradoService } from 'src/app/services/cifrado.service';
 import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 import { Alerts } from 'src/app/shared/utils/alerts';
 import { DateUtil } from 'src/app/shared/utils/DateUtil';
+import { textValidator, textAddressValidator, emailValidator } from '../../../shared/utils/validador';
 
 @Component({
   selector: 'app-paciente-form',
@@ -31,6 +32,9 @@ export class PacienteFormComponent implements OnInit {
   telefonoLongitud: string;
   soloNumeros: string;
   soloLetras: string;
+  longitudMinima: string
+  caracteresNoPermitidos: string
+
   isDisabled:boolean = false
 
   constructor(
@@ -48,6 +52,8 @@ export class PacienteFormComponent implements OnInit {
     this.telefonoLongitud = Mensajes.TELEFONO_LONGITUD;
     this.soloNumeros = Mensajes.SOLO_NUMEROS;
     this.soloLetras = Mensajes.SOLO_LETRAS;
+    this.longitudMinima = Mensajes.LONGITUD_MINIMA;
+    this.caracteresNoPermitidos = Mensajes.CARACTERES_NO_PERMITIDOS;
   }
 
   ngOnInit(): void {
@@ -63,21 +69,21 @@ export class PacienteFormComponent implements OnInit {
       this.rol = this.cifradoService.getDecryptedRol();
       this.el.nativeElement.querySelector('input').focus();
       this.formularioPaciente = this.formBuilder.group({
-        nombre: ['', [Validators.required, Validators.minLength(3), this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
-        apellidop: ['', [Validators.required, Validators.minLength(3), this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
-        apellidom: ['', [this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
+        nombre: ['', [Validators.required, Validators.minLength(3), textValidator()]],
+        apellidop: ['', [Validators.required, Validators.minLength(3), textValidator()]],
+        apellidom: ['', [Validators.minLength(3), textValidator()]],
         edad: ['', [Validators.pattern('^[0-9]+$'), Validators.maxLength(3)]],
         sexo: ['null'],
         telefono: ['', [Validators.required, Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
         correo: ['', [Validators.minLength(5), // Hacer que el campo sea opcional
                   (control: AbstractControl) => { // Validación condicional del correo electrónico
                     if (control.value && control.value.trim() !== '') {
-                      return this.emailValidator(control);
+                      return emailValidator(control);
                     } else {
                       return null; // Si el campo está vacío, no aplicar la validación del correo electrónico
                     }
                   }]],
-        direccion: [''],
+        direccion: ['',[Validators.minLength(3), textAddressValidator()]],
       })
 
       this.catalogoService.getSexo$().subscribe(res => { 
@@ -88,23 +94,6 @@ export class PacienteFormComponent implements OnInit {
     }else{
       this.router.navigate(['/pagina/404/no-encontrada'])
     }
-  }
-
-  validarTexto(regex: RegExp) {
-    return (control: AbstractControl) => {
-      const value = control.value;
-  
-      if (value && !regex.test(value)) {
-        return { 'invalidRegex': true };
-      }
-  
-      return null;
-    };
-  }
-
-  emailValidator(control) {
-    const emailRegexp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return emailRegexp.test(control.value) ? null : { emailInvalido: true };
   }
   
   getInputClass(controlName: string) {
@@ -147,7 +136,7 @@ export class PacienteFormComponent implements OnInit {
         
       }
     )
-  }// end method
+  }
 
   limpiarForm(){
     this.formularioPaciente.reset();

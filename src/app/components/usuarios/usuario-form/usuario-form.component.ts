@@ -11,6 +11,7 @@ import { CifradoService } from 'src/app/services/cifrado.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Alerts } from 'src/app/shared/utils/alerts';
 import { DateUtil } from 'src/app/shared/utils/DateUtil';
+import { textValidator, emailValidator } from '../../../shared/utils/validador';
 
 @Component({
   selector: 'app-usuario-form',
@@ -21,8 +22,6 @@ export class UsuarioFormComponent implements OnInit {
 
   usuario:Usuario
   formularioUsuario:FormGroup
-  //idCentroUsuarioActivo:string
-
   catRoles:CatalogoRol[] = [];
   catTitulos:CatalogoTitulo[] = [];
   catEspecialidades:CatalogoEspecialidad[] = [];
@@ -34,6 +33,8 @@ export class UsuarioFormComponent implements OnInit {
   telefonoLongitud: string;
   soloNumeros: string;
   soloLetras: string;
+  longitudMinima: string
+  caracteresNoPermitidos: string
 
   rol:string
   fecha_actual:string
@@ -55,6 +56,8 @@ export class UsuarioFormComponent implements OnInit {
       this.telefonoLongitud = Mensajes.TELEFONO_LONGITUD;
       this.soloNumeros = Mensajes.SOLO_NUMEROS;
       this.soloLetras = Mensajes.SOLO_LETRAS;
+      this.longitudMinima = Mensajes.LONGITUD_MINIMA;
+      this.caracteresNoPermitidos = Mensajes.CARACTERES_NO_PERMITIDOS;
     }
 
   ngOnInit() {
@@ -73,14 +76,18 @@ export class UsuarioFormComponent implements OnInit {
         this.el.nativeElement.querySelector('input').focus();
         this.formularioUsuario = this.formBuilder.group({
           correo: ['', Validators.compose([
-            Validators.required, this.emailValidator
+            Validators.required, (control: AbstractControl) => { // Validación condicional del correo electrónico
+              if (control.value && control.value.trim() !== '') {
+                return emailValidator(control);
+              }
+            }
           ])],
           llave: ['', [Validators.required, Validators.minLength(6)]],
           rol: ['null', Validators.required],
           titulo: ['null'],
-          nombre: ['', [Validators.required, Validators.minLength(3), this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/) ]],
-          apellidop: ['', [Validators.required, Validators.minLength(3), this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
-          apellidom: ['', [this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
+          nombre: ['', [Validators.required, Validators.minLength(3), textValidator()]],
+          apellidop: ['', [Validators.required, Validators.minLength(3), textValidator()]],
+          apellidom: ['', [Validators.minLength(3), textValidator()]],
           especialidad: ['null'],
           telefono: ['', [Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
         })
@@ -111,23 +118,6 @@ export class UsuarioFormComponent implements OnInit {
     }else{
       this.router.navigate(['/pagina/404/no-encontrada'])
     }
-  }
-
-  validarTexto(regex: RegExp) {
-    return (control: AbstractControl) => {
-      const value = control.value;
-  
-      if (value && !regex.test(value)) {
-        return { 'invalidRegex': true };
-      }
-  
-      return null;
-    };
-  }
-
-  emailValidator(control) {
-    const emailRegexp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return emailRegexp.test(control.value) ? null : { emailInvalido: true };
   }
 
   getInputClass(controlName: string) {

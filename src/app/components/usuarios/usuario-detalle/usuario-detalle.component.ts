@@ -12,6 +12,7 @@ import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
 import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 import { Alerts } from 'src/app/shared/utils/alerts';
 import { DateUtil } from 'src/app/shared/utils/DateUtil';
+import { textValidator, emailValidator } from '../../../shared/utils/validador';
 
 @Component({
   selector: 'app-usuario-detalle',
@@ -37,7 +38,10 @@ export class UsuarioDetalleComponent implements OnInit {
   correoValido: string;
   contrasenaLongitud: string;
   telefonoLongitud: string;
+  soloLetras: string;
   soloNumeros: string;
+  longitudMinima: string
+  caracteresNoPermitidos: string
   
   rol:string
   descRol:string
@@ -55,7 +59,6 @@ export class UsuarioDetalleComponent implements OnInit {
     private activatedRoute: ActivatedRoute, 
     private usuarioService:UsuarioService, 
     private router: Router,
-    //private el: ElementRef,
     private catalogoService:CatalogoService,
     private spinner: NgxSpinnerService, 
     private sharedService:SharedService,
@@ -66,10 +69,12 @@ export class UsuarioDetalleComponent implements OnInit {
       this.contrasenaLongitud = Mensajes.CONTRASENA_LONGITUD;
       this.telefonoLongitud = Mensajes.TELEFONO_LONGITUD;
       this.soloNumeros = Mensajes.SOLO_NUMEROS;
+      this.soloLetras = Mensajes.SOLO_LETRAS;
+      this.longitudMinima = Mensajes.LONGITUD_MINIMA;
+      this.caracteresNoPermitidos = Mensajes.CARACTERES_NO_PERMITIDOS
     }
 
   ngOnInit() {
-    //this.el.nativeElement.querySelector('input').focus();
 
     if(this.authService.validarSesionActiva()){
       this.rol = this.cifradoService.getDecryptedRol();
@@ -77,15 +82,13 @@ export class UsuarioDetalleComponent implements OnInit {
       if(this.rol == "sop" || this.rol == "suadmin" || this.rol == "adminn1"){
 
         this.formularioUsuario = this.formBuilder.group({
-          correo: ['', Validators.compose([
-            Validators.required, Validators.email
-          ])],
+          correo: [''],
           llave: [''],
           rol: ['null', Validators.required],
           titulo: ['null'],
-          nombre: ['', [Validators.required, Validators.minLength(3)]],
-          apellidop: ['', [Validators.required, Validators.minLength(3)]],
-          apellidom: [''],
+          nombre: ['', [Validators.required, Validators.minLength(3), textValidator()]],
+          apellidop: ['', [Validators.required, Validators.minLength(3), textValidator()]],
+          apellidom: ['', [Validators.minLength(3), textValidator()]],
           especialidad: ['null'],
           telefono: ['', [Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
         })
@@ -100,12 +103,11 @@ export class UsuarioDetalleComponent implements OnInit {
             this.mismoUsuario = false;
           }
           
-          this.usuarioService.getUsuario$(this.id).subscribe(res => {   //volver a llamar los datos con el id recibido
+          this.usuarioService.getUsuario$(this.id).subscribe(res => {   
             this.usuario = res;
             this.descRol = res.desc_rol;
             console.log(res)
             console.log("id Especialidad:" + res.id_especialidad)
-            //console.log("usuario obtenido:" + JSON.stringify(res))
             this.tituloCard = this.usuario.nombre+' '+this.usuario.apellidop+' '+this.usuario.apellidom
             this.idUsuario=this.usuario.id
             this.fecha_creacion=this.usuario.fecha_creacion
