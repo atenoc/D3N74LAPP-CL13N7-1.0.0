@@ -174,7 +174,7 @@ export class LoginComponent implements OnInit {
     //console.log("Validar vigencia de plan gratuito:: " +id_plan);
 
     if(id_plan == '0401PF30'){
-      this.fecha_actual = DateUtil.getDateNoTime()
+      this.fecha_actual = DateUtil.getDateYYYYMMDD()
 
       this.planService.validarPlanGratuito(localStorage.getItem('_cli'), this.fecha_actual).subscribe(
           res => {
