@@ -11,7 +11,7 @@ import { CifradoService } from 'src/app/services/cifrado.service';
 import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 import { Alerts } from 'src/app/shared/utils/alerts';
 import { DateUtil } from 'src/app/shared/utils/DateUtil';
-import { textValidator, textAddressValidator, emailValidator } from '../../../shared/utils/validador';
+import { textValidator, textSomeSymbolsValidator, emailValidator } from '../../../shared/utils/validador';
 
 @Component({
   selector: 'app-paciente-form',
@@ -83,7 +83,7 @@ export class PacienteFormComponent implements OnInit {
                       return null; // Si el campo está vacío, no aplicar la validación del correo electrónico
                     }
                   }]],
-        direccion: ['',[Validators.minLength(3), textAddressValidator()]],
+        direccion: ['',[Validators.minLength(3), textSomeSymbolsValidator()]],
       })
 
       this.catalogoService.getSexo$().subscribe(res => { 

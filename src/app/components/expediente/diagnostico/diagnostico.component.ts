@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbModalConfig, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -8,6 +8,7 @@ import { DiagnosticoService } from 'src/app/services/diagnosticos/diagnostico.se
 import { Alerts } from 'src/app/shared/utils/alerts';
 import { DateUtil } from 'src/app/shared/utils/DateUtil';
 import { Mensajes } from 'src/app/shared/utils/mensajes.config';
+import { textSomeSymbolsValidator} from '../../../shared/utils/validador';
 
 @Component({
   selector: 'app-diagnostico',
@@ -34,6 +35,10 @@ export class DiagnosticoComponent implements OnInit {
   fecha_creacion:string
   fecha_actualizacion:string
 
+  //mensajes
+  campoRequerido: string;
+  caracteresNoPermitidos: string
+
   private modalRef: NgbModalRef | undefined;
 
   constructor(
@@ -48,13 +53,15 @@ export class DiagnosticoComponent implements OnInit {
 		config.keyboard = false;
 
     this.fecha_no_time = DateUtil.getDateNoTime()
+    this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
+    this.caracteresNoPermitidos = Mensajes.CARACTERES_NO_PERMITIDOS;
   }
 
   ngOnInit(): void {
 
     this.formularioDiagnostico = this.formBuilder.group({
-      descripcion_problema: [''],
-      codigo_diagnostico: [''],
+      descripcion_problema: ['',[Validators.required, textSomeSymbolsValidator()]],
+      codigo_diagnostico: ['',[Validators.required, textSomeSymbolsValidator()]],
       evidencias: [''],
     })
 

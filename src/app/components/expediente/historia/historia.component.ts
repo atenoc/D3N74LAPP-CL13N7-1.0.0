@@ -8,6 +8,7 @@ import { HistoriaDentalService } from 'src/app/services/historias/historia-denta
 import { Alerts } from 'src/app/shared/utils/alerts';
 import { DateUtil } from 'src/app/shared/utils/DateUtil';
 import { Mensajes } from 'src/app/shared/utils/mensajes.config';
+import { textSomeSymbolsValidator} from '../../../shared/utils/validador';
 
 @Component({
   selector: 'app-historia',
@@ -34,28 +35,33 @@ export class HistoriaComponent implements OnInit {
   botonGuardar:boolean=false;
   botonActualizar:boolean = false
 
+  //mensajes
+  caracteresNoPermitidos: string
+
   constructor(
     private formBuilder:FormBuilder, 
     private activatedRoute: ActivatedRoute, 
     private historiaService:HistoriaDentalService,
     private spinner: NgxSpinnerService,
-  ) { }
+  ) {
+    this.caracteresNoPermitidos = Mensajes.CARACTERES_NO_PERMITIDOS;
+   }
 
   ngOnInit(): void {
     this.formularioHistoria = this.formBuilder.group({
-      ultima_visita_dentista: [''],
-      problemas_dentales_pasados: [''],
-      tratamientos_previos_cuando: [''],
-      dolor_sensibilidad: [''],
-      condicion_medica_actual: [''], 
-      medicamentos_actuales: [''], 
-      alergias_conocidas: [''], 
-      cirugias_enfermedades_graves: [''], 
-      frecuencia_cepillado: [''], 
-      uso_hilo_dental: [''], 
-      uso_productos_especializados: [''], 
-      tabaco_frecuencia: [''], 
-      habito_alimenticio: [''], 
+      ultima_visita_dentista: ['',[textSomeSymbolsValidator()]],
+      problemas_dentales_pasados: ['',[textSomeSymbolsValidator()]],
+      tratamientos_previos_cuando: ['',[textSomeSymbolsValidator()]],
+      dolor_sensibilidad: ['',[textSomeSymbolsValidator()]],
+      condicion_medica_actual: ['',[textSomeSymbolsValidator()]], 
+      medicamentos_actuales: ['',[textSomeSymbolsValidator()]], 
+      alergias_conocidas: ['',[textSomeSymbolsValidator()]], 
+      cirugias_enfermedades_graves: ['',[textSomeSymbolsValidator()]], 
+      frecuencia_cepillado: ['',[textSomeSymbolsValidator()]], 
+      uso_hilo_dental: ['',[textSomeSymbolsValidator()]], 
+      uso_productos_especializados: ['',[textSomeSymbolsValidator()]], 
+      tabaco_frecuencia: ['',[textSomeSymbolsValidator()]], 
+      habito_alimenticio: ['',[textSomeSymbolsValidator()]], 
     })
 
     this.activatedRoute.params.subscribe(params => {

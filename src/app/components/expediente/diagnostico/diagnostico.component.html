@@ -84,7 +84,11 @@
           <div class="row mb-3">
             <div class="col-6">
               <span>Código de diagnóstico (CIE-10)</span>
-              <input formControlName="codigo_diagnostico" type="text" class="form-control">
+              <input formControlName="codigo_diagnostico" type="text" class="form-control" maxlength="25">
+              <div *ngIf="formularioDiagnostico.controls['codigo_diagnostico'].invalid && formularioDiagnostico.controls['codigo_diagnostico'].dirty" class="invalid-input-message">
+                <span *ngIf="formularioDiagnostico.controls['codigo_diagnostico'].errors.required">{{ campoRequerido }}</span>
+                <span *ngIf="formularioDiagnostico.controls['codigo_diagnostico'].errors.invalidText">{{ caracteresNoPermitidos}} </span>
+              </div>
             </div>
             <div class="col-6">
               <span>Fecha</span> <br>
@@ -102,6 +106,10 @@
                     <small class="char-count text-muted">{{ remainingCharacters }} caracteres disponibles</small>
                   </div>
                 </div>
+              <div *ngIf="formularioDiagnostico.controls['descripcion_problema'].invalid && formularioDiagnostico.controls['descripcion_problema'].dirty" class="invalid-input-message">
+                <span *ngIf="formularioDiagnostico.controls['descripcion_problema'].errors.required">{{ campoRequerido }}</span>
+                <span *ngIf="formularioDiagnostico.controls['descripcion_problema'].errors.invalidText">{{ caracteresNoPermitidos}} </span>
+              </div>
           </div>
           <div class="mb-3">
               <span><i class="far fa-images"></i> Subir archivos de evidencia</span>
@@ -134,7 +142,7 @@
           <div class="card-header p-0 border-bottom-0">
             <div class="card-tools">
               <button type="button" class="btn btn-secondary mr-2" (click)="modal.close('Close click')">Cancelar</button>
-              <button type="button" class="btn btn-primary mr-2" (click)="crearDiagnostico()">
+              <button type="button" class="btn btn-primary mr-2" (click)="crearDiagnostico()" [disabled]="formularioDiagnostico.invalid">
                 <i class="fas fa-save"></i> Guardar
               </button>
             </div>
@@ -161,7 +169,11 @@
           <div class="row mb-3">
             <div class="col-6">
               <span>Código de diagnóstico (CIE-10)</span>
-              <input formControlName="codigo_diagnostico" type="text" class="form-control">
+              <input formControlName="codigo_diagnostico" type="text" class="form-control" maxlength="25">
+              <div *ngIf="formularioDiagnostico.controls['codigo_diagnostico'].invalid && formularioDiagnostico.controls['codigo_diagnostico'].dirty" class="invalid-input-message">
+                <span *ngIf="formularioDiagnostico.controls['codigo_diagnostico'].errors.required">{{ campoRequerido }}</span>
+                <span *ngIf="formularioDiagnostico.controls['codigo_diagnostico'].errors.invalidText">{{ caracteresNoPermitidos}} </span>
+              </div>
             </div>
             <div class="col-6">
               <span>Fecha para actualización</span> 
@@ -180,7 +192,10 @@
                     <small class="char-count text-muted">{{ remainingCharacters }} caracteres disponibles</small>
                   </div>
                 </div>
-              
+              <div *ngIf="formularioDiagnostico.controls['descripcion_problema'].invalid && formularioDiagnostico.controls['descripcion_problema'].dirty" class="invalid-input-message">
+                <span *ngIf="formularioDiagnostico.controls['descripcion_problema'].errors.required">{{ campoRequerido }}</span>
+                <span *ngIf="formularioDiagnostico.controls['descripcion_problema'].errors.invalidText">{{ caracteresNoPermitidos}} </span>
+              </div>
           </div>
           <div class="mb-3">
               <span>Subir archivos de evidencia</span>

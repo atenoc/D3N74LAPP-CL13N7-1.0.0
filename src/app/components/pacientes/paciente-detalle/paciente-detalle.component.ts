@@ -10,7 +10,7 @@ import { CifradoService } from 'src/app/services/cifrado.service';
 import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 import { Alerts } from 'src/app/shared/utils/alerts';
 import { DateUtil } from 'src/app/shared/utils/DateUtil';
-import { textValidator, textAddressValidator, emailValidator } from '../../../shared/utils/validador';
+import { textValidator, textSomeSymbolsValidator } from '../../../shared/utils/validador';
 
 @Component({
   selector: 'app-paciente-detalle',
@@ -81,7 +81,7 @@ export class PacienteDetalleComponent implements OnInit {
                       return null; // Si el campo está vacío, no aplicar la validación del correo electrónico
                     }
                   }]],
-      direccion: ['',[Validators.minLength(3), textAddressValidator()]],
+      direccion: ['',[Validators.minLength(3), textSomeSymbolsValidator()]],
     })
 
     this.activatedRoute.params.subscribe(params => {
