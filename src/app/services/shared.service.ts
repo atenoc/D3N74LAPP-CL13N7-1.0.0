@@ -16,6 +16,8 @@ export class SharedService {
   private diasRestanPlanGratis = new BehaviorSubject<string>('');
   private mensajeVigenciaPlan = new BehaviorSubject<string>('');
 
+  private image = new BehaviorSubject<string>('');
+
   constructor() { }
 
   /*cambiarMensaje(message: string){
@@ -57,5 +59,13 @@ export class SharedService {
   }
   setDiasRestantesPlanGratuito(dias: string) {
     this.diasRestanPlanGratis.next(dias);
+  }
+
+  /* Imagen desde canvas */
+  getImage() {
+    return this.image.asObservable();
+  }
+  setImage(valor: string) {
+    this.image.next(valor);
   }
 }

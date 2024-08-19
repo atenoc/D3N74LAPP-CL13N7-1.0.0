@@ -126,4 +126,8 @@ export const Mensajes = {
     SEGUIMIENTO_ELIMINADO: 'El seguimiento se eliminó correctamente ',
     SEGUIMIENTO_NO_ELIMINADO: 'No se pudo eliminar el seguimiento ',
 
+    //Uploads
+    IMAGEN_SUBIDA: 'La imagen se guardó correctamente ',
+    IMAGEN_NO_SUBIDA: 'No se pudo guardar la imagen ',
+
 };

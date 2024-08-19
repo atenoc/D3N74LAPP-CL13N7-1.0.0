@@ -19,6 +19,7 @@ export const environment = {
   urlApiTratamientos: ipHost+'/api/tratamientos',
   urlApiSeguimientos: ipHost+'/api/seguimientos',
   urlApiPlanes: ipHost+'/api/planes',
+  urlApiUploads: ipHost+'/api/uploads',
   secretKey: '123456'
 };
 

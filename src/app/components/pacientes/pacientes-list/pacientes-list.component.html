@@ -19,13 +19,13 @@
   </section>
   
   <section class="content">
-    <div class="container-fluid">
+    <div class="container">
       <div class="row">
         <div class="col-md-12">
           <div class="card card-primary card-outline">
             <div class="card-header hide-on-mobile">
               <h3 class="card-title">
-                <button class="btn btn-outline-primary btn-sm" (click)="irPacienteForm()" [disabled]="isDisabled">
+                <button class="btn btn-outline-primary" (click)="irPacienteForm()" [disabled]="isDisabled">
                   <i class="fas fa-plus"></i> Agregar paciente 
                 </button>
               </h3>
@@ -42,20 +42,20 @@
                         <span *ngIf="orderBy === 'nombre' && way === 'asc'">▲</span>
                         <span *ngIf="orderBy === 'nombre' && way === 'desc'">▼</span>
                       </th>
-                      <th class="col-1 cursor-pointer" (click)="onSortChange('apellidop')">
+                      <th class="col-2 cursor-pointer" (click)="onSortChange('apellidop')">
                         Ap. Paterno
                         <span *ngIf="orderBy === 'apellidop' && way === 'asc'">▲</span>
                         <span *ngIf="orderBy === 'apellidop' && way === 'desc'">▼</span>
                       </th>
-                      <th class="col-1 cursor-pointer" (click)="onSortChange('apellidom')">
+                      <th class="col-2 cursor-pointer" (click)="onSortChange('apellidom')">
                         Ap. Materno
                         <span *ngIf="orderBy === 'apellidom' && way === 'asc'">▲</span>
                         <span *ngIf="orderBy === 'apellidom' && way === 'desc'">▼</span>
                       </th>
                       <th class="col-1">Edad</th>
                       <th class="col-1">Teléfono</th>
-                      <th class="col-2">Correo</th>
-                      <th class="col-1">Opción</th>
+                      <!-- <th class="col-2">Correo</th> -->
+                      <th class="col-2">Opción</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -66,7 +66,7 @@
                       <td>{{ paciente.apellidom }}</td>
                       <td>{{ paciente.edad }}</td>
                       <td>{{ paciente.telefono }}</td>
-                      <td>{{ paciente.correo }}</td>
+                      <!-- <td>{{ paciente.correo }}</td> -->
                       <td class="text-center">
                         <button class="btn btn-outline-primary btn-sm" (click)="selectedIdUser(paciente.id)"
                           ngbTooltip="Información del paciente">

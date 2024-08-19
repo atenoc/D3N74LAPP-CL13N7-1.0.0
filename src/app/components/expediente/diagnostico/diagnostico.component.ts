@@ -129,6 +129,7 @@ export class DiagnosticoComponent implements OnInit {
   openModalNuevo(content: TemplateRef<any>) {
     this.formularioDiagnostico.reset()
 		this.modalRef = this.modalService.open(content, { size: 'xl', centered: true });
+    //this.modalRef = this.modalService.open(content, { fullscreen: true });
     console.log('Modal abierto Nuevo:', this.modalRef);
 	}
 

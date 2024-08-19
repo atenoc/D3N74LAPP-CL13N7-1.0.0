@@ -107,7 +107,8 @@ export class PacienteFormComponent implements OnInit {
     console.log("CREAR Paciente")
 
     this.fecha_actual = DateUtil.getCurrentFormattedDate()
-    var nuevoPacienteJson = JSON.parse(JSON.stringify(this.formularioPaciente.value))
+    var nuevoPacienteJson = JSON.parse(JSON.stringify(this.formularioPaciente))
+      
     nuevoPacienteJson.id_usuario_creador=localStorage.getItem('_us') 
     nuevoPacienteJson.id_clinica=localStorage.getItem('_cli') 
     nuevoPacienteJson.fecha_creacion = this.fecha_actual

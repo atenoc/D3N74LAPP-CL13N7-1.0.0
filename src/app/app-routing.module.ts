@@ -26,6 +26,8 @@ import { ExpedienteComponent } from './components/expediente/expediente.componen
 import { VisitasComponent } from './components/expediente/visitas/visitas.component';
 import { DiagnosticoComponent } from './components/expediente/diagnostico/diagnostico.component';
 import { TratamientoComponent } from './components/expediente/tratamiento/tratamiento.component';
+import { Visor3dComponent } from './shared/visor3d/visor3d.component';
+import { VisorCanvasComponent } from './shared/visor-canvas/visor-canvas.component';
 
 const routes: Routes = [
   {path:'', redirectTo:'/home', pathMatch:'full'},
@@ -53,6 +55,8 @@ const routes: Routes = [
   {path:'tratamientos/:id', component: TratamientoComponent, canActivate:[AuthGuard]},
   {path:'planes', component: PlanesListComponent, canActivate:[AuthGuard]},
   {path:'password/:id', component: ContrasenaComponent, canActivate:[AuthGuard]},
+  {path:'visor-3d', component: Visor3dComponent, canActivate:[AuthGuard]},
+  {path:'area-dibujo', component: VisorCanvasComponent, canActivate:[AuthGuard]},
   {path:'pagina/404/no-encontrada', component: PageNotFoundComponent, canActivate:[AuthGuard]},
   {path:'**', component: PageNotFoundComponent, canActivate:[AuthGuard]},
 ];
