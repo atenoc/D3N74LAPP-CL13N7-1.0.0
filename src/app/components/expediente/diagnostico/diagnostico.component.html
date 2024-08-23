@@ -32,7 +32,7 @@
           
           <!-- Attachment -->
           <div class="attachment-block clearfix">
-            <img class="attachment-img" src="../../../../assets/images/odontograma.png" alt="Attachment Image">
+            <img class="attachment-img" src="../../../../assets/images/odontograma.jpg" alt="Attachment Image">
 
             <div class="attachment-pushed">
               <h5 class="attachment-heading"><a >Evidencia</a></h5>
@@ -74,83 +74,100 @@
 
     
     <ng-template #content let-modal>
-      <div class="modal-header">
-        <h4 class="modal-title">Nuevo diagnóstico</h4>
-        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-      </div>
-      <div class="modal-body">
-        
-        <form [formGroup]="formularioDiagnostico">
-          <div class="row mb-3">
-            <div class="col-6">
-              <span>Código de diagnóstico (CIE-10)</span>
-              <input formControlName="codigo_diagnostico" type="text" class="form-control" maxlength="25">
-              <div *ngIf="formularioDiagnostico.controls['codigo_diagnostico'].invalid && formularioDiagnostico.controls['codigo_diagnostico'].dirty" class="invalid-input-message">
-                <span *ngIf="formularioDiagnostico.controls['codigo_diagnostico'].errors.required">{{ campoRequerido }}</span>
-                <span *ngIf="formularioDiagnostico.controls['codigo_diagnostico'].errors.invalidText">{{ caracteresNoPermitidos}} </span>
-              </div>
-            </div>
-            <div class="col-6">
-              <span>Fecha</span> <br>
-              <span>{{ fecha_no_time }}</span>
-            </div>
-          </div>
-
-          <div class="mb-3">
-              <span><i class="far fa-comment"></i> Descripción del problema</span>
-              <textarea formControlName="descripcion_problema" class="form-control" rows="3" 
-                (input)="updateCharacterCount($event)" [attr.maxlength]="maxCharacters"></textarea>
-                <div class="d-flex">
-                  <div></div>
-                  <div class="ml-auto">
-                    <small class="char-count text-muted">{{ remainingCharacters }} caracteres disponibles</small>
-                  </div>
+      <div class="container">
+        <div class="modal-header">
+          <h4 class="modal-title">Nuevo diagnóstico</h4>
+          <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+          
+          <form [formGroup]="formularioDiagnostico">
+            <div class="row mb-3">
+              <div class="col-6">
+                <span>Código de diagnóstico (CIE-10)</span>
+                <input formControlName="codigo_diagnostico" type="text" class="form-control" maxlength="25">
+                <div *ngIf="formularioDiagnostico.controls['codigo_diagnostico'].invalid && formularioDiagnostico.controls['codigo_diagnostico'].dirty" class="invalid-input-message">
+                  <span *ngIf="formularioDiagnostico.controls['codigo_diagnostico'].errors.required">{{ campoRequerido }}</span>
+                  <span *ngIf="formularioDiagnostico.controls['codigo_diagnostico'].errors.invalidText">{{ caracteresNoPermitidos}} </span>
                 </div>
-              <div *ngIf="formularioDiagnostico.controls['descripcion_problema'].invalid && formularioDiagnostico.controls['descripcion_problema'].dirty" class="invalid-input-message">
-                <span *ngIf="formularioDiagnostico.controls['descripcion_problema'].errors.required">{{ campoRequerido }}</span>
-                <span *ngIf="formularioDiagnostico.controls['descripcion_problema'].errors.invalidText">{{ caracteresNoPermitidos}} </span>
               </div>
-          </div>
-          <div class="mb-3">
-              <span><i class="far fa-images"></i> Subir archivos de evidencia</span>
-              <input formControlName="evidencias" class="form-control" type="file" multiple>
-          </div>
+              <div class="col-6">
+                <span>Fecha</span> <br>
+                <span>{{ fecha_no_time }}</span>
+              </div>
+            </div>
+  
+            <div class="mb-3">
+                <span><i class="far fa-comment"></i> Descripción del problema</span>
+                <textarea formControlName="descripcion_problema" class="form-control" rows="3" 
+                  (input)="updateCharacterCount($event)" [attr.maxlength]="maxCharacters"></textarea>
+                  <div class="d-flex">
+                    <div></div>
+                    <div class="ml-auto">
+                      <small class="char-count text-muted">{{ remainingCharacters }} caracteres disponibles</small>
+                    </div>
+                  </div>
+                <div *ngIf="formularioDiagnostico.controls['descripcion_problema'].invalid && formularioDiagnostico.controls['descripcion_problema'].dirty" class="invalid-input-message">
+                  <span *ngIf="formularioDiagnostico.controls['descripcion_problema'].errors.required">{{ campoRequerido }}</span>
+                  <span *ngIf="formularioDiagnostico.controls['descripcion_problema'].errors.invalidText">{{ caracteresNoPermitidos}} </span>
+                </div>
+            </div>
 
-          <div class="card collapsed-card">
-            <div class="card-header">
-              <i class="fas fa-teeth-open"></i> <span> Odontograma</span>
-          
+            <div class="card-header p-0 border-bottom-0">
               <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                  <i class="fas fa-plus"></i>
-                </button>
-                <button type="button" class="btn btn-tool" data-card-widget="maximize">
-                  <i class="fas fa-expand"></i>
+                <!-- <button type="button" class="btn btn-secondary mr-2" (click)="modal.close('Close click')"></button> -->
+                <button type="button" class="btn btn-primary mr-2" (click)="crearDiagnostico()" [disabled]="formularioDiagnostico.invalid">
+                  <i class="fas fa-save"></i> Guardar
                 </button>
               </div>
-          
             </div>
-            <div class="card-body">
-              
-              <app-visor3d></app-visor3d>
-              <app-visor-canvas></app-visor-canvas>
- 
+
+            <div class="separator">
+              <hr />
+              <span class="separator-text text-muted">Añadir imagenes</span>
             </div>
-          </div>
 
-          <hr>
-
-          <div class="card-header p-0 border-bottom-0">
-            <div class="card-tools">
-              <button type="button" class="btn btn-secondary mr-2" (click)="modal.close('Close click')">Cancelar</button>
-              <button type="button" class="btn btn-primary mr-2" (click)="crearDiagnostico()" [disabled]="formularioDiagnostico.invalid">
-                <i class="fas fa-save"></i> Guardar
-              </button>
+            <div class="mb-3">
+                <span><i class="far fa-images"></i> Cargar una imagen desde mi equipo</span>
+                <input formControlName="evidencias" class="form-control" type="file" multiple>
             </div>
-          </div>
-
-        </form>
-
+  
+            <div class="card collapsed-card mt-2">
+              <div class="card-header">
+                <i class="fas fa-teeth-open"></i> <strong> Modelos 3D / Odontograma</strong>
+            
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-plus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                    <i class="fas fa-expand"></i>
+                  </button>
+                </div>
+            
+              </div>
+              <div class="card-body">
+                
+                <app-visor3d></app-visor3d>
+                <app-visor-canvas></app-visor-canvas>
+   
+              </div>
+            </div>
+  
+            <hr>
+  
+            <div class="card-header p-0 border-bottom-0">
+              <div class="card-tools">
+                <button type="button" class="btn btn-secondary mr-2" (click)="modal.close('Close click')">Cancelar</button>
+                <button type="button" class="btn btn-primary mr-2" (click)="crearDiagnostico()" [disabled]="formularioDiagnostico.invalid">
+                  <i class="fas fa-save"></i> Guardar
+                </button>
+              </div>
+            </div>
+  
+          </form>
+  
+        </div>
       </div>
     </ng-template>
 

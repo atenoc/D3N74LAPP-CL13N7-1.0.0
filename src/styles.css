@@ -227,3 +227,30 @@
     border-color: #edb100 !important;
 }
 
+
+
+
+/* Separador con texto*/
+
+.separator {
+    position: relative;
+    text-align: center;
+    margin: 20px 0; /* Ajusta el margen según sea necesario */
+  }
+  
+  .separator hr {
+    border: 0;
+    border-top: 1px solid #000; /* Color y grosor de la línea */
+    margin: 0;
+  }
+  
+  .separator-text {
+    position: absolute;
+    top: -0.6em; /* Ajusta la posición vertical del texto */
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff; /* Fondo blanco para cubrir la línea */
+    padding: 0 10px; /* Espacio alrededor del texto */
+    font-size: 14px; /* Ajusta el tamaño del texto */
+    color: #000; /* Color del texto */
+  }

@@ -95,8 +95,11 @@ export class DiagnosticoComponent implements OnInit {
       res => {
         this.spinner.hide();
         console.log("Diagnostico creado")
-        this.closeModal();
-        this.ngOnInit();
+        console.log("res: "+JSON.stringify(res))
+        console.log("res id: "+res.id)
+        console.log("res id_paciente: "+res.id_paciente)
+        //this.closeModal();
+        //this.ngOnInit();
 
         Alerts.success(Mensajes.DIAGNOSTICO_REGISTRADO, ``);
       },
