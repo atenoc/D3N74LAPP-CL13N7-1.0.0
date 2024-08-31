@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
@@ -37,7 +38,7 @@ export class Visor3dComponent implements OnInit {
   ngOnInit(): void {
     this.initScene();
     this.createGradientBackground();
-    this.loadLocalModel(Resources.URL_MODEL1); // Cargar modelo inicial
+    this.loadGLBModel(Resources.URL_MODEL1); // Cargar modelo inicial
     this.animate();
 
     this.setupControls();
@@ -110,7 +111,7 @@ export class Visor3dComponent implements OnInit {
     });
   }*/
 
-  private loadLocalModel(url: string): void {
+  private loadGLBModel(url: string): void {
       const loader = new GLTFLoader();
       loader.load(url, (gltf) => {
         if (this.currentModel) {
@@ -122,7 +123,22 @@ export class Visor3dComponent implements OnInit {
         console.error('Error al cargar el modelo GLB', error);
       });
   }
-    
+
+  private loadSTLModel(url: string): void {
+    const loader = new STLLoader();
+    loader.load(url, (geometry) => {
+      if (this.currentModel) {
+        this.scene.remove(this.currentModel); // Eliminar el modelo anterior si existe
+      }
+      // Crear un material básico para el modelo STL
+      const material = new THREE.MeshStandardMaterial({ color: 0xadadad });
+      // Crear una malla a partir de la geometría y el material
+      this.currentModel = new THREE.Mesh(geometry, material);
+      this.scene.add(this.currentModel); // Añadir el nuevo modelo
+    }, undefined, (error) => {
+      console.error('Error al cargar el modelo STL', error);
+    });
+  }
 
   private animate(): void {
     requestAnimationFrame(() => this.animate());
@@ -268,9 +284,10 @@ export class Visor3dComponent implements OnInit {
     `;
 
     const uniforms = {
-        color1: { value: new THREE.Color(0xadadad) }, // Color superior   blanco
+        color1: { value: new THREE.Color(0xadadad) }, // Color inferior   gris
         color2: { value: new THREE.Color(0x000000) }, // Color medio      negro
-        color3: { value: new THREE.Color(0xededed) }  // Color inferior   blanco
+        color3: { value: new THREE.Color(0xadadad) }  // Color superior   gris
+        //color3: { value: new THREE.Color(0xededed) }  // Color superior   blanco
     };
 
     const gradientMaterial = new THREE.ShaderMaterial({
@@ -285,17 +302,29 @@ export class Visor3dComponent implements OnInit {
     this.scene.add(gradientMesh);
   }
 
-  changeModel1(): void {
+  loadGLBModel1(): void {
     const newModelUrl = Resources.URL_MODEL1; // Cambia a la URL del nuevo modelo
-    this.loadLocalModel(newModelUrl);
+    this.loadGLBModel(newModelUrl);
     this.resetView()
     
   }
 
-  changeModel2(): void {
+  loadGLBModel2(): void {
     const newModelUrl = Resources.URL_MODEL2; // Cambia a la URL del nuevo modelo
-    this.loadLocalModel(newModelUrl);
+    this.loadGLBModel(newModelUrl);
     this.resetView()
+  }
+
+  loadSTLModel1(): void {
+    this.loadSTLModel('assets/images/Upper_teeth.stl')
+  }
+
+  loadSTLModel2(): void {
+    this.loadSTLModel('assets/images/Teeth_1.stl')
+  }
+
+  loadSTLModel3(): void {
+    this.loadSTLModel('assets/images/Lower_teeth.stl')
   }
 
 }
