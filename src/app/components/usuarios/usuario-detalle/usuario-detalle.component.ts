@@ -50,7 +50,7 @@ export class UsuarioDetalleComponent implements OnInit {
 
   mostrar_actualizacion:boolean=false
   nombre_usuario_actualizo:string
-  fecha_actual:string;
+  //fecha_actual:string;
   fecha_actualizacion:string
 
   constructor(
@@ -103,7 +103,9 @@ export class UsuarioDetalleComponent implements OnInit {
             this.mismoUsuario = false;
           }
           
-          this.usuarioService.getUsuario$(this.id).subscribe(res => {   
+          this.spinner.show()
+          this.usuarioService.getUsuario$(this.id).subscribe(res => {
+            this.spinner.hide()   
             this.usuario = res;
             this.descRol = res.desc_rol;
             console.log(res)
@@ -139,6 +141,7 @@ export class UsuarioDetalleComponent implements OnInit {
             this.cargarEspecialidades()
           },
           err => {
+            this.spinner.hide() 
             console.log("error: " + err)
           })
     
@@ -169,40 +172,36 @@ export class UsuarioDetalleComponent implements OnInit {
 
   actualizarUsuario(){  
     console.log("Actualizar usuario:")
-    console.log(this.formularioUsuario)
-    this.fecha_actual = DateUtil.getCurrentFormattedDate()
 
+    var updateUsuarioJson = JSON.parse(JSON.stringify(this.formularioUsuario.value))
+    updateUsuarioJson.id_usuario_actualizo=localStorage.getItem("_us"),
+    updateUsuarioJson.id_clinica=localStorage.getItem("_cli"),
+    updateUsuarioJson.fecha_actualizacion=DateUtil.getCurrentFormattedDate()
+
+    console.log(updateUsuarioJson)
     this.spinner.show();
-    this.usuarioService.updateUsuario(
-      this.usuario.id, 
-      this.formularioUsuario.value.correo,
-      this.formularioUsuario.value.rol,
-      this.formularioUsuario.value.titulo,
-      this.formularioUsuario.value.nombre,
-      this.formularioUsuario.value.apellidop,
-      this.formularioUsuario.value.apellidom,
-      this.formularioUsuario.value.especialidad,
-      this.formularioUsuario.value.telefono,
-      localStorage.getItem("_us"),
-      this.fecha_actual
-      ).subscribe(res => {
+    this.usuarioService.updateUsuario(this.usuario.id, updateUsuarioJson).subscribe({
+      next: res => {
         this.spinner.hide();
-        console.log("Usuario actualizado ");
         this.usuario=res
-        console.log(this.usuario)
-        console.log(this.usuario.nombre)
-        this.sharedService.setNombreUsuario(this.formularioUsuario.value.nombre);
+        console.log("Usuario actualizado ");
+        console.log(res)
+
+        //Sólo cuando el usuario en sesion actualiza sus datos
+        if(this.usuario.id == localStorage.getItem('_us')){
+          this.sharedService.setNombreUsuario(this.usuario.nombre +' '+this.usuario.apellidop);
+        }
+        
         this.editando=false
         this.ngOnInit()
-        
         Alerts.success(Mensajes.USUARIO_ACTUALIZADO, `${this.usuario.nombre} ${this.usuario.apellidop} ${this.usuario.apellidom}`);
       },
-        err => {
-          this.spinner.hide();
+      error: err => {
+        this.spinner.hide();
           console.log("error: " + err)
           Alerts.error(Mensajes.ERROR_500, Mensajes.USUARIO_NO_ACTUALIZADO, Mensajes.INTENTAR_MAS_TARDE);
-        }
-      );
+      }
+    })
 
     return false;
   }
@@ -238,8 +237,14 @@ export class UsuarioDetalleComponent implements OnInit {
     Alerts.confirmDelete(Mensajes.USUARIO_ELIMINAR_QUESTION, `${this.usuario.nombre} ${this.usuario.apellidop} ${this.usuario.apellidom}`).then((result) => {
       if (result.value) {
         // Confirm
+        const deleteUsuarioJson = {
+          id_usuario_elimino:localStorage.getItem("_us"),
+          id_clinica:localStorage.getItem("_us"),
+          fecha_eliminacion:DateUtil.getCurrentFormattedDate()
+        }
+
         this.spinner.show();
-        this.usuarioService.deleteUsuario(id).subscribe(res => {
+        this.usuarioService.deleteUsuario(id, deleteUsuarioJson).subscribe(res => {
           console.log("Usuario eliminado:" + JSON.stringify(res));
           Alerts.success(Mensajes.USUARIO_ELIMINADO, `${this.usuario.nombre} ${this.usuario.apellidop} ${this.usuario.apellidom}`);
           this.router.navigate(['/usuarios']);

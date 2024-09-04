@@ -71,7 +71,8 @@ export class LoginComponent implements OnInit {
 
     const newUserJson = {
       correo: userObject.correo,
-      llave: llaveEncripted
+      llave: llaveEncripted,
+      fecha: DateUtil.getCurrentFormattedDate()
     };
 
     this.authService.login(newUserJson).subscribe(

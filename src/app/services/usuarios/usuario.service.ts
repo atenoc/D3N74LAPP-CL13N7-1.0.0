@@ -65,8 +65,8 @@ export class UsuarioService {
   }
 
   // PATCH
-  updateUsuario(id: string, correo: string, rol:string, titulo:string, nombre:string, apellidop:string, apellidom:string, especialidad:string, telefono:string, id_usuario_actualizo:string, fecha_actualizacion:string) {
-    return this.http.patch<Usuario>(`${this.URI}/${id}`, {correo, rol, titulo, nombre, apellidop, apellidom, especialidad, telefono, id_usuario_actualizo, fecha_actualizacion});
+  updateUsuario(id: string, usuario:any) {
+    return this.http.patch<Usuario>(`${this.URI}/${id}`, usuario);
   }
 
   updateUsuarioRegister(id: string, nombre:string, apellidop:string, id_clinica:string, fecha_creacion:string) {
@@ -74,17 +74,8 @@ export class UsuarioService {
   }
 
   // DELETE
-  deleteUsuario(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.URI}/${id}`).pipe(
-      tap(() => {
-        const usuarios = this.usuarios.getValue();
-        const index = usuarios.findIndex(usuario => usuario.id === id);
-        if (index !== -1) {
-          usuarios.splice(index, 1);
-          this.usuarios.next([...usuarios]);
-        }
-      })
-    );
+  deleteUsuario(id: string, usuario:any) {
+    return this.http.put<void>(`${this.URI}/${id}`, usuario)
   }
   
   // getUsusuario Paginados por id_usuario

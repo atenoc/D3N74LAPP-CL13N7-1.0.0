@@ -37,7 +37,7 @@ export class UsuarioFormComponent implements OnInit {
   caracteresNoPermitidos: string
 
   rol:string
-  fecha_actual:string
+  //fecha_actual:string
   isDisabled:boolean = false
 
   constructor(
@@ -111,6 +111,8 @@ export class UsuarioFormComponent implements OnInit {
           },
           err => console.log("error: " + err)
         )
+        
+        this.spinner.hide();
       }else{
         this.router.navigate(['/pagina/404/no-encontrada'])
       }
@@ -130,10 +132,10 @@ export class UsuarioFormComponent implements OnInit {
   crearUsuario(){
     console.log("CREAR USUARIO")
 
-    this.fecha_actual = DateUtil.getCurrentFormattedDate()
     var nuevoUsuarioJson = JSON.parse(JSON.stringify(this.formularioUsuario.value))
-    nuevoUsuarioJson.id_usuario_creador=localStorage.getItem('_us') 
-    nuevoUsuarioJson.fecha_creacion = this.fecha_actual
+    nuevoUsuarioJson.id_usuario_creador=localStorage.getItem('_us')
+    nuevoUsuarioJson.id_clinica=localStorage.getItem("_cli"), 
+    nuevoUsuarioJson.fecha_creacion = DateUtil.getCurrentFormattedDate()
     
     if(this.rol == "suadmin" || this.rol == "adminn1"){
       nuevoUsuarioJson.id_clinica=localStorage.getItem('_cli') 
