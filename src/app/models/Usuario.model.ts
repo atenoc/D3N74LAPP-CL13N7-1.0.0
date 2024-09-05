@@ -19,7 +19,7 @@ export interface Usuario{
     id_clinica:string;
     id_plan:string
     plan :string
-    id_usuario_creador:string;
+    //id_usuario_creador:string;
     nombre_usuario_creador:string;
     fecha_creacion:string;
     nombre_usuario_actualizo:string;

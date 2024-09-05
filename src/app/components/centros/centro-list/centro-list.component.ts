@@ -9,6 +9,7 @@ import { CifradoService } from 'src/app/services/cifrado.service';
 import { Alerts } from 'src/app/shared/utils/alerts';
 import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
 
 @Component({
   selector: 'app-centro-list',
@@ -68,8 +69,14 @@ export class CentroListComponent implements OnInit {
     Alerts.confirmDelete(Mensajes.CLINICA_ELIMINAR_QUESTION, nombre).then((result) => {
       if (result.value) {
         // Confirm
+        const deleteClinicaJson = {
+          id_usuario_elimino:localStorage.getItem("_us"),
+          id_clinica:localStorage.getItem("_cli"),
+          fecha_eliminacion:DateUtil.getCurrentFormattedDate()
+        }
+
         this.spinner.show();
-        this.centroService.deleteCentro(id).subscribe(res => {
+        this.centroService.deleteCentro(id, deleteClinicaJson).subscribe(res => {
           this.spinner.hide();
           console.log("Clinica eliminada:" + res)
 

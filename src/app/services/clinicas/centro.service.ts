@@ -18,10 +18,6 @@ export class CentroService {
   private centroCreado:Centro 
   private centro$: Subject<Centro>; // Para actualizar el centro creado desde el perfil
 
-  //Para envíar el id hacia otro componente / modal
-  //private centroIdSource = new BehaviorSubject<string>('');
-  //currentCentroId = this.centroIdSource.asObservable()
-
   constructor(private http: HttpClient) {
     this.centro$ = new Subject();
   }
@@ -58,38 +54,19 @@ export class CentroService {
     return this.centros.asObservable();
   }
 
-  // GET One
-  /*getCentro$(id: string) {
-    this.http.get<Centro>(`${this.URI}/${id}`).subscribe(
-      res=>{
-        this.centro$.next(res)
-      },
-      err => console.log(err)
-    )
-    return this.centro$.asObservable();
-  }*/
 
   getCentro$(id: string){
     return this.http.get<Centro>(`${this.URI}/${id}`)
   }
 
   // PATCH One
-  updateCentro(id: string, nombre: string, telefono: string, correo:string, direccion:string) {
-    return this.http.patch(`${this.URI}/${id}`, {nombre, telefono, correo, direccion});
+  updateCentro(id: string, centro:any) {
+    return this.http.patch(`${this.URI}/${id}`, centro);
   }
 
   // DELETE One
-  deleteCentro(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.URI}/${id}`).pipe(
-      tap(() => {
-        const centros = this.centros.getValue();
-        const index = centros.findIndex(usuario => usuario.id === id);
-        if (index !== -1) {
-          centros.splice(index, 1);
-          this.centros.next([...centros]);
-        }
-      })
-    );
+  deleteCentro(id: string, centro:any): Observable<void> {
+    return this.http.put<void>(`${this.URI}/${id}`, centro)
   }
 
   get getCentroCreado$(): Observable<Centro> {
@@ -97,15 +74,8 @@ export class CentroService {
   }
 
   // GET One by
-  getCentroByIdUser$(id_usuario: string) {
-    return this.http.get<Centro>(`${this.URI}/usuario/${id_usuario}`).pipe(
-      catchError((err) => {
-        return throwError(err); // Lanzar el error nuevamente para que lo maneje el componente
-      })
-    );
+  getCentroByIdUserSuAdmin(id_usuario: string) {
+    return this.http.get<Centro>(`${this.URI}/usuario/${id_usuario}`)
   }
 
-  /*changeCentroId(id: string) {
-    this.centroIdSource.next(id);
-  }*/
 }

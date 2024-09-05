@@ -102,11 +102,11 @@ export class LoginComponent implements OnInit {
 
             if(res.rol =="suadmin" || res.rol =="sop"){
 
-              this.centroService.getCentroByIdUser$(res.id).subscribe(
+              this.centroService.getCentroByIdUserSuAdmin(res.id).subscribe(
                 res => {
                   
                   this.sharedService.setNombreClinica(res.nombre);
-                  console.log("Si existe Centro")
+                  console.log("SU admin existe Clinica")
                   this.validarPlanGratuito()
                   this.router.navigate(['/calendario'])
                 },

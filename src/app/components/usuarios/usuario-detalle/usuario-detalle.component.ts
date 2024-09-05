@@ -239,7 +239,7 @@ export class UsuarioDetalleComponent implements OnInit {
         // Confirm
         const deleteUsuarioJson = {
           id_usuario_elimino:localStorage.getItem("_us"),
-          id_clinica:localStorage.getItem("_us"),
+          id_clinica:localStorage.getItem("_cli"),
           fecha_eliminacion:DateUtil.getCurrentFormattedDate()
         }
 

@@ -69,6 +69,7 @@ export class UsuarioService {
     return this.http.patch<Usuario>(`${this.URI}/${id}`, usuario);
   }
 
+  /* No se envía id_usuario_creador en este método */
   updateUsuarioRegister(id: string, nombre:string, apellidop:string, id_clinica:string, fecha_creacion:string) {
     return this.http.patch(`${this.URI}/usuario/${id}/registro`, {nombre, apellidop, id_clinica, fecha_creacion});
   }

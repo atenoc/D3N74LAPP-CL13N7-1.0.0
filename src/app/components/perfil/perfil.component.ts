@@ -11,6 +11,7 @@ import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
 import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 import Swal from 'sweetalert2';
 import { Alerts } from 'src/app/shared/utils/alerts';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
 
 @Component({
   selector: 'app-perfil',
@@ -103,9 +104,16 @@ export class PerfilComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         // Confirm
+
+        const deleteClinicaJson = {
+          id_usuario_elimino:localStorage.getItem("_us"),
+          id_clinica:localStorage.getItem("_cli"),
+          fecha_eliminacion:DateUtil.getCurrentFormattedDate()
+        }
+
         this.spinner.show();
         setTimeout(() => {
-          this.centroService.deleteCentro(id).subscribe(res => {
+          this.centroService.deleteCentro(id, deleteClinicaJson).subscribe(res => {
             this.spinner.hide();
             console.log("Centro eliminado:" + res)
             

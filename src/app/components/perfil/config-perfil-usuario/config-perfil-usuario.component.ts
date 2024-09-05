@@ -41,7 +41,7 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
     this.noBack()
     require('../../../../assets/js/custom-wizard.js');
 
-    this.centroService.getCentroByIdUser$(localStorage.getItem('_us')).subscribe(
+    this.centroService.getCentroByIdUserSuAdmin(localStorage.getItem('_us')).subscribe(
       res => {
         console.log("Si existe Centro")
         this.router.navigate(['/calendario'])
@@ -73,7 +73,7 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
     this.fecha_actual = DateUtil.getCurrentFormattedDate()
 
     const centroJson = {
-      id_usuario: localStorage.getItem('_us'),
+      id_usuario_creador: localStorage.getItem('_us'),
       nombre: this.nombreClinica,
       telefono: this.telefono,
       direccion: this.direccionClinica,
