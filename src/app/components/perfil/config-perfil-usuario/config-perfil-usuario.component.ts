@@ -25,7 +25,7 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
   direccionClinica:string
 
   formularioCentro:FormGroup
-  fecha_actual:string
+  //fecha_actual:string
 
   constructor(
     private centroService:CentroService, 
@@ -70,14 +70,12 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
       return
     }
 
-    this.fecha_actual = DateUtil.getCurrentFormattedDate()
-
     const centroJson = {
       id_usuario_creador: localStorage.getItem('_us'),
       nombre: this.nombreClinica,
       telefono: this.telefono,
       direccion: this.direccionClinica,
-      fecha_creacion: this.fecha_actual,
+      fecha_creacion: DateUtil.getCurrentFormattedDate(),
       id_plan: '0401PF30'
     };
 
@@ -102,7 +100,7 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
         this.cifradoService.setEncryptedIdPlan(res.id_plan)
 
         this.spinner.show();
-        this.usuarioService.updateUsuarioRegister(localStorage.getItem('_us'), this.nombre, this.apellido, res.id, this.fecha_actual).subscribe(
+        this.usuarioService.updateUsuarioRegister(localStorage.getItem('_us'), this.nombre, this.apellido, res.id).subscribe(
           res=>{
             this.spinner.hide();
             this.router.navigate(['/perfil'])

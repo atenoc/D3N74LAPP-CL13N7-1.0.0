@@ -48,16 +48,9 @@ export class UsuarioService {
     );
   }
   
-  // GET old (deprecated)
-  /*getUsuarios$(): Observable<Usuario[]>{
-    this.http.get<Usuario[]>(this.URI).subscribe(
-      res=>{
-        this.usuarios.next(res)
-      },
-      err => console.log(err)
-    )
-    return this.usuarios.asObservable();
-  }*/
+  getUsuarioSop$(){
+    return this.http.get<Usuario[]>(`${this.URI}/roles/onlysop`)
+  }
 
   // GET Usuario por id
   getUsuario$(id: string){
@@ -70,8 +63,8 @@ export class UsuarioService {
   }
 
   /* No se envía id_usuario_creador en este método */
-  updateUsuarioRegister(id: string, nombre:string, apellidop:string, id_clinica:string, fecha_creacion:string) {
-    return this.http.patch(`${this.URI}/usuario/${id}/registro`, {nombre, apellidop, id_clinica, fecha_creacion});
+  updateUsuarioRegister(id: string, nombre:string, apellidop:string, id_clinica:string) {
+    return this.http.patch(`${this.URI}/usuario/${id}/registro`, {nombre, apellidop, id_clinica});
   }
 
   // DELETE
