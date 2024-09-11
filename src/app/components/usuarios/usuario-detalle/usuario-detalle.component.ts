@@ -28,6 +28,7 @@ export class UsuarioDetalleComponent implements OnInit {
   idUsuario:string;
   fecha_creacion:string;
   nombre_usuario_creador:string;
+  textoPerfil: boolean = false;
 
   catRoles:CatalogoRol[] = [];
   catTitulos:CatalogoTitulo[] = [];
@@ -92,6 +93,12 @@ export class UsuarioDetalleComponent implements OnInit {
           especialidad: ['null'],
           telefono: ['', [Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
         })
+
+        const url = this.router.url;
+
+        // Verifica si la URL contiene 'perfil' o 'cuenta'
+        this.textoPerfil = url.includes('perfil');
+        console.log("Es PErfil: "+this.textoPerfil)
     
         this.activatedRoute.params.subscribe(params => {
           this.id = params['id'];

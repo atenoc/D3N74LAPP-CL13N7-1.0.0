@@ -3,13 +3,13 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h5>Mi perfil</h5>
+          <h5>Mi cuenta</h5>
         </div>
         <div class="col-sm-6 hide-on-mobile">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a routerLink="/calendario">Calendario</a></li>
             <li class="breadcrumb-item"><a routerLink="/agenda">Agenda</a></li>
-            <li class="breadcrumb-item active">Mi perfil</li>
+            <li class="breadcrumb-item active">Mi cuenta</li>
           </ol>
         </div>
       </div>
@@ -18,11 +18,25 @@
 
   <!-- Main content -->
   <section class="content">
-    <div class="container-fluid">
+    <div class="container">
       <div class="row">
-        <div class="col-md-4">
+        <div class="card card-primary card-outline">
+          <div class="card-body box-profile">
+            <div class="text-center">
+              <i class="fas fa-user size"></i>
+            </div>
 
-          <!-- Profile Image -->
+            <h3 class="profile-username text-center">{{ usuario.desc_titulo }} {{ usuario.nombre }} {{ usuario.apellidop }} {{ usuario.apellidom }}</h3>
+            <p class="text-muted text-center">{{ usuario.desc_rol }}</p>
+            
+          </div>
+        </div>
+      </div>
+
+      <app-usuario-detalle></app-usuario-detalle>
+      
+      <div class="row">
+        <!-- <div class="col-md-4">
           <div class="card card-primary card-outline">
             <div class="card-body box-profile">
               <div class="text-center">
@@ -52,31 +66,10 @@
                 <a> <button class="btn btn-outline-primary btn-sm cursor-pointer" (click)="selectedIdUser(usuario.id)">Ver mi información...</button> </a>
               </div>
             </div>
-            <!-- /.card-body -->
           </div>
-          <!-- /.card -->
-
-          <!-- Mi cuenta -->
-          <!-- <div class="card card-primary" *ngIf="mostrarOpciones">
-            <div class="card-header">
-              <h3 class="card-title">Mi cuenta</h3>
-            </div>
-            <div class="card-body">
-              <ul class="list-group list-group-unbordered mb-3">
-                <li class="list-group-item">
-                  <b class="text-primary">Plan</b> <a class="float-right">{{ usuario.plan }}</a>
-                </li>
-              </ul>
-
-              <a> <small class="text-danger cursor-pointer" (click)="deleteCentroCuenta(centro.id, centro.nombre)"
-                  ngbTooltip="Eliminar mi cuenta y toda la información de mi consultorio"> Eliminar</small> </a>
-            </div>
-          </div> -->
-
-          <!-- /.card -->
-        </div>
+        </div> -->
         <!-- /.col -->
-        <div class="col-md-4">
+        <div class="col-md-6">
           <div class="card card-primary">
             <div class="card-header">
                 <h3 class="card-title">Mi consultorio dental</h3>
@@ -112,10 +105,10 @@
         </div>
         <!-- /.col -->
 
-        <div class="col-md-4">
+        <div class="col-md-6">
           <div class="card card-primary">
             <div class="card-header">
-              <h3 class="card-title">Mi cuenta</h3>
+              <h3 class="card-title">Plan</h3>
             </div>
             <div class="card-body">
               <ul class="list-group list-group-unbordered mb-3">

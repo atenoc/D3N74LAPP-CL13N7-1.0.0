@@ -47,7 +47,7 @@ export class PerfilComponent implements OnInit {
         this.mostrarOpciones= true
       }
 
-      // Consulta de Usuario por Correo
+      // Consulta de Usuario
       this.usuarioService.getUsuario$(localStorage.getItem('_us')).subscribe(
         res => {
           this.usuario = res;

@@ -49,7 +49,7 @@ const routes: Routes = [
   {path:'centros', component: CentroListComponent, canActivate:[AuthGuard]},
   {path:'centro-form', component: CentroFormComponent, canActivate:[AuthGuard]},
   {path:'centro-detalle/:id', component: CentroDetalleComponent, canActivate:[AuthGuard]},
-  {path:'perfil', component: PerfilComponent, canActivate:[AuthGuard]},
+  {path:'perfil/:id', component: PerfilComponent, canActivate:[AuthGuard]},
   {path:'visitas/:id', component: VisitasComponent, canActivate:[AuthGuard]},
   {path:'diagnosticos/:id', component: DiagnosticoComponent, canActivate:[AuthGuard]},
   {path:'tratamientos/:id', component: TratamientoComponent, canActivate:[AuthGuard]},

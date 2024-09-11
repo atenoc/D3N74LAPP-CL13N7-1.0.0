@@ -97,7 +97,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     });
 
     this.sharedService.getDiasRestantesPlanGratuito().subscribe(datoRecibido => {
-      this.mensajeRestanDias = "Quedan "+datoRecibido+" días";
+      this.mensajeRestanDias = "Restan "+datoRecibido+" días";
     });
 
 
@@ -108,7 +108,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   }
 
   irAPerfil(){
-    this.router.navigate(['/perfil']);
+    const id = localStorage.getItem('_us');
+    this.router.navigate(['/perfil/', id]);
   }
   salir(){
     this.authService.logout()

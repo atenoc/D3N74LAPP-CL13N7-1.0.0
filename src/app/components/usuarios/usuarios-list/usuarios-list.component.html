@@ -38,11 +38,11 @@
                 <div *ngFor="let usuario of usuarios" class="col-md-4 mb-2">
                   <div class="card card-primary card-outline">
                     <div class="card-header">
-                      <strong class="text-muted"><i class="fas fa-user-lock"></i> {{ usuario.titulo }} {{ usuario.nombre }} {{ usuario.apellidop }} {{ usuario.apellidom }}</strong>
+                      <strong class="text-primary"><i class="fas fa-user-lock"></i> {{ usuario.titulo }} {{ usuario.nombre }} {{ usuario.apellidop }} {{ usuario.apellidom }}</strong>
                     </div>
                     <div class="card-body">
                       <p class="card-text text-muted">Cargo: {{ usuario.desc_rol }}</p>
-                      <span class="card-title text-muted">Especialidad:</span> <span class="card-title text-primary ml-1"> {{ usuario.especialidad }} </span>
+                      <span class="card-title text-muted">Especialidad:</span> <span class="card-title ml-1"> {{ usuario.especialidad }} </span>
                       
                     </div>
                     <div class="card-footer">

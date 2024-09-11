@@ -1,6 +1,6 @@
 
 <!-- Content Header (Page header) -->
-<section class="content-header">
+<section class="content-header" *ngIf="!textoPerfil">
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
@@ -53,7 +53,7 @@
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <span class="text-muted">Rol</span>
+                                <span class="text-muted">Rol / Cargo</span>
                                 <input type="text" class="form-control sin-borde" value="{{descRol}}" readonly>
                             </div>
                         </div>
@@ -180,7 +180,7 @@
                         <div class="col-sm">
                             <div class="form-group">
                                 <div class="form-group">
-                                    <strong class="text-muted"> Rol * </strong>
+                                    <strong class="text-muted"> Rol / Cargo * </strong>
                                     <ng-container *ngIf="mismoUsuario; else habilitado">
                                         <input type="text" class="form-control" value="{{descRol}}" readonly>
                                     </ng-container>
