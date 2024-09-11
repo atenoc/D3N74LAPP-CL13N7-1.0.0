@@ -12,6 +12,8 @@ import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 import Swal from 'sweetalert2';
 import { Alerts } from 'src/app/shared/utils/alerts';
 import { DateUtil } from 'src/app/shared/utils/DateUtil';
+import { AuditoriaService } from 'src/app/services/auditoria/auditoria.service';
+import { Auditoria } from 'src/app/models/Auditoria.model';
 
 @Component({
   selector: 'app-perfil',
@@ -22,9 +24,11 @@ export class PerfilComponent implements OnInit {
 
   usuario: Usuario = {} as Usuario;
   centro: Centro = {} as Centro;
+  auditoria: Auditoria = {} as Auditoria;
 
   rol:string
   mostrarOpciones:boolean=false
+  accesoAnterior:string;
 
   constructor(
     private spinner: NgxSpinnerService, 
@@ -33,6 +37,7 @@ export class PerfilComponent implements OnInit {
     private centroService:CentroService, 
     private router:Router,
     private cifradoService: CifradoService,
+    private auditoriaService:AuditoriaService,
     config: NgbModalConfig) {
       config.backdrop = 'static';
 		  config.keyboard = false;
@@ -53,6 +58,7 @@ export class PerfilComponent implements OnInit {
           this.usuario = res;
           console.log(this.usuario )
           // Consulta Centro del usuario
+          this.cargaAccesoAnterior()
           this.cargarClinicaAsociada()
         },
         err => console.log("error: " + err)
@@ -60,6 +66,18 @@ export class PerfilComponent implements OnInit {
 
     }
 
+  }
+
+  cargaAccesoAnterior(){
+    console.log("Cargando acceso...")
+    this.auditoriaService.getAccesoByIdUsuario(localStorage.getItem('_us')).subscribe(
+      res => {
+        this.auditoria = res;
+        console.log(this.auditoria )
+        this.accesoAnterior=this.auditoria.fecha_evento
+      },
+      err => console.log("error: " + err)
+    )
   }
 
   cargarClinicaAsociada(){

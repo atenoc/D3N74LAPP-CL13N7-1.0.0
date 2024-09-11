@@ -122,7 +122,8 @@ export class CentroDetalleComponent implements OnInit {
         this.spinner.hide();
         console.log("Centro actualizado: "+res);
         this.sharedService.setNombreClinica(this.formularioCentro.value.nombre);
-        this.router.navigate(['/perfil'])
+        const id = localStorage.getItem('_us');
+        this.router.navigate(['/perfil/', id]);
 
         Alerts.success(Mensajes.CLINICA_ACTUALIZADA, `${this.centro.nombre}`);
       },
