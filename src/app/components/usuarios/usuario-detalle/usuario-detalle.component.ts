@@ -197,6 +197,7 @@ export class UsuarioDetalleComponent implements OnInit {
         //Sólo cuando el usuario en sesion actualiza sus datos
         if(this.usuario.id == localStorage.getItem('_us')){
           this.sharedService.setNombreUsuario(this.usuario.nombre +' '+this.usuario.apellidop);
+          this.sharedService.setNombreCompletoUsuario(this.usuario.nombre +' '+this.usuario.apellidop +' '+this.usuario.apellidom);
         }
         
         this.editando=false

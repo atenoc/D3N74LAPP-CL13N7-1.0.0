@@ -14,6 +14,7 @@ import { Alerts } from 'src/app/shared/utils/alerts';
 import { DateUtil } from 'src/app/shared/utils/DateUtil';
 import { AuditoriaService } from 'src/app/services/auditoria/auditoria.service';
 import { Auditoria } from 'src/app/models/Auditoria.model';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-perfil',
@@ -29,6 +30,7 @@ export class PerfilComponent implements OnInit {
   rol:string
   mostrarOpciones:boolean=false
   accesoAnterior:string;
+  nombreCompletoUsuario:string;
 
   constructor(
     private spinner: NgxSpinnerService, 
@@ -38,6 +40,7 @@ export class PerfilComponent implements OnInit {
     private router:Router,
     private cifradoService: CifradoService,
     private auditoriaService:AuditoriaService,
+    private sharedService:SharedService, 
     config: NgbModalConfig) {
       config.backdrop = 'static';
 		  config.keyboard = false;
@@ -57,6 +60,7 @@ export class PerfilComponent implements OnInit {
         res => {
           this.usuario = res;
           console.log(this.usuario )
+          this.nombreCompletoUsuario = this.usuario.nombre +' '+this.usuario.apellidop+' '+this.usuario.apellidom
           // Consulta Centro del usuario
           this.cargaAccesoAnterior()
           this.cargarClinicaAsociada()
@@ -65,6 +69,10 @@ export class PerfilComponent implements OnInit {
       )  
 
     }
+
+    this.sharedService.getNombreCompletoUsuario().subscribe(datoRecibido => {
+      this.nombreCompletoUsuario = datoRecibido;
+    });
 
   }
 

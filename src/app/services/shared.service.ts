@@ -13,6 +13,7 @@ export class SharedService {
   private cambiarContrasena = new BehaviorSubject<boolean>(true);
   private nombreClinica = new BehaviorSubject<string>('');
   private nombreUsuario = new BehaviorSubject<string>('');
+  private nombreCompletoUsuario = new BehaviorSubject<string>('');
   private diasRestanPlanGratis = new BehaviorSubject<string>('');
   private mensajeVigenciaPlan = new BehaviorSubject<string>('');
 
@@ -45,6 +46,12 @@ export class SharedService {
     this.nombreUsuario.next(nombreUsuario);
   }
 
+  getNombreCompletoUsuario() {
+    return this.nombreCompletoUsuario.asObservable();
+  }
+  setNombreCompletoUsuario(nombreCompletoUsuario: string) {
+    this.nombreCompletoUsuario.next(nombreCompletoUsuario);
+  }
 
   getMensajeVigenciaPlanGratuito() {
     return this.mensajeVigenciaPlan.asObservable();
