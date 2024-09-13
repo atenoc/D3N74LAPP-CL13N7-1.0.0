@@ -4,8 +4,12 @@ export interface Centro{
     telefono:string;
     correo:string;
     direccion:string;
-    fecha_creacion:string;
     //id_usuario:string;
     id_plan:string
     desc_plan:string
+
+    nombre_usuario_creador:string;
+    fecha_creacion:string;
+    nombre_usuario_actualizo:string;
+    fecha_actualizacion:string;
 }

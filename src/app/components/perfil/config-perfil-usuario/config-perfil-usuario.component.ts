@@ -103,7 +103,8 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
         this.usuarioService.updateUsuarioRegister(localStorage.getItem('_us'), this.nombre, this.apellido, res.id).subscribe(
           res=>{
             this.spinner.hide();
-            this.router.navigate(['/perfil'])
+            const id = localStorage.getItem('_us');
+            this.router.navigate(['/perfil/', id]);
   
             console.log("Usuario actualizado")
             this.sharedService.setNombreUsuario(this.nombre +" "+this.apellido)
@@ -112,7 +113,7 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
             this.sharedService.setDiasRestantesPlanGratuito('30');
             localStorage.setItem('dias_restantes_p_g', '30')
 
-            Alerts.success(Mensajes.SUCCESS, `Correo: ${Mensajes.REGISTRO_EXITOSO}`);
+            Alerts.successCenter(Mensajes.SUCCESS, `${Mensajes.REGISTRO_EXITOSO}`);
           },
           err =>{
             this.spinner.hide();

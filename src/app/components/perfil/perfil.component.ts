@@ -30,7 +30,14 @@ export class PerfilComponent implements OnInit {
   rol:string
   mostrarOpciones:boolean=false
   accesoAnterior:string;
+  existeAccesoAnterior:boolean = false
   nombreCompletoUsuario:string;
+
+  nombre_usuario_creador:string
+  fecha_creacion:string;
+  nombre_usuario_actualizo:string
+  fecha_actualizacion:string
+  mostrar_actualizacion:boolean=false
 
   constructor(
     private spinner: NgxSpinnerService, 
@@ -83,6 +90,7 @@ export class PerfilComponent implements OnInit {
         this.auditoria = res;
         console.log(this.auditoria )
         this.accesoAnterior=this.auditoria.fecha_evento
+        this.existeAccesoAnterior = this.accesoAnterior ? true : false
       },
       err => console.log("error: " + err)
     )
@@ -92,6 +100,14 @@ export class PerfilComponent implements OnInit {
     this.centroService.getCentro$(localStorage.getItem('_cli')).subscribe(
       res => {
         this.centro = res;
+
+        this.nombre_usuario_creador = this.centro.nombre_usuario_creador
+        this.fecha_creacion=this.centro.fecha_creacion
+        this.nombre_usuario_actualizo = this.centro.nombre_usuario_actualizo
+        this.fecha_actualizacion = this.centro.fecha_actualizacion
+        console.log("nombre_usuario_actualizo: "+this.nombre_usuario_actualizo)
+        this.mostrar_actualizacion = this.nombre_usuario_actualizo !='' || this.nombre_usuario_actualizo !=null ? true : false
+        console.log("mostrar_actualizacion :: "+this.mostrar_actualizacion )
       },
       err => {
         console.log("error: " + err)

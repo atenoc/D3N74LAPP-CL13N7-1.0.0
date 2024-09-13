@@ -15,6 +15,17 @@ export class Alerts {
     });
   }
 
+  static successCenter(title: string, description: string){
+    Swal.fire({
+      title: `${title}`,
+      icon: 'success',
+      html: `${description}`,
+      showConfirmButton: true,
+      confirmButtonColor: '#28a745',
+      timer: 4000
+    })
+  }
+
   static warning(message: string, description: string) {
     Swal.fire({
       icon: 'warning',

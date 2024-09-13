@@ -28,7 +28,7 @@
 
             <h3 class="profile-username text-center">{{ usuario.desc_titulo }} {{ nombreCompletoUsuario }}</h3>
             <p class="text-muted text-center">{{ usuario.desc_rol }}</p>
-            <div class="text-muted text-center"><small> Mi acceso anterior: {{ accesoAnterior }}</small></div>
+            <div class="text-muted text-center" *ngIf="existeAccesoAnterior"><small> Mi acceso anterior: {{ accesoAnterior }}</small></div>
             
           </div>
         </div>
@@ -74,27 +74,39 @@
           <div class="card card-primary">
             <div class="card-header">
                 <h3 class="card-title">Mi clínica dental</h3>
-                <div *ngIf="mostrarOpciones" class="card-tools">
-                    <button class="btn btn-light btn-sm" (click)="selectedIdCentro(centro.id)" ngbTooltip="Modificar información del consultorio">
-                    <i class="fas fa-pencil-alt mr-1"></i>Editar</button>
-                </div>
             </div><!-- /.card-header -->
             <div class="card-body">
 
-                <strong><i class="fas fa-tooth"></i> Nombre: </strong>
+                <strong class="text-muted"><i class="fas fa-tooth"></i> Nombre: </strong>
                 <span class="text-primary"> {{ centro.nombre }}</span>
                 <hr>
-                <strong><i class="fas fa-phone"></i> Teléfono: </strong>
+                <strong class="text-muted"><i class="fas fa-phone"></i> Teléfono: </strong>
                 <span class="text-primary"> {{ centro.telefono }}</span>
                 <hr>
-                <strong><i class="fas fa-map-marker-alt mr-1"></i> Dirección: </strong>
+                <strong class="text-muted"><i class="fas fa-map-marker-alt mr-1"></i> Dirección: </strong>
                 <span class="text-primary"> {{ centro.direccion }}</span>
                 <hr>
-                <strong><i class="fas fa-envelope"></i> Correo: </strong>
-                <p class="text-primary"> {{ centro.correo }}</p>
+                <strong class="text-muted"><i class="fas fa-envelope"></i> Correo: </strong>
+                <span  class="text-primary"> {{ centro.correo }}</span >
                 <hr>
-                <strong><i class="fas fa-calendar"></i> Creado el: </strong>
-                <span class="text-primary"> {{ centro.fecha_creacion }}</span>
+                <!-- <strong><i class="fas fa-calendar"></i> Creado el: </strong>
+                <span class="text-primary"> {{ centro.fecha_creacion }}</span> -->
+
+                <div class="row mt-2">
+                  <div class="col-sm">
+                      <small class="text-muted">Creado por {{ nombre_usuario_creador }} el {{ fecha_creacion }}</small>
+                  </div>
+                </div>
+                <div class="d-flex">
+                    <div *ngIf="mostrar_actualizacion">
+                        <small class="text-muted">Actualizado por {{ nombre_usuario_actualizo }} el {{ fecha_actualizacion }}</small>
+                    </div>
+                    <div class="ml-auto" *ngIf="mostrarOpciones">
+                        <button class="btn btn-outline-secondary" (click)="selectedIdCentro(centro.id)" style="margin-top: -20px;"> 
+                            <i class="nav-icon fas fa-edit"></i> Editar
+                        </button>
+                    </div>
+                </div>
 
             </div><!-- /.card-body -->
           </div>
