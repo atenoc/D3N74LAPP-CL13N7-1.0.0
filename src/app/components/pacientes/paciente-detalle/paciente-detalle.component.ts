@@ -160,20 +160,19 @@ export class PacienteDetalleComponent implements OnInit {
 
     this.fecha_actual = DateUtil.getCurrentFormattedDate()
 
+    const pacienteJson = {
+      nombre: this.formularioPaciente.value.nombre,
+      apellidop: this.formularioPaciente.value.apellidop,
+      apellidom: this.formularioPaciente.value.apellidom,
+      edad: this.formularioPaciente.value.edad,
+      sexo: this.formularioPaciente.value.sexo,
+      telefono: this.formularioPaciente.value.telefono,
+      correo: this.formularioPaciente.value.correo,
+      direccion: this.formularioPaciente.value.direccion
+    }
+
     this.spinner.show();
-    this.pacienteService.updatePaciente(
-      this.paciente.id, 
-      this.formularioPaciente.value.nombre,
-      this.formularioPaciente.value.apellidop,
-      this.formularioPaciente.value.apellidom,
-      this.formularioPaciente.value.edad,
-      this.formularioPaciente.value.sexo,
-      this.formularioPaciente.value.telefono,
-      this.formularioPaciente.value.correo,
-      this.formularioPaciente.value.direccion,
-      localStorage.getItem("_us"),
-      this.fecha_actual
-      ).subscribe(res => {
+    this.pacienteService.updatePaciente(this.paciente.id, pacienteJson).subscribe(res => {
         this.spinner.hide();
         this.paciente=res
         console.log("Paciente actualizado: "+this.paciente);

@@ -91,7 +91,7 @@ export class CitaEditComponent implements OnInit {
 
   nombre_usuario_creador:string
   nombre_usuario_actualizo:string
-  fecha_actual:string
+  //fecha_actual:string
   fecha_creacion:string
   fecha_actualizacion:string
   mostrar_actualizacion:boolean=false
@@ -265,15 +265,17 @@ export class CitaEditComponent implements OnInit {
   }
     
   updatePaciente(){
+
+    const pacienteCitaJson = {
+      nombre: this.nombrePaciente,
+      apellidop: this.apellidoPaternoPaciente,
+      apellidom: this.apellidoMaternoPaciente,
+      edad: this.edadPaciente,
+      telefono: this.telefonoPaciente,
+    }
+
     this.spinner.show();
-    this.pacienteService.updatePacienteCita(
-      this.id_paciente,
-      this.nombrePaciente, 
-      this.apellidoPaternoPaciente,
-      this.apellidoMaternoPaciente,
-      this.edadPaciente,
-      this.telefonoPaciente
-    ).subscribe(res =>{
+    this.pacienteService.updatePacienteCita(this.id_paciente, pacienteCitaJson).subscribe(res =>{
       this.spinner.hide();
       this.paciente = res
       console.log("Se actualizó la información del paciente")
@@ -301,21 +303,20 @@ export class CitaEditComponent implements OnInit {
       this.fecha_hora_fin = null
     }
 
-    this.fecha_actual = DateUtil.getCurrentFormattedDate()
+    //this.fecha_actual = DateUtil.getCurrentFormattedDate()
+
+    const updateCitaJson = {
+      title: "Cita · "+this.nombrePaciente+" "+this.apellidoPaternoPaciente,
+      motivo: this.motivo,
+      start: this.fecha_hora_inicio,
+      end: this.fecha_hora_fin,
+      nota: this.nota,
+      id_paciente: this.id_paciente,
+      id_usuario_medico: this.id_usuario_medico,
+    }
 
     this.spinner.show();
-    this.citaService.updateCita(
-      this.id,
-      "Cita · "+this.nombrePaciente+" "+this.apellidoPaternoPaciente,
-      this.motivo,
-      this.fecha_hora_inicio,
-      this.fecha_hora_fin,
-      this.nota,
-      this.id_paciente,
-      this.id_usuario_medico,
-      localStorage.getItem("_us"), 
-      this.fecha_actual
-    ).subscribe(
+    this.citaService.updateCita(this.id, updateCitaJson).subscribe(
       res=>{
         this.citaEditar=res
         this.spinner.hide();

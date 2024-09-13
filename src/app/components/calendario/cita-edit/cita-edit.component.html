@@ -249,8 +249,8 @@
 
                     <div class="d-flex mt-2">
                       <div>
-                        <small class="text-muted"><strong>Creado por:</strong> {{ nombre_usuario_creador }}</small>
-                        <small class="text-muted"> | <strong> Fecha creación:</strong> {{ fecha_creacion }}</small> <br>
+                        <small class="text-muted">Creado por {{ nombre_usuario_creador }}</small>
+                        <small class="text-muted"> el {{ fecha_creacion }}</small> <br>
                       </div>
                       <div class="ml-auto">
                           <small class="text-muted">Los campos marcados con (*) son obligatorios</small>
@@ -259,8 +259,8 @@
 
                     <div class="d-flex mt-1 mb-2">
                       <div>
-                        <small *ngIf="mostrar_actualizacion" class="text-muted"><strong>Actualizado por:</strong> {{ nombre_usuario_actualizo }}</small>
-                        <small *ngIf="mostrar_actualizacion" class="text-muted"> | <strong>Fecha actualización:</strong> {{ fecha_actualizacion }}</small>
+                        <small *ngIf="mostrar_actualizacion" class="text-muted">Actualizado por {{ nombre_usuario_actualizo }}</small>
+                        <small *ngIf="mostrar_actualizacion" class="text-muted"> el {{ fecha_actualizacion }}</small>
                       </div>
                       <div class="ml-auto">
                         <!-- <span *ngIf="mostrarMensajeNoExistenCambios" class="text-info">{{ mensajeNoExistenCambios }}</span> -->

@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
 import { Usuario, UsuariosPaginados } from '../../models/Usuario.model';
 import { catchError, map, tap } from 'rxjs/operators';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
 
 @Injectable({
   providedIn: 'root'
@@ -69,6 +70,9 @@ export class UsuarioService {
 
   // DELETE
   deleteUsuario(id: string, usuario:any) {
+    usuario.id_usuario_actualizo = localStorage.getItem('_us')
+    usuario.id_clinica = localStorage.getItem('_cli')
+    usuario.fecha_actualizacion = DateUtil.getCurrentFormattedDate()
     return this.http.put<void>(`${this.URI}/${id}`, usuario)
   }
   

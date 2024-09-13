@@ -27,7 +27,7 @@ export class EventFormComponent implements OnInit {
   nota:string=""
   fecha_hora_inicio:string
   fecha_hora_fin:string
-  fecha_actual:string
+  //fecha_actual:string
  
   //mensajes
   campoRequerido: string;
@@ -99,7 +99,7 @@ export class EventFormComponent implements OnInit {
         this.fecha_hora_fin = null
       }
 
-      this.fecha_actual = DateUtil.getCurrentFormattedDate()
+      //this.fecha_actual = DateUtil.getCurrentFormattedDate()
 
       var eventoJson = {
         title: this.titulo,
@@ -107,9 +107,6 @@ export class EventFormComponent implements OnInit {
         end: this.fecha_hora_fin,
         nota: this.nota,
         color: this.selectedColor,
-        fecha_creacion: this.fecha_actual,
-        id_clinica: localStorage.getItem('_cli'),
-        id_usuario_creador: localStorage.getItem('_us')
       };
   
       console.log(eventoJson)

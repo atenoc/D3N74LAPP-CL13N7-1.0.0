@@ -28,7 +28,7 @@ export class CitaFormComponent implements OnInit {
   medicos: Usuario[] = [];
   cita:Cita
 
-  fecha_actual:string
+  //fecha_actual:string
   fechaModelInicio: NgbDateStruct;
   fechaModelFin: NgbDateStruct;
   selectedTimeInicio: { hour: number, minute: number } = { hour: 0, minute: 0 };
@@ -162,7 +162,7 @@ export class CitaFormComponent implements OnInit {
         this.fecha_hora_fin = null
       }
 
-      this.fecha_actual = DateUtil.getCurrentFormattedDate()
+      //this.fecha_actual = DateUtil.getCurrentFormattedDate()
 
       if(this.existePaciente){
         this.registrarCita();
@@ -179,9 +179,9 @@ export class CitaFormComponent implements OnInit {
       apellidom: this.apellidoMaternoPaciente,
       edad: this.edadPaciente,
       telefono: this.telefonoPaciente,
-      fecha_creacion: this.fecha_actual,
       id_clinica: localStorage.getItem('_cli'),
-      id_usuario_creador: localStorage.getItem('_us')
+      id_usuario_creador: localStorage.getItem('_us'),
+      fecha_creacion: DateUtil.getCurrentFormattedDate()
     };
 
     this.spinner.show();
@@ -199,7 +199,11 @@ export class CitaFormComponent implements OnInit {
     },
     err =>{
       this.spinner.hide();
-      Alerts.error(Mensajes.ERROR_500, Mensajes.PACIENTE_NO_REGISTRADO, Mensajes.INTENTAR_MAS_TARDE);
+      if(err.error.message=="400"){
+        Alerts.warning(Mensajes.WARNING, Mensajes.PACIENTE_EXISTENTE);
+      }else{
+        Alerts.error(Mensajes.ERROR_500, Mensajes.PACIENTE_NO_REGISTRADO, Mensajes.INTENTAR_MAS_TARDE);
+      }
     })
 
   }
@@ -211,12 +215,8 @@ export class CitaFormComponent implements OnInit {
       color: '#00a65a',
       start: this.fecha_hora_inicio,
       end: this.fecha_hora_fin,
-      
       id_paciente: this.id_paciente,
       id_usuario_medico: this.id_usuario_medico,
-      id_clinica: localStorage.getItem('_cli'),
-      id_usuario_creador: localStorage.getItem('_us'),
-      fecha_creacion: this.fecha_actual,
     };
 
     console.log("Todoooo listo para registrar cita")

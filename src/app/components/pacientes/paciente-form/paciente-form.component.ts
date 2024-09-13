@@ -22,7 +22,7 @@ export class PacienteFormComponent implements OnInit {
 
   rol:string
   formularioPaciente:FormGroup;
-  fecha_actual:string
+  //fecha_actual:string
   paciente:Paciente
   catSexo:CatalogoSexo[] = [];
 
@@ -105,13 +105,13 @@ export class PacienteFormComponent implements OnInit {
 
   crearPaciente(){
     console.log("CREAR Paciente")
+    console.log(this.formularioPaciente)
 
-    this.fecha_actual = DateUtil.getCurrentFormattedDate()
-    var nuevoPacienteJson = JSON.parse(JSON.stringify(this.formularioPaciente))
-      
+    var nuevoPacienteJson = JSON.parse(JSON.stringify(this.formularioPaciente.value))
+    console.log("1")
     nuevoPacienteJson.id_usuario_creador=localStorage.getItem('_us') 
     nuevoPacienteJson.id_clinica=localStorage.getItem('_cli') 
-    nuevoPacienteJson.fecha_creacion = this.fecha_actual
+    nuevoPacienteJson.fecha_creacion = DateUtil.getCurrentFormattedDate()
 
     console.log("Paciente a registrar: ")
     console.log(nuevoPacienteJson)
