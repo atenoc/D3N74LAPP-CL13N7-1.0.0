@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { SharedService } from 'src/app/services/shared.service';
 import * as $ from 'jquery';
 import { Mensajes } from 'src/app/shared/utils/mensajes.config';
+import { ValidateInfo } from '../utils/validateInfo';
 
 @Component({
   selector: 'app-sidebar',
@@ -38,7 +39,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     console.log("SIDEBAR Component")
     //this.inicializarAccordion()
 
-    this.authService.validarUsuarioActivo$(localStorage.getItem('_us'), localStorage.getItem('_em'), localStorage.getItem('_cli')).subscribe(
+    const valudateUser = ValidateInfo.getUserInfo()
+
+    this.authService.validarUsuarioActivo$(valudateUser).subscribe(
       res => {
         this.usuario = res;
         //console.log("sidebar usuario")

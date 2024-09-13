@@ -11,6 +11,7 @@ import { SharedService } from 'src/app/services/shared.service';
 import { PlanesService } from 'src/app/services/planes/planes.service';
 import { Alerts } from 'src/app/shared/utils/alerts';
 import { DateUtil } from 'src/app/shared/utils/DateUtil';
+import { Centro } from 'src/app/models/Centro.model';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,8 @@ export class LoginComponent implements OnInit {
 
   correoUsuario: string
   usuario: Usuario
+  centro: Centro
+  rol:string
   formularioLogin:FormGroup
 
   //mensajes
@@ -63,19 +66,20 @@ export class LoginComponent implements OnInit {
   }
 
   login(){
-    this.spinner.show();
 
-    var userObject = JSON.parse(JSON.stringify(this.formularioLogin.value))
-    this.correoUsuario = userObject.correo
-    const llaveEncripted = this.cifradoService.getEncryptedPassword(userObject.llave); 
+    this.correoUsuario = this.formularioLogin.value.correo
+    const llaveEncripted = this.cifradoService.getEncryptedPassword(this.formularioLogin.value.llave); 
+    console.log("pass:: "+llaveEncripted)
 
-    const newUserJson = {
-      correo: userObject.correo,
+    const userJson = {
+      correo: this.correoUsuario,
       llave: llaveEncripted,
       fecha: DateUtil.getCurrentFormattedDate()
     };
 
-    this.authService.login(newUserJson).subscribe(
+    
+    this.spinner.show();
+    this.authService.login(userJson).subscribe(
       res => {
         //Obtenemos el token de la sesion
         this.cifradoService.setEncryptedToken(res.token)
@@ -83,31 +87,38 @@ export class LoginComponent implements OnInit {
         //Almacenamos el correo 
         localStorage.setItem('_em', this.correoUsuario)
 
+        const correoJson = {
+          correo:localStorage.getItem('_em')
+        }
+
         /* Obtener usuario por Correo */
-        this.authService.getUsuarioByCorreo$(this.correoUsuario).subscribe(
+        this.authService.getUsuarioByCorreo$(correoJson).subscribe(
           res => {
-
-            this.sharedService.setNombreUsuario(res.nombre +" "+res.apellidop)
+            this.usuario=res
+            this.sharedService.setNombreUsuario(this.usuario.nombre +" "+this.usuario.apellidop)
     
-            console.log("Cli:: "+JSON.stringify(res.id_clinica))
-            localStorage.setItem('_cli', res.id_clinica)
+            localStorage.setItem('_cli', this.usuario.id_clinica)
 
-            console.log("Rol:: "+res.rol)
-            localStorage.setItem('_us', res.id)
-            this.cifradoService.setEncryptedRol(res.rol)
+            //console.log("Rol:: "+res.rol)
+            localStorage.setItem('_us', this.usuario.id)
+            this.cifradoService.setEncryptedRol(this.usuario.rol)
 
-            console.log("id Plan a localstorage 2: " +res.id_plan)
-            this.cifradoService.setEncryptedIdPlan(res.id_plan)
-            console.log("id_plan: " +this.cifradoService.getDecryptedIdPlan())
+            //console.log("id Plan a localstorage 2: " +res.id_plan)
+            this.cifradoService.setEncryptedIdPlan(this.usuario.id_plan)
+            //console.log("id_plan: " +this.cifradoService.getDecryptedIdPlan())
 
-            if(res.rol =="suadmin" || res.rol =="sop"){
+            this.rol=this.usuario.rol
+
+            if(this.rol =="suadmin" || this.rol =="sop"){
 
               this.centroService.getCentroByIdUserSuAdmin(res.id).subscribe(
                 res => {
                   
-                  this.sharedService.setNombreClinica(res.nombre);
+                  this.sharedService.setNombreClinica(this.usuario.nombre);
                   console.log("SU admin existe Clinica")
-                  this.validarPlanGratuito()
+                  if(this.rol =="suadmin"){
+                    this.validarPlanGratuito()
+                  }                 
                   this.router.navigate(['/calendario'])
                 },
                 err => {
@@ -117,10 +128,10 @@ export class LoginComponent implements OnInit {
                 }
               )
             }else{
-              this.centroService.getCentro$(res.id_clinica).subscribe(
+              this.centroService.getCentro$(this.usuario.id_clinica).subscribe(
                 res => {
-                  
-                  this.sharedService.setNombreClinica(res.nombre);
+                  this.centro = res
+                  this.sharedService.setNombreClinica(this.centro.nombre);
                   //this.validarPlanGratuito()
                   console.log("Si pertenece a un centro")
                   this.router.navigate(['/calendario'])

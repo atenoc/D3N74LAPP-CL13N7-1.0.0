@@ -180,14 +180,8 @@ export class UsuarioDetalleComponent implements OnInit {
   actualizarUsuario(){  
     console.log("Actualizar usuario:")
 
-    var updateUsuarioJson = JSON.parse(JSON.stringify(this.formularioUsuario.value))
-    updateUsuarioJson.id_usuario_actualizo=localStorage.getItem("_us"),
-    updateUsuarioJson.id_clinica=localStorage.getItem("_cli"),
-    updateUsuarioJson.fecha_actualizacion=DateUtil.getCurrentFormattedDate()
-
-    console.log(updateUsuarioJson)
     this.spinner.show();
-    this.usuarioService.updateUsuario(this.usuario.id, updateUsuarioJson).subscribe({
+    this.usuarioService.updateUsuario(this.usuario.id, this.formularioUsuario.value).subscribe({
       next: res => {
         this.spinner.hide();
         this.usuario=res
@@ -245,19 +239,15 @@ export class UsuarioDetalleComponent implements OnInit {
     Alerts.confirmDelete(Mensajes.USUARIO_ELIMINAR_QUESTION, `${this.usuario.nombre} ${this.usuario.apellidop} ${this.usuario.apellidom}`).then((result) => {
       if (result.value) {
         // Confirm
-        const deleteUsuarioJson = {
-          id_usuario_elimino:localStorage.getItem("_us"),
-          id_clinica:localStorage.getItem("_cli"),
-          fecha_eliminacion:DateUtil.getCurrentFormattedDate()
-        }
-
         this.spinner.show();
-        this.usuarioService.deleteUsuario(id, deleteUsuarioJson).subscribe(res => {
+        this.usuarioService.deleteUsuario(id).subscribe(res => {
+          this.spinner.hide();
           console.log("Usuario eliminado:" + JSON.stringify(res));
           Alerts.success(Mensajes.USUARIO_ELIMINADO, `${this.usuario.nombre} ${this.usuario.apellidop} ${this.usuario.apellidom}`);
           this.router.navigate(['/usuarios']);
         },
           err => { 
+            this.spinner.hide();
             console.log("error: " + err);
             Alerts.error(Mensajes.ERROR_500, Mensajes.USUARIO_NO_ELIMINADO, Mensajes.INTENTAR_MAS_TARDE);
           }

@@ -89,13 +89,14 @@ export class AuthService {
   }
 
   // getUserByCorreo - After Login 2
-  getUsuarioByCorreo$(correo: string) {
-    return this.http.get<Usuario>(`${this.URI}/usuario/correo/${correo}`)
+  getUsuarioByCorreo$(correo: any) {
+    console.log("Correo Login: "+correo)
+    return this.http.post<Usuario>(`${this.URI}/usuario/correo`,correo)
   }
 
   // verificar usuario activo - After Login 3 - Sidebar/Header/Footer
-  validarUsuarioActivo$(id: string, correo: string, id_clinica) {
-    return this.http.get<Usuario>(`${this.URI}/verificar/usuario/${id}/correo/${correo}/clinica/${id_clinica}`)
+  validarUsuarioActivo$(user:any) {
+    return this.http.post<Usuario>(`${this.URI}/verificar/usuario`,user)
   }
 
   

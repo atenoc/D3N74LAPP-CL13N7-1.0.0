@@ -60,6 +60,9 @@ export class UsuarioService {
 
   // PATCH
   updateUsuario(id: string, usuario:any) {
+    usuario.id_usuario_actualizo = localStorage.getItem('_us')
+    usuario.id_clinica = localStorage.getItem('_cli')
+    usuario.fecha_actualizacion = DateUtil.getCurrentFormattedDate()
     return this.http.patch<Usuario>(`${this.URI}/${id}`, usuario);
   }
 
@@ -69,11 +72,12 @@ export class UsuarioService {
   }
 
   // DELETE
-  deleteUsuario(id: string, usuario:any) {
-    usuario.id_usuario_actualizo = localStorage.getItem('_us')
-    usuario.id_clinica = localStorage.getItem('_cli')
-    usuario.fecha_actualizacion = DateUtil.getCurrentFormattedDate()
-    return this.http.put<void>(`${this.URI}/${id}`, usuario)
+  deleteUsuario(id: string) {
+    const params = new HttpParams()
+      .set('id_usuario_elimino', localStorage.getItem('_us'))
+      .set('id_clinica', localStorage.getItem('_cli'))
+      .set('fecha_eliminacion', DateUtil.getCurrentFormattedDate())
+    return this.http.delete<void>(`${this.URI}/${id}`, { params });
   }
   
   // getUsusuario Paginados por id_usuario
