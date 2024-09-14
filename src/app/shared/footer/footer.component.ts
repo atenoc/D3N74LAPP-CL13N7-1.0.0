@@ -31,27 +31,29 @@ export class FooterComponent implements OnInit {
 
     const valudateUser = ValidateInfo.getUserInfo()
 
-    this.authService.validarUsuarioActivo$(valudateUser).subscribe(
-      res => {
-        this.usuario = res;
-        this.rolUsuario=this.usuario.rol
-
-        if(this.rolUsuario=="sop"){
-          this.mostrarClinicas=true
-          this.mostrarUsuarios=true
-        }
-        if(this.rolUsuario=="suadmin"){
-          this.mostrarUsuarios=true
-        }
-        if(this.rolUsuario=="adminn1"){
-          this.mostrarUsuarios=true
-        }
-        if(this.rolUsuario=="adminn2" || this.rolUsuario=="medic" || this.rolUsuario=="caja" || this.rolUsuario=="recepcion"){
-          this.mostrarUsuarios=false
-        }
-      },
-      err => console.log("error: " + err)
-    )
+    if(localStorage.getItem('_us') && localStorage.getItem('_em')){
+      this.authService.validarUsuarioActivo$(valudateUser).subscribe(
+        res => {
+          this.usuario = res;
+          this.rolUsuario=this.usuario.rol
+  
+          if(this.rolUsuario=="sop"){
+            this.mostrarClinicas=true
+            this.mostrarUsuarios=true
+          }
+          if(this.rolUsuario=="suadmin"){
+            this.mostrarUsuarios=true
+          }
+          if(this.rolUsuario=="adminn1"){
+            this.mostrarUsuarios=true
+          }
+          if(this.rolUsuario=="adminn2" || this.rolUsuario=="medic" || this.rolUsuario=="caja" || this.rolUsuario=="recepcion"){
+            this.mostrarUsuarios=false
+          }
+        },
+        err => console.log("error: " + err)
+      )
+    }
   }
 
   salir(){

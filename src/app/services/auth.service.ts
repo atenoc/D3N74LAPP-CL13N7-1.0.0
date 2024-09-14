@@ -74,15 +74,17 @@ export class AuthService {
         //this.sharedService.cambiarMensaje("refresh_navigate")
         //this.sharedService.notifyApp.emit();
         //
-        window.location.reload();
-        console.log("reload")
+        setTimeout(() => {
+          window.location.reload();
+          console.log("reload")
+        }, 2000);
 
         Swal.fire({
           icon: 'info',
           html:
-            `<strong> ¡Hasta pronto! </strong><br/>`,
+            `<strong> ¡ Hasta pronto :) ! </strong><br/>`,
           showConfirmButton: false,
-          timer: 1500
+          timer: 2000
         }) 
       }
     })

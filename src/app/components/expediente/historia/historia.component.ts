@@ -6,7 +6,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Historia } from 'src/app/models/Historia.model';
 import { HistoriaDentalService } from 'src/app/services/historias/historia-dental.service';
 import { Alerts } from 'src/app/shared/utils/alerts';
-import { DateUtil } from 'src/app/shared/utils/DateUtil';
 import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 import { textSomeSymbolsValidator} from '../../../shared/utils/validador';
 
@@ -17,10 +16,10 @@ import { textSomeSymbolsValidator} from '../../../shared/utils/validador';
 })
 export class HistoriaComponent implements OnInit {
 
-  id: string;
+  id_paciente: string;
   rol:string
   fecha_hoy:string
-  fecha_actual:string;
+  //fecha_actual:string;
 
   nombre_usuario_creador:string
   nombre_usuario_actualizo:string
@@ -65,8 +64,8 @@ export class HistoriaComponent implements OnInit {
     })
 
     this.activatedRoute.params.subscribe(params => {
-      this.id = params['id'];
-      console.log("id paciente recuperado: " +this.id)
+      this.id_paciente = params['id'];
+      console.log("id paciente recuperado: " +this.id_paciente)
       
       this.getHistoriaDental()
 
@@ -77,13 +76,10 @@ export class HistoriaComponent implements OnInit {
 
   guardarHistoria(){
 
-    this.fecha_actual = DateUtil.getCurrentFormattedDate()
+    //this.fecha_actual = DateUtil.getCurrentFormattedDate()
 
     var historiaJson = JSON.parse(JSON.stringify(this.formularioHistoria.value))
-    historiaJson.id_paciente = this.id;
-    historiaJson.id_usuario_creador=localStorage.getItem('_us') 
-    historiaJson.id_clinica=localStorage.getItem('_cli') 
-    historiaJson.fecha_creacion = this.fecha_actual
+    historiaJson.id_paciente = this.id_paciente;
 
     this.spinner.show();
     this.historiaService.createHistoria(historiaJson).subscribe(res =>{
@@ -102,10 +98,11 @@ export class HistoriaComponent implements OnInit {
 
   getHistoriaDental(){
 
-    this.historiaService.getHistoriaByIdPaciente(this.id).subscribe(res => {   
+    this.historiaService.getHistoriaByIdPaciente(this.id_paciente).subscribe(res => {   
         
       this.historia = res;
       console.log("Historia obtenida")
+      console.log(this.historia)
       this.id_historia = res.id
 
       this.formularioHistoria.patchValue({
@@ -155,14 +152,8 @@ export class HistoriaComponent implements OnInit {
 
   actualizarHistoria(){
 
-    this.fecha_actual = DateUtil.getCurrentFormattedDate()
-    var historiaJson = JSON.parse(JSON.stringify(this.formularioHistoria.value))
-    historiaJson.id_paciente = this.id;
-    historiaJson.id_usuario_actualizo=localStorage.getItem('_us') 
-    historiaJson.fecha_actualizacion = this.fecha_actual
-
     this.spinner.show();
-    this.historiaService.updateHistoria(this.id_historia, historiaJson).subscribe(res =>{
+    this.historiaService.updateHistoria(this.id_historia, this.formularioHistoria.value).subscribe(res =>{
       this.spinner.hide();
       console.log("Se actualizó la historia")
       this.ngOnInit();

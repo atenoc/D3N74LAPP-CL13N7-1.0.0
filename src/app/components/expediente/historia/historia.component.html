@@ -113,18 +113,22 @@
         </div>
         
         <hr>
-        <div class="card-header p-0 border-bottom-0">
 
-          <small *ngIf="mostrar_creacion" class="text-muted"><strong>Creado por:</strong> {{ nombre_usuario_creador }}</small>
-          <small *ngIf="mostrar_creacion" class="text-muted"> | <strong> Fecha creacion:</strong> {{ fecha_creacion }}</small> <br>
-          <small *ngIf="mostrar_actualizacion" class="text-muted"><strong>Actualizado por:</strong> {{ nombre_usuario_actualizo }}</small>
-          <small *ngIf="mostrar_actualizacion" class="text-muted"> | <strong>Última actualización:</strong> {{ fecha_actualizacion }}</small>
+        <div class="row">
+          <div class="col-sm" *ngIf="mostrar_creacion">
+              <small class="text-muted">Creado por {{ nombre_usuario_creador }} el {{ fecha_creacion }}</small>
+          </div>
+        </div>
 
-          <div class="card-tools">
-            <button *ngIf="botonActualizar" type="button" class="btn btn-primary" (click)="actualizarHistoria()">
-              <i class="fas fa-save"></i> Actualizar
+        <div class="d-flex">
+          <div *ngIf="mostrar_actualizacion">
+              <small class="text-muted">Actualizado por {{ nombre_usuario_actualizo }} el {{ fecha_actualizacion }}</small>
+          </div>
+          <div class="ml-auto">
+            <button *ngIf="botonActualizar" type="button" class="btn btn-primary" (click)="actualizarHistoria()" style="margin-top: -26px;">
+              <i class="fas fa-save"></i> Guardar
             </button>
-            <button *ngIf="botonGuardar" type="button" class="btn btn-primary" (click)="guardarHistoria()">
+            <button *ngIf="botonGuardar" type="button" class="btn btn-success" (click)="guardarHistoria()">
               <i class="fas fa-save"></i> Guardar
             </button>
           </div>

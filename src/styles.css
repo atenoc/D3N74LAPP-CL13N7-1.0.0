@@ -254,3 +254,10 @@
     font-size: 14px; /* Ajusta el tamaño del texto */
     color: #000; /* Color del texto */
   }
+
+
+  /*************** Buttons ***************/
+.btn-success{
+    background-color: #10a37f !important;
+    border-color: #12b78f !important;
+}

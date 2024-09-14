@@ -106,7 +106,7 @@ export class PerfilComponent implements OnInit {
         this.nombre_usuario_actualizo = this.centro.nombre_usuario_actualizo
         this.fecha_actualizacion = this.centro.fecha_actualizacion
         console.log("nombre_usuario_actualizo: "+this.nombre_usuario_actualizo)
-        this.mostrar_actualizacion = this.nombre_usuario_actualizo !='' || this.nombre_usuario_actualizo !=null ? true : false
+        this.mostrar_actualizacion = this.nombre_usuario_actualizo !=null ? true : false
         console.log("mostrar_actualizacion :: "+this.mostrar_actualizacion )
       },
       err => {

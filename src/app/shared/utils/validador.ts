@@ -9,7 +9,7 @@ export function textValidator(): ValidatorFn {
 }
 
 export function textSomeSymbolsValidator(): ValidatorFn {
-    console.log("text address validator"); 
+    //console.log("text address validator"); 
     const regex = new RegExp('^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\\s.,-_#]*$', '');
 
     return (control: AbstractControl): { [key: string]: any } | null => {
