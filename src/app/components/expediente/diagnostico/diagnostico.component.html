@@ -44,17 +44,16 @@
             </div> 
           </div>
           <hr>
-          <div class="card-header p-0 border-bottom-0">
-            <small class="text-muted">Creado por: {{ diagnostico.nombre_usuario_creador }} el {{ diagnostico.fecha_creacion }}</small>
-            
-            <div class="card-tools" style="margin-top: 10px !important;">
-              <button class="btn btn-outline-primary btn-sm" (click)="getDiagnosticoEditar(diagnostico.id); openModalEdit(contentEdit)"> 
-                <i class="nav-icon fas fa-edit"></i> Editar
-              </button>
+          <div class="d-flex">
+            <div *ngIf="diagnostico.fecha_actualizacion">
+                <small class="text-muted">Actualizado el {{ diagnostico.fecha_actualizacion }}</small>
             </div>
-            <br>
-            <small *ngIf="diagnostico.fecha_actualizacion" class="text-muted">Última actualización: {{ diagnostico.fecha_actualizacion }}</small> 
-          </div>
+            <div class="ml-auto">
+                <button class="btn btn-outline-primary" (click)="getDiagnosticoEditar(diagnostico.id); openModalEdit(contentEdit)" style="margin-top: -15px;"> 
+                    <i class="nav-icon fas fa-edit"></i> Ver detalle
+                </button>
+            </div>
+        </div>
         </div>
 
       </div>

@@ -31,7 +31,7 @@ export class DiagnosticoComponent implements OnInit {
   nombre_usuario_actualizo:string
 
   fecha_no_time:string
-  fecha_actual:string
+  //fecha_actual:string
   fecha_creacion:string
   fecha_actualizacion:string
 
@@ -79,14 +79,10 @@ export class DiagnosticoComponent implements OnInit {
   crearDiagnostico(){
     console.log("CREAR Diagnostico")
 
-    this.fecha_actual = DateUtil.getCurrentFormattedDate()
+    //this.fecha_actual = DateUtil.getCurrentFormattedDate()
 
     var nuevoDiagnosticoJson = JSON.parse(JSON.stringify(this.formularioDiagnostico.value))
     nuevoDiagnosticoJson.id_paciente=this.id 
-    nuevoDiagnosticoJson.id_clinica=localStorage.getItem('_cli') 
-    nuevoDiagnosticoJson.id_usuario_creador=localStorage.getItem('_us') 
-    nuevoDiagnosticoJson.fecha_creacion = this.fecha_actual
-
     console.log("Diagnostico.")
     console.log(nuevoDiagnosticoJson)
 
@@ -99,8 +95,7 @@ export class DiagnosticoComponent implements OnInit {
         console.log("res id: "+res.id)
         console.log("res id_paciente: "+res.id_paciente)
         //this.closeModal();
-        //this.ngOnInit();
-
+        this.ngOnInit()
         Alerts.success(Mensajes.DIAGNOSTICO_REGISTRADO, ``);
       },
       err => {
@@ -188,14 +183,9 @@ export class DiagnosticoComponent implements OnInit {
   actualizarDiagnostico(){
     console.log("Actualizar Diagnostico:")
     console.log(this.formularioDiagnostico)
-
-    this.fecha_actual = DateUtil.getCurrentFormattedDate()
-    var diagnosticoJson = JSON.parse(JSON.stringify(this.formularioDiagnostico.value))
-    diagnosticoJson.id_usuario_actualizo=localStorage.getItem('_us') 
-    diagnosticoJson.fecha_actualizacion = this.fecha_actual
     
     this.spinner.show();
-    this.diagnosticoService.updateDiagnostico(this.diagnostico.id, diagnosticoJson).subscribe(res => {
+    this.diagnosticoService.updateDiagnostico(this.diagnostico.id, this.formularioDiagnostico.value).subscribe(res => {
         this.spinner.hide();
         console.log("Diagnostico actualizado: "+res);
         this.closeModal();
