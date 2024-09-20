@@ -193,7 +193,7 @@ export class CitaFormComponent implements OnInit {
       this.registrarCita()
 
       setTimeout(() => {
-        Alerts.success(Mensajes.PACIENTE_REGISTRADO, `Nombre: ${this.paciente.nombre} ${this.paciente.apellidop} ${this.paciente.apellidom}`);
+        Alerts.success(Mensajes.PACIENTE_REGISTRADO, `${this.paciente.nombre} ${this.paciente.apellidop} ${this.paciente.apellidom}`);
       }, 3000);
       
     },

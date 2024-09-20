@@ -37,16 +37,15 @@
             </div>
             
           <hr>
-          <div class="card-header p-0 border-bottom-0">
-            <small class="text-muted">Creado por: {{ tratamiento.nombre_usuario_creador }} el {{ tratamiento.fecha_creacion }}</small>
-            
-            <div class="card-tools" style="margin-top: 10px !important;">
-              <button class="btn btn-outline-primary btn-sm" (click)="getTratamientoEditar(tratamiento.id); openModalEdit(contentEdit)"> 
-                <i class="nav-icon fas fa-edit"></i> Editar
-              </button>
+          <div class="d-flex">
+            <div *ngIf="tratamiento.fecha_actualizacion">
+                <small class="text-muted">Actualizado el {{ tratamiento.fecha_actualizacion }}</small>
             </div>
-            <br>
-            <small *ngIf="tratamiento.fecha_actualizacion" class="text-muted">Última actualización: {{ tratamiento.fecha_actualizacion }}</small> 
+            <div class="ml-auto">
+                <button class="btn btn-outline-primary" (click)="getTratamientoEditar(tratamiento.id); openModalEdit(contentEdit)" style="margin-top: -15px;"> 
+                    <i class="nav-icon fas fa-edit"></i> Ver detalle
+                </button>
+            </div>
           </div>
         </div>
 

@@ -29,7 +29,7 @@ export class SeguimientoComponent implements OnInit {
   nombre_usuario_actualizo:string
 
   fecha_no_time:string
-  fecha_actual:string
+  //fecha_actual:string
   fecha_creacion:string
   fecha_actualizacion:string
 
@@ -70,14 +70,10 @@ export class SeguimientoComponent implements OnInit {
   crearSeguimiento(){
     console.log("CREAR Seguimiento")
 
-    this.fecha_actual = DateUtil.getCurrentFormattedDate()
+    //this.fecha_actual = DateUtil.getCurrentFormattedDate()
     var nuevoSeguimientoJson = JSON.parse(JSON.stringify(this.formularioSeguimiento.value))
     nuevoSeguimientoJson.id_paciente=this.id 
-    nuevoSeguimientoJson.id_clinica=localStorage.getItem('_cli') 
-    nuevoSeguimientoJson.id_usuario_creador=localStorage.getItem('_us') 
-    nuevoSeguimientoJson.fecha_creacion = this.fecha_actual
 
-    console.log("Seguimiento")
     console.log(nuevoSeguimientoJson)
 
     this.spinner.show();
@@ -173,14 +169,9 @@ export class SeguimientoComponent implements OnInit {
   actualizarSeguimiento(){
     console.log("Actualizar Seguimiento:")
     console.log(this.formularioSeguimiento)
-
-    this.fecha_actual = DateUtil.getCurrentFormattedDate()
-    var seguimientoJson = JSON.parse(JSON.stringify(this.formularioSeguimiento.value))
-    seguimientoJson.id_usuario_actualizo=localStorage.getItem('_us') 
-    seguimientoJson.fecha_actualizacion = this.fecha_actual
     
     this.spinner.show();
-    this.seguimientoService.updateSeguimiento(this.seguimiento.id, seguimientoJson).subscribe(res => {
+    this.seguimientoService.updateSeguimiento(this.seguimiento.id, this.formularioSeguimiento.value).subscribe(res => {
         this.spinner.hide();
         console.log("Seguimiento actualizado: "+res);
         this.closeModal();

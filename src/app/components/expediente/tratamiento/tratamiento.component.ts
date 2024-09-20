@@ -32,7 +32,7 @@ export class TratamientoComponent implements OnInit {
   nombre_usuario_actualizo:string
 
   fecha_no_time:string
-  fecha_actual:string
+  //fecha_actual:string
   fecha_creacion:string
   fecha_actualizacion:string
 
@@ -82,14 +82,10 @@ export class TratamientoComponent implements OnInit {
   crearTratamiento(){
     console.log("CREAR Tratamiento")
 
-    this.fecha_actual = DateUtil.getCurrentFormattedDate()
+    //this.fecha_actual = DateUtil.getCurrentFormattedDate()
     var nuevoTratamientoJson = JSON.parse(JSON.stringify(this.formularioTratamiento.value))
     nuevoTratamientoJson.id_paciente=this.id 
-    nuevoTratamientoJson.id_clinica=localStorage.getItem('_cli') 
-    nuevoTratamientoJson.id_usuario_creador=localStorage.getItem('_us') 
-    nuevoTratamientoJson.fecha_creacion = this.fecha_actual
 
-    console.log("Tratamiento.")
     console.log(nuevoTratamientoJson)
 
     this.spinner.show();
@@ -193,13 +189,8 @@ export class TratamientoComponent implements OnInit {
     console.log("Actualizar Tratamiento:")
     console.log(this.formularioTratamiento)
 
-    this.fecha_actual = DateUtil.getCurrentFormattedDate()
-    var tratamientoJson = JSON.parse(JSON.stringify(this.formularioTratamiento.value))
-    tratamientoJson.id_usuario_actualizo=localStorage.getItem('_us') 
-    tratamientoJson.fecha_actualizacion = this.fecha_actual
-    
     this.spinner.show();
-    this.tratamientoService.updateTratamiento(this.tratamiento.id, tratamientoJson).subscribe(res => {
+    this.tratamientoService.updateTratamiento(this.tratamiento.id, this.formularioTratamiento.value).subscribe(res => {
         this.spinner.hide();
         console.log("tratamiento actualizado: "+res);
         this.closeModal();

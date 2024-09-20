@@ -36,7 +36,7 @@
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <strong> Correo * </strong>
+                                <strong> <i class="fas fa-at"></i> Correo * </strong>
                                 <input type="email" class="form-control" formControlName="correo" [ngClass]="getInputClass('correo')" maxlength="30" placeholder="ejemplo@correo.com">
                                 <div *ngIf="formularioUsuario.controls['correo'].invalid && formularioUsuario.controls['correo'].dirty" class="invalid-input-message">
                                     <span *ngIf="formularioUsuario.controls['correo'].errors.required" >{{ campoRequerido }}</span>
@@ -47,8 +47,8 @@
                 
                         <div class="col-sm">
                             <div class="form-group">
-                                <strong> Contraseña * </strong>
-                                <input type="password" class="form-control" formControlName="llave" [ngClass]="getInputClass('llave')" maxlength="65" placeholder="Ingrese una contraseña">
+                                <strong> <i class="fas fa-key"></i> Contraseña * </strong>
+                                <input type="password" class="form-control" formControlName="llave" [ngClass]="getInputClass('llave')" maxlength="65" placeholder="Crea una contraseña para este usuario">
                                 <div *ngIf="formularioUsuario.controls['llave'].invalid && formularioUsuario.controls['llave'].dirty" class="invalid-input-message">
                                     <span *ngIf="formularioUsuario.controls['llave'].errors.required">{{ campoRequerido }}</span>
                                     <span *ngIf="formularioUsuario.controls['llave'].errors.minlength">{{ contrasenaLongitud }}</span>  
@@ -58,7 +58,7 @@
                 
                         <div class="col-sm">                         
                             <div class="form-group">
-                                <strong> Cargo/Rol * </strong>
+                                <strong> <i class="fas fa-user-tag"></i> Cargo/Rol * </strong>
                                 <select class="form-select" formControlName="rol">
                                     <option selected disabled [value]="null">Selecciona una opción:</option>
                                     <option *ngFor="let item of catRoles" [value]="item.id">{{ item.descripcion }}</option>
