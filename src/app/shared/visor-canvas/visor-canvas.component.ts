@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, HostListener } from '@angular/core';
 import { fabric } from 'fabric';
 import { SharedService } from 'src/app/services/shared.service';
-import { Resources } from '../utils/resources';
 import { UploadsService } from 'src/app/services/uploads/uploads.service';
 import { DateUtil } from '../utils/DateUtil';
 import { Alerts } from '../utils/alerts';
@@ -31,6 +30,8 @@ export class VisorCanvasComponent implements AfterViewInit {
   ];
   
   texto!: fabric.Text; // Suponiendo que ya tienes una variable de clase para el texto
+
+  objetoDiagnostico: any = {};
 
   constructor(
     private sharedService: SharedService,
@@ -70,6 +71,13 @@ export class VisorCanvasComponent implements AfterViewInit {
     this.canvas.on('object:added', () => {
       // Mover el texto a la parte superior cada vez que se añada un nuevo objeto
       this.texto.bringToFront();
+    });
+
+    //Suscripción para recuperar datos del diagnostico
+    this.sharedService.getObjetoDiagnostico().subscribe(objetoDiagnostico => {
+      const objetoDiagnosticoRecuperado = objetoDiagnostico;
+      this.objetoDiagnostico = objetoDiagnosticoRecuperado
+      console.log("objetoDiagnosticoRecuperado desde CANVAS:: " + JSON.stringify(objetoDiagnosticoRecuperado))
     });
   }
 
@@ -276,17 +284,26 @@ export class VisorCanvasComponent implements AfterViewInit {
       filename: 'odontograma.png',
       descripcion:'Test Upload',
       comentarios:'Odontograma general',
-      id_paciente:'',
-      id_diagnostico:'',
+      id_paciente: this.objetoDiagnostico.id_paciente,
+      id_diagnostico: this.objetoDiagnostico.id_diagnostico,
       id_clinica: localStorage.getItem('_cli'),
       id_usuario_creador: localStorage.getItem('_us'),
       fecha_creacion: DateUtil.getCurrentFormattedDate()
     };
 
+    console.log("Upload Image")
+    console.log(uploadData)
+
     this.spinner.show();
     this.uploadsService.uploadImage(uploadData).subscribe(res => {
       this.spinner.hide();
       console.log('Imagen subida con éxito', res);
+      this.sharedService.setImageURL(res.url)
+      this.resetCanvas()
+
+      const collapseButton = document.getElementById('boton_collpase');
+      collapseButton?.click();
+
       Alerts.success(Mensajes.IMAGEN_SUBIDA, ``);
     }, error => {
       this.spinner.hide();

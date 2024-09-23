@@ -3,12 +3,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbModalConfig, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Diagnostico } from 'src/app/models/Diagnostico.model';
+import { Diagnostico, Imagen } from 'src/app/models/Diagnostico.model';
 import { DiagnosticoService } from 'src/app/services/diagnosticos/diagnostico.service';
 import { Alerts } from 'src/app/shared/utils/alerts';
 import { DateUtil } from 'src/app/shared/utils/DateUtil';
 import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 import { textSomeSymbolsValidator} from '../../../shared/utils/validador';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-diagnostico',
@@ -17,7 +18,7 @@ import { textSomeSymbolsValidator} from '../../../shared/utils/validador';
 })
 export class DiagnosticoComponent implements OnInit {
 
-  id: string;
+  id_paciente: string;
   formularioDiagnostico:FormGroup;
   diagnostico:Diagnostico;
   diagnosticos:Diagnostico[] = [];
@@ -39,6 +40,17 @@ export class DiagnosticoComponent implements OnInit {
   campoRequerido: string;
   caracteresNoPermitidos: string
 
+  id_diagnostico: string
+  images = [
+    { src: 'https://s3.amazonaws.com/cdn.wp.m4ecmx/wp-content/uploads/2023/10/14123804/ias-generadoras-de-imagenes.jpg', alt: 'Image 1' },
+    { src: 'https://i.blogs.es/d559d0/jlacort_happy_elephant_running_across_the_desert._4k_26e6e27c-dbd6-4b14-b8ba-ac0841f2c25f/450_1000.jpeg', alt: 'Image 2' },
+    { src: 'https://s3.amazonaws.com/cdn.wp.m4ecmx/wp-content/uploads/2023/10/14123804/ias-generadoras-de-imagenes.jpg', alt: 'Image 1' },
+    { src: 'https://media.es.wired.com/photos/641b2076880298eb68cc9b8a/16:9/w_1280,c_limit/Todd_Namban_Create_a_photorrealistic_portrait_of_a_red_fox_usin_cd0b7e04-868d-45d4-beaf-b7515e6154ca.png', alt: 'Image 3' },
+    // Añade más imágenes según sea necesario
+  ];
+
+  imagenes: Imagen[] = [];
+
   private modalRef: NgbModalRef | undefined;
 
   constructor(
@@ -47,6 +59,7 @@ export class DiagnosticoComponent implements OnInit {
     private diagnosticoService:DiagnosticoService,
     private spinner: NgxSpinnerService, 
     private modalService: NgbModal,
+    private sharedService:SharedService,
     config: NgbModalConfig,
   ) { 
     config.backdrop = 'static';
@@ -66,13 +79,20 @@ export class DiagnosticoComponent implements OnInit {
     })
 
     this.activatedRoute.params.subscribe(params => {
-      this.id = params['id'];
-      console.log("id paciente recuperado: " +this.id)
+      this.id_paciente = params['id'];
+      console.log("id paciente recuperado: " +this.id_paciente)
 
       this.getDiagnosticos()
 
     }),
     err => console.log("error: " + err)
+
+    this.sharedService.getImageURL().subscribe(imageURL => {
+      if(imageURL){
+        this.images.push({ src: imageURL, alt: 'nuevo' });
+      }
+      console.log("Tamaño de la nueva lista de imagenes:: "+this.images.length)
+    });
  
   }
 
@@ -82,7 +102,7 @@ export class DiagnosticoComponent implements OnInit {
     //this.fecha_actual = DateUtil.getCurrentFormattedDate()
 
     var nuevoDiagnosticoJson = JSON.parse(JSON.stringify(this.formularioDiagnostico.value))
-    nuevoDiagnosticoJson.id_paciente=this.id 
+    nuevoDiagnosticoJson.id_paciente=this.id_paciente 
     console.log("Diagnostico.")
     console.log(nuevoDiagnosticoJson)
 
@@ -94,9 +114,18 @@ export class DiagnosticoComponent implements OnInit {
         console.log("res: "+JSON.stringify(res))
         console.log("res id: "+res.id)
         console.log("res id_paciente: "+res.id_paciente)
+        this.id_diagnostico = res.id
         //this.closeModal();
-        this.ngOnInit()
+        //this.ngOnInit()
         Alerts.success(Mensajes.DIAGNOSTICO_REGISTRADO, ``);
+
+        //Enviar datos compartidos
+        const objetoDiagnostico = {
+          id_diagnostico : this.id_diagnostico,
+          id_paciente : this.id_paciente
+        }
+        this.sharedService.setObjetoDiagnostico(objetoDiagnostico);
+
       },
       err => {
         this.spinner.hide();
@@ -108,13 +137,31 @@ export class DiagnosticoComponent implements OnInit {
   }
 
   getDiagnosticos(){
-    this.diagnosticoService.getDiagnosticosByIpPaciente(this.id).subscribe(res => {
-        console.log(res)
+    this.diagnosticoService.getDiagnosticosByIpPaciente(this.id_paciente).subscribe(res => {
+      console.log("Diagnósticos")  
+      console.log(res)
         this.diagnosticos = res
         if(this.diagnosticos.length <= 0){
           this.mensaje='No hay diagnósticos para mostrar'
         }else{
           this.existenDiagnosticos = true;
+
+          this.existenDiagnosticos = true;
+
+          // Limpiar el arreglo de imágenes antes de llenarlo
+          this.imagenes = []; 
+
+          // Iterar sobre los diagnósticos para acceder a las imágenes
+          this.diagnosticos.forEach(diagnostico => {
+            console.log("Imagenes de Diagnóstico ID:", diagnostico.id);
+            console.log(diagnostico.imagenes.length); 
+
+            // Agregar las imágenes al arreglo
+            this.imagenes.push(...diagnostico.imagenes);
+          });
+
+          // Mostrar todas las imágenes recopiladas
+          console.log("Todas las imágenes:", this.imagenes);
         }
       },
       err => {

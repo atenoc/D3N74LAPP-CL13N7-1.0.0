@@ -44,6 +44,17 @@
             </div> 
           </div>
           <hr>
+          <div class="row">
+            <div class="col-md-2" *ngFor="let image of imagenes">
+              <div class="card mb-2">
+                <img [src]="image.url" [alt]="image.descripcion" class="card-img-top">
+                <div class="card-body">
+                  <h5 class="card-title">{{ image.alt }}</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr>
           <div class="d-flex">
             <div *ngIf="diagnostico.fecha_actualizacion">
                 <small class="text-muted">Actualizado el {{ diagnostico.fecha_actualizacion }}</small>
@@ -112,59 +123,73 @@
                 </div>
             </div>
 
-            <div class="card-header p-0 border-bottom-0">
+            <div *ngIf="!id_diagnostico" class="card-header p-0 border-bottom-0">
               <div class="card-tools">
                 <!-- <button type="button" class="btn btn-secondary mr-2" (click)="modal.close('Close click')"></button> -->
-                <button type="button" class="btn btn-primary mr-2" (click)="crearDiagnostico()" [disabled]="formularioDiagnostico.invalid">
+                <button type="button" class="btn btn-success mr-2" (click)="crearDiagnostico()" [disabled]="formularioDiagnostico.invalid">
                   <i class="fas fa-save"></i> Guardar
                 </button>
               </div>
             </div>
 
-            <div class="separator">
-              <hr />
-              <span class="separator-text text-muted">Añadir imagenes</span>
-            </div>
-
-            <div class="mb-3">
-                <span><i class="far fa-images"></i> Cargar una imagen desde mi equipo</span>
-                <input formControlName="evidencias" class="form-control" type="file" multiple>
-            </div>
+            <div *ngIf="id_diagnostico"> <!-- parte 2-->
+              <div class="separator">
+                <hr />
+                <span class="separator-text text-muted">Añadir imagenes</span>
+                <span>id diagnóstico: {{ id_diagnostico }}</span>
+              </div>
   
-            <div class="card collapsed-card mt-2">
-              <div class="card-header">
-                <i class="fas fa-teeth-open"></i> <strong> Modelos 3D / Odontograma</strong>
-            
+              <div class="mb-3">
+                  <span><i class="far fa-images"></i> Cargar una imagen desde mi equipo</span>
+                  <input formControlName="evidencias" class="form-control" type="file" multiple>
+              </div>
+    
+              <div class="card collapsed-card mt-2">
+                <div class="card-header">
+                  <i class="fas fa-teeth-open"></i> <strong> Modelos 3D / Odontograma</strong>
+              
+                  <div class="card-tools">
+                    <button type="button" id="boton_collpase" class="btn btn-tool" data-card-widget="collapse">
+                      <i class="fas fa-plus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                      <i class="fas fa-expand"></i>
+                    </button>
+                  </div>
+              
+                </div>
+                <div class="card-body">
+                  
+                  <app-visor3d></app-visor3d>
+                  <app-visor-canvas></app-visor-canvas>
+     
+                </div>
+              </div>
+    
+              <hr>
+    
+              <div class="card-header p-0 border-bottom-0">
                 <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-plus"></i>
-                  </button>
-                  <button type="button" class="btn btn-tool" data-card-widget="maximize">
-                    <i class="fas fa-expand"></i>
+                  <button type="button" class="btn btn-secondary mr-2" (click)="modal.close('Close click')">Cancelar</button>
+                  <button type="button" class="btn btn-primary mr-2" (click)="crearDiagnostico()" [disabled]="formularioDiagnostico.invalid">
+                    <i class="fas fa-save"></i> Guardar
                   </button>
                 </div>
-            
-              </div>
-              <div class="card-body">
-                
-                <app-visor3d></app-visor3d>
-                <app-visor-canvas></app-visor-canvas>
-   
-              </div>
-            </div>
-  
-            <hr>
-  
-            <div class="card-header p-0 border-bottom-0">
-              <div class="card-tools">
-                <button type="button" class="btn btn-secondary mr-2" (click)="modal.close('Close click')">Cancelar</button>
-                <button type="button" class="btn btn-primary mr-2" (click)="crearDiagnostico()" [disabled]="formularioDiagnostico.invalid">
-                  <i class="fas fa-save"></i> Guardar
-                </button>
               </div>
             </div>
   
           </form>
+
+          <div class="row">
+            <div class="col-md-4" *ngFor="let image of images">
+              <div class="card mb-4">
+                <img [src]="image.src" [alt]="image.alt" class="card-img-top">
+                <div class="card-body">
+                  <h5 class="card-title">{{ image.alt }}</h5>
+                </div>
+              </div>
+            </div>
+          </div>
   
         </div>
       </div>
