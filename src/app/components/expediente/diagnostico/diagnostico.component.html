@@ -44,16 +44,20 @@
             </div> 
           </div>
           <hr>
+
           <div class="row">
-            <div class="col-md-2" *ngFor="let image of imagenes">
-              <div class="card mb-2">
+            <div class="col-md-2" *ngFor="let image of diagnostico.imagenes; let i = index">
+              <div class="card mb-2 cursor-pointer" (click)="imageViewer.openViewer(i)"
+                placement="top" ngbTooltip="Ver imagen">
                 <img [src]="image.url" [alt]="image.descripcion" class="card-img-top">
                 <div class="card-body">
-                  <h5 class="card-title">{{ image.alt }}</h5>
+                  <h5 class="card-title">{{ image.descripcion }}</h5>
                 </div>
               </div>
+              <app-image-viewer #imageViewer [images]="diagnostico.imagenes"></app-image-viewer>
             </div>
           </div>
+
           <hr>
           <div class="d-flex">
             <div *ngIf="diagnostico.fecha_actualizacion">

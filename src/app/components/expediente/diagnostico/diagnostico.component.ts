@@ -49,7 +49,6 @@ export class DiagnosticoComponent implements OnInit {
     // Añade más imágenes según sea necesario
   ];
 
-  imagenes: Imagen[] = [];
 
   private modalRef: NgbModalRef | undefined;
 
@@ -145,23 +144,6 @@ export class DiagnosticoComponent implements OnInit {
           this.mensaje='No hay diagnósticos para mostrar'
         }else{
           this.existenDiagnosticos = true;
-
-          this.existenDiagnosticos = true;
-
-          // Limpiar el arreglo de imágenes antes de llenarlo
-          this.imagenes = []; 
-
-          // Iterar sobre los diagnósticos para acceder a las imágenes
-          this.diagnosticos.forEach(diagnostico => {
-            console.log("Imagenes de Diagnóstico ID:", diagnostico.id);
-            console.log(diagnostico.imagenes.length); 
-
-            // Agregar las imágenes al arreglo
-            this.imagenes.push(...diagnostico.imagenes);
-          });
-
-          // Mostrar todas las imágenes recopiladas
-          console.log("Todas las imágenes:", this.imagenes);
         }
       },
       err => {

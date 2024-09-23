@@ -46,6 +46,7 @@ import { SeguimientoComponent } from './components/expediente/seguimiento/seguim
 import { VisitasComponent } from './components/expediente/visitas/visitas.component';
 import { Visor3dComponent } from './shared/visor3d/visor3d.component';
 import { VisorCanvasComponent } from './shared/visor-canvas/visor-canvas.component';
+import { ImageViewerComponent } from './shared/image-viewer/image-viewer.component';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import { VisorCanvasComponent } from './shared/visor-canvas/visor-canvas.compone
     SeguimientoComponent,
     VisitasComponent,
     Visor3dComponent,
-    VisorCanvasComponent
+    VisorCanvasComponent,
+    ImageViewerComponent
   ],
   imports: [
     BrowserModule,

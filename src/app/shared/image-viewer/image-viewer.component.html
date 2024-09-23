@@ -1,0 +1,12 @@
+<div class="modal" *ngIf="isVisible" (click)="closeViewer()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <span class="close" (click)="closeViewer()">&times;</span>
+      <img [src]="images[currentIndex].url" alt="{{ images[currentIndex].descripcion }}" class="modal-image">
+      <p>{{ images[currentIndex].descripcion }}</p>
+      <div class="navigation">
+        <button (click)="previousImage()">&#10094; Anterior</button>
+        <button (click)="nextImage()">Siguiente &#10095;</button>
+      </div>
+    </div>
+</div>
+  
