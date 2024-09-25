@@ -47,6 +47,7 @@ import { VisitasComponent } from './components/expediente/visitas/visitas.compon
 import { Visor3dComponent } from './shared/visor3d/visor3d.component';
 import { VisorCanvasComponent } from './shared/visor-canvas/visor-canvas.component';
 import { ImageViewerComponent } from './shared/image-viewer/image-viewer.component';
+import { BitacoraComponent } from './components/bitacora/bitacora.component';
 
 @NgModule({
   declarations: [
@@ -86,7 +87,8 @@ import { ImageViewerComponent } from './shared/image-viewer/image-viewer.compone
     VisitasComponent,
     Visor3dComponent,
     VisorCanvasComponent,
-    ImageViewerComponent
+    ImageViewerComponent,
+    BitacoraComponent
   ],
   imports: [
     BrowserModule,

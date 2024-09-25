@@ -28,6 +28,7 @@ import { DiagnosticoComponent } from './components/expediente/diagnostico/diagno
 import { TratamientoComponent } from './components/expediente/tratamiento/tratamiento.component';
 import { Visor3dComponent } from './shared/visor3d/visor3d.component';
 import { VisorCanvasComponent } from './shared/visor-canvas/visor-canvas.component';
+import { BitacoraComponent } from './components/bitacora/bitacora.component';
 
 const routes: Routes = [
   {path:'', redirectTo:'/home', pathMatch:'full'},
@@ -57,6 +58,7 @@ const routes: Routes = [
   {path:'password/:id', component: ContrasenaComponent, canActivate:[AuthGuard]},
   {path:'visor-3d', component: Visor3dComponent, canActivate:[AuthGuard]},
   {path:'area-dibujo', component: VisorCanvasComponent, canActivate:[AuthGuard]},
+  {path:'bitacora', component: BitacoraComponent, canActivate:[AuthGuard]},
   {path:'pagina/404/no-encontrada', component: PageNotFoundComponent, canActivate:[AuthGuard]},
   {path:'**', component: PageNotFoundComponent, canActivate:[AuthGuard]},
 ];

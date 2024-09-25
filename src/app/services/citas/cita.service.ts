@@ -21,8 +21,6 @@ export class CitaService {
     cita.id_usuario_creador = localStorage.getItem('_us')
     cita.id_clinica = localStorage.getItem('_cli')
     cita.fecha_creacion = DateUtil.getCurrentFormattedDate()
-    console.log("Auditoria:")
-    console.log(DateUtil.getCurrentFormattedDate())
     return this.http.post<Cita>(this.URI, cita);
   }
 

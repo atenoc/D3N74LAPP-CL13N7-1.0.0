@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
 import { Alerts } from 'src/app/shared/utils/alerts';
 import { DateUtil } from 'src/app/shared/utils/DateUtil';
 import { AuditoriaService } from 'src/app/services/auditoria/auditoria.service';
-import { Auditoria } from 'src/app/models/Auditoria.model';
+import { Acceso } from 'src/app/models/Acceso.model';
 import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
@@ -25,7 +25,7 @@ export class PerfilComponent implements OnInit {
 
   usuario: Usuario = {} as Usuario;
   centro: Centro = {} as Centro;
-  auditoria: Auditoria = {} as Auditoria;
+  auditoria: Acceso = {} as Acceso;
 
   rol:string
   mostrarOpciones:boolean=false
