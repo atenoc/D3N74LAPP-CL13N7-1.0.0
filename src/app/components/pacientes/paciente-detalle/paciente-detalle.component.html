@@ -4,10 +4,12 @@
         <div class="col-sm">
             <div class="form-group">
                 <span><strong> Nombre(s) * </strong></span>
-                <input type="text" class="form-control" formControlName="nombre" [ngClass]="getInputClass('nombre')" [class.sin-borde]="!editando" [readonly]="!editando">
+                <input type="text" class="form-control" formControlName="nombre" [ngClass]="getInputClass('nombre')" maxlength="30" [class.sin-borde]="!editando" [readonly]="!editando">
 
                 <div *ngIf="formularioPaciente.controls['nombre'].invalid && formularioPaciente.controls['nombre'].dirty" class="invalid-input-message">
-                    <span *ngIf="formularioPaciente.controls['nombre'].errors.required">{{ campoRequerido }}</span>
+                    <div><span *ngIf="formularioPaciente.controls['nombre'].errors.required">{{ campoRequerido }}</span></div>
+                    <div><span *ngIf="formularioPaciente.controls['nombre'].errors.minlength">{{ longitudMinima }}</span></div>
+                    <div><span *ngIf="formularioPaciente.controls['nombre'].errors.invalidText">{{ soloLetras }}</span></div>
                 </div>
             </div>
         </div>
@@ -15,10 +17,12 @@
         <div class="col-sm">
             <div class="form-group">
                 <span><strong> Apellido Paterno * </strong></span>
-                <input type="text" class="form-control" formControlName="apellidop" [ngClass]="getInputClass('apellidop')" [class.sin-borde]="!editando" [readonly]="!editando">
+                <input type="text" class="form-control" formControlName="apellidop" [ngClass]="getInputClass('apellidop')" maxlength="20" [class.sin-borde]="!editando" [readonly]="!editando">
 
                 <div *ngIf="formularioPaciente.controls['apellidop'].invalid && formularioPaciente.controls['apellidop'].dirty" class="invalid-input-message">
-                    <span *ngIf="formularioPaciente.controls['apellidop'].errors.required">{{ campoRequerido }}</span>
+                    <div><span *ngIf="formularioPaciente.controls['apellidop'].errors.required">{{ campoRequerido }}</span></div>
+                    <div><span *ngIf="formularioPaciente.controls['apellidop'].errors.minlength">{{ longitudMinima }}</span></div>
+                    <div><span *ngIf="formularioPaciente.controls['apellidop'].errors.invalidText">{{ soloLetras }}</span></div>
                 </div>
             </div>
         </div>
@@ -26,9 +30,10 @@
         <div class="col-sm">
             <div class="form-group">
                 <span class="text-muted">Apellido Materno </span>
-                <input type="text" class="form-control" formControlName="apellidom" [class.sin-borde]="!editando" [readonly]="!editando">
+                <input type="text" class="form-control" formControlName="apellidom" maxlength="20" [class.sin-borde]="!editando" [readonly]="!editando">
                 <div *ngIf="formularioPaciente.controls['apellidom'].invalid" class="invalid-input-message">
-                    <span *ngIf="formularioPaciente.controls['apellidom'].errors.invalidRegex">{{ soloLetras }}</span>
+                    <span *ngIf="formularioPaciente.controls['apellidom'].errors.minlength">{{ longitudMinima }}</span>
+                    <span *ngIf="formularioPaciente.controls['apellidom'].errors.invalidText">{{ soloLetras }}</span>
                 </div>
             </div>
         </div>
@@ -48,10 +53,10 @@
         <div class="col-sm">
             <div class="form-group">
                 <span class="text-muted">Género </span>
-                <select class="form-select" formControlName="sexo" [class.sin-borde]="!editando" [disabled]="!editando">
-                    <option selected disabled [value]="0">Selecciona una opción:</option>
+                <select class="form-select" formControlName="sexo"  [disabled]="!editando">
+                    <option selected disabled [value]="null">Selecciona una opción:</option>
                     <option *ngFor="let item of catSexo" [value]="item.id">{{ item.descripcion }}</option>
-                </select>
+                </select> 
             </div>
         </div>
 
@@ -60,19 +65,16 @@
                 <span><strong>Teléfono * </strong></span>
                 <input type="text" class="form-control" formControlName="telefono" [ngClass]="getInputClass('telefono')" placeholder="10 dígitos" maxlength="10" [class.sin-borde]="!editando" [readonly]="!editando">
                 <div *ngIf="formularioPaciente.controls['telefono'].invalid && formularioPaciente.controls['telefono'].dirty" class="invalid-input-message">
-                    <div>
-                        <span *ngIf="formularioPaciente.controls['telefono'].errors.pattern && !formularioPaciente.controls['telefono'].errors.required">{{ soloNumeros }}</span> 
-                    </div>
-                    <div>
-                        <span *ngIf="formularioPaciente.controls['telefono'].errors.minlength">{{ telefonoLongitud }}</span> 
-                    </div>
+                    <div><span *ngIf="formularioPaciente.controls['telefono'].errors.required">{{ campoRequerido }}</span></div>
+                    <div><span *ngIf="formularioPaciente.controls['telefono'].errors.pattern && !formularioPaciente.controls['telefono'].errors.required">{{ soloNumeros }}</span></div>
+                    <div><span *ngIf="formularioPaciente.controls['telefono'].errors.minlength">{{ telefonoLongitud }}</span></div>
                 </div> 
             </div>
         </div>
         <div class="col-sm">
             <div class="form-group">
                 <span class="text-muted">Correo</span>
-                <input type="email" class="form-control" formControlName="correo" [ngClass]="getInputClass('correo')" placeholder="ejemplo@correo.com" [class.sin-borde]="!editando" [readonly]="!editando">
+                <input type="email" class="form-control" formControlName="correo" [ngClass]="getInputClass('correo')" placeholder="ejemplo@correo.com" maxlength="30" [class.sin-borde]="!editando" [readonly]="!editando">
                 <div *ngIf="formularioPaciente.controls['correo'].invalid && formularioPaciente.controls['correo'].dirty" class="invalid-input-message">
                     <span *ngIf="formularioPaciente.controls['correo'].hasError('emailInvalido')">{{ correoValido }}</span>
                 </div>
@@ -83,22 +85,28 @@
         <div class="col-sm">
             <div class="form-group">
                 <span class="text-muted">Dirección</span>
-                <input type="email" class="form-control" formControlName="direccion" [class.sin-borde]="!editando" [readonly]="!editando">
+                <input type="text" class="form-control" formControlName="direccion" maxlength="130" [class.sin-borde]="!editando" [readonly]="!editando">
+                <div *ngIf="formularioPaciente.controls['direccion'].invalid" class="invalid-input-message">
+                    <span *ngIf="formularioPaciente.controls['direccion'].errors.minlength">{{ longitudMinima }}</span>
+                    <span *ngIf="formularioPaciente.controls['direccion'].errors.invalidText">{{ caracteresNoPermitidos}} </span>
+                </div>
             </div>
         </div>
     </div>
     <hr/>
 
     <div *ngIf="!editando" class="card-header p-0 border-bottom-0">
-      <small class="text-muted">Creado por:</small>
-      <small class="text-muted"> {{ nombre_usuario_creador }} </small>
+      <small class="text-muted">Creado por {{ nombre_usuario_creador }}</small>
+      <small class="text-muted"> el {{ fecha_creacion }}  </small>
       <div class="card-tools">
-        <button class="btn btn-outline-primary" (click)="editando = true"> <i class="nav-icon fas fa-edit"></i> Editar</button>
+        <button class="btn btn-outline-primary" (click)="cambiarEstadoEditando()"> <i class="nav-icon fas fa-edit"></i> Editar</button>
       </div>
 
       <br>
-      <small class="text-muted">Fecha de creación:</small>
-      <small class="text-muted"> {{ fecha_creacion }} </small>
+      <div *ngIf="mostrar_actualizacion">
+        <small class="text-muted">Actualizado por {{ nombre_usuario_actualizo }}</small>
+        <small class="text-muted"> el {{ fecha_actualizacion }} </small>
+      </div>
     </div>
 
     <div *ngIf="editando">
@@ -111,13 +119,13 @@
 
       <div class="card-header p-0 border-bottom-0">
         <button *ngIf="rol=='suadmin' || rol=='sop'" class="btn btn-outline-secondary mt-2" 
-            (click)="deletePaciente(paciente.id, paciente.nombre, paciente.apellidop)" 
+            (click)="deletePaciente(paciente.id)" 
             ngbTooltip="Eliminar paciente de forma permanente">
           <i class="fas fa-trash-alt"></i> Borrar
         </button>
 
         <div class="card-tools">
-          <button type="button" class="btn btn-outline-secondary mr-3" (click)="editando = false">
+          <button type="button" class="btn btn-outline-secondary mr-3" (click)="cambiarEstadoEditando()">
             Cancelar
           </button>
           <button type="button" class="btn btn-primary" (click)="actualizarPaciente()" [disabled]="formularioPaciente.invalid">

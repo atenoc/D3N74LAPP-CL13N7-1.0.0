@@ -4,7 +4,8 @@ import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { SharedService } from 'src/app/services/shared.service';
 import * as $ from 'jquery';
-import { Mensajes } from 'src/app/shared/mensajes.config';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
+import { ValidateInfo } from '../utils/validateInfo';
 
 @Component({
   selector: 'app-sidebar',
@@ -38,7 +39,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     console.log("SIDEBAR Component")
     //this.inicializarAccordion()
 
-    this.authService.validarUsuarioActivo$(localStorage.getItem('_us'), localStorage.getItem('_em'), localStorage.getItem('_cli')).subscribe(
+    const valudateUser = ValidateInfo.getUserInfo()
+
+    this.authService.validarUsuarioActivo$(valudateUser).subscribe(
       res => {
         this.usuario = res;
         //console.log("sidebar usuario")
@@ -97,7 +100,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     });
 
     this.sharedService.getDiasRestantesPlanGratuito().subscribe(datoRecibido => {
-      this.mensajeRestanDias = "Quedan "+datoRecibido+" días";
+      this.mensajeRestanDias = "Restan "+datoRecibido+" días";
     });
 
 
@@ -108,7 +111,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   }
 
   irAPerfil(){
-    this.router.navigate(['/perfil']);
+    const id = localStorage.getItem('_us');
+    this.router.navigate(['/perfil/', id]);
   }
   salir(){
     this.authService.logout()

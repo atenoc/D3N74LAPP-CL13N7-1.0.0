@@ -1,21 +1,37 @@
 <div class="container">
     <form [formGroup]="formularioHistoria">
         <h5 class="text-primary">Historia dental</h5>
+
         <div class="form-group mt-3">
           <span>1.- ¿Cuándo fue su última visita al dentista y qué se realizó en esa consulta?</span>
-          <input type="text" class="form-control" formControlName="ultima_visita_dentista">
+          <input type="text" class="form-control" formControlName="ultima_visita_dentista" maxlength="30">
+          <div *ngIf="formularioHistoria.controls['ultima_visita_dentista'].invalid" class="invalid-input-message">
+            <span *ngIf="formularioHistoria.controls['ultima_visita_dentista'].errors.invalidText">{{ caracteresNoPermitidos}} </span>
+          </div>
         </div>
+
         <div class="form-group">
           <span>2.- ¿Ha experimentado problemas dentales en el pasado?, Si/No, ¿Cuáles?</span>
-          <input type="text" class="form-control" formControlName="problemas_dentales_pasados">
+          <input type="text" class="form-control" formControlName="problemas_dentales_pasados" maxlength="50">
+          <div *ngIf="formularioHistoria.controls['problemas_dentales_pasados'].invalid" class="invalid-input-message">
+            <span *ngIf="formularioHistoria.controls['problemas_dentales_pasados'].errors.invalidText">{{ caracteresNoPermitidos}} </span>
+          </div>
         </div>
+
         <div class="form-group">
           <span>3.- ¿Ha recibido algún tratamiento dental previo?, Si/No, ¿Cuál y cuándo fue?</span>
-          <input type="text" class="form-control" formControlName="tratamientos_previos_cuando">
+          <input type="text" class="form-control" formControlName="tratamientos_previos_cuando" maxlength="100">
+          <div *ngIf="formularioHistoria.controls['tratamientos_previos_cuando'].invalid" class="invalid-input-message">
+            <span *ngIf="formularioHistoria.controls['tratamientos_previos_cuando'].errors.invalidText">{{ caracteresNoPermitidos}} </span>
+          </div>
         </div>
+
         <div class="form-group">
           <span>4.- ¿Experimenta algún dolor o sensibilidad en sus dientes o encías actualmente?</span>
-          <input type="text" class="form-control" formControlName="dolor_sensibilidad">
+          <input type="text" class="form-control" formControlName="dolor_sensibilidad" maxlength="100">
+          <div *ngIf="formularioHistoria.controls['dolor_sensibilidad'].invalid" class="invalid-input-message">
+            <span *ngIf="formularioHistoria.controls['dolor_sensibilidad'].errors.invalidText">{{ caracteresNoPermitidos}} </span>
+          </div>
         </div>
         
         <hr>
@@ -23,19 +39,34 @@
 
         <div class="form-group mt-3">
           <span>1.- ¿Tiene alguna condición médica que pueda afectar su salud bucal?</span>
-          <input type="text" class="form-control" formControlName="condicion_medica_actual">
+          <input type="text" class="form-control" formControlName="condicion_medica_actual" maxlength="100"> 
+          <div *ngIf="formularioHistoria.controls['condicion_medica_actual'].invalid" class="invalid-input-message">
+            <span *ngIf="formularioHistoria.controls['condicion_medica_actual'].errors.invalidText">{{ caracteresNoPermitidos}} </span>
+          </div>
         </div>
+
         <div class="form-group">
           <span>2.- ¿Está tomando algún medicamento actualmente?, Si/No, ¿Alguno de estos puede influir en su salud bucal?</span>
-          <input type="text" class="form-control" formControlName="medicamentos_actuales">
+          <input type="text" class="form-control" formControlName="medicamentos_actuales" maxlength="100">
+          <div *ngIf="formularioHistoria.controls['medicamentos_actuales'].invalid" class="invalid-input-message">
+            <span *ngIf="formularioHistoria.controls['medicamentos_actuales'].errors.invalidText">{{ caracteresNoPermitidos}} </span>
+          </div>
         </div>
+
         <div class="form-group">
           <span>3.- ¿Tiene alguna alergia conocida?, Si/No, ¿Alguna de ellas está relacionada con materiales dentales?</span>
-          <input type="text" class="form-control" formControlName="alergias_conocidas">
+          <input type="text" class="form-control" formControlName="alergias_conocidas" maxlength="100">
+          <div *ngIf="formularioHistoria.controls['alergias_conocidas'].invalid" class="invalid-input-message">
+            <span *ngIf="formularioHistoria.controls['alergias_conocidas'].errors.invalidText">{{ caracteresNoPermitidos}} </span>
+          </div>
         </div>
+
         <div class="form-group">
           <span>4.- ¿Ha tenido alguna cirugía o ha sufrido de alguna enfermedad grave en el pasado que pueda afectar su tratamiento dental?</span>
-          <input type="text" class="form-control" formControlName="cirugias_enfermedades_graves">
+          <input type="text" class="form-control" formControlName="cirugias_enfermedades_graves" maxlength="100">
+          <div *ngIf="formularioHistoria.controls['cirugias_enfermedades_graves'].invalid" class="invalid-input-message">
+            <span *ngIf="formularioHistoria.controls['cirugias_enfermedades_graves'].errors.invalidText">{{ caracteresNoPermitidos}} </span>
+          </div>
         </div>
 
         <hr>
@@ -43,38 +74,61 @@
 
         <div class="form-group mt-3">
           <span>1.- ¿Con qué frecuencia cepilla sus dientes?</span>
-          <input type="text" class="form-control" formControlName="frecuencia_cepillado">
+          <input type="text" class="form-control" formControlName="frecuencia_cepillado" maxlength="100">
+          <div *ngIf="formularioHistoria.controls['frecuencia_cepillado'].invalid" class="invalid-input-message">
+            <span *ngIf="formularioHistoria.controls['frecuencia_cepillado'].errors.invalidText">{{ caracteresNoPermitidos}} </span>
+          </div>
         </div>
+
         <div class="form-group">
           <span>2.- ¿Utiliza hilo dental regularmente como parte de su rutina de higiene bucal?</span>
-          <input type="text" class="form-control" formControlName="uso_hilo_dental">
+          <input type="text" class="form-control" formControlName="uso_hilo_dental" maxlength="100">
+          <div *ngIf="formularioHistoria.controls['uso_hilo_dental'].invalid" class="invalid-input-message">
+            <span *ngIf="formularioHistoria.controls['uso_hilo_dental'].errors.invalidText">{{ caracteresNoPermitidos}} </span>
+          </div>
         </div>
+
         <div class="form-group">
           <span>3.- ¿Ha tenido alguna cirugía o ha sufrido de alguna enfermedad grave en el pasado que pueda afectar su tratamiento dental?</span>
-          <input type="text" class="form-control" formControlName="uso_productos_especializados">
+          <input type="text" class="form-control" formControlName="uso_productos_especializados" maxlength="100">
+          <div *ngIf="formularioHistoria.controls['uso_productos_especializados'].invalid" class="invalid-input-message">
+            <span *ngIf="formularioHistoria.controls['uso_productos_especializados'].errors.invalidText">{{ caracteresNoPermitidos}} </span>
+          </div>
         </div>
+
         <div class="form-group">
           <span>4.- ¿Fuma tabaco o utiliza productos de tabaco?, Si/No, ¿Con qué frecuencia?</span>
-          <input type="text" class="form-control" formControlName="tabaco_frecuencia">
+          <input type="text" class="form-control" formControlName="tabaco_frecuencia" maxlength="100">
+          <div *ngIf="formularioHistoria.controls['tabaco_frecuencia'].invalid" class="invalid-input-message">
+            <span *ngIf="formularioHistoria.controls['tabaco_frecuencia'].errors.invalidText">{{ caracteresNoPermitidos}} </span>
+          </div>
         </div>
+
         <div class="form-group">
           <span>5.- ¿Tiene algún hábito alimenticio o de consumo de bebidas que pueda afectar su salud bucal?</span>
-          <input type="text" class="form-control" formControlName="habito_alimenticio">
+          <input type="text" class="form-control" formControlName="habito_alimenticio" maxlength="100">
+          <div *ngIf="formularioHistoria.controls['habito_alimenticio'].invalid" class="invalid-input-message">
+            <span *ngIf="formularioHistoria.controls['habito_alimenticio'].errors.invalidText">{{ caracteresNoPermitidos}} </span>
+          </div>
         </div>
         
         <hr>
-        <div class="card-header p-0 border-bottom-0">
 
-          <small *ngIf="mostrar_creacion" class="text-muted"><strong>Creado por:</strong> {{ nombre_usuario_creador }}</small>
-          <small *ngIf="mostrar_creacion" class="text-muted">| <strong> Fecha creacion:</strong> {{ fecha_creacion }}</small> <br>
-          <small *ngIf="mostrar_actualizacion" class="text-muted"><strong>Actualizado por:</strong> {{ nombre_usuario_actualizo }}</small>
-          <small *ngIf="mostrar_actualizacion" class="text-muted">| <strong>Última actualización:</strong> {{ fecha_actualizacion }}</small>
+        <div class="row">
+          <div class="col-sm" *ngIf="mostrar_creacion">
+              <small class="text-muted">Creado por {{ nombre_usuario_creador }} el {{ fecha_creacion }}</small>
+          </div>
+        </div>
 
-          <div class="card-tools">
-            <button *ngIf="botonActualizar" type="button" class="btn btn-primary" (click)="actualizarHistoria()">
-              <i class="fas fa-save"></i> Actualizar
+        <div class="d-flex">
+          <div *ngIf="mostrar_actualizacion">
+              <small class="text-muted">Actualizado por {{ nombre_usuario_actualizo }} el {{ fecha_actualizacion }}</small>
+          </div>
+          <div class="ml-auto">
+            <button *ngIf="botonActualizar" type="button" class="btn btn-primary" (click)="actualizarHistoria()" style="margin-top: -26px;">
+              <i class="fas fa-save"></i> Guardar
             </button>
-            <button *ngIf="botonGuardar" type="button" class="btn btn-primary" (click)="guardarHistoria()">
+            <button *ngIf="botonGuardar" type="button" class="btn btn-success" (click)="guardarHistoria()">
               <i class="fas fa-save"></i> Guardar
             </button>
           </div>

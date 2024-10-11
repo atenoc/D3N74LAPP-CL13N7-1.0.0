@@ -30,7 +30,7 @@
               </tbody>
             </table>
           </div>
-          <div *ngIf="mostrarAvisoPacientes" class="alert alert-secondary alert-dismissible fade show" role="alert">
+          <div *ngIf="mostrarAvisoPacientes" class="alert alert-warning alert-dismissible fade show" role="alert">
             <div style="margin-top: -10px !important;">
               <strong>{{ mensajeBusquedaNoCoincidencias }}</strong> 
               <button type="button" class="btn-close" (click)="cerrarAvisoPacientes()" aria-label="Close" style="margin-top: -13px !important;"></button>
@@ -199,7 +199,7 @@
                 </tbody>
               </table>
             </div>
-            <div *ngIf="mostrarAvisoMedicos" class="alert alert-secondary alert-dismissible fade show" role="alert">
+            <div *ngIf="mostrarAvisoMedicos" class="alert alert-warning alert-dismissible fade show" role="alert">
               <div style="margin-top: -10px !important;">
                 <strong>{{ mensajeBusquedaNoCoincidencias }}</strong> 
                 <button type="button" class="btn-close" (click)="cerrarAvisoMedicos()" aria-label="Close" style="margin-top: -13px !important;"></button>
@@ -231,7 +231,7 @@
         <button type="button" class="btn btn-secondary btn-block mt-2" (click)="closeModal()"><i class="fas fa-window-close"></i> Cerrar</button>
       </div>
       <div class="col-sm-4">
-        <button type="submit" class="btn btn-primary btn-block mt-2" (click)="crearCita()" [disabled]="isDisabled"><i class="fas fa-save"></i> Guardar</button>
+        <button type="submit" class="btn btn-success btn-block mt-2" (click)="crearCita()" [disabled]="isDisabled"><i class="fas fa-save"></i> Guardar</button>
       </div>
       
     </div>

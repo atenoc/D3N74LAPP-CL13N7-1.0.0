@@ -45,9 +45,14 @@ export class CifradoService {
     return null;
   }
 
-  getEncryptedPassword(llave: string): string | null {
+  setEncryptedPassword(llave: string): string | null {
     const encryptedLlave = CryptoJS.AES.encrypt(llave, this.secretKey).toString();
     return encryptedLlave;
+  }
+
+  setEncryptedCodigoVerificacion(code: string): string | null {
+    const encryptedCode = CryptoJS.AES.encrypt(code, this.secretKey).toString();
+    return encryptedCode;
   }
 
 

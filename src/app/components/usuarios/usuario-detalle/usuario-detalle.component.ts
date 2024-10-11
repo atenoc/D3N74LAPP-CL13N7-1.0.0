@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -9,8 +9,10 @@ import { CatalogoService } from 'src/app/services/catalogos/catalogo.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
 import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
-import { Mensajes } from 'src/app/shared/mensajes.config';
-import Swal from 'sweetalert2';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
+import { Alerts } from 'src/app/shared/utils/alerts';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
+import { textValidator, emailValidator } from '../../../shared/utils/validador';
 
 @Component({
   selector: 'app-usuario-detalle',
@@ -22,11 +24,11 @@ export class UsuarioDetalleComponent implements OnInit {
   id: string;
   usuario:Usuario;
   formularioUsuario:FormGroup;
-  editando: boolean = false;
   tituloCard: string;
   idUsuario:string;
-  fecha_creacion:Date;
+  fecha_creacion:string;
   nombre_usuario_creador:string;
+  textoPerfil: boolean = false;
 
   catRoles:CatalogoRol[] = [];
   catTitulos:CatalogoTitulo[] = [];
@@ -37,12 +39,20 @@ export class UsuarioDetalleComponent implements OnInit {
   correoValido: string;
   contrasenaLongitud: string;
   telefonoLongitud: string;
+  soloLetras: string;
   soloNumeros: string;
+  longitudMinima: string
+  caracteresNoPermitidos: string
   
   rol:string
   descRol:string
-
   mismoUsuario:boolean;
+  editando: boolean = false;
+
+  mostrar_actualizacion:boolean=false
+  nombre_usuario_actualizo:string
+  //fecha_actual:string;
+  fecha_actualizacion:string
 
   constructor(
     private authService:AuthService,
@@ -50,7 +60,6 @@ export class UsuarioDetalleComponent implements OnInit {
     private activatedRoute: ActivatedRoute, 
     private usuarioService:UsuarioService, 
     private router: Router,
-    //private el: ElementRef,
     private catalogoService:CatalogoService,
     private spinner: NgxSpinnerService, 
     private sharedService:SharedService,
@@ -61,10 +70,12 @@ export class UsuarioDetalleComponent implements OnInit {
       this.contrasenaLongitud = Mensajes.CONTRASENA_LONGITUD;
       this.telefonoLongitud = Mensajes.TELEFONO_LONGITUD;
       this.soloNumeros = Mensajes.SOLO_NUMEROS;
+      this.soloLetras = Mensajes.SOLO_LETRAS;
+      this.longitudMinima = Mensajes.LONGITUD_MINIMA;
+      this.caracteresNoPermitidos = Mensajes.CARACTERES_NO_PERMITIDOS
     }
 
   ngOnInit() {
-    //this.el.nativeElement.querySelector('input').focus();
 
     if(this.authService.validarSesionActiva()){
       this.rol = this.cifradoService.getDecryptedRol();
@@ -72,18 +83,22 @@ export class UsuarioDetalleComponent implements OnInit {
       if(this.rol == "sop" || this.rol == "suadmin" || this.rol == "adminn1"){
 
         this.formularioUsuario = this.formBuilder.group({
-          correo: ['', Validators.compose([
-            Validators.required, Validators.email
-          ])],
+          correo: [''],
           llave: [''],
-          rol: ['', Validators.required],
-          titulo: [''],
-          nombre: ['', [Validators.required, Validators.minLength(3)]],
-          apellidop: ['', [Validators.required, Validators.minLength(3)]],
-          apellidom: [''],
-          especialidad: [''],
+          rol: ['null', Validators.required],
+          titulo: ['null'],
+          nombre: ['', [Validators.required, Validators.minLength(3), textValidator()]],
+          apellidop: ['', [Validators.required, Validators.minLength(3), textValidator()]],
+          apellidom: ['', [Validators.minLength(3), textValidator()]],
+          especialidad: ['null'],
           telefono: ['', [Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
         })
+
+        const url = this.router.url;
+
+        // Verifica si la URL contiene 'perfil' o 'cuenta'
+        this.textoPerfil = url.includes('perfil');
+        console.log("Es PErfil: "+this.textoPerfil)
     
         this.activatedRoute.params.subscribe(params => {
           this.id = params['id'];
@@ -95,16 +110,19 @@ export class UsuarioDetalleComponent implements OnInit {
             this.mismoUsuario = false;
           }
           
-          this.usuarioService.getUsuario$(this.id).subscribe(res => {   //volver a llamar los datos con el id recibido
+          this.spinner.show()
+          this.usuarioService.getUsuario$(this.id).subscribe(res => {
+            this.spinner.hide()   
             this.usuario = res;
             this.descRol = res.desc_rol;
             console.log(res)
             console.log("id Especialidad:" + res.id_especialidad)
-            //console.log("usuario obtenido:" + JSON.stringify(res))
             this.tituloCard = this.usuario.nombre+' '+this.usuario.apellidop+' '+this.usuario.apellidom
             this.idUsuario=this.usuario.id
             this.fecha_creacion=this.usuario.fecha_creacion
             this.nombre_usuario_creador = this.usuario.nombre_usuario_creador
+            this.nombre_usuario_actualizo = this.usuario.nombre_usuario_actualizo
+            this.fecha_actualizacion = this.usuario.fecha_actualizacion
     
             this.formularioUsuario.patchValue({
               correo: this.usuario.correo,
@@ -117,6 +135,12 @@ export class UsuarioDetalleComponent implements OnInit {
               especialidad: this.usuario.id_especialidad,
               telefono: this.usuario.telefono
             });
+
+            if(this.usuario.nombre_usuario_actualizo ==null || this.usuario.nombre_usuario_actualizo ==''){
+              this.mostrar_actualizacion = false
+            }else{
+              this.mostrar_actualizacion = true
+            }
     
             // carga Catálogos
             this.cargarRoles()
@@ -124,6 +148,7 @@ export class UsuarioDetalleComponent implements OnInit {
             this.cargarEspecialidades()
           },
           err => {
+            this.spinner.hide() 
             console.log("error: " + err)
           })
     
@@ -152,60 +177,33 @@ export class UsuarioDetalleComponent implements OnInit {
     this.router.navigate(['/password', this.id]);
   }
 
-  actualizarUsuario(){
-    this.spinner.show();
+  actualizarUsuario(){  
     console.log("Actualizar usuario:")
-    console.log(this.formularioUsuario)
 
-    this.usuarioService.updateUsuario(
-      this.usuario.id, 
-      this.formularioUsuario.value.correo,
-      this.formularioUsuario.value.rol,
-      this.formularioUsuario.value.titulo,
-      this.formularioUsuario.value.nombre,
-      this.formularioUsuario.value.apellidop,
-      this.formularioUsuario.value.apellidom,
-      this.formularioUsuario.value.especialidad,
-      this.formularioUsuario.value.telefono,
-      ).subscribe(res => {
+    this.spinner.show();
+    this.usuarioService.updateUsuario(this.usuario.id, this.formularioUsuario.value).subscribe({
+      next: res => {
+        this.spinner.hide();
+        this.usuario=res
         console.log("Usuario actualizado ");
         console.log(res)
-        console.log(res.nombre)
-        this.sharedService.setNombreUsuario(this.formularioUsuario.value.nombre);
+
+        //Sólo cuando el usuario en sesion actualiza sus datos
+        if(this.usuario.id == localStorage.getItem('_us')){
+          this.sharedService.setNombreUsuario(this.usuario.nombre +' '+this.usuario.apellidop);
+          this.sharedService.setNombreCompletoUsuario(this.usuario.nombre +' '+this.usuario.apellidop +' '+this.usuario.apellidom);
+        }
+        
         this.editando=false
         this.ngOnInit()
-        this.spinner.hide();
-        Swal.fire({
-          position: 'top-end',
-          html:
-            `<h5>${ Mensajes.USUARIO_ACTUALIZADO }</h5>`+
-            `<span>${ res.nombre } ${ res.apellidop }</span>`, 
-            
-          showConfirmButton: false,
-          backdrop: false, 
-          width: 400,
-          background: 'rgb(40, 167, 69, .90)',
-          color:'white',
-          timerProgressBar:true,
-          timer: 3000,
-        })
-
+        Alerts.success(Mensajes.USUARIO_ACTUALIZADO, `${this.usuario.nombre} ${this.usuario.apellidop} ${this.usuario.apellidom}`);
       },
-        err => {
-          this.spinner.hide();
+      error: err => {
+        this.spinner.hide();
           console.log("error: " + err)
-          //err.error.message
-          Swal.fire({
-            icon: 'error',
-            html:
-              `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-              `<span>${ Mensajes.USUARIO_NO_ACTUALIZADO }</span></br>`+
-              `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-            showConfirmButton: false,
-            timer: 3000
-          })
-        }
-      );
+          Alerts.error(Mensajes.ERROR_500, Mensajes.USUARIO_NO_ACTUALIZADO, Mensajes.INTENTAR_MAS_TARDE);
+      }
+    })
 
     return false;
   }
@@ -237,57 +235,25 @@ export class UsuarioDetalleComponent implements OnInit {
     )
   }
 
-  deleteUser(id: string, correo:string) {
-
-    Swal.fire({
-      html:
-        `<h5>${ Mensajes.USUARIO_ELIMINAR_QUESTION }</h5> <br/> ` +
-        `<strong> ${ correo } </strong>`,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#dc3545',
-      cancelButtonColor: '#aeaeae',
-      confirmButtonText: 'Si, eliminar',
-      cancelButtonText: 'No, cancelar'
-    }).then((result) => {
+  deleteUser(id: string) {
+    Alerts.confirmDelete(Mensajes.USUARIO_ELIMINAR_QUESTION, `${this.usuario.nombre} ${this.usuario.apellidop} ${this.usuario.apellidom}`).then((result) => {
       if (result.value) {
         // Confirm
+        this.spinner.show();
         this.usuarioService.deleteUsuario(id).subscribe(res => {
-          console.log("Usuario eliminado:" + JSON.stringify(res))
-
-          Swal.fire({
-            position: 'top-end',
-            html:
-              `<h5>${ Mensajes.USUARIO_ELIMINADO }</h5>`+
-              `<span>${ this.usuario.correo }</span>`, 
-            showConfirmButton: false,
-            backdrop: false, 
-            width: 400,
-            background: 'rgb(40, 167, 69, .90)',
-            color:'white',
-            timerProgressBar:true,
-            timer: 3000,
-          })
-
+          this.spinner.hide();
+          console.log("Usuario eliminado:" + JSON.stringify(res));
+          Alerts.success(Mensajes.USUARIO_ELIMINADO, `${this.usuario.nombre} ${this.usuario.apellidop} ${this.usuario.apellidom}`);
           this.router.navigate(['/usuarios']);
         },
           err => { 
-            console.log("error: " + err)
-            Swal.fire({
-              icon: 'error',
-              html:
-                `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-                `<span>${ Mensajes.USUARIO_NO_ELIMINADO }</span></br>`+
-                `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-              showConfirmButton: false,
-              timer: 3000
-            }) 
+            this.spinner.hide();
+            console.log("error: " + err);
+            Alerts.error(Mensajes.ERROR_500, Mensajes.USUARIO_NO_ELIMINADO, Mensajes.INTENTAR_MAS_TARDE);
           }
-        )
-    
+        );
       }
-    })
-
+    });
   }
 
 }

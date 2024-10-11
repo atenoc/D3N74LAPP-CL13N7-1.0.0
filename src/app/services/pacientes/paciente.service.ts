@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, catchError, map, throwError } from 'rxjs';
 import { Paciente, PacientesPaginados } from 'src/app/models/Paciente.model';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
 import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
@@ -59,15 +60,25 @@ export class PacienteService {
     return this.http.post(`${this.URI}/buscador/${id_clinica}`, { query });
   }
 
-  updatePacienteCita(id: string, nombre:string, apellidop:string, apellidom:string, edad:string, telefono:string) {
-    return this.http.patch<Paciente>(`${this.URI}/cita/${id}`, {nombre, apellidop, apellidom, edad, telefono});
+  updatePacienteCita(id: string, paciente:any) {
+    paciente.id_usuario_actualizo = localStorage.getItem('_us')
+    paciente.id_clinica = localStorage.getItem('_cli')
+    paciente.fecha_actualizacion = DateUtil.getCurrentFormattedDate()
+    return this.http.patch<Paciente>(`${this.URI}/cita/paciente/${id}`, paciente);
   }
 
-  updatePaciente(id: string, nombre:string, apellidop:string, apellidom:string, edad:string, sexo:string, telefono:string, correo:string, direccion:string) {
-    return this.http.patch<Paciente>(`${this.URI}/${id}`, {nombre, apellidop, apellidom, edad, sexo, telefono, correo, direccion});
+  updatePaciente(id: string, paciente:any) {
+    paciente.id_usuario_actualizo = localStorage.getItem('_us')
+    paciente.id_clinica = localStorage.getItem('_cli')
+    paciente.fecha_actualizacion = DateUtil.getCurrentFormattedDate()
+    return this.http.patch<Paciente>(`${this.URI}/${id}`, paciente);
   }
 
   deletePaciente(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.URI}/${id}`);
+    const params = new HttpParams()
+      .set('id_usuario_elimino', localStorage.getItem('_us'))
+      .set('id_clinica', localStorage.getItem('_cli'))
+      .set('fecha_eliminacion', DateUtil.getCurrentFormattedDate())
+    return this.http.delete<void>(`${this.URI}/${id}`, { params });
   }
 }

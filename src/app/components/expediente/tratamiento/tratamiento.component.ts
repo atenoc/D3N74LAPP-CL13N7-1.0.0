@@ -1,12 +1,14 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbModalConfig, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Tratamiento } from 'src/app/models/Tratamiento.model';
 import { TratamientoService } from 'src/app/services/tratamientos/tratamiento.service';
-import { Mensajes } from 'src/app/shared/mensajes.config';
-import Swal from 'sweetalert2';
+import { Alerts } from 'src/app/shared/utils/alerts';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
+import { textSomeSymbolsValidator} from '../../../shared/utils/validador';
 
 @Component({
   selector: 'app-tratamiento',
@@ -16,9 +18,6 @@ import Swal from 'sweetalert2';
 export class TratamientoComponent implements OnInit {
 
   id: string;
-  date: Date;
-  fecha_hoy:string
-  fecha_hora_actual:string;
   formularioTratamiento:FormGroup;
   existenTratamientos:boolean=false
   tratamiento:Tratamiento;
@@ -31,8 +30,16 @@ export class TratamientoComponent implements OnInit {
   remainingCharacters2: number = this.maxCharacters2;
   nombre_usuario_creador:string
   nombre_usuario_actualizo:string
+
+  fecha_no_time:string
+  //fecha_actual:string
   fecha_creacion:string
   fecha_actualizacion:string
+
+  //mensajes
+  campoRequerido: string;
+  caracteresNoPermitidos: string
+  soloNumeros: string;
 
   private modalRef: NgbModalRef | undefined;
 
@@ -44,20 +51,21 @@ export class TratamientoComponent implements OnInit {
     private modalService: NgbModal,
     config: NgbModalConfig,
   ) { 
-    this.date = new Date();
-    const mes = this.date.getMonth() +1
-    this.fecha_hoy = this.date.getDate()+"/"+mes+"/"+this.date.getFullYear()
-
     config.backdrop = 'static';
 		config.keyboard = false;
+
+    this.fecha_no_time = DateUtil.getDateNoTime()
+    this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
+    this.caracteresNoPermitidos = Mensajes.CARACTERES_NO_PERMITIDOS;
+    this.soloNumeros = Mensajes.SOLO_NUMEROS;
   }
 
   ngOnInit(): void {
 
     this.formularioTratamiento = this.formBuilder.group({
-      tratamiento_propuesto: [''],
-      medicamentos_prescritos: [''],
-      costo_estimado: [''],
+      tratamiento_propuesto: ['',[Validators.required, textSomeSymbolsValidator()]],
+      medicamentos_prescritos: ['',[Validators.required, textSomeSymbolsValidator()]],
+      costo_estimado: ['',[Validators.required, Validators.pattern('^[0-9]+$')]],
     })
 
     this.activatedRoute.params.subscribe(params => {
@@ -74,13 +82,10 @@ export class TratamientoComponent implements OnInit {
   crearTratamiento(){
     console.log("CREAR Tratamiento")
 
+    //this.fecha_actual = DateUtil.getCurrentFormattedDate()
     var nuevoTratamientoJson = JSON.parse(JSON.stringify(this.formularioTratamiento.value))
     nuevoTratamientoJson.id_paciente=this.id 
-    nuevoTratamientoJson.id_clinica=localStorage.getItem('_cli') 
-    nuevoTratamientoJson.id_usuario_creador=localStorage.getItem('_us') 
-    nuevoTratamientoJson.fecha_creacion = this.obtenerFechaHoraHoy()
 
-    console.log("Tratamiento.")
     console.log(nuevoTratamientoJson)
 
     this.spinner.show();
@@ -90,32 +95,14 @@ export class TratamientoComponent implements OnInit {
         console.log("Tratamiento creado")
         this.closeModal();
         this.ngOnInit();
-        Swal.fire({
-          position: 'top-end',
-          html:
-            `<h5>${ Mensajes.TRATAMIENTO_REGISTRADO }</h5>`, 
-          showConfirmButton: false,
-          backdrop: false,
-          width: 400,
-          background: 'rgb(40, 167, 69, .90)',
-          color:'white',
-          timerProgressBar:true,
-          timer: 3000,
-        })
+
+        Alerts.success(Mensajes.TRATAMIENTO_REGISTRADO, ``);
       },
       err => {
         this.spinner.hide();
         console.log("error: " + err.error.message)
-        Swal.fire({
-          icon: 'error',
-          html:
-            `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-            `<span>${ Mensajes.TRATAMIENTO_NO_REGISTRADO }</span></br>`+
-            `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-          showConfirmButton: false,
-          timer: 3000
-        })
-        
+
+        Alerts.error(Mensajes.ERROR_500, Mensajes.TRATAMIENTO_NO_REGISTRADO, Mensajes.INTENTAR_MAS_TARDE);
       }
     )
   }
@@ -136,13 +123,6 @@ export class TratamientoComponent implements OnInit {
         console.log(err.error.message)
         console.log(err)
       });
-  }
-
-  obtenerFechaHoraHoy(){
-    this.date = new Date();
-    const mes = this.date.getMonth() +1
-    this.fecha_hora_actual = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
-    return this.fecha_hora_actual
   }
 
   openModalNuevo(content: TemplateRef<any>) {
@@ -209,100 +189,45 @@ export class TratamientoComponent implements OnInit {
     console.log("Actualizar Tratamiento:")
     console.log(this.formularioTratamiento)
 
-    var tratamientoJson = JSON.parse(JSON.stringify(this.formularioTratamiento.value))
-    tratamientoJson.id_usuario_actualizo=localStorage.getItem('_us') 
-    tratamientoJson.fecha_actualizacion = this.obtenerFechaHoraHoy()
-    
     this.spinner.show();
-    this.tratamientoService.updateTratamiento(this.tratamiento.id, tratamientoJson).subscribe(res => {
+    this.tratamientoService.updateTratamiento(this.tratamiento.id, this.formularioTratamiento.value).subscribe(res => {
+        this.spinner.hide();
         console.log("tratamiento actualizado: "+res);
         this.closeModal();
         this.ngOnInit()
-        this.spinner.hide();
-        Swal.fire({
-          position: 'top-end',
-          html:
-            `<h5>${ Mensajes.TRATAMIENTO_ACTUALIZADO }</h5>`, 
-            
-          showConfirmButton: false,
-          backdrop: false, 
-          width: 400,
-          background: 'rgb(40, 167, 69, .90)',
-          color:'white',
-          timerProgressBar:true,
-          timer: 3000,
-        })
-
+        
+        Alerts.success(Mensajes.TRATAMIENTO_ACTUALIZADO, ``);
       },
         err => {
           this.spinner.hide();
           console.log("error: " + err)
-          Swal.fire({
-            icon: 'error',
-            html:
-              `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-              `<span>${ Mensajes.TRATAMIENTO_NO_ACTUALIZADO }</span></br>`+
-              `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-            showConfirmButton: false,
-            timer: 3000
-          })
+          Alerts.error(Mensajes.ERROR_500, Mensajes.TRATAMIENTO_NO_ACTUALIZADO, Mensajes.INTENTAR_MAS_TARDE);
         }
       );
 
     return false;
   }
 
-
   deleteTratamiento() {
-    Swal.fire({
-      html:
-        `<h5>${ Mensajes.TRATAMIENTO_ELIMINAR_QUESTION }</h5> <br/> `,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#dc3545',
-      cancelButtonColor: '#aeaeae',
-      confirmButtonText: 'Si, eliminar',
-      cancelButtonText: 'No, cancelar'
-    }).then((result) => {
+    Alerts.confirmDelete(Mensajes.TRATAMIENTO_ELIMINAR_QUESTION, ``).then((result) => {
       if (result.value) {
+        // Confirm
         this.spinner.show();
         this.tratamientoService.deleteTratamient(this.tratamiento.id).subscribe(res => {
           this.spinner.hide();
           console.log("Tratamiento eliminado:" + JSON.stringify(res))
 
-          Swal.fire({
-            position: 'top-end',
-            html:
-              `<h5>${ Mensajes.TRATAMIENTO_ELIMINADO }</h5>`,
-            showConfirmButton: false,
-            backdrop: false, 
-            width: 400,
-            background: 'rgb(40, 167, 69, .90)',
-            color:'white',
-            timerProgressBar:true,
-            timer: 3000,
-          })
-
+          Alerts.success(Mensajes.TRATAMIENTO_ELIMINADO, ``);
           this.closeModal();
           this.ngOnInit()
         },
-        err => { 
-            this.spinner.hide();
-            console.log("error: " + err)
-            Swal.fire({
-              icon: 'error',
-              html:
-                `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-                `<span>${ Mensajes.TRATAMIENTO_NO_ELIMINADO}</span></br>`+
-                `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-              showConfirmButton: false,
-              timer: 3000
-            }) 
-        })
-    
+          err => { 
+            console.log("error: " + err);
+            Alerts.error(Mensajes.ERROR_500, Mensajes.TRATAMIENTO_NO_ELIMINADO, Mensajes.INTENTAR_MAS_TARDE);
+          }
+        );
       }
-    })
-
+    });
   }
 
 }

@@ -8,8 +8,10 @@ import { AuthService } from 'src/app/services/auth.service';
 import { CatalogoService } from 'src/app/services/catalogos/catalogo.service';
 import { PacienteService } from 'src/app/services/pacientes/paciente.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
-import { Mensajes } from 'src/app/shared/mensajes.config';
-import Swal from 'sweetalert2';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
+import { Alerts } from 'src/app/shared/utils/alerts';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
+import { textValidator, textSomeSymbolsValidator, emailValidator } from '../../../shared/utils/validador';
 
 @Component({
   selector: 'app-paciente-form',
@@ -20,8 +22,9 @@ export class PacienteFormComponent implements OnInit {
 
   rol:string
   formularioPaciente:FormGroup;
-  date: Date;
-  fecha_creacion:string
+  //fecha_actual:string
+  paciente:Paciente
+  catSexo:CatalogoSexo[] = [];
 
   //mensajes
   campoRequerido: string;
@@ -29,9 +32,8 @@ export class PacienteFormComponent implements OnInit {
   telefonoLongitud: string;
   soloNumeros: string;
   soloLetras: string;
-
-  paciente:Paciente
-  catSexo:CatalogoSexo[] = [];
+  longitudMinima: string
+  caracteresNoPermitidos: string
 
   isDisabled:boolean = false
 
@@ -50,6 +52,8 @@ export class PacienteFormComponent implements OnInit {
     this.telefonoLongitud = Mensajes.TELEFONO_LONGITUD;
     this.soloNumeros = Mensajes.SOLO_NUMEROS;
     this.soloLetras = Mensajes.SOLO_LETRAS;
+    this.longitudMinima = Mensajes.LONGITUD_MINIMA;
+    this.caracteresNoPermitidos = Mensajes.CARACTERES_NO_PERMITIDOS;
   }
 
   ngOnInit(): void {
@@ -65,21 +69,21 @@ export class PacienteFormComponent implements OnInit {
       this.rol = this.cifradoService.getDecryptedRol();
       this.el.nativeElement.querySelector('input').focus();
       this.formularioPaciente = this.formBuilder.group({
-        nombre: ['', [Validators.required, Validators.minLength(3), this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
-        apellidop: ['', [Validators.required, Validators.minLength(3), this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
-        apellidom: ['', [this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
+        nombre: ['', [Validators.required, Validators.minLength(3), textValidator()]],
+        apellidop: ['', [Validators.required, Validators.minLength(3), textValidator()]],
+        apellidom: ['', [Validators.minLength(3), textValidator()]],
         edad: ['', [Validators.pattern('^[0-9]+$'), Validators.maxLength(3)]],
-        sexo: [''],
+        sexo: ['null'],
         telefono: ['', [Validators.required, Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
         correo: ['', [Validators.minLength(5), // Hacer que el campo sea opcional
                   (control: AbstractControl) => { // Validación condicional del correo electrónico
                     if (control.value && control.value.trim() !== '') {
-                      return this.emailValidator(control);
+                      return emailValidator(control);
                     } else {
                       return null; // Si el campo está vacío, no aplicar la validación del correo electrónico
                     }
                   }]],
-        direccion: [''],
+        direccion: ['',[Validators.minLength(3), textSomeSymbolsValidator()]],
       })
 
       this.catalogoService.getSexo$().subscribe(res => { 
@@ -91,23 +95,6 @@ export class PacienteFormComponent implements OnInit {
       this.router.navigate(['/pagina/404/no-encontrada'])
     }
   }
-
-  validarTexto(regex: RegExp) {
-    return (control: AbstractControl) => {
-      const value = control.value;
-  
-      if (value && !regex.test(value)) {
-        return { 'invalidRegex': true };
-      }
-  
-      return null;
-    };
-  }
-
-  emailValidator(control) {
-    const emailRegexp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return emailRegexp.test(control.value) ? null : { emailInvalido: true };
-  }
   
   getInputClass(controlName: string) {
     const control = this.formularioPaciente.get(controlName);
@@ -118,17 +105,13 @@ export class PacienteFormComponent implements OnInit {
 
   crearPaciente(){
     console.log("CREAR Paciente")
+    console.log(this.formularioPaciente)
 
     var nuevoPacienteJson = JSON.parse(JSON.stringify(this.formularioPaciente.value))
-    nuevoPacienteJson.id_usuario=localStorage.getItem('_us') 
+    console.log("1")
+    nuevoPacienteJson.id_usuario_creador=localStorage.getItem('_us') 
     nuevoPacienteJson.id_clinica=localStorage.getItem('_cli') 
- 
-    this.date = new Date();
-    const mes = this.date.getMonth() +1
-    this.fecha_creacion = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
-    console.log("Fecha creación:: "+this.fecha_creacion)
-
-    nuevoPacienteJson.fecha_creacion = this.fecha_creacion
+    nuevoPacienteJson.fecha_creacion = DateUtil.getCurrentFormattedDate()
 
     console.log("Paciente a registrar: ")
     console.log(nuevoPacienteJson)
@@ -139,51 +122,22 @@ export class PacienteFormComponent implements OnInit {
         this.spinner.hide();
         this.paciente = res;
         console.log("Paciente creado")
-        //this.modalService.dismissAll()
-      
         this.router.navigate(['/pacientes'])
-        Swal.fire({
-          position: 'top-end',
-          html:
-            `<h5>${ Mensajes.PACIENTE_REGISTRADO }</h5>`+
-            `<span>Paciente: ${this.paciente.nombre} ${this.paciente.apellidop}</span>`, 
-          showConfirmButton: false,
-          backdrop: false,
-          width: 400,
-          background: 'rgb(40, 167, 69, .90)',
-          color:'white',
-          timerProgressBar:true,
-          timer: 3000,
-        })
+        Alerts.success(Mensajes.PACIENTE_REGISTRADO, `Correo: ${this.paciente.nombre} ${this.paciente.apellidop }`);
       },
       err => {
         this.spinner.hide();
         console.log("error: " + err.error.message)
         if(err.error.message=="400"){
           this.el.nativeElement.querySelector('input').focus();
-          Swal.fire({
-            icon: 'warning',
-            html:
-              `<strong> ${ Mensajes.WARNING } </strong><br/>` +
-              `<span>${ Mensajes.PACIENTE_EXISTENTE }</span>`,
-            showConfirmButton: false,
-            timer: 2000
-          })
+          Alerts.warning(Mensajes.WARNING, Mensajes.PACIENTE_EXISTENTE);
         }else{
-          Swal.fire({
-            icon: 'error',
-            html:
-              `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-              `<span>${ Mensajes.PACIENTE_NO_REGISTRADO }</span></br>`+
-              `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-            showConfirmButton: false,
-            timer: 3000
-          })
+          Alerts.error(Mensajes.ERROR_500, Mensajes.PACIENTE_NO_REGISTRADO, Mensajes.INTENTAR_MAS_TARDE);
         }
         
       }
     )
-  }// end method
+  }
 
   limpiarForm(){
     this.formularioPaciente.reset();

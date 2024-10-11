@@ -1,167 +1,170 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h5>
-            {{ tituloCard }}
-          </h5>
-        </div>
-        <div class="col-sm-6 hide-on-mobile">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a routerLink="/calendario">Calendario</a></li>
-            <li class="breadcrumb-item"><a routerLink="/agenda">Agenda</a></li>
-            <li class="breadcrumb-item"><a routerLink="/pacientes">Pacientes</a></li>
-            <li class="breadcrumb-item active">Expediente</li>
-          </ol>
-        </div>
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h5>
+          {{ tituloCard }}
+        </h5>
       </div>
-    </div><!-- /.container-fluid -->
-  </section>
-  
-  <section class="content"> 
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-  
-          <div class="card card-primary card-outline card-outline-tabs">
-            <div class="card-header p-0 border-bottom-0">
-              <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
-                <li class="nav-item">
-                  <a class="nav-link active" id="custom-tabs-datos-personales" data-toggle="pill" href="#tab-datos-personales"><i class="fas fa-user"></i> Datos personales</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" id="custom-tabs-tratamientos-realizados" data-toggle="pill" href="#tab-tratamientos-realizados"><i class="fas fa-tooth"></i> Tratamientos realizados</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" id="custom-tabs-historial-pagos" data-toggle="pill" href="#tab-historial-pagos"><i class="fas fa-dollar-sign"></i> Historial de pagos</a>
-                </li>
-              </ul>
-              <div class="card-tools" style="margin-top: -35px;">
-                <button type="button" class="btn btn-tool" data-card-widget="maximize">
-                  <i class="fas fa-expand"></i>
-                </button>
-                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                  <i class="fas fa-minus"></i>
-                </button>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="tab-content" id="custom-tabs-four-tabContent">
-                <div class="tab-pane fade show active" id="tab-datos-personales">
-      
-                  <app-paciente-detalle></app-paciente-detalle>
-      
-                </div>
-                <div class="tab-pane fade" id="tab-tratamientos-realizados">
-                  <h2>Tratamientos Realizados</h2>
-                      <table class="table">
-                          <thead>
-                              <tr>
-                                  <th scope="col">#</th>
-                                  <th scope="col">Fecha</th>
-                                  <th scope="col">Descripción del Tratamiento</th>
-                                  <th scope="col">Dentista</th>
-                                  <th scope="col">Costo</th>
-                                  <th scope="col">Detalles</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <!-- Asumiendo que "tratamientos" es un array de objetos con información del tratamiento -->
-                              <tr>
-                                  <th scope="row"></th>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td>
-                                      <button class="btn btn-info">Ver Detalles</button>
-                                  </td>
-                              </tr>
-                          </tbody>
-                      </table>
-                </div>
-                <div class="tab-pane fade" id="tab-historial-pagos">
-                  5
-                </div>
-              </div>
-            </div>
-          </div>
-  
-          <div class="card card-primary card-outline">
-            <div class="card-header">
-              <i class="fas fa-walking"></i> Visitas
-          
-              <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                  <i class="fas fa-minus"></i>
-                </button>
-              </div>
-          
-            </div>
-            <div class="card-body">
-              
-              <app-visitas></app-visitas>
- 
-            </div>
-          </div>
-
-          <div class="card card-primary card-outline card-outline-tabs">
-            <div class="card-header p-0 border-bottom-0">
-              <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
-        
-                <li class="nav-item">
-                  <a class="nav-link active" id="custom-tabs-historia" data-toggle="pill" href="#tab-historia"><i class="fas fa-clipboard-list"></i> Historia clínica</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" id="custom-tabs-diagnostico" data-toggle="pill" href="#tab-diagnostico"><i class="fas fa-file-alt"></i> Diagnóstico</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" id="custom-tabs-tratamiento" data-toggle="pill" href="#tab-tratamiento"><i class="fas fa-tooth"></i> Tratamiento</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" id="custom-tabs-seguimiento" data-toggle="pill" href="#tab-seguimiento"><i class="fas fa-tasks"></i> Seguimiento</a>
-                </li>
-              </ul>
-              <div class="card-tools" style="margin-top: -35px;">
-                <button type="button" class="btn btn-tool" data-card-widget="maximize">
-                  <i class="fas fa-expand"></i>
-                </button>
-                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                  <i class="fas fa-minus"></i>
-                </button>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="tab-content" id="custom-tabs-four-tabContent">
-                <div class="tab-pane fade show active" id="tab-historia">
-        
-                    <app-historia></app-historia>
-        
-                </div>
-                <div class="tab-pane fade" id="tab-diagnostico">
-                  
-                    <app-diagnostico></app-diagnostico>
-  
-                </div>
-                <div class="tab-pane fade" id="tab-tratamiento">
-                  
-                    <app-tratamiento></app-tratamiento>
-  
-                </div>
-                <div class="tab-pane fade" id="tab-seguimiento">
-                  
-                    <app-seguimiento></app-seguimiento>
-  
-                </div>
-              </div>
-            </div>
-          </div>
-  
-  
-
-  
-        </div>
+      <div class="col-sm-6 hide-on-mobile">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a routerLink="/calendario">Calendario</a></li>
+          <li class="breadcrumb-item"><a routerLink="/agenda">Agenda</a></li>
+          <li class="breadcrumb-item"><a routerLink="/pacientes">Pacientes</a></li>
+          <li class="breadcrumb-item active">Expediente</li>
+        </ol>
       </div>
     </div>
-  </section>
+  </div><!-- /.container-fluid -->
+</section>
+
+<section class="content"> 
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+
+        <div class="card card-primary card-outline card-outline-tabs">
+          <div class="card-header p-0 border-bottom-0">
+            <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="custom-tabs-datos-personales" data-toggle="pill" href="#tab-datos-personales"><i class="fas fa-user"></i> Datos personales</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="custom-tabs-historia" data-toggle="pill" href="#tab-historia"><i class="fas fa-clipboard-list"></i> Historia clínica</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="custom-tabs-diagnostico" data-toggle="pill" href="#tab-diagnostico"><i class="fas fa-file-alt"></i> Diagnósticos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="custom-tabs-tratamiento" data-toggle="pill" href="#tab-tratamiento"><i class="fas fa-tooth"></i> Tratamientos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="custom-tabs-seguimiento" data-toggle="pill" href="#tab-seguimiento"><i class="fas fa-tasks"></i> Seguimientos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="custom-tabs-historial-pagos" data-toggle="pill" href="#tab-historial-pagos"><i class="fas fa-dollar-sign"></i> Pagos</a>
+              </li>
+            </ul>
+            <div class="card-tools" style="margin-top: -35px;">
+              <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                <i class="fas fa-expand"></i>
+              </button>
+              <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="tab-content" id="custom-tabs-four-tabContent">
+              <div class="tab-pane fade show active" id="tab-datos-personales">
+    
+                <app-paciente-detalle></app-paciente-detalle>
+    
+              </div>
+
+              <div class="tab-pane fade" id="tab-historia">
+      
+                <app-historia></app-historia>
+    
+              </div>
+              <div class="tab-pane fade" id="tab-diagnostico">
+                
+                  <app-diagnostico></app-diagnostico>
+
+              </div>
+              <div class="tab-pane fade" id="tab-tratamiento">
+                
+                  <app-tratamiento></app-tratamiento>
+
+              </div>
+              <div class="tab-pane fade" id="tab-seguimiento">
+                
+                  <app-seguimiento></app-seguimiento>
+
+              </div>
+              
+              <div class="tab-pane fade" id="tab-historial-pagos">
+                5
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <strong class="text-muted"> <i class="fas fa-walking"></i> Visitas </strong>
+        
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+              </button>
+            </div>
+        
+          </div>
+          <div class="card-body">
+            
+            <app-visitas></app-visitas>
+
+          </div>
+        </div>
+<!-- 
+        <div class="card card-primary card-outline card-outline-tabs">
+          <div class="card-header p-0 border-bottom-0">
+            <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
+      
+              <li class="nav-item">
+                <a class="nav-link" id="custom-tabs-historia" data-toggle="pill" href="#tab-historia"><i class="fas fa-clipboard-list"></i> Historia clínica</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="custom-tabs-diagnostico" data-toggle="pill" href="#tab-diagnostico"><i class="fas fa-file-alt"></i> Diagnóstico</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="custom-tabs-tratamiento" data-toggle="pill" href="#tab-tratamiento"><i class="fas fa-tooth"></i> Tratamiento</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="custom-tabs-seguimiento" data-toggle="pill" href="#tab-seguimiento"><i class="fas fa-tasks"></i> Seguimiento</a>
+              </li>
+            </ul>
+            <div class="card-tools" style="margin-top: -35px;">
+              <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                <i class="fas fa-expand"></i>
+              </button>
+              <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="tab-content" id="custom-tabs-four-tabContent">
+              <div class="tab-pane fade show active" id="tab-historia">
+      
+                  <app-historia></app-historia>
+      
+              </div>
+              <div class="tab-pane fade" id="tab-diagnostico">
+                
+                  <app-diagnostico></app-diagnostico>
+
+              </div>
+              <div class="tab-pane fade" id="tab-tratamiento">
+                
+                  <app-tratamiento></app-tratamiento>
+
+              </div>
+              <div class="tab-pane fade" id="tab-seguimiento">
+                
+                  <app-seguimiento></app-seguimiento>
+
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+
+
+
+      </div>
+    </div>
+  </div>
+</section>

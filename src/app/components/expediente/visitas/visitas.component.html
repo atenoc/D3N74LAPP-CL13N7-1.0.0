@@ -5,12 +5,14 @@
     <div *ngIf="citas">
       <div *ngFor="let cita of citas">
         <span class="badge badge-success"> <i class="fas fa-check-circle"></i></span>
-        <small class="text-muted"> {{ cita.titulo }} </small>
-        <small class="text-muted"> |</small> 
-        <small class="text-muted"><strong> {{ cita.motivo }}</strong></small>
-        <small class="text-muted"> |</small> 
-        <small class="text-muted"> {{ cita.fecha_hora_inicio}}</small>
-        <small class="badge badge-success ml-2"> <i class="fas fa-check-circle"></i> Marcar como atendida</small>
+        <span class="text-muted"> {{ cita.titulo }} </span>
+        <span class="text-muted"> |</span> 
+        <span class="text-muted"><strong> {{ cita.motivo }}</strong></span>
+        <span class="text-muted"> |</span> 
+        <span class="text-muted"> {{ cita.fecha_hora_inicio}}</span>
+        <span class="text-muted"> |</span> 
+        <span class="text-muted"> {{ cita.nombre_usuario_medico}}</span>
+        <span class="badge badge-success ml-2"> <i class="fas fa-check-circle"></i> Marcar como atendida</span>
       </div>
     </div>
 

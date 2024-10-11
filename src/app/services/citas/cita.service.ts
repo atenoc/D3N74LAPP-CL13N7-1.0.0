@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Cita, CitaEditar, CitaPaciente } from 'src/app/models/Cita.model';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
 import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
@@ -16,11 +17,17 @@ export class CitaService {
 
   constructor(private http: HttpClient) { }
 
-  createCita(cita): Observable<Cita> {
+  createCita(cita: any): Observable<Cita> {
+    cita.id_usuario_creador = localStorage.getItem('_us')
+    cita.id_clinica = localStorage.getItem('_cli')
+    cita.fecha_creacion = DateUtil.getCurrentFormattedDate()
     return this.http.post<Cita>(this.URI, cita);
   }
 
   createEvento(evento): Observable<Cita> {
+    evento.id_usuario_creador = localStorage.getItem('_us')
+    evento.id_clinica = localStorage.getItem('_cli')
+    evento.fecha_creacion = DateUtil.getCurrentFormattedDate()
     return this.http.post<Cita>(`${this.URI}/evento`, evento);
   }
   
@@ -50,12 +57,19 @@ export class CitaService {
     return this.nuevaCitaSubject.asObservable();
   }
 
-  updateCita(id: string, title: string, motivo:string, start:string, end:string, nota:string, id_paciente:string) {
-    return this.http.patch<CitaEditar>(`${this.URI}/${id}`, {title, motivo, start, end, nota, id_paciente});
+  updateCita(id:string, cita: any) {
+    cita.id_usuario_actualizo = localStorage.getItem('_us')
+    cita.id_clinica = localStorage.getItem('_cli')
+    cita.fecha_actualizacion = DateUtil.getCurrentFormattedDate()
+    return this.http.patch<CitaEditar>(`${this.URI}/${id}`, cita);
   }
 
   deleteCita(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.URI}/${id}`);
+    const params = new HttpParams()
+      .set('id_usuario_elimino', localStorage.getItem('_us'))
+      .set('id_clinica', localStorage.getItem('_cli'))
+      .set('fecha_eliminacion', DateUtil.getCurrentFormattedDate())
+    return this.http.delete<void>(`${this.URI}/${id}`, { params });
   }
 
   getCitasByIdPaciente(id_paciente): Observable<CitaPaciente[]>{

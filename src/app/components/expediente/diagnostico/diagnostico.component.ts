@@ -1,12 +1,15 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbModalConfig, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Diagnostico } from 'src/app/models/Diagnostico.model';
+import { Diagnostico, Imagen } from 'src/app/models/Diagnostico.model';
 import { DiagnosticoService } from 'src/app/services/diagnosticos/diagnostico.service';
-import { Mensajes } from 'src/app/shared/mensajes.config';
-import Swal from 'sweetalert2';
+import { Alerts } from 'src/app/shared/utils/alerts';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
+import { textSomeSymbolsValidator} from '../../../shared/utils/validador';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-diagnostico',
@@ -15,22 +18,37 @@ import Swal from 'sweetalert2';
 })
 export class DiagnosticoComponent implements OnInit {
 
-  id: string;
-  date: Date;
-  fecha_hoy:string
-  fecha_hora_actual:string;
+  id_paciente: string;
   formularioDiagnostico:FormGroup;
-  existenDiagnosticos:boolean=false
   diagnostico:Diagnostico;
   diagnosticos:Diagnostico[] = [];
   mensaje:string
+
+  existenDiagnosticos:boolean=false
   mostrar_actualizacion:boolean=false
   maxCharacters: number = 1500; // Número máximo de caracteres permitidos
   remainingCharacters: number = this.maxCharacters;
   nombre_usuario_creador:string
   nombre_usuario_actualizo:string
+
+  fecha_no_time:string
+  //fecha_actual:string
   fecha_creacion:string
   fecha_actualizacion:string
+
+  //mensajes
+  campoRequerido: string;
+  caracteresNoPermitidos: string
+
+  id_diagnostico: string
+  images = [
+    { src: 'https://s3.amazonaws.com/cdn.wp.m4ecmx/wp-content/uploads/2023/10/14123804/ias-generadoras-de-imagenes.jpg', alt: 'Image 1' },
+    { src: 'https://i.blogs.es/d559d0/jlacort_happy_elephant_running_across_the_desert._4k_26e6e27c-dbd6-4b14-b8ba-ac0841f2c25f/450_1000.jpeg', alt: 'Image 2' },
+    { src: 'https://s3.amazonaws.com/cdn.wp.m4ecmx/wp-content/uploads/2023/10/14123804/ias-generadoras-de-imagenes.jpg', alt: 'Image 1' },
+    { src: 'https://media.es.wired.com/photos/641b2076880298eb68cc9b8a/16:9/w_1280,c_limit/Todd_Namban_Create_a_photorrealistic_portrait_of_a_red_fox_usin_cd0b7e04-868d-45d4-beaf-b7515e6154ca.png', alt: 'Image 3' },
+    // Añade más imágenes según sea necesario
+  ];
+
 
   private modalRef: NgbModalRef | undefined;
 
@@ -40,44 +58,50 @@ export class DiagnosticoComponent implements OnInit {
     private diagnosticoService:DiagnosticoService,
     private spinner: NgxSpinnerService, 
     private modalService: NgbModal,
+    private sharedService:SharedService,
     config: NgbModalConfig,
   ) { 
-    this.date = new Date();
-    const mes = this.date.getMonth() +1
-    this.fecha_hoy = this.date.getDate()+"/"+mes+"/"+this.date.getFullYear()
-
     config.backdrop = 'static';
 		config.keyboard = false;
+
+    this.fecha_no_time = DateUtil.getDateNoTime()
+    this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
+    this.caracteresNoPermitidos = Mensajes.CARACTERES_NO_PERMITIDOS;
   }
 
   ngOnInit(): void {
 
     this.formularioDiagnostico = this.formBuilder.group({
-      descripcion_problema: [''],
-      codigo_diagnostico: [''],
+      descripcion_problema: ['',[Validators.required, textSomeSymbolsValidator()]],
+      codigo_diagnostico: ['',[Validators.required, textSomeSymbolsValidator()]],
       evidencias: [''],
     })
 
     this.activatedRoute.params.subscribe(params => {
-      this.id = params['id'];
-      console.log("id paciente recuperado: " +this.id)
+      this.id_paciente = params['id'];
+      console.log("id paciente recuperado: " +this.id_paciente)
 
       this.getDiagnosticos()
 
     }),
     err => console.log("error: " + err)
+
+    this.sharedService.getImageURL().subscribe(imageURL => {
+      if(imageURL){
+        this.images.push({ src: imageURL, alt: 'nuevo' });
+      }
+      console.log("Tamaño de la nueva lista de imagenes:: "+this.images.length)
+    });
  
   }
 
   crearDiagnostico(){
     console.log("CREAR Diagnostico")
 
-    var nuevoDiagnosticoJson = JSON.parse(JSON.stringify(this.formularioDiagnostico.value))
-    nuevoDiagnosticoJson.id_paciente=this.id 
-    nuevoDiagnosticoJson.id_clinica=localStorage.getItem('_cli') 
-    nuevoDiagnosticoJson.id_usuario_creador=localStorage.getItem('_us') 
-    nuevoDiagnosticoJson.fecha_creacion = this.obtenerFechaHoraHoy()
+    //this.fecha_actual = DateUtil.getCurrentFormattedDate()
 
+    var nuevoDiagnosticoJson = JSON.parse(JSON.stringify(this.formularioDiagnostico.value))
+    nuevoDiagnosticoJson.id_paciente=this.id_paciente 
     console.log("Diagnostico.")
     console.log(nuevoDiagnosticoJson)
 
@@ -86,41 +110,35 @@ export class DiagnosticoComponent implements OnInit {
       res => {
         this.spinner.hide();
         console.log("Diagnostico creado")
-        this.closeModal();
-        this.ngOnInit();
-        Swal.fire({
-          position: 'top-end',
-          html:
-            `<h5>${ Mensajes.DIAGNOSTICO_REGISTRADO }</h5>`, 
-          showConfirmButton: false,
-          backdrop: false,
-          width: 400,
-          background: 'rgb(40, 167, 69, .90)',
-          color:'white',
-          timerProgressBar:true,
-          timer: 3000,
-        })
+        console.log("res: "+JSON.stringify(res))
+        console.log("res id: "+res.id)
+        console.log("res id_paciente: "+res.id_paciente)
+        this.id_diagnostico = res.id
+        //this.closeModal();
+        //this.ngOnInit()
+        Alerts.success(Mensajes.DIAGNOSTICO_REGISTRADO, ``);
+
+        //Enviar datos compartidos
+        const objetoDiagnostico = {
+          id_diagnostico : this.id_diagnostico,
+          id_paciente : this.id_paciente
+        }
+        this.sharedService.setObjetoDiagnostico(objetoDiagnostico);
+
       },
       err => {
         this.spinner.hide();
         console.log("error: " + err.error.message)
-        Swal.fire({
-          icon: 'error',
-          html:
-            `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-            `<span>${ Mensajes.DIAGNOSTICO_NO_REGISTRADO }</span></br>`+
-            `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-          showConfirmButton: false,
-          timer: 3000
-        })
+        Alerts.error(Mensajes.ERROR_500, Mensajes.DIAGNOSTICO_NO_REGISTRADO, Mensajes.INTENTAR_MAS_TARDE);
         
       }
     )
   }
 
   getDiagnosticos(){
-    this.diagnosticoService.getDiagnosticosByIpPaciente(this.id).subscribe(res => {
-        console.log(res)
+    this.diagnosticoService.getDiagnosticosByIpPaciente(this.id_paciente).subscribe(res => {
+      console.log("Diagnósticos")  
+      console.log(res)
         this.diagnosticos = res
         if(this.diagnosticos.length <= 0){
           this.mensaje='No hay diagnósticos para mostrar'
@@ -135,16 +153,10 @@ export class DiagnosticoComponent implements OnInit {
       });
   }
 
-  obtenerFechaHoraHoy(){
-    this.date = new Date();
-    const mes = this.date.getMonth() +1
-    this.fecha_hora_actual = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
-    return this.fecha_hora_actual
-  }
-
   openModalNuevo(content: TemplateRef<any>) {
     this.formularioDiagnostico.reset()
 		this.modalRef = this.modalService.open(content, { size: 'xl', centered: true });
+    //this.modalRef = this.modalService.open(content, { fullscreen: true });
     console.log('Modal abierto Nuevo:', this.modalRef);
 	}
 
@@ -200,101 +212,47 @@ export class DiagnosticoComponent implements OnInit {
   actualizarDiagnostico(){
     console.log("Actualizar Diagnostico:")
     console.log(this.formularioDiagnostico)
-
-    var diagnosticoJson = JSON.parse(JSON.stringify(this.formularioDiagnostico.value))
-    diagnosticoJson.id_usuario_actualizo=localStorage.getItem('_us') 
-    diagnosticoJson.fecha_actualizacion = this.obtenerFechaHoraHoy()
     
     this.spinner.show();
-    this.diagnosticoService.updateDiagnostico(this.diagnostico.id, diagnosticoJson).subscribe(res => {
+    this.diagnosticoService.updateDiagnostico(this.diagnostico.id, this.formularioDiagnostico.value).subscribe(res => {
+        this.spinner.hide();
         console.log("Diagnostico actualizado: "+res);
         this.closeModal();
         this.ngOnInit()
-        this.spinner.hide();
-        Swal.fire({
-          position: 'top-end',
-          html:
-            `<h5>${ Mensajes.DIAGNOSTICO_ACTUALIZADO }</h5>`, 
-            
-          showConfirmButton: false,
-          backdrop: false, 
-          width: 400,
-          background: 'rgb(40, 167, 69, .90)',
-          color:'white',
-          timerProgressBar:true,
-          timer: 3000,
-        })
-
+        
+        Alerts.success(Mensajes.DIAGNOSTICO_ACTUALIZADO, ``);
       },
         err => {
           this.spinner.hide();
           console.log("error: " + err)
-          Swal.fire({
-            icon: 'error',
-            html:
-              `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-              `<span>${ Mensajes.DIAGNOSTICO_NO_ACTUALIZADO }</span></br>`+
-              `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-            showConfirmButton: false,
-            timer: 3000
-          })
+
+          Alerts.error(Mensajes.ERROR_500, Mensajes.DIAGNOSTICO_NO_ACTUALIZADO, Mensajes.INTENTAR_MAS_TARDE);
         }
       );
 
     return false;
   }
 
-
   deleteDiagnostico() {
-    Swal.fire({
-      html:
-        `<h5>${ Mensajes.DIAGNOSTICO_ELIMINAR_QUESTION }</h5> <br/> `,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#dc3545',
-      cancelButtonColor: '#aeaeae',
-      confirmButtonText: 'Si, eliminar',
-      cancelButtonText: 'No, cancelar'
-    }).then((result) => {
+    Alerts.confirmDelete(Mensajes.DIAGNOSTICO_ELIMINAR_QUESTION, ``).then((result) => {
       if (result.value) {
+        // Confirm
         this.spinner.show();
         this.diagnosticoService.deleteDiagnostico(this.diagnostico.id).subscribe(res => {
           this.spinner.hide();
           console.log("Diagnostico eliminado:" + JSON.stringify(res))
 
-          Swal.fire({
-            position: 'top-end',
-            html:
-              `<h5>${ Mensajes.DIAGNOSTICO_ELIMINADO }</h5>`,
-            showConfirmButton: false,
-            backdrop: false, 
-            width: 400,
-            background: 'rgb(40, 167, 69, .90)',
-            color:'white',
-            timerProgressBar:true,
-            timer: 3000,
-          })
-
+          Alerts.success(Mensajes.DIAGNOSTICO_ELIMINADO, ``);
           this.closeModal();
           this.ngOnInit()
         },
-        err => { 
-            this.spinner.hide();
-            console.log("error: " + err)
-            Swal.fire({
-              icon: 'error',
-              html:
-                `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-                `<span>${ Mensajes.DIAGNOSTICO_NO_ELIMINADO}</span></br>`+
-                `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-              showConfirmButton: false,
-              timer: 3000
-            }) 
-        })
-    
+          err => { 
+            console.log("error: " + err);
+            Alerts.error(Mensajes.ERROR_500, Mensajes.DIAGNOSTICO_NO_ELIMINADO, Mensajes.INTENTAR_MAS_TARDE);
+          }
+        );
       }
-    })
-
+    });
   }
 
 }

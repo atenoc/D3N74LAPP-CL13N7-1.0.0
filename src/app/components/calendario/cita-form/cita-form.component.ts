@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal, NgbDateStruct, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
-import { JsonPipe } from '@angular/common';
 import { CitaService } from 'src/app/services/citas/cita.service';
-import { Mensajes } from 'src/app/shared/mensajes.config';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 import { PacienteService } from 'src/app/services/pacientes/paciente.service';
-import Swal from 'sweetalert2';
 import { Paciente } from 'src/app/models/Paciente.model';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
@@ -12,6 +10,9 @@ import { AuthService } from 'src/app/services/auth.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
+import { Alerts } from 'src/app/shared/utils/alerts';
+import { Cita } from 'src/app/models/Cita.model';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
 
 @Component({
   selector: 'app-cita-form',
@@ -22,10 +23,12 @@ export class CitaFormComponent implements OnInit {
 
   queryPacientes = '';
   queryMedicos = '';
+  paciente:Paciente
   pacientes: Paciente[] = [];
   medicos: Usuario[] = [];
-  date: Date;
-  fecha_creacion:string
+  cita:Cita
+
+  //fecha_actual:string
   fechaModelInicio: NgbDateStruct;
   fechaModelFin: NgbDateStruct;
   selectedTimeInicio: { hour: number, minute: number } = { hour: 0, minute: 0 };
@@ -121,11 +124,7 @@ export class CitaFormComponent implements OnInit {
   }
 
   crearCita(){
-    this.date = new Date();
-
-    //console.log("Tiempo Computadora: "+ this.date)
-    //console.log("Fecha Inicio: "+ JSON.stringify(this.fechaModelInicio))
-    //console.log("Hora Inicio: "+ JSON.stringify(this.selectedTimeInicio))
+    console.log("Crear cita")
 
     this.validaNombre() 
     this.validaApPaterno()
@@ -151,14 +150,7 @@ export class CitaFormComponent implements OnInit {
       this.mostrarMensajeHorariosInvalidos
     ){
       console.log("Vuelve a validar")
-      Swal.fire({
-        icon: 'warning',
-        html:
-          `<strong>Aviso</strong></br>`+
-          `<span>${ Mensajes.CITA_CAMPOS_OBLIGATORIOS }</span></br>`,
-        showConfirmButton: false,
-        timer: 3000
-      })
+      Alerts.warning(Mensajes.WARNING, Mensajes.CITA_CAMPOS_OBLIGATORIOS);
 
     }else{
       console.log("Todo valido")
@@ -170,9 +162,7 @@ export class CitaFormComponent implements OnInit {
         this.fecha_hora_fin = null
       }
 
-      const mes = this.date.getMonth() +1
-      this.fecha_creacion = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
-      console.log("Fecha creación:: "+this.fecha_creacion)
+      //this.fecha_actual = DateUtil.getCurrentFormattedDate()
 
       if(this.existePaciente){
         this.registrarCita();
@@ -189,61 +179,44 @@ export class CitaFormComponent implements OnInit {
       apellidom: this.apellidoMaternoPaciente,
       edad: this.edadPaciente,
       telefono: this.telefonoPaciente,
-      fecha_creacion: this.fecha_creacion,
       id_clinica: localStorage.getItem('_cli'),
-      id_usuario: localStorage.getItem('_us')
+      id_usuario_creador: localStorage.getItem('_us'),
+      fecha_creacion: DateUtil.getCurrentFormattedDate()
     };
 
     this.spinner.show();
     this.pacienteService.createPaciente(this.pacienteJson).subscribe(
       res=>{
       this.spinner.hide();
-      this.id_paciente=res.id
+      this.paciente=res
+      this.id_paciente=this.paciente.id
       this.registrarCita()
 
       setTimeout(() => {
-        Swal.fire({
-          position: 'top-end',
-          html:
-            `<h5>${ Mensajes.PACIENTE_REGISTRADO }</h5>`+
-            `<span>${res.nombre} ${res.apellidop} ${res.apellidom}</span>`, 
-          showConfirmButton: false,
-          backdrop: false,
-          width: 400,
-          background: 'rgb(40, 167, 69, .90)',
-          color:'white',
-          timerProgressBar:true,
-          timer: 3000,
-        })
+        Alerts.success(Mensajes.PACIENTE_REGISTRADO, `${this.paciente.nombre} ${this.paciente.apellidop} ${this.paciente.apellidom}`);
       }, 3000);
-
+      
     },
     err =>{
       this.spinner.hide();
-      Swal.fire({
-        icon: 'error',
-        html:
-          `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-          `<span>${ Mensajes.PACIENTE_NO_REGISTRADO }</span></br>`+
-          `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-        showConfirmButton: false,
-        timer: 3000
-      })
+      if(err.error.message=="400"){
+        Alerts.warning(Mensajes.WARNING, Mensajes.PACIENTE_EXISTENTE);
+      }else{
+        Alerts.error(Mensajes.ERROR_500, Mensajes.PACIENTE_NO_REGISTRADO, Mensajes.INTENTAR_MAS_TARDE);
+      }
     })
 
   }
 
   registrarCita(){
     var citaJson = {
-      title: "Cita · "+this.nombrePaciente+" "+this.apellidoPaternoPaciente,
+      title: "Cita · "+this.nombrePaciente+" "+this.apellidoPaternoPaciente+" "+this.apellidoMaternoPaciente,
       motivo: this.motivo,
       color: '#00a65a',
       start: this.fecha_hora_inicio,
       end: this.fecha_hora_fin,
-      fecha_creacion: this.fecha_creacion,
       id_paciente: this.id_paciente,
-      id_clinica: localStorage.getItem('_cli'),
-      id_usuario: localStorage.getItem('_us')
+      id_usuario_medico: this.id_usuario_medico,
     };
 
     console.log("Todoooo listo para registrar cita")
@@ -253,36 +226,16 @@ export class CitaFormComponent implements OnInit {
       res=>{
         this.spinner.hide();
         console.log("Cita Enviada")
+        this.cita=res
         console.log(res)
         this.citaService.emitirNuevaCita(); // Emitir el evento de nueva cita
 
-        Swal.fire({
-          position: 'top-end',
-          html:
-            `<h5>${ Mensajes.CITA_REGISTRADA }</h5>`+
-            `<span>${ res.title }</span>`, 
-          showConfirmButton: false,
-          backdrop: false,
-          width: 400,
-          background: 'rgb(40, 167, 69, .90)',
-          color:'white',
-          timerProgressBar:true,
-          timer: 3000,
-        })
-
+        Alerts.success(Mensajes.CITA_REGISTRADA, `${this.cita.title}`);
         this.closeModal()
       },
       err =>{
         this.spinner.hide();
-        Swal.fire({
-          icon: 'error',
-          html:
-            `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-            `<span>${ Mensajes.CITA_NO_REGISTRADA }</span></br>`+
-            `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-          showConfirmButton: false,
-          timer: 3000
-        })
+        Alerts.error(Mensajes.ERROR_500, Mensajes.CITA_NO_REGISTRADA, Mensajes.INTENTAR_MAS_TARDE);
       })
   }
 

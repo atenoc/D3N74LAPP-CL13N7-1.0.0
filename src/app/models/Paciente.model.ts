@@ -9,12 +9,12 @@ export interface Paciente{
     telefono:string,
     correo:string;
     direccion:string,
-    //nombre_usuario_creador:string;
     id_clinica:string;
-    id_usuario:string;
-    fecha_creacion:Date;
-    nombre_completo_paciente:string;
+    //id_usuario_creador:string;
     nombre_usuario_creador:string;
+    fecha_creacion:string;
+    nombre_usuario_actualizo:string;
+    fecha_actualizacion:string;
 }
 
 export interface PacientesPaginados {

@@ -11,4 +11,11 @@ export interface Diagnostico{
     id_usuario_actualizo:string
     fecha_actualizacion:string
     nombre_usuario_actualizo:string
+    imagenes: Imagen[];
+}
+
+export interface Imagen {
+    id: string;
+    url: string;
+    descripcion?: string; // La descripción puede ser opcional
 }

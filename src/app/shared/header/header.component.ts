@@ -3,10 +3,10 @@ import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { CentroService } from 'src/app/services/clinicas/centro.service';
 import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
-import { Mensajes } from '../mensajes.config';
+import { Mensajes } from '../utils/mensajes.config';
 import { SharedService } from 'src/app/services/shared.service';
-import { CifradoService } from 'src/app/services/cifrado.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { ValidateInfo } from '../utils/validateInfo';
 
 @Component({
   selector: 'app-header',
@@ -53,7 +53,9 @@ export class HeaderComponent implements OnInit {
       this.nombreCentro = nombreCentro;
     });
 
-    this.authService.validarUsuarioActivo$(localStorage.getItem('_us'), localStorage.getItem('_em'), localStorage.getItem('_cli')).subscribe(
+    const valudateUser = ValidateInfo.getUserInfo()
+
+    this.authService.validarUsuarioActivo$(valudateUser).subscribe(
       res => {
         
         this.usuario = res;

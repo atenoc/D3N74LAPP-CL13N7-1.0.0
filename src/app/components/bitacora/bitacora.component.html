@@ -1,0 +1,155 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h5>
+            Bitacora de actividades
+          </h5>
+        </div>
+        <div class="col-sm-6 hide-on-mobile">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a routerLink="/calendario">Calendario</a></li>
+            <li class="breadcrumb-item"><a routerLink="/agenda">Agenda</a></li>
+            <li class="breadcrumb-item active">Pacientes</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+  
+  <section class="content">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card card-primary card-outline">
+
+            <div class="card-body">
+  
+              <div *ngIf="existenAuditorias; else ver_mensaje">
+                <table class="table-responsive table-hover table-striped hide-on-mobile">
+                  <thead>
+                    <tr>
+                      <!-- <th class="primer-columna">#</th>  -->
+                      <th class="primer-columna">#</th>
+                      <th class="col-3">Fecha y hora</th>
+                      <th class="col-2" >Usuario</th>
+                      <th class="col-2" >Actividad</th>                     
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let auditoria of auditorias">
+                      <!-- <th scope="row" class="text-muted">{{ auditoria.contador }}</th> -->
+                      <td>
+                        <div [ngStyle]="{
+                              'background-color': getColor(auditoria.tipo_evento),
+                              'width': '15px',
+                              'height': '15px',
+                              'border-radius': '50%'
+                            }"></div>
+                      </td>
+                      <td>{{ auditoria.fecha_evento }}</td>
+                      <td>{{ auditoria.nombre_usuario }}</td>
+                      <td>{{ auditoria.tipo_evento }} {{ auditoria.tabla_afectada }}</td>
+                    </tr>
+                  </tbody>
+                  <hr>
+                </table>
+                
+                <div class="row no-show show-on-mobile">
+                  <div *ngFor="let auditoria of auditorias" class="col-sm-12">
+                      <div class="d-flex">
+                        <div class="flex-container">
+                          <div [ngStyle]="{
+                                'background-color': getColor(auditoria.tipo_evento)
+                              }" class="color-circle"></div>
+                          <div>
+                            <small>{{ auditoria.fecha_evento }} {{ auditoria.nombre_usuario }} {{ auditoria.tipo_evento }} {{ auditoria.tabla_afectada }}</small>
+                          </div>
+                        </div>
+                        
+                        <!-- <div class="ml-auto">
+                          <div ngbDropdown class="d-inline-block">
+                            <h4 id="dropdownBasic1" ngbDropdownToggle>
+                              ...
+                            </h4>
+                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+
+                            </div>
+                          </div>
+
+                        </div> -->
+                      </div>
+                      <hr>
+                  </div>
+                  
+                </div>
+                <div class="row">
+                  <div class="col-sm-2">
+                    
+                  </div>
+                
+                  <div class="col-sm-8 mt-3 d-flex justify-content-center">
+                    <ngb-pagination
+                      [collectionSize]="totalElements"
+                      [(page)]="currentPage"
+                      [pageSize]="pageSize"
+                      [maxSize]="5"
+                      [rotate]="true"
+                      (pageChange)="onPageChange($event)">
+                      <ng-template ngbPaginationFirst>Primero</ng-template>
+                      <ng-template ngbPaginationLast>Último</ng-template>
+                      <ng-template ngbPaginationPrevious>Anterior</ng-template>
+                      <ng-template ngbPaginationNext>Siguiente</ng-template>
+                      <ng-template ngbPaginationEllipsis>...</ng-template>
+                      <ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>
+                    </ngb-pagination>     
+                  </div>
+                
+                  <div class="col-sm-2">
+                    <div class="row">
+
+                      <div class="d-flex">
+                        <div class="mt-3">
+                          <span class="text-muted">Total: </span><strong class="text-muted">{{ totalElements }}</strong>
+                        </div>
+                        
+                        <div class="ml-auto">
+                          <div class="d-inline">
+                            <small class="text-muted">Mostrar:</small>
+                          </div>
+                          <div class="d-inline">
+                            <select class="form-select" [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+                              <option value="1">1</option>
+                              <option value="3">3</option>
+                              <option value="5">5</option>
+                              <option value="10">10</option>
+                              <option value="15">15</option>
+                              <option value="30">30</option>
+                              <option value="50">50</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+             
+              </div>
+              
+              <ng-template #ver_mensaje>
+            
+                <div class="container">
+                  <div class="text-center">
+                    <span>{{ mensaje }}</span>
+                  </div>
+                </div>
+            
+              </ng-template>
+  
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

@@ -1,0 +1,46 @@
+<div class="card">
+
+    <div class="card-header">
+      <span><i class="fas fa-cube"></i> Selecciona un modelo para visualizar</span>
+    </div>
+    <div class="card-body">
+  
+      <div class="container">
+        <ul class="list-inline text-center">
+            <li class="list-inline-item" (click)="loadSTLModel1()">
+                <img src="https://res.cloudinary.com/dnblt4j16/image/upload/v1724378733/dentalapp/images/dientes-superiores_drljf6.png" class="img-thumbnail size-img" alt="Image 3">
+            </li>
+            <li class="list-inline-item" (click)="loadSTLModel2()">
+                <img src="https://res.cloudinary.com/dnblt4j16/image/upload/v1724378733/dentalapp/images/dientes_lomeli.png" class="img-thumbnail size-img" alt="Image 4">
+            </li>
+            <li class="list-inline-item" (click)="loadSTLModel3()">
+                <img src="https://res.cloudinary.com/dnblt4j16/image/upload/v1724378733/dentalapp/images/dientes-inferiores_eypijt.png" class="img-thumbnail size-img" alt="Image 5">
+            </li>
+            <li class="list-inline-item" (click)="loadGLBModel1()">
+                <img src="https://res.cloudinary.com/dnblt4j16/image/upload/v1724378855/dentalapp/images/dientes_inferiores_model1_es41ll.png" class="img-thumbnail size-img" alt="Image 1">
+            </li>
+            <li class="list-inline-item" (click)="loadGLBModel2()" >
+                <img src="https://res.cloudinary.com/dnblt4j16/image/upload/v1724379230/dentalapp/images/dientes2_ovhmka.png" class="img-thumbnail size-img" alt="Image 2">
+            </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div id="modelContainer" class="mt-2" style="position: relative; width: 100%; height: 600px;">
+    <!-- Contenedor de botones de control -->
+    <div id="controlButtonsContainer" style="position: absolute; bottom: 10px; right: 10px; display: flex; gap: 10px;">
+      <button id="captureButton" class="btn btn-warning">Capturar imagen <i class="fas fa-camera-retro"></i></button>
+      <button id="zoomInButton" class="btn btn-outline-warning">Acercar <i class="fas fa-search-plus"></i></button>
+      <button id="zoomOutButton" class="btn btn-outline-warning">Alejar <i class="fas fa-search-minus"></i></button>
+      <button id="resetViewButton" (click)="resetView()" class="btn btn-warning">Resetear Vista <i class="far fa-dot-circle"></i></button>
+      <button id="fullscreenButton" class="btn btn-outline-warning">Pantalla completa <i class="fas fa-expand"></i></button>
+      <button id="exitFullscreenButton" class="btn btn-outline-warning" style="display: none;">Salir <i class="fas fa-compress"></i></button>
+      
+    </div>
+  </div>
+  
+  <div id="capturedImageContainer" style="margin-top: 20px;">
+    <img id="capturedImage" src="" style="display: none; margin-top: 20px; border-color: red;"/>
+  </div>

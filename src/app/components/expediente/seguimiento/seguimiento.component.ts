@@ -5,8 +5,9 @@ import { NgbModal, NgbModalConfig, NgbModalRef } from '@ng-bootstrap/ng-bootstra
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Seguimiento } from 'src/app/models/Seguimiento.model';
 import { SeguimientoService } from 'src/app/services/seguimientos/seguimiento.service';
-import { Mensajes } from 'src/app/shared/mensajes.config';
-import Swal from 'sweetalert2';
+import { Alerts } from 'src/app/shared/utils/alerts';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 
 @Component({
   selector: 'app-seguimiento',
@@ -16,9 +17,6 @@ import Swal from 'sweetalert2';
 export class SeguimientoComponent implements OnInit {
 
   id: string;
-  date: Date;
-  fecha_hoy:string
-  fecha_hora_actual:string;
   formularioSeguimiento:FormGroup;
   existenSeguimientos:boolean=false
   seguimiento:Seguimiento;
@@ -29,6 +27,9 @@ export class SeguimientoComponent implements OnInit {
   remainingCharacters: number = this.maxCharacters;
   nombre_usuario_creador:string
   nombre_usuario_actualizo:string
+
+  fecha_no_time:string
+  //fecha_actual:string
   fecha_creacion:string
   fecha_actualizacion:string
 
@@ -41,13 +42,11 @@ export class SeguimientoComponent implements OnInit {
     private spinner: NgxSpinnerService, 
     private modalService: NgbModal,
     config: NgbModalConfig,
-  ) { 
-    this.date = new Date();
-    const mes = this.date.getMonth() +1
-    this.fecha_hoy = this.date.getDate()+"/"+mes+"/"+this.date.getFullYear()
-
+  ) {
     config.backdrop = 'static';
 		config.keyboard = false;
+
+    this.fecha_no_time = DateUtil.getDateNoTime()
   }
 
   ngOnInit(): void {
@@ -71,13 +70,10 @@ export class SeguimientoComponent implements OnInit {
   crearSeguimiento(){
     console.log("CREAR Seguimiento")
 
+    //this.fecha_actual = DateUtil.getCurrentFormattedDate()
     var nuevoSeguimientoJson = JSON.parse(JSON.stringify(this.formularioSeguimiento.value))
     nuevoSeguimientoJson.id_paciente=this.id 
-    nuevoSeguimientoJson.id_clinica=localStorage.getItem('_cli') 
-    nuevoSeguimientoJson.id_usuario_creador=localStorage.getItem('_us') 
-    nuevoSeguimientoJson.fecha_creacion = this.obtenerFechaHoraHoy()
 
-    console.log("Seguimiento")
     console.log(nuevoSeguimientoJson)
 
     this.spinner.show();
@@ -87,32 +83,13 @@ export class SeguimientoComponent implements OnInit {
         console.log("Seguimiento creado")
         this.closeModal();
         this.ngOnInit();
-        Swal.fire({
-          position: 'top-end',
-          html:
-            `<h5>${ Mensajes.SEGUIMIENTO_REGISTRADO }</h5>`, 
-          showConfirmButton: false,
-          backdrop: false,
-          width: 400,
-          background: 'rgb(40, 167, 69, .90)',
-          color:'white',
-          timerProgressBar:true,
-          timer: 3000,
-        })
+
+        Alerts.success(Mensajes.SEGUIMIENTO_REGISTRADO, ``);
       },
       err => {
         this.spinner.hide();
         console.log("error: " + err.error.message)
-        Swal.fire({
-          icon: 'error',
-          html:
-            `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-            `<span>${ Mensajes.SEGUIMIENTO_NO_REGISTRADO }</span></br>`+
-            `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-          showConfirmButton: false,
-          timer: 3000
-        })
-        
+        Alerts.error(Mensajes.ERROR_500, Mensajes.SEGUIMIENTO_NO_REGISTRADO, Mensajes.INTENTAR_MAS_TARDE);
       }
     )
   }
@@ -133,13 +110,6 @@ export class SeguimientoComponent implements OnInit {
         console.log(err.error.message)
         console.log(err)
       });
-  }
-
-  obtenerFechaHoraHoy(){
-    this.date = new Date();
-    const mes = this.date.getMonth() +1
-    this.fecha_hora_actual = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
-    return this.fecha_hora_actual
   }
 
   openModalNuevo(content: TemplateRef<any>) {
@@ -199,44 +169,20 @@ export class SeguimientoComponent implements OnInit {
   actualizarSeguimiento(){
     console.log("Actualizar Seguimiento:")
     console.log(this.formularioSeguimiento)
-
-    var seguimientoJson = JSON.parse(JSON.stringify(this.formularioSeguimiento.value))
-    seguimientoJson.id_usuario_actualizo=localStorage.getItem('_us') 
-    seguimientoJson.fecha_actualizacion = this.obtenerFechaHoraHoy()
     
     this.spinner.show();
-    this.seguimientoService.updateSeguimiento(this.seguimiento.id, seguimientoJson).subscribe(res => {
+    this.seguimientoService.updateSeguimiento(this.seguimiento.id, this.formularioSeguimiento.value).subscribe(res => {
+        this.spinner.hide();
         console.log("Seguimiento actualizado: "+res);
         this.closeModal();
         this.ngOnInit()
-        this.spinner.hide();
-        Swal.fire({
-          position: 'top-end',
-          html:
-            `<h5>${ Mensajes.SEGUIMIENTO_ACTUALIZADO }</h5>`, 
-            
-          showConfirmButton: false,
-          backdrop: false, 
-          width: 400,
-          background: 'rgb(40, 167, 69, .90)',
-          color:'white',
-          timerProgressBar:true,
-          timer: 3000,
-        })
-
+        
+        Alerts.success(Mensajes.SEGUIMIENTO_ACTUALIZADO, ``);
       },
         err => {
           this.spinner.hide();
           console.log("error: " + err)
-          Swal.fire({
-            icon: 'error',
-            html:
-              `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-              `<span>${ Mensajes.SEGUIMIENTO_NO_ACTUALIZADO }</span></br>`+
-              `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-            showConfirmButton: false,
-            timer: 3000
-          })
+          Alerts.error(Mensajes.ERROR_500, Mensajes.SEGUIMIENTO_NO_ACTUALIZADO, Mensajes.INTENTAR_MAS_TARDE);
         }
       );
 
@@ -244,54 +190,25 @@ export class SeguimientoComponent implements OnInit {
   }
 
   deleteSeguimiento() {
-    Swal.fire({
-      html:
-        `<h5>${ Mensajes.SEGUIMIENTO_ELIMINAR_QUESTION }</h5> <br/> `,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#dc3545',
-      cancelButtonColor: '#aeaeae',
-      confirmButtonText: 'Si, eliminar',
-      cancelButtonText: 'No, cancelar'
-    }).then((result) => {
+    Alerts.confirmDelete(Mensajes.SEGUIMIENTO_ELIMINAR_QUESTION, ``).then((result) => {
       if (result.value) {
+        // Confirm
         this.spinner.show();
         this.seguimientoService.deleteSeguimiento(this.seguimiento.id).subscribe(res => {
           this.spinner.hide();
           console.log("Seguimiento eliminado:" + JSON.stringify(res))
 
-          Swal.fire({
-            position: 'top-end',
-            html:
-              `<h5>${ Mensajes.SEGUIMIENTO_ELIMINADO }</h5>`,
-            showConfirmButton: false,
-            backdrop: false, 
-            width: 400,
-            background: 'rgb(40, 167, 69, .90)',
-            color:'white',
-            timerProgressBar:true,
-            timer: 3000,
-          })
-
+          Alerts.success(Mensajes.SEGUIMIENTO_ELIMINADO, ``);
           this.closeModal();
           this.ngOnInit()
         },
-        err => { 
-            this.spinner.hide();
-            console.log("error: " + err)
-            Swal.fire({
-              icon: 'error',
-              html:
-                `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-                `<span>${ Mensajes.SEGUIMIENTO_NO_ELIMINADO}</span></br>`+
-                `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-              showConfirmButton: false,
-              timer: 3000
-            }) 
-        })
-    
+          err => { 
+            console.log("error: " + err);
+            Alerts.error(Mensajes.ERROR_500, Mensajes.SEGUIMIENTO_NO_ELIMINADO, Mensajes.INTENTAR_MAS_TARDE);
+          }
+        );
       }
-    })
+    });
   }
 
 }

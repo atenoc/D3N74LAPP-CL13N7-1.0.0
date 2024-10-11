@@ -95,11 +95,9 @@ export class UsuariosListComponent implements OnInit {
 
   getUsuariosPaginados() {
     console.log("Users by Sop")
-    this.usuarioService
-      .getUsuariosByUsuarioPaginados$(localStorage.getItem('_us'), this.currentPage, this.pageSize, this.orderBy, this.way)
-      .subscribe((res) => {
-        this.usuarios = res.data
-        this.totalElements = res.pagination.totalElements
+    this.usuarioService.getUsuarioSop$().subscribe((res) => {
+        this.usuarios = res
+        //this.totalElements = res.pagination.totalElements
         console.log(res)
         
         if(this.usuarios.length <= 0){

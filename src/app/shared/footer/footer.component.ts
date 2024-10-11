@@ -1,6 +1,7 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from 'src/app/services/auth.service';
+import { ValidateInfo } from '../utils/validateInfo';
 
 @Component({
   selector: 'app-footer',
@@ -13,7 +14,6 @@ export class FooterComponent implements OnInit {
   rolUsuario:string
   mostrarClinicas:boolean=false;
   mostrarUsuarios:boolean=false;
-
   isDarkMode = false;
 
   date: Date;
@@ -28,9 +28,11 @@ export class FooterComponent implements OnInit {
     console.log("FOOTER")
     this.date = new Date();
     this.numberAnio = this.date.getFullYear()
-    //console.log("Año fotter: "+this.date.getFullYear())
+
+    const valudateUser = ValidateInfo.getUserInfo()
+
     if(localStorage.getItem('_us') && localStorage.getItem('_em')){
-      this.authService.validarUsuarioActivo$(localStorage.getItem('_us'), localStorage.getItem('_em'), localStorage.getItem('_cli')).subscribe(
+      this.authService.validarUsuarioActivo$(valudateUser).subscribe(
         res => {
           this.usuario = res;
           this.rolUsuario=this.usuario.rol

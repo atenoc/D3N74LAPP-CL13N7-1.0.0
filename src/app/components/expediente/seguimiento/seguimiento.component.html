@@ -23,26 +23,25 @@
 
         <div class="card-body">
             <div>
-                <strong><i class="fas fa-comment-medical"></i> Próxima cita</strong>
+                <strong><i class="far fa-calendar-alt"></i> Fecha Próxima cita aaaa/mm/dd</strong>
                 <p>{{ seguimiento.proxima_cita }}</p>
             </div>
     
             <div class="mt-2">
-                <strong><i class="fas fa-sticky-note"></i> Notas de seguimiento</strong>
+                <strong><i class="fas fa-pencil-alt"></i> Notas de seguimiento</strong>
                 <p>{{ seguimiento.notas_seguimiento }}</p>
             </div>
             
           <hr>
-          <div class="card-header p-0 border-bottom-0">
-            <small class="text-muted">Creado por: {{ seguimiento.nombre_usuario_creador }} el {{ seguimiento.fecha_creacion }}</small>
-            
-            <div class="card-tools" style="margin-top: 10px !important;">
-              <button class="btn btn-outline-primary btn-sm" (click)="getSeguimientoEditar(seguimiento.id); openModalEdit(contentEdit)"> 
-                <i class="nav-icon fas fa-edit"></i> Editar
-              </button>
+          <div class="d-flex">
+            <div *ngIf="seguimiento.fecha_actualizacion">
+                <small class="text-muted">Actualizado el {{ seguimiento.fecha_actualizacion }}</small>
             </div>
-            <br>
-            <small *ngIf="seguimiento.fecha_actualizacion" class="text-muted">Última actualización: {{ seguimiento.fecha_actualizacion }}</small> 
+            <div class="ml-auto">
+                <button class="btn btn-outline-primary" (click)="getSeguimientoEditar(seguimiento.id); openModalEdit(contentEdit)" style="margin-top: -15px;"> 
+                    <i class="nav-icon fas fa-edit"></i> Ver detalle
+                </button>
+            </div>
           </div>
         </div>
 
@@ -72,17 +71,17 @@
         <form [formGroup]="formularioSeguimiento">
             <div class="row mb-3">
                 <div class="col-6">
-                    <span><i class="fas fa-dollar-sign"></i> Próxima cita</span>
+                    <span><i class="far fa-calendar-alt"></i> Fecha Próxima cita aaaa/mm/dd</span>
                     <input formControlName="proxima_cita" type="text" class="form-control">
                 </div>
                 <div class="col-6">
                   <span>Fecha</span> <br>
-                  <span>{{ fecha_hoy }}</span>
+                  <span>{{ fecha_no_time }}</span>
                 </div>
             </div>
 
             <div class="mb-3">
-                <span><i class="fas fa-comment-medical"></i> Notas de seguimiento</span>
+                <span><i class="fas fa-pencil-alt"></i> Notas de seguimiento</span>
                 <textarea formControlName="notas_seguimiento" class="form-control" rows="3" 
                   (input)="updateCharacterCount($event)" [attr.maxlength]="maxCharacters"></textarea>
                   <div class="d-flex">
@@ -125,18 +124,18 @@
 
             <div class="row mb-3">
                 <div class="col-6">
-                    <span><i class="fas fa-dollar-sign"></i> proxima_cita</span>
+                    <span><i class="far fa-calendar-alt"></i> Fecha Próxima cita aaaa/mm/dd</span>
                     <input formControlName="proxima_cita" type="text" class="form-control">
                 </div>
                 <div class="col-6">
                   <span>Fecha para actualización</span> 
                   <br>
-                  <span>{{ fecha_hoy }}</span>
+                  <span>{{ fecha_no_time }}</span>
                 </div>
             </div>
 
             <div class="mb-3">
-                <span><i class="fas fa-comment-medical"></i> notas_seguimiento</span>
+                <span><i class="fas fa-pencil-alt"></i> notas_seguimiento</span>
                 <textarea formControlName="notas_seguimiento" class="form-control" rows="3" 
                   (input)="updateCharacterCount($event)" [attr.maxlength]="maxCharacters"></textarea>
                   <div class="d-flex">

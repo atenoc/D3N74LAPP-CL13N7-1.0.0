@@ -2,14 +2,16 @@ import { Component, ElementRef, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
-import Swal from 'sweetalert2';
-import { Mensajes } from 'src/app/shared/mensajes.config';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 import { CatalogoEspecialidad, CatalogoRol, CatalogoTitulo } from 'src/app/models/Catalogo.model';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CatalogoService } from 'src/app/services/catalogos/catalogo.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { Alerts } from 'src/app/shared/utils/alerts';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
+import { textValidator, emailValidator } from '../../../shared/utils/validador';
 
 @Component({
   selector: 'app-usuario-form',
@@ -20,8 +22,6 @@ export class UsuarioFormComponent implements OnInit {
 
   usuario:Usuario
   formularioUsuario:FormGroup
-  //idCentroUsuarioActivo:string
-
   catRoles:CatalogoRol[] = [];
   catTitulos:CatalogoTitulo[] = [];
   catEspecialidades:CatalogoEspecialidad[] = [];
@@ -33,12 +33,11 @@ export class UsuarioFormComponent implements OnInit {
   telefonoLongitud: string;
   soloNumeros: string;
   soloLetras: string;
+  longitudMinima: string
+  caracteresNoPermitidos: string
 
   rol:string
-
-  date: Date;
-  fecha_creacion:string
-
+  //fecha_actual:string
   isDisabled:boolean = false
 
   constructor(
@@ -57,6 +56,8 @@ export class UsuarioFormComponent implements OnInit {
       this.telefonoLongitud = Mensajes.TELEFONO_LONGITUD;
       this.soloNumeros = Mensajes.SOLO_NUMEROS;
       this.soloLetras = Mensajes.SOLO_LETRAS;
+      this.longitudMinima = Mensajes.LONGITUD_MINIMA;
+      this.caracteresNoPermitidos = Mensajes.CARACTERES_NO_PERMITIDOS;
     }
 
   ngOnInit() {
@@ -75,15 +76,19 @@ export class UsuarioFormComponent implements OnInit {
         this.el.nativeElement.querySelector('input').focus();
         this.formularioUsuario = this.formBuilder.group({
           correo: ['', Validators.compose([
-            Validators.required, this.emailValidator
+            Validators.required, (control: AbstractControl) => { // Validación condicional del correo electrónico
+              if (control.value && control.value.trim() !== '') {
+                return emailValidator(control);
+              }
+            }
           ])],
           llave: ['', [Validators.required, Validators.minLength(6)]],
-          rol: ['', Validators.required],
-          titulo: [''],
-          nombre: ['', [Validators.required, Validators.minLength(3), this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/) ]],
-          apellidop: ['', [Validators.required, Validators.minLength(3), this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
-          apellidom: ['', [this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
-          especialidad: [''],
+          rol: ['null', Validators.required],
+          titulo: ['null'],
+          nombre: ['', [Validators.required, Validators.minLength(3), textValidator()]],
+          apellidop: ['', [Validators.required, Validators.minLength(3), textValidator()]],
+          apellidom: ['', [Validators.minLength(3), textValidator()]],
+          especialidad: ['null'],
           telefono: ['', [Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
         })
 
@@ -106,6 +111,8 @@ export class UsuarioFormComponent implements OnInit {
           },
           err => console.log("error: " + err)
         )
+        
+        this.spinner.hide();
       }else{
         this.router.navigate(['/pagina/404/no-encontrada'])
       }
@@ -113,23 +120,6 @@ export class UsuarioFormComponent implements OnInit {
     }else{
       this.router.navigate(['/pagina/404/no-encontrada'])
     }
-  }
-
-  validarTexto(regex: RegExp) {
-    return (control: AbstractControl) => {
-      const value = control.value;
-  
-      if (value && !regex.test(value)) {
-        return { 'invalidRegex': true };
-      }
-  
-      return null;
-    };
-  }
-
-  emailValidator(control) {
-    const emailRegexp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return emailRegexp.test(control.value) ? null : { emailInvalido: true };
   }
 
   getInputClass(controlName: string) {
@@ -143,13 +133,9 @@ export class UsuarioFormComponent implements OnInit {
     console.log("CREAR USUARIO")
 
     var nuevoUsuarioJson = JSON.parse(JSON.stringify(this.formularioUsuario.value))
-    nuevoUsuarioJson.id_usuario=localStorage.getItem('_us') 
-
-    this.date = new Date();
-    const mes = this.date.getMonth()+1;
-    this.fecha_creacion = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
-
-    nuevoUsuarioJson.fecha_creacion = this.fecha_creacion
+    nuevoUsuarioJson.id_usuario_creador=localStorage.getItem('_us')
+    nuevoUsuarioJson.id_clinica=localStorage.getItem("_cli"), 
+    nuevoUsuarioJson.fecha_creacion = DateUtil.getCurrentFormattedDate()
     
     if(this.rol == "suadmin" || this.rol == "adminn1"){
       nuevoUsuarioJson.id_clinica=localStorage.getItem('_cli') 
@@ -157,54 +143,27 @@ export class UsuarioFormComponent implements OnInit {
 
     console.log("Usuario a registrar: "+ nuevoUsuarioJson)
     console.log(nuevoUsuarioJson)
+    
     this.spinner.show();
     this.usuarioService.createUsuario(nuevoUsuarioJson).subscribe(
       res => {
+        this.spinner.hide();
         this.usuario = res;
         console.log("Usuario creado")
         //this.modalService.dismissAll()
-      
-        this.spinner.hide();
+
         this.router.navigate(['/usuarios'])
-        Swal.fire({
-          position: 'top-end',
-          html:
-            `<h5>${ Mensajes.USUARIO_REGISTRADO }</h5>`+
-            `<span>Usuario: ${ this.usuario.correo }</span>`, 
-          showConfirmButton: false,
-          backdrop: false,
-          width: 400,
-          background: 'rgb(40, 167, 69, .90)',
-          color:'white',
-          timerProgressBar:true,
-          timer: 3000,
-        })
+        Alerts.success(Mensajes.USUARIO_REGISTRADO, `${this.usuario.correo}`);
       },
       err => {
         this.spinner.hide();
         console.log("error: " + err.error.message)
         if(err.error.message=="400"){
           this.el.nativeElement.querySelector('input').focus();
-          Swal.fire({
-            icon: 'warning',
-            html:
-              `<strong> ${ Mensajes.WARNING } </strong><br/>` +
-              `<span>${ Mensajes.CORREO_EXISTENTE }</span>`,
-            showConfirmButton: false,
-            timer: 2000
-          })
+          Alerts.warning(Mensajes.WARNING, Mensajes.CORREO_EXISTENTE);
         }else{
-          Swal.fire({
-            icon: 'error',
-            html:
-              `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-              `<span>${ Mensajes.USUARIO_NO_REGISTRADO }</span></br>`+
-              `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-            showConfirmButton: false,
-            timer: 3000
-          })
+          Alerts.error(Mensajes.ERROR_500, Mensajes.USUARIO_NO_REGISTRADO, Mensajes.INTENTAR_MAS_TARDE);
         }
-        
       }
     )
   }// end method

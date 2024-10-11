@@ -22,7 +22,7 @@
           <li>
             <div class="link"><i class="fas fa-user colorIconUser"></i><span class="noneBlock">{{ nombreUsuario }}</span><i class="fa fa-chevron-down"></i></div>
             <ul class="submenu">
-              <li (click)="irAPerfil()" class="cursor-pointer"><a><i class="fas fa-user-circle"></i><span class="noneBlock">Mi perfil</span></a></li>
+              <li (click)="irAPerfil()" class="cursor-pointer"><a><i class="fas fa-user-circle"></i><span class="noneBlock">Mi cuenta</span></a></li>
               <li (click)="salir()" class="cursor-pointer"><a><i class="fas fa-sign-out-alt colorIconLogout"></i><span class="noneBlock">Salir</span></a></li>
             </ul>
           </li>
@@ -78,6 +78,13 @@
                   <ul class="submenu">
                     <li><a routerLink="/pacientes"><i class="fas fa-list-ol"></i><span class="noneBlock">Ver pacientes</span></a></li>
                     <li><a routerLink="/paciente-form"><i class="fas fa-user-plus nav-icon"></i> <span class="noneBlock">Agregar Paciente</span></a></li>
+                  </ul>
+                </li>
+
+                <li>
+                  <div class="link"><i class="fas fa-users"></i> <span class="noneBlock"> Bitacora </span> <i class="fas fa-book"></i></div>
+                  <ul class="submenu">
+                    <li><a routerLink="/bitacora"><i class="fas fa-list-ol"></i><span class="noneBlock">Actividades</span></a></li>
                   </ul>
                 </li>
     

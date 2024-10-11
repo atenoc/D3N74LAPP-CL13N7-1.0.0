@@ -3,16 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment.prod';
 import Swal from 'sweetalert2';
-//import { SharedService } from './shared.service';
 import { Usuario } from '../models/Usuario.model';
-//import { Subject, catchError, throwError } from 'rxjs';
+import { Auth } from '../models/Auth.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
-  //private usuario$: Subject<Usuario>;
 
   //URI = 'http://localhost:4000/api/seguridad';
   URI = environment.urlApiSeguridad
@@ -20,13 +17,12 @@ export class AuthService {
   constructor(
     private http: HttpClient, 
     private router:Router, 
-    //private sharedService:SharedService
     ) {
   }
 
   login(user){
     console.log("usuario enviado: "+ user)
-    return this.http.post<any>(this.URI + '/login', user)
+    return this.http.post<Auth>(this.URI + '/login', user)
   }
 
   estaLogueado(){
@@ -74,28 +70,31 @@ export class AuthService {
         //this.sharedService.cambiarMensaje("refresh_navigate")
         //this.sharedService.notifyApp.emit();
         //
-        window.location.reload();
-        console.log("reload")
+        setTimeout(() => {
+          window.location.reload();
+          console.log("reload")
+        }, 2000);
 
         Swal.fire({
           icon: 'info',
           html:
-            `<strong> ¡Hasta pronto! </strong><br/>`,
+            `<strong> ¡ Hasta pronto :) ! </strong><br/>`,
           showConfirmButton: false,
-          timer: 1500
+          timer: 2000
         }) 
       }
     })
   }
 
   // getUserByCorreo - After Login 2
-  getUsuarioByCorreo$(correo: string) {
-    return this.http.get<Usuario>(`${this.URI}/usuario/correo/${correo}`)
+  getUsuarioByCorreo$(correo: any) {
+    console.log("Correo Login: "+correo)
+    return this.http.post<Usuario>(`${this.URI}/usuario/correo`,correo)
   }
 
   // verificar usuario activo - After Login 3 - Sidebar/Header/Footer
-  validarUsuarioActivo$(id: string, correo: string, id_clinica) {
-    return this.http.get<Usuario>(`${this.URI}/verificar/usuario/${id}/correo/${correo}/clinica/${id_clinica}`)
+  validarUsuarioActivo$(user:any) {
+    return this.http.post<Usuario>(`${this.URI}/valida/usuario/activo`,user)
   }
 
   
@@ -107,6 +106,13 @@ export class AuthService {
   updateUsuarioLlave(id: string, llave: string){
     return this.http.patch<Usuario>(`${this.URI}/password/usuario/${id}`, { llave });
   }
+
+  generarSecreto(id: string){
+    return this.http.put<any>(`${this.URI}/genera-secreto/usuario/${id}`,{});
+  }
+
+  sendCodigoVerificacion(correo: string, codigoIngresado:string){
+    return this.http.post<Auth>(`${this.URI}/validar-secreto`,{ correo, codigoIngresado });
+  }
   
 }
-

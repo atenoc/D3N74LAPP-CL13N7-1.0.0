@@ -5,8 +5,10 @@ import { CentroService } from 'src/app/services/clinicas/centro.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
 import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
-import { Mensajes } from 'src/app/shared/mensajes.config';
-import Swal from 'sweetalert2';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
+import { Alerts } from 'src/app/shared/utils/alerts';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
 declare var require: any;
 
 @Component({
@@ -23,13 +25,12 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
   direccionClinica:string
 
   formularioCentro:FormGroup
-
-  date: Date;
-  fecha_creacion:string
+  //fecha_actual:string
 
   constructor(
     private centroService:CentroService, 
     private router:Router,
+    private spinner: NgxSpinnerService,
     private usuarioService:UsuarioService,
     private sharedService:SharedService,
     private cifradoService: CifradoService,
@@ -40,7 +41,7 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
     this.noBack()
     require('../../../../assets/js/custom-wizard.js');
 
-    this.centroService.getCentroByIdUser$(localStorage.getItem('_us')).subscribe(
+    this.centroService.getCentroByIdUserSuAdmin(localStorage.getItem('_us')).subscribe(
       res => {
         console.log("Si existe Centro")
         this.router.navigate(['/calendario'])
@@ -63,28 +64,18 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
   validarInfo(){
     console.log("Validando info")
 
-    this.date = new Date();
-    const mes = this.date.getMonth()+1;
-    this.fecha_creacion = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()+" "+this.date.getHours()+":"+this.date.getMinutes()+":00"
-
     if(this.nombre ==="" || this.apellido ==="" || this.nombreClinica ==="" || this.telefono.length !=10 || this.direccionClinica ===""){
-      Swal.fire({
-        icon: 'warning',
-        html:
-          `<strong> ${ Mensajes.WARNING } </strong><br/>` +
-          `<span>${ Mensajes.REGISTRO_VALIDACION }</span>`,
-        showConfirmButton: false,
-        timer: 2000
-      })
+      Alerts.warning(Mensajes.WARNING, Mensajes.REGISTRO_VALIDACION);
+
       return
     }
 
     const centroJson = {
-      id_usuario: localStorage.getItem('_us'),
+      id_usuario_creador: localStorage.getItem('_us'),
       nombre: this.nombreClinica,
       telefono: this.telefono,
       direccion: this.direccionClinica,
-      fecha_creacion: this.fecha_creacion,
+      fecha_creacion: DateUtil.getCurrentFormattedDate(),
       id_plan: '0401PF30'
     };
 
@@ -100,6 +91,7 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
     console.log("Usuario a actualizar ")
     //console.log(usuarioJson)
 
+    this.spinner.show();
     this.centroService.createCentro(centroJson).subscribe(
       res =>{
         console.log("Clínica registrada correctamente, id:: "+res.id)
@@ -107,45 +99,36 @@ export class ConfigPerfilUsuarioComponent implements OnInit {
         localStorage.setItem('_cli', res.id)
         this.cifradoService.setEncryptedIdPlan(res.id_plan)
 
-        this.usuarioService.updateUsuarioRegister(localStorage.getItem('_us'), this.nombre, this.apellido, res.id, this.fecha_creacion).subscribe(
+        this.spinner.show();
+        this.usuarioService.updateUsuarioRegister(localStorage.getItem('_us'), this.nombre, this.apellido, res.id).subscribe(
           res=>{
-
-            this.router.navigate(['/perfil'])
-            Swal.fire({
-              title: `${ Mensajes.SUCCESS }`,
-              icon: 'success',
-              html:
-                `<strong>${ Mensajes.REGISTRO_EXITOSO }</strong></br>`,
-              showConfirmButton: true,
-              confirmButtonColor: '#28a745',
-              timer: 4000
-            })
+            this.spinner.hide();
+            const id = localStorage.getItem('_us');
+            this.router.navigate(['/perfil/', id]);
+  
             console.log("Usuario actualizado")
             this.sharedService.setNombreUsuario(this.nombre +" "+this.apellido)
             this.sharedService.setNombreClinica(this.nombreClinica);
             this.sharedService.setMensajeVigenciaPlanGratuito("Prueba gratis por 30 días");
             this.sharedService.setDiasRestantesPlanGratuito('30');
             localStorage.setItem('dias_restantes_p_g', '30')
+
+            Alerts.successCenter(Mensajes.SUCCESS, `${Mensajes.REGISTRO_EXITOSO}`);
           },
           err =>{
+            this.spinner.hide();
             console.log("Error al actualizar el usuario")
             console.log(err)
+            Alerts.error(Mensajes.ERROR_500, Mensajes.REGISTRO_ERROR, Mensajes.INTENTAR_MAS_TARDE);
           }
         )
   
       },
       err =>{
-        Swal.fire({
-          icon: 'error',
-          html:
-            `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-            `<span>${ Mensajes.REGISTRO_ERROR }</span></br>`+
-            `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-          showConfirmButton: false,
-          timer: 3000
-        }) 
+        this.spinner.hide();
         console.log("Ocurrió un error al registrar la clínica")
         console.log(err)
+        Alerts.error(Mensajes.ERROR_500, Mensajes.REGISTRO_ERROR, Mensajes.INTENTAR_MAS_TARDE);
       }
     )
   }

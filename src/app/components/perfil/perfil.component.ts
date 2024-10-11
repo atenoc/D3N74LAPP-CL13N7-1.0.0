@@ -8,8 +8,13 @@ import { AuthService } from 'src/app/services/auth.service';
 import { CentroService } from 'src/app/services/clinicas/centro.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
 import { UsuarioService } from 'src/app/services/usuarios/usuario.service';
-import { Mensajes } from 'src/app/shared/mensajes.config';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 import Swal from 'sweetalert2';
+import { Alerts } from 'src/app/shared/utils/alerts';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
+import { AuditoriaService } from 'src/app/services/auditoria/auditoria.service';
+import { Acceso } from 'src/app/models/Acceso.model';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-perfil',
@@ -20,9 +25,28 @@ export class PerfilComponent implements OnInit {
 
   usuario: Usuario = {} as Usuario;
   centro: Centro = {} as Centro;
+  auditoria: Acceso = {} as Acceso;
 
   rol:string
   mostrarOpciones:boolean=false
+  accesoAnterior:string;
+  existeAccesoAnterior:boolean = false
+  nombreCompletoUsuario:string;
+
+  nombre_usuario_creador:string
+  fecha_creacion:string;
+  nombre_usuario_actualizo:string
+  fecha_actualizacion:string
+  mostrar_actualizacion:boolean=false
+
+  QR2FA:string
+  existe2fa:boolean=false
+
+  title = 'app';
+  elementType = 'url';
+  value = 'Techiediaries';
+
+  qrCodeUrl: string | null = null;
 
   constructor(
     private spinner: NgxSpinnerService, 
@@ -31,6 +55,8 @@ export class PerfilComponent implements OnInit {
     private centroService:CentroService, 
     private router:Router,
     private cifradoService: CifradoService,
+    private auditoriaService:AuditoriaService,
+    private sharedService:SharedService, 
     config: NgbModalConfig) {
       config.backdrop = 'static';
 		  config.keyboard = false;
@@ -45,12 +71,14 @@ export class PerfilComponent implements OnInit {
         this.mostrarOpciones= true
       }
 
-      // Consulta de Usuario por Correo
+      // Consulta de Usuario
       this.usuarioService.getUsuario$(localStorage.getItem('_us')).subscribe(
         res => {
           this.usuario = res;
           console.log(this.usuario )
+          this.nombreCompletoUsuario = this.usuario.nombre +' '+this.usuario.apellidop+' '+this.usuario.apellidom
           // Consulta Centro del usuario
+          this.cargaAccesoAnterior()
           this.cargarClinicaAsociada()
         },
         err => console.log("error: " + err)
@@ -58,12 +86,37 @@ export class PerfilComponent implements OnInit {
 
     }
 
+    this.sharedService.getNombreCompletoUsuario().subscribe(datoRecibido => {
+      this.nombreCompletoUsuario = datoRecibido;
+    });
+
+  }
+
+  cargaAccesoAnterior(){
+    console.log("Cargando acceso...")
+    this.auditoriaService.getAccesoByIdUsuario(localStorage.getItem('_us')).subscribe(
+      res => {
+        this.auditoria = res;
+        console.log(this.auditoria )
+        this.accesoAnterior=this.auditoria.fecha_evento
+        this.existeAccesoAnterior = this.accesoAnterior ? true : false
+      },
+      err => console.log("error: " + err)
+    )
   }
 
   cargarClinicaAsociada(){
     this.centroService.getCentro$(localStorage.getItem('_cli')).subscribe(
       res => {
         this.centro = res;
+
+        this.nombre_usuario_creador = this.centro.nombre_usuario_creador
+        this.fecha_creacion=this.centro.fecha_creacion
+        this.nombre_usuario_actualizo = this.centro.nombre_usuario_actualizo
+        this.fecha_actualizacion = this.centro.fecha_actualizacion
+        console.log("nombre_usuario_actualizo: "+this.nombre_usuario_actualizo)
+        this.mostrar_actualizacion = this.nombre_usuario_actualizo !=null ? true : false
+        console.log("mostrar_actualizacion :: "+this.mostrar_actualizacion )
       },
       err => {
         console.log("error: " + err)
@@ -102,19 +155,21 @@ export class PerfilComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         // Confirm
+
+        const deleteClinicaJson = {
+          id_usuario_elimino:localStorage.getItem("_us"),
+          id_clinica:localStorage.getItem("_cli"),
+          fecha_eliminacion:DateUtil.getCurrentFormattedDate()
+        }
+
         this.spinner.show();
         setTimeout(() => {
-          this.centroService.deleteCentro(id).subscribe(res => {
+          this.centroService.deleteCentro(id, deleteClinicaJson).subscribe(res => {
             this.spinner.hide();
             console.log("Centro eliminado:" + res)
             
-            Swal.fire({
-              icon: 'success',
-              showConfirmButton: false,
-              html:
-                  `<strong>Tu cuenta ha sido eliminada</strong>`,
-              timer: 2000
-            })
+            Alerts.success(Mensajes.CUENTA_ELIMINADA, Mensajes.CLINICA_ELIMINADA);
+
             setTimeout(() => {
               console.log("Cuenta eliminada")
               localStorage.removeItem('_enc_t')
@@ -130,15 +185,7 @@ export class PerfilComponent implements OnInit {
             err => { 
               this.spinner.hide();
               console.log("error: " + err)
-              Swal.fire({
-                icon: 'error',
-                html:
-                  `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-                  `<span>${ Mensajes.CLINICA_NO_ELIMINADA }</span></br>`+
-                  `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-                showConfirmButton: false,
-                timer: 3000
-              }) 
+              Alerts.error(Mensajes.ERROR_500, Mensajes.CLINICA_NO_ELIMINADA, Mensajes.INTENTAR_MAS_TARDE);
             }
           )
           
@@ -147,6 +194,22 @@ export class PerfilComponent implements OnInit {
       }
     })
  
+  }
+
+  activar2FA(){
+    console.log("Activar 2FA")
+
+    this.authService.generarSecreto(localStorage.getItem('_us')).subscribe(
+      res => {
+        console.log("Secreto generado")
+        console.log(res)
+        this.existe2fa = true
+        this.qrCodeUrl = res.qr; // Asigna la URL del QR
+      },
+      err => {
+        console.log("error: " + err)
+      }
+    )
   }
 
 }

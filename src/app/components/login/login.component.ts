@@ -1,15 +1,19 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, QueryList, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/Usuario.model';
 import { AuthService } from '../../services/auth.service'
-import Swal from 'sweetalert2';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Mensajes } from 'src/app/shared/mensajes.config';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
 import { CifradoService } from 'src/app/services/cifrado.service';
 import { CentroService } from 'src/app/services/clinicas/centro.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { PlanesService } from 'src/app/services/planes/planes.service';
+import { Alerts } from 'src/app/shared/utils/alerts';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
+import { Centro } from 'src/app/models/Centro.model';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Auth } from 'src/app/models/Auth.model';
 
 @Component({
   selector: 'app-login',
@@ -19,8 +23,16 @@ import { PlanesService } from 'src/app/services/planes/planes.service';
 export class LoginComponent implements OnInit {
 
   correoUsuario: string
-  usuario: Usuario
+  id_usuario:string
   formularioLogin:FormGroup
+  auth:Auth
+  usuario: Usuario
+  rol:string
+  centro: Centro
+  
+  //2FA
+  mostrarCodigoError:boolean = false
+  mensajeCodigo:string
 
   //mensajes
   campoRequerido: string;
@@ -29,8 +41,9 @@ export class LoginComponent implements OnInit {
   mostrarError: Boolean
   mensajeDetalleError: String
 
-  date: Date;
-  fecha_hoy:string
+  @ViewChild('content') content: TemplateRef<any>;
+  digits: number[] = new Array(6); // Por ejemplo, para un código de 4 dígitos
+  existe2FASecret:boolean=false
 
   constructor(
     private sharedService:SharedService, 
@@ -41,7 +54,8 @@ export class LoginComponent implements OnInit {
     private spinner: NgxSpinnerService, 
     private el: ElementRef,
     private cifradoService: CifradoService,
-    private planService: PlanesService
+    private planService: PlanesService,
+    private modalService: NgbModal,
     ) {
       this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
       this.correoValido = Mensajes.CORREO_VALIDO;
@@ -63,90 +77,41 @@ export class LoginComponent implements OnInit {
   }
 
   login(){
-    this.spinner.show();
+    this.correoUsuario = this.formularioLogin.value.correo
+    const llaveEncripted = this.cifradoService.setEncryptedPassword(this.formularioLogin.value.llave); 
+    console.log("pass:: "+llaveEncripted)
 
-    var userObject = JSON.parse(JSON.stringify(this.formularioLogin.value))
-    this.correoUsuario = userObject.correo
-    const llaveEncripted = this.cifradoService.getEncryptedPassword(userObject.llave); 
-
-    const newUserJson = {
-      correo: userObject.correo,
-      llave: llaveEncripted
+    const userJson = {
+      correo: this.correoUsuario,
+      llave: llaveEncripted,
+      fecha: DateUtil.getCurrentFormattedDate()
     };
 
-    this.authService.login(newUserJson).subscribe(
+    this.spinner.show();
+    this.authService.login(userJson).subscribe(
       res => {
-        //Obtenemos el token de la sesion
-        this.cifradoService.setEncryptedToken(res.token)
-
-        //Almacenamos el correo 
         localStorage.setItem('_em', this.correoUsuario)
+        console.log("PRIMER LOGIN: ")
+        console.log(res)
+        this.auth=res
+        this.existe2FASecret=this.auth.secreto ? true:false
+        this.id_usuario=this.auth.id_usuario
 
-        /* Obtener usuario por Correo */
-        this.authService.getUsuarioByCorreo$(this.correoUsuario).subscribe(
-          res => {
-
-            this.sharedService.setNombreUsuario(res.nombre +" "+res.apellidop)
-    
-            console.log("Cli:: "+JSON.stringify(res.id_clinica))
-            localStorage.setItem('_cli', res.id_clinica)
-
-            console.log("Rol:: "+res.rol)
-            localStorage.setItem('_us', res.id)
-            this.cifradoService.setEncryptedRol(res.rol)
-
-            console.log("id Plan a localstorage 2: " +res.id_plan)
-            this.cifradoService.setEncryptedIdPlan(res.id_plan)
-            console.log("id_plan: " +this.cifradoService.getDecryptedIdPlan())
-
-            if(res.rol =="suadmin" || res.rol =="sop"){
-
-              this.centroService.getCentroByIdUser$(res.id).subscribe(
-                res => {
-                  
-                  this.sharedService.setNombreClinica(res.nombre);
-                  console.log("Si existe Centro")
-                  this.validarPlanGratuito()
-                  this.router.navigate(['/calendario'])
-                },
-                err => {
-                  console.log("No existe Centro")
-                  console.log(err)
-                  this.router.navigate(['/configuracion/perfil/usuario'])
-                }
-              )
-            }else{
-              this.centroService.getCentro$(res.id_clinica).subscribe(
-                res => {
-                  
-                  this.sharedService.setNombreClinica(res.nombre);
-                  //this.validarPlanGratuito()
-                  console.log("Si pertenece a un centro")
-                  this.router.navigate(['/calendario'])
-                },
-                err => {
-                  console.log("No pertenece a ningún centro")
-                  console.log(err)
-                  this.router.navigate(['/login'])
-                }
-              )
-            }
-
-            this.sharedService.notifyApp.emit();
-
-          },
-          err => {
-            console.log(err.error.message)
-            console.log(err)
-          }
-        )
+        if(this.auth.secreto){
+          // validar 2FA
+          console.log("Validar 2FA")
+          this.openModal2FA(this.content)
+        }else{
+          // Token
+          console.log("Token")
+          this.cifradoService.setEncryptedToken(this.auth.token)
+          this.validaUsuarioPorCorreo()
+        }  
         
         this.mensajeError = ""
         this.mostrarError = false
-
-        
-        console.log("**************************************** Fin login ****************************************************")
         this.spinner.hide();
+        console.log("**************************************** Fin login ****************************************************")
       },
       err => {
         this.spinner.hide();
@@ -155,31 +120,163 @@ export class LoginComponent implements OnInit {
 
         if(err.error.message === undefined){
           this.mensajeDetalleError = Mensajes.SIN_CONEXION_RED +'. '+Mensajes.INTENTAR_MAS_TARDE
-          Swal.fire({
-            icon: 'error',
-            html:
-              `<strong> ${ Mensajes.ERROR_500 } </strong><br/>` +
-              `<small> ${ Mensajes.SIN_CONEXION_RED } </small> `,
-            showConfirmButton: false,
-            timer: 3000
-          }) 
+          Alerts.error(Mensajes.ERROR_500, Mensajes.SIN_CONEXION_RED, Mensajes.INTENTAR_MAS_TARDE);
         }else{
           this.mensajeDetalleError = Mensajes.CONTRASENA_VERIFICAR
-          Swal.fire({
-            icon: 'warning',
-            html:
-              `<strong> ${ Mensajes.WARNING } </strong><br/>` +
-              `<small> ${ Mensajes.CONTRASENA_VERIFICAR } </small> `,
-            showConfirmButton: false,
-            timer: 3000
-          }) 
+          Alerts.warning(Mensajes.WARNING, Mensajes.CONTRASENA_VERIFICAR);
         }
 
         this.mensajeError = this.mensajeDetalleError
         this.mostrarError = true
-      }
-    ) 
+      }) 
+  }
 
+  validaUsuarioPorCorreo(){
+    const correoJson = {
+      correo:this.correoUsuario
+    }
+
+    this.authService.getUsuarioByCorreo$(correoJson).subscribe(
+      res => {
+        console.log("Valida Usuario por Correo:")
+        console.log(this.usuario)
+        this.usuario=res
+        this.id_usuario=this.usuario.id
+        this.rol=this.usuario.rol
+        this.sharedService.setNombreUsuario(this.usuario.nombre +" "+this.usuario.apellidop)
+        localStorage.setItem('_cli', this.usuario.id_clinica)
+        localStorage.setItem('_us', this.usuario.id)
+        this.cifradoService.setEncryptedRol(this.usuario.rol)
+        this.cifradoService.setEncryptedIdPlan(this.usuario.id_plan)
+        
+        if(this.rol =="suadmin"){
+          this.validaTieneClinicaSuperAdmin()
+        }else{
+          this.validaClinicaPerteneciente()
+        }
+
+        this.sharedService.notifyApp.emit();
+
+      },
+      err => {
+        console.log(err.error.message)
+        console.log(err)
+      }
+    )
+  }
+
+  validaTieneClinicaSuperAdmin(){
+    console.log("Valida tiene clinica, id usuario:: "+this.id_usuario)
+    this.centroService.getCentroByIdUserSuAdmin(this.id_usuario).subscribe(
+      res => {
+        console.log("SU admin tiene Clinica")
+        this.centro=res
+        
+        this.sharedService.setNombreClinica(this.centro.nombre);
+        //this.validarPlanGratuito()
+        this.router.navigate(['/calendario'])
+      },
+      err => {
+        console.log("No tiene Clínica")
+        console.log(err)
+        this.router.navigate(['/configuracion/perfil/usuario'])
+      }
+    )
+  }
+
+  validaClinicaPerteneciente(){
+    this.centroService.getCentro$(this.usuario.id_clinica).subscribe(
+      res => {
+        console.log("Si pertenece a una Clinica")
+        this.centro = res
+        this.sharedService.setNombreClinica(this.centro.nombre);
+        //this.validarPlanGratuito()
+        this.router.navigate(['/calendario'])
+      },
+      err => {
+        console.log("No pertenece a ninguna clínica")
+        console.log(err)
+        this.router.navigate(['/login'])
+      }
+    )
+  }
+
+  openModal2FA(content: TemplateRef<any>) {
+    this.modalService.open(content, { centered: true, backdrop: 'static', keyboard: false });
+  }
+
+  handleKeydown(event: KeyboardEvent, index: number) {
+    const inputElements = document.querySelectorAll('input[type="tel"]');
+    const currentInput = inputElements[index] as HTMLInputElement;
+
+    // Si se presiona un número
+    if (event.key >= '0' && event.key <= '9') {
+        // Si el campo actual tiene un valor, mover el foco al siguiente
+        if (currentInput.value.length === 1) {
+            const nextInput = index + 1;
+            if (nextInput < this.digits.length) {
+                (inputElements[nextInput] as HTMLInputElement).focus();
+            }
+        }
+    } 
+    // Si se presiona Backspace
+    else if (event.key === 'Backspace') {
+        // Si el campo actual está vacío, mover el foco al anterior
+        if (currentInput.value === '') {
+            const prevInput = index - 1;
+            if (prevInput >= 0) {
+                (inputElements[prevInput] as HTMLInputElement).focus();
+            }
+        }
+    }
+  }
+
+  // También puedes agregar un evento input para manejar el cambio de valor
+  inputChanged(event: Event, index: number) {
+      const inputElements = document.querySelectorAll('input[type="tel"]');
+      const currentInput = inputElements[index] as HTMLInputElement;
+
+      // Si el campo actual tiene un valor, mover el foco al siguiente
+      if (currentInput.value.length === 1) {
+          const nextInput = index + 1;
+          if (nextInput < this.digits.length) {
+              (inputElements[nextInput] as HTMLInputElement).focus();
+          }
+      }
+  }
+
+  onSubmit() {
+    const code = Array.from(document.querySelectorAll('input[type="tel"]'))
+        .map((input: HTMLInputElement) => input.value)
+        .join('');
+    console.log('Código ingresado:', code);
+    
+    // Limpiar los campos de entrada
+    const inputElements = document.querySelectorAll('input[type="tel"]');
+    inputElements.forEach((input: HTMLInputElement) => {
+        input.value = ''; // Reiniciar el valor de cada input
+    });
+
+    // Opción para mover el foco de vuelta al primer input
+    (inputElements[0] as HTMLInputElement).focus();
+
+    const codigoVerificacion = this.cifradoService.setEncryptedCodigoVerificacion(code)
+    this.authService.sendCodigoVerificacion(this.correoUsuario, code).subscribe(res=>{
+      console.log("Codigo Enviado")
+      console.log(res)
+      this.mostrarCodigoError = false
+
+      this.cifradoService.setEncryptedToken(res.token)
+      this.validaUsuarioPorCorreo()
+
+      this.modalService.dismissAll()
+    },
+    err => {
+      console.log(err)
+      this.mostrarCodigoError = true
+      this.mensajeCodigo = "Código Inválido, vuelve a intentarlo"
+      console.log("Código de verificación incorrecto")
+    })
   }
 
   validarPlanGratuito(){
@@ -188,13 +285,7 @@ export class LoginComponent implements OnInit {
     //console.log("Validar vigencia de plan gratuito:: " +id_plan);
 
     if(id_plan == '0401PF30'){
-      //Validar vigencia de plan gratuito
-
-      this.date = new Date();
-      const mes = this.date.getMonth() +1
-      this.fecha_hoy = this.date.getFullYear()+"-"+mes+"-"+this.date.getDate()
-
-      this.planService.validarPlanGratuito(localStorage.getItem('_cli'), this.fecha_hoy).subscribe(
+      this.planService.validarPlanGratuito(localStorage.getItem('_cli'), DateUtil.getDateYYYYMMDD()).subscribe(
           res => {
             console.log("Validando Plan")
             //console.log(res)
@@ -209,9 +300,7 @@ export class LoginComponent implements OnInit {
             console.log("Error al invocar el plan")
           }
       )
-
     }
-
   }
- 
+
 }

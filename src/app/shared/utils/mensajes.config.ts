@@ -7,6 +7,10 @@ export const Mensajes = {
     INTENTAR_MAS_TARDE: 'Por favor inténtalo más tarde ',
     SIN_CONEXION_RED: 'Lo sentimos, no pudimos conectarnos',
 
+    // Cuenta
+    CUENTA_ELIMINADA:'Tu cuenta ha sido eliminada de forma permanente',
+    CUENTA_NO_ELIMINADA:'No se puedo eliminar tu cuenta',
+
     // Registro
     REGISTRO_VALIDACION: 'Por favor, rellena todos los campos ',
     REGISTRO_EXITOSO: 'Todo listo para administrar tu clínica dental ',
@@ -14,13 +18,15 @@ export const Mensajes = {
     
     // Validaciones de formulario
     CAMPO_REQUERIDO: 'Este campo es requerido ',
-    CORREO_VALIDO: 'Por favor, ingresa un correo válido ',
+    CORREO_VALIDO: 'Ingresa un correo válido ',
     CORREO_EXISTENTE: 'Este correo ya se encuentra registrado ',
-    TELEFONO_LONGITUD:'El teléfono debe contener al menos 10 dígitos ',
-    SOLO_NUMEROS: 'Por favor, ingresa sólo números ', 
-    SOLO_LETRAS: 'Por favor, ingresa sólo letras ', 
+    TELEFONO_LONGITUD:'Ingresa 10 dígitos ',
+    SOLO_NUMEROS: 'Escribe sólo números ', 
+    SOLO_LETRAS: 'Ingresa sólo letras ', 
+    LONGITUD_MINIMA: 'Continua escribiendo... ',
     BUSQUEDA_NO_COINCIDENCIAS: 'No hay coincidencias ',
     CAMPOS_OBLIGATORIOS: 'Los campos marcados con (*) son obligatorios ',
+    CARACTERES_NO_PERMITIDOS: 'Algunos caracteres no están permitidos ',
 
     //Contraseña
     CONTRASENA_INVALIDA: 'La contraseña debe contener al menos una letra mayúscula (A-Z), un número (0-9) y un caracter especial (#, $, %, &, ect) ',
@@ -29,6 +35,8 @@ export const Mensajes = {
     CONTRASENA_VERIFICAR: 'Por favor, verifica tu correo y/o contraseña ', 
     CONTRASENA_CONFIRMACION: 'Por favor confirma tu nueva contraseña ',
     CONTRASENAS_NO_COINCIDEN: 'Las contraseñas no coinciden, verifica que sean iguales ',
+    CONTRASENA_ACTUALIZADA: 'La contraseña se actualizó correctamente',
+    CONTRASENA_NO_ACTUALIZADA: 'No se pudo actualizar la contraseña',
 
     // Usuarios
     USUARIO_EXISTENTE: 'Este usuario ya se encuentra registrado ',
@@ -47,8 +55,8 @@ export const Mensajes = {
     CLINICA_ACTUALIZADA: 'La información de tu clínica se actualizó correctamente ',
     CLINICA_NO_ACTUALIZADA: 'No se pudo actualizar la información de tu clínica ',
     CLINICA_ELIMINAR_QUESTION: '¿Estás seguro que quieres eliminar tu clínica? ',
-    CLINICA_ELIMINADA: 'La clínica se eliminó correctamente ',
-    CLINICA_NO_ELIMINADA: 'No se pudo eliminar tu clínica ',
+    CLINICA_ELIMINADA: 'La información de la clínica se eliminó correctamente ',
+    CLINICA_NO_ELIMINADA: 'No se pudo eliminar la información de la clínica ',
 
     //Citas
     FECHA_INICIO_REQUERIDA: 'La fecha inicio es obligatoria ',
@@ -60,7 +68,7 @@ export const Mensajes = {
     CITA_NO_REGISTRADA: 'La cita no se puedo registrar ',
     CITA_ACTUALIZADA: 'La cita se actualizó correctamente ',
     CITA_NO_ACTUALIZADA: 'No se pudo actualizar la cita ',
-    CITA_ELIMINAR_QUESTION: '¿Estás seguro que quieres eliminar... ?',
+    CITA_ELIMINAR_QUESTION: '¿Estás seguro que quieres eliminar?',
     CITA_ELIMINADA: 'La cita se eliminó correctamente ',
     CITA_NO_ELIMINADA: 'No se pudo eliminar la cita ',
     CITA_CAMPOS_OBLIGATORIOS: 'Por favor, verifica todos los campos obligatorios',
@@ -72,6 +80,7 @@ export const Mensajes = {
     PACIENTE_EXISTENTE: 'Este paciente ya se encuentra registrado. ',
     PACIENTE_ACTUALIZADO: 'La información del paciente se actualizó correctamente ',
     PACIENTE_NO_ACTUALIZADO: 'No se pudo actualizar la información del paciente ',
+    PACIENTE_ELIMINAR_QUESTION: '¿Estás seguro que quieres eliminar el paciente?',
     PACIENTE_ELIMINADO: 'El paciente se eliminó correctamente ',
     PACIENTE_NO_ELIMINADO: 'No se pudo eliminar el paciente ',
 
@@ -116,5 +125,9 @@ export const Mensajes = {
     SEGUIMIENTO_ELIMINAR_QUESTION: '¿Estás seguro que quieres eliminar el seguimiento?',
     SEGUIMIENTO_ELIMINADO: 'El seguimiento se eliminó correctamente ',
     SEGUIMIENTO_NO_ELIMINADO: 'No se pudo eliminar el seguimiento ',
+
+    //Uploads
+    IMAGEN_SUBIDA: 'La imagen se guardó correctamente ',
+    IMAGEN_NO_SUBIDA: 'No se pudo guardar la imagen ',
 
 };

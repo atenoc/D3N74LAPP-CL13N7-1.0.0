@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
 import { Usuario, UsuariosPaginados } from '../../models/Usuario.model';
 import { catchError, map, tap } from 'rxjs/operators';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
 
 @Injectable({
   providedIn: 'root'
@@ -48,16 +49,9 @@ export class UsuarioService {
     );
   }
   
-  // GET old (deprecated)
-  /*getUsuarios$(): Observable<Usuario[]>{
-    this.http.get<Usuario[]>(this.URI).subscribe(
-      res=>{
-        this.usuarios.next(res)
-      },
-      err => console.log(err)
-    )
-    return this.usuarios.asObservable();
-  }*/
+  getUsuarioSop$(){
+    return this.http.get<Usuario[]>(`${this.URI}/roles/onlysop`)
+  }
 
   // GET Usuario por id
   getUsuario$(id: string){
@@ -65,26 +59,25 @@ export class UsuarioService {
   }
 
   // PATCH
-  updateUsuario(id: string, correo: string, rol:string, titulo:string, nombre:string, apellidop:string, apellidom:string, especialidad:string, telefono:string) {
-    return this.http.patch<Usuario>(`${this.URI}/${id}`, {correo, rol, titulo, nombre, apellidop, apellidom, especialidad, telefono});
+  updateUsuario(id: string, usuario:any) {
+    usuario.id_usuario_actualizo = localStorage.getItem('_us')
+    usuario.id_clinica = localStorage.getItem('_cli')
+    usuario.fecha_actualizacion = DateUtil.getCurrentFormattedDate()
+    return this.http.patch<Usuario>(`${this.URI}/${id}`, usuario);
   }
 
-  updateUsuarioRegister(id: string, nombre:string, apellidop:string, id_clinica:string, fecha_creacion:string) {
-    return this.http.patch(`${this.URI}/usuario/${id}/registro`, {nombre, apellidop, id_clinica, fecha_creacion});
+  /* No se envía id_usuario_creador en este método */
+  updateUsuarioRegister(id: string, nombre:string, apellidop:string, id_clinica:string) {
+    return this.http.patch(`${this.URI}/usuario/${id}/registro`, {nombre, apellidop, id_clinica});
   }
 
   // DELETE
-  deleteUsuario(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.URI}/${id}`).pipe(
-      tap(() => {
-        const usuarios = this.usuarios.getValue();
-        const index = usuarios.findIndex(usuario => usuario.id === id);
-        if (index !== -1) {
-          usuarios.splice(index, 1);
-          this.usuarios.next([...usuarios]);
-        }
-      })
-    );
+  deleteUsuario(id: string) {
+    const params = new HttpParams()
+      .set('id_usuario_elimino', localStorage.getItem('_us'))
+      .set('id_clinica', localStorage.getItem('_cli'))
+      .set('fecha_eliminacion', DateUtil.getCurrentFormattedDate())
+    return this.http.delete<void>(`${this.URI}/${id}`, { params });
   }
   
   // getUsusuario Paginados por id_usuario

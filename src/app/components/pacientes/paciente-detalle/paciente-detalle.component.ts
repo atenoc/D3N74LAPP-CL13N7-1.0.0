@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { error } from 'console';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CatalogoSexo } from 'src/app/models/Catalogo.model';
 import { Paciente } from 'src/app/models/Paciente.model';
 import { CatalogoService } from 'src/app/services/catalogos/catalogo.service';
 import { PacienteService } from 'src/app/services/pacientes/paciente.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
-import { Mensajes } from 'src/app/shared/mensajes.config';
-import Swal from 'sweetalert2';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
+import { Alerts } from 'src/app/shared/utils/alerts';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
+import { textValidator, textSomeSymbolsValidator } from '../../../shared/utils/validador';
 
 @Component({
   selector: 'app-paciente-detalle',
@@ -22,10 +23,10 @@ export class PacienteDetalleComponent implements OnInit {
   id: string;
   paciente:Paciente;
   formularioPaciente:FormGroup;
+  catSexo:CatalogoSexo[] = [];
   editando: boolean = false;
   tituloCard: string;
   idUsuario:string;
-  fecha_creacion:Date;
   nombre_usuario_creador:string;
 
   //mensajes
@@ -34,9 +35,14 @@ export class PacienteDetalleComponent implements OnInit {
   telefonoLongitud: string;
   soloNumeros: string;
   soloLetras: string;
+  longitudMinima: string
+  caracteresNoPermitidos: string
 
-  catSexo:CatalogoSexo[] = [];
-  //citas:CitaPaciente[] = []
+  mostrar_actualizacion:boolean=false
+  nombre_usuario_actualizo:string
+  fecha_creacion:string;
+  fecha_actual:string
+  fecha_actualizacion:string
 
   constructor(
     private catalogoService:CatalogoService,
@@ -46,26 +52,27 @@ export class PacienteDetalleComponent implements OnInit {
     private router: Router,
     private cifradoService: CifradoService,
     private spinner: NgxSpinnerService,
-    //private citasService: CitaService
 
   ) {
     this.campoRequerido = Mensajes.CAMPO_REQUERIDO;
-      this.correoValido = Mensajes.CORREO_VALIDO;
-      this.telefonoLongitud = Mensajes.TELEFONO_LONGITUD;
-      this.soloNumeros = Mensajes.SOLO_NUMEROS;
-      this.soloLetras = Mensajes.SOLO_LETRAS;
+    this.correoValido = Mensajes.CORREO_VALIDO;
+    this.telefonoLongitud = Mensajes.TELEFONO_LONGITUD;
+    this.soloNumeros = Mensajes.SOLO_NUMEROS;
+    this.soloLetras = Mensajes.SOLO_LETRAS;
+    this.longitudMinima = Mensajes.LONGITUD_MINIMA;
+    this.caracteresNoPermitidos = Mensajes.CARACTERES_NO_PERMITIDOS;
    }
 
   ngOnInit(): void {
     this.rol = this.cifradoService.getDecryptedRol();
 
     this.formularioPaciente = this.formBuilder.group({
-      nombre: ['', [Validators.required, Validators.minLength(3)]],
-      apellidop: ['', [Validators.required, Validators.minLength(3)]],
-      apellidom: ['', [this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/)]],
+      nombre: ['', [Validators.required, Validators.minLength(3), textValidator()]],
+      apellidop: ['', [Validators.required, Validators.minLength(3), textValidator()]],
+      apellidom: ['', [this.validarTexto(/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s]+$/), textValidator()]],
       edad: ['', [Validators.pattern('^[0-9]+$'), Validators.maxLength(3)]],
-      sexo: [''],
-      telefono: ['', [Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
+      sexo: [{value:'null', disabled: !this.editando}],
+      telefono: ['', [Validators.required, Validators.pattern('^[0-9]+$'), Validators.minLength(10)]],
       correo: ['', [Validators.minLength(5), // Hacer que el campo sea opcional
                   (control: AbstractControl) => { // Validación condicional del correo electrónico
                     if (control.value && control.value.trim() !== '') {
@@ -74,7 +81,7 @@ export class PacienteDetalleComponent implements OnInit {
                       return null; // Si el campo está vacío, no aplicar la validación del correo electrónico
                     }
                   }]],
-      direccion: [''],
+      direccion: ['',[Validators.minLength(3), textSomeSymbolsValidator()]],
     })
 
     this.activatedRoute.params.subscribe(params => {
@@ -87,10 +94,12 @@ export class PacienteDetalleComponent implements OnInit {
         console.log(res)
 
         this.tituloCard = this.paciente.nombre+' '+this.paciente.apellidop+' '+this.paciente.apellidom
-        this.idUsuario=this.paciente.id
-        this.fecha_creacion=this.paciente.fecha_creacion
+        this.idUsuario=this.paciente.id    
         this.nombre_usuario_creador = this.paciente.nombre_usuario_creador
-
+        this.fecha_creacion=this.paciente.fecha_creacion
+        this.nombre_usuario_actualizo = this.paciente.nombre_usuario_actualizo
+        this.fecha_actualizacion = this.paciente.fecha_actualizacion
+        console.log("this.paciente.id_sexo: "+this.paciente.id_sexo)
         this.formularioPaciente.patchValue({
           nombre: this.paciente.nombre,
           apellidop: this.paciente.apellidop,
@@ -102,8 +111,13 @@ export class PacienteDetalleComponent implements OnInit {
           direccion: this.paciente.direccion,
         });
 
+        if(this.paciente.nombre_usuario_actualizo ==null || this.paciente.nombre_usuario_actualizo ==''){
+          this.mostrar_actualizacion = false
+        }else{
+          this.mostrar_actualizacion = true
+        }
+
         this.cargarCatSexo()
-        //this.cargarCitas()
       },
       err => {
         this.spinner.hide();
@@ -141,113 +155,60 @@ export class PacienteDetalleComponent implements OnInit {
   }
 
   actualizarPaciente(){
-    this.spinner.show();
     console.log("Actualizar paciente:")
     console.log(this.formularioPaciente)
 
-    this.pacienteService.updatePaciente(
-      this.paciente.id, 
-      this.formularioPaciente.value.nombre,
-      this.formularioPaciente.value.apellidop,
-      this.formularioPaciente.value.apellidom,
-      this.formularioPaciente.value.edad,
-      this.formularioPaciente.value.sexo,
-      this.formularioPaciente.value.telefono,
-      this.formularioPaciente.value.correo,
-      this.formularioPaciente.value.direccion,
-      ).subscribe(res => {
-        console.log("Paciente actualizado: "+res);
+    this.fecha_actual = DateUtil.getCurrentFormattedDate()
 
+    const pacienteJson = {
+      nombre: this.formularioPaciente.value.nombre,
+      apellidop: this.formularioPaciente.value.apellidop,
+      apellidom: this.formularioPaciente.value.apellidom,
+      edad: this.formularioPaciente.value.edad,
+      sexo: this.formularioPaciente.value.sexo,
+      telefono: this.formularioPaciente.value.telefono,
+      correo: this.formularioPaciente.value.correo,
+      direccion: this.formularioPaciente.value.direccion
+    }
+
+    this.spinner.show();
+    this.pacienteService.updatePaciente(this.paciente.id, pacienteJson).subscribe(res => {
+        this.spinner.hide();
+        this.paciente=res
+        console.log("Paciente actualizado: "+this.paciente);
         this.editando=false
         this.ngOnInit()
-        this.spinner.hide();
-        Swal.fire({
-          position: 'top-end',
-          html:
-            `<h5>${ Mensajes.PACIENTE_ACTUALIZADO }</h5>`+
-            `<span>${ res.nombre } ${ res.apellidop }</span>`, 
-            
-          showConfirmButton: false,
-          backdrop: false, 
-          width: 400,
-          background: 'rgb(40, 167, 69, .90)',
-          color:'white',
-          timerProgressBar:true,
-          timer: 3000,
-        })
 
+        Alerts.success(Mensajes.PACIENTE_ACTUALIZADO, `${this.paciente.nombre} ${this.paciente.apellidop} ${this.paciente.apellidom}`);
       },
         err => {
           this.spinner.hide();
           console.log("error: " + err)
-          //err.error.message
-          Swal.fire({
-            icon: 'error',
-            html:
-              `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-              `<span>${ Mensajes.PACIENTE_NO_ACTUALIZADO }</span></br>`+
-              `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-            showConfirmButton: false,
-            timer: 3000
-          })
+          Alerts.error(Mensajes.ERROR_500, Mensajes.PACIENTE_NO_ACTUALIZADO, Mensajes.INTENTAR_MAS_TARDE);
         }
       );
 
     return false;
   }
 
-  deletePaciente(id: string, nombre:string, apellidop:string) {
-
-    Swal.fire({
-      html:
-        `<h5>${ Mensajes.USUARIO_ELIMINAR_QUESTION }</h5> <br/> ` +
-        `<strong> ${nombre} ${apellidop} </strong>`,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#dc3545',
-      cancelButtonColor: '#aeaeae',
-      confirmButtonText: 'Si, eliminar',
-      cancelButtonText: 'No, cancelar'
-    }).then((result) => {
+  deletePaciente(id: string) {
+    Alerts.confirmDelete(Mensajes.PACIENTE_ELIMINAR_QUESTION, `${this.paciente.nombre} ${this.paciente.apellidop} ${this.paciente.apellidom}`).then((result) => {
       if (result.value) {
+        // Confirm
         this.spinner.show();
         this.pacienteService.deletePaciente(id).subscribe(res => {
           this.spinner.hide();
           console.log("Paciente eliminado:" + JSON.stringify(res))
-
-          Swal.fire({
-            position: 'top-end',
-            html:
-              `<h5>${ Mensajes.USUARIO_ELIMINADO }</h5>`,
-            showConfirmButton: false,
-            backdrop: false, 
-            width: 400,
-            background: 'rgb(40, 167, 69, .90)',
-            color:'white',
-            timerProgressBar:true,
-            timer: 3000,
-          })
-
+          Alerts.success(Mensajes.PACIENTE_ELIMINADO, `${this.paciente.nombre} ${this.paciente.apellidop} ${this.paciente.apellidom}`);
           this.router.navigate(['/pacientes']);
         },
           err => { 
-            this.spinner.hide();
-            console.log("error: " + err)
-            Swal.fire({
-              icon: 'error',
-              html:
-                `<strong>${ Mensajes.ERROR_500 }</strong></br>`+
-                `<span>${ Mensajes.USUARIO_NO_ELIMINADO }</span></br>`+
-                `<small>${ Mensajes.INTENTAR_MAS_TARDE }</small>`,
-              showConfirmButton: false,
-              timer: 3000
-            }) 
+            console.log("error: " + err);
+            Alerts.error(Mensajes.ERROR_500, Mensajes.PACIENTE_NO_ELIMINADO, Mensajes.INTENTAR_MAS_TARDE);
           }
-        )
-    
+        );
       }
-    })
-
+    });
   }
 
   cargarCatSexo(){
@@ -257,6 +218,17 @@ export class PacienteDetalleComponent implements OnInit {
     },
     err => console.log("error: " + err)
     )
+  }
+
+
+  cambiarEstadoEditando() {
+    this.editando = !this.editando;
+    console.log("valor editando:: "+this.editando)
+    if (this.editando) {
+      this.formularioPaciente.get('sexo').enable();
+    } else {
+      this.formularioPaciente.get('sexo').disable();
+    }
   }
 
 }

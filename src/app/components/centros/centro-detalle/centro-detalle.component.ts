@@ -6,8 +6,10 @@ import { AuthService } from 'src/app/services/auth.service';
 import { CentroService } from 'src/app/services/clinicas/centro.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { CifradoService } from 'src/app/services/cifrado.service';
-import { Mensajes } from 'src/app/shared/mensajes.config';
-import Swal from 'sweetalert2';
+import { Mensajes } from 'src/app/shared/utils/mensajes.config';
+import { Alerts } from 'src/app/shared/utils/alerts';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { DateUtil } from 'src/app/shared/utils/DateUtil';
 
 @Component({
   selector: 'app-centro-detalle',
@@ -33,6 +35,7 @@ export class CentroDetalleComponent implements OnInit {
     private authService:AuthService,
     private cifradoService: CifradoService,
     private formBuilder:FormBuilder, 
+    private spinner: NgxSpinnerService, 
     private activatedRoute: ActivatedRoute,
     private centroService:CentroService, 
     private sharedService:SharedService,
@@ -67,7 +70,8 @@ export class CentroDetalleComponent implements OnInit {
           this.id = params['id'];
           this.centroService.getCentro$(this.id).subscribe(res =>  {  //volver a llamar los datos con el id recibido
             this.centro = res;
-            console.log("id Centro obtenido:" + res.id)
+            console.log("Centro obtenido:" + res.id)
+            console.log(this.centro)
     
             this.formularioCentro.patchValue({
               correo: this.centro.correo,
@@ -107,40 +111,27 @@ export class CentroDetalleComponent implements OnInit {
   }
 
   updateCentro(): boolean {
-    this.centroService.updateCentro(
-      this.centro.id, 
-      this.formularioCentro.value.nombre,
-      this.formularioCentro.value.telefono,
-      this.formularioCentro.value.correo,
-      this.formularioCentro.value.direccion
-      )
-      .subscribe(res => {
+
+    var updateCentroJson = JSON.parse(JSON.stringify(this.formularioCentro.value))
+    updateCentroJson.id_usuario_actualizo=localStorage.getItem("_us"),
+    updateCentroJson.id_clinica=localStorage.getItem("_cli"),
+    updateCentroJson.fecha_actualizacion=DateUtil.getCurrentFormattedDate()
+
+    this.spinner.show();
+    this.centroService.updateCentro(this.centro.id, updateCentroJson).subscribe(res => {
+        this.spinner.hide();
         console.log("Centro actualizado: "+res);
-
         this.sharedService.setNombreClinica(this.formularioCentro.value.nombre);
+        const id = localStorage.getItem('_us');
+        this.router.navigate(['/perfil/', id]);
 
-        this.router.navigate(['/perfil'])
-        Swal.fire({
-          icon: 'success',
-          html:
-            `<strong>${ this.centro.nombre }</strong><br/>` +
-            '¡Información actualizada!',
-          showConfirmButton: false,
-          //confirmButtonColor: '#28a745',
-          timer: 2000
-        })
-
+        Alerts.success(Mensajes.CLINICA_ACTUALIZADA, `${this.centro.nombre}`);
       },
         err => {
+          this.spinner.hide();
           console.log("error: " + err)
-          Swal.fire({
-            icon: 'error',
-            html:
-              `<strong>¡${ err.error.message }!</strong>`,
-            showConfirmButton: true,
-            confirmButtonColor: '#28a745',
-            timer: 4000
-          })
+          console.log(err.error.message)
+          Alerts.error(Mensajes.ERROR_500, Mensajes.CLINICA_NO_ACTUALIZADA, Mensajes.INTENTAR_MAS_TARDE);
         }
       
       );
