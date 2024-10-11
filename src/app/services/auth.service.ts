@@ -3,16 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment.prod';
 import Swal from 'sweetalert2';
-//import { SharedService } from './shared.service';
 import { Usuario } from '../models/Usuario.model';
-//import { Subject, catchError, throwError } from 'rxjs';
+import { Auth } from '../models/Auth.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
-  //private usuario$: Subject<Usuario>;
 
   //URI = 'http://localhost:4000/api/seguridad';
   URI = environment.urlApiSeguridad
@@ -20,13 +17,12 @@ export class AuthService {
   constructor(
     private http: HttpClient, 
     private router:Router, 
-    //private sharedService:SharedService
     ) {
   }
 
   login(user){
     console.log("usuario enviado: "+ user)
-    return this.http.post<any>(this.URI + '/login', user)
+    return this.http.post<Auth>(this.URI + '/login', user)
   }
 
   estaLogueado(){
@@ -98,7 +94,7 @@ export class AuthService {
 
   // verificar usuario activo - After Login 3 - Sidebar/Header/Footer
   validarUsuarioActivo$(user:any) {
-    return this.http.post<Usuario>(`${this.URI}/verificar/usuario`,user)
+    return this.http.post<Usuario>(`${this.URI}/valida/usuario/activo`,user)
   }
 
   
@@ -110,6 +106,13 @@ export class AuthService {
   updateUsuarioLlave(id: string, llave: string){
     return this.http.patch<Usuario>(`${this.URI}/password/usuario/${id}`, { llave });
   }
+
+  generarSecreto(id: string){
+    return this.http.put<any>(`${this.URI}/genera-secreto/usuario/${id}`,{});
+  }
+
+  sendCodigoVerificacion(correo: string, codigoIngresado:string){
+    return this.http.post<Auth>(`${this.URI}/validar-secreto`,{ correo, codigoIngresado });
+  }
   
 }
-

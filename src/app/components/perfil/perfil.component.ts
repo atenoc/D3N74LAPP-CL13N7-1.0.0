@@ -39,6 +39,15 @@ export class PerfilComponent implements OnInit {
   fecha_actualizacion:string
   mostrar_actualizacion:boolean=false
 
+  QR2FA:string
+  existe2fa:boolean=false
+
+  title = 'app';
+  elementType = 'url';
+  value = 'Techiediaries';
+
+  qrCodeUrl: string | null = null;
+
   constructor(
     private spinner: NgxSpinnerService, 
     private authService:AuthService,
@@ -185,6 +194,22 @@ export class PerfilComponent implements OnInit {
       }
     })
  
+  }
+
+  activar2FA(){
+    console.log("Activar 2FA")
+
+    this.authService.generarSecreto(localStorage.getItem('_us')).subscribe(
+      res => {
+        console.log("Secreto generado")
+        console.log(res)
+        this.existe2fa = true
+        this.qrCodeUrl = res.qr; // Asigna la URL del QR
+      },
+      err => {
+        console.log("error: " + err)
+      }
+    )
   }
 
 }

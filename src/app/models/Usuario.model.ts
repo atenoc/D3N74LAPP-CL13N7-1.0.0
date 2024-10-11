@@ -17,6 +17,7 @@ export interface Usuario{
     telefono:string,
     llave_status:number
     id_clinica:string;
+    secreto:string
     id_plan:string
     plan :string
     //id_usuario_creador:string;

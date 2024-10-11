@@ -100,7 +100,7 @@ import { BitacoraComponent } from './components/bitacora/bitacora.component';
     NgxSpinnerModule,
     FontAwesomeModule,
     FullCalendarModule,
-    NgbTimepickerModule
+    NgbTimepickerModule,
   ],
   providers: [
     AuthGuard,

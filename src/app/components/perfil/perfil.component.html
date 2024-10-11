@@ -19,6 +19,7 @@
   <!-- Main content -->
   <section class="content">
     <div class="container">
+
       <div class="row">
         <div class="card card-primary card-outline">
           <div class="card-body box-profile">
@@ -37,39 +38,7 @@
       <app-usuario-detalle></app-usuario-detalle>
       
       <div class="row">
-        <!-- <div class="col-md-4">
-          <div class="card card-primary card-outline">
-            <div class="card-body box-profile">
-              <div class="text-center">
-                <i class="fas fa-user size"></i>
-              </div>
 
-              <h3 class="profile-username text-center">{{ usuario.desc_titulo }} {{ usuario.nombre }} {{ usuario.apellidop }} {{ usuario.apellidom }}</h3>
-              <p class="text-muted text-center">{{ usuario.desc_rol }}</p>
-
-              <ul class="list-group list-group-unbordered mb-3">
-                <li class="list-group-item">
-                  <b class="text-primary">Especialidad</b> <a class="float-right">{{ usuario.especialidad }}</a>
-                </li>
-                <li class="list-group-item">
-                  <b class="text-primary">Correo</b> <a class="float-right">{{ usuario.correo }}</a>
-                </li>
-                <li class="list-group-item">
-                  <b class="text-primary">Teléfono</b> <a class="float-right">{{ usuario.telefono }}</a>
-                </li>
-              </ul>
-
-              <div class="text-right">
-                <a class="link-opacity-10-hover cursor-pointer" (click)="selectedIdContrasena(usuario.id)">Cambiar contraseña</a>
-              </div>
-              <hr>
-              <div class="text-right">
-                <a> <button class="btn btn-outline-primary btn-sm cursor-pointer" (click)="selectedIdUser(usuario.id)">Ver mi información...</button> </a>
-              </div>
-            </div>
-          </div>
-        </div> -->
-        <!-- /.col -->
         <div class="col-md-6">
           <div class="card card-primary">
             <div class="card-header">
@@ -133,9 +102,36 @@
           </div>
         </div> 
 
-        <!-- /.col -->
       </div>
-      <!-- /.row -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title"><i class="fas fa-user-shield"></i> Seguridad</h3>
+            </div>
+            <div class="card-body">
+              <ul class="list-group list-group-unbordered mb-3">
+                <li class="list-group-item">
+                  <b class="text-primary"><i class="fas fa-mobile"></i> Doble Factor de Autenticación (2FA)</b> Desactivada - <a class="float-right"> <button class="btn btn-success" (click)="activar2FA()">Activar</button> </a>
+                  <hr>
+                  <div *ngIf="existe2fa">
+                    
+                    <div *ngIf="qrCodeUrl">
+                      <h4>Escanea el siguiente código QR</h4>
+                      <img [src]="qrCodeUrl" alt="Código QR" />
+                    </div>
+                    <div *ngIf="!qrCodeUrl">
+                      <p>Generando el código QR...</p>
+                    </div>
+                    
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div> 
+      </div>
+
     </div><!-- /.container-fluid -->
   </section>
   <!-- /.content -->
