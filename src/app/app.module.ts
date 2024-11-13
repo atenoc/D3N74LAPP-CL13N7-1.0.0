@@ -45,9 +45,11 @@ import { TratamientoComponent } from './components/expediente/tratamiento/tratam
 import { SeguimientoComponent } from './components/expediente/seguimiento/seguimiento.component';
 import { VisitasComponent } from './components/expediente/visitas/visitas.component';
 import { Visor3dComponent } from './shared/visor3d/visor3d.component';
-import { VisorCanvasComponent } from './shared/visor-canvas/visor-canvas.component';
 import { ImageViewerComponent } from './shared/image-viewer/image-viewer.component';
 import { BitacoraComponent } from './components/bitacora/bitacora.component';
+import { VisorCanvasComponent } from './shared/visor-canvas/visor-canvas.component';
+import { CookieService } from 'ngx-cookie-service';
+import { LogoutComponent } from './components/logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -88,7 +90,8 @@ import { BitacoraComponent } from './components/bitacora/bitacora.component';
     Visor3dComponent,
     VisorCanvasComponent,
     ImageViewerComponent,
-    BitacoraComponent
+    BitacoraComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
@@ -104,6 +107,7 @@ import { BitacoraComponent } from './components/bitacora/bitacora.component';
   ],
   providers: [
     AuthGuard,
+    CookieService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,

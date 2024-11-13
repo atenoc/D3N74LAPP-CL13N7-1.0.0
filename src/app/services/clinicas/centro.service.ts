@@ -24,7 +24,7 @@ export class CentroService {
 
   // POST One
   createCentro(centro): Observable<Centro> {
-    return this.http.post<Centro>(this.URI, centro).pipe(
+    return this.http.post<Centro>(this.URI, centro, { withCredentials: true }).pipe(
       map(response => {
         this.centroCreado = response
         const newCentros = [this.centroCreado, ...this.centros.getValue()];
@@ -43,9 +43,9 @@ export class CentroService {
     );
   }
 
-  // GET All
+  // GET TODOSSSSSSS
   getCentros$(): Observable<Centro[]>{
-    this.http.get<Centro[]>(this.URI).subscribe(
+    this.http.get<Centro[]>(this.URI, { withCredentials: true }).subscribe(
       res=>{
         this.centros.next(res)
       },
@@ -54,19 +54,19 @@ export class CentroService {
     return this.centros.asObservable();
   }
 
-
+  // get 1 Centro
   getCentro$(id: string){
-    return this.http.get<Centro>(`${this.URI}/${id}`)
+    return this.http.get<Centro>(`${this.URI}/${id}`, { withCredentials: true })
   }
 
   // PATCH One
   updateCentro(id: string, centro:any) {
-    return this.http.patch(`${this.URI}/${id}`, centro);
+    return this.http.patch(`${this.URI}/${id}`, centro, { withCredentials: true });
   }
 
   // DELETE One
   deleteCentro(id: string, centro:any): Observable<void> {
-    return this.http.put<void>(`${this.URI}/${id}`, centro)
+    return this.http.put<void>(`${this.URI}/${id}`, centro, { withCredentials: true })
   }
 
   get getCentroCreado$(): Observable<Centro> {
@@ -75,7 +75,7 @@ export class CentroService {
 
   // GET One by
   getCentroByIdUserSuAdmin(id_usuario: string) {
-    return this.http.get<Centro>(`${this.URI}/usuario/${id_usuario}`)
+    return this.http.get<Centro>(`${this.URI}/usuario/${id_usuario}`, { withCredentials: true })
   }
 
 }

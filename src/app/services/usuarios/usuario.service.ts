@@ -24,7 +24,7 @@ export class UsuarioService {
 
   // POST
   createUsuario(user): Observable<Usuario> {
-    return this.http.post<Usuario>(this.URI, user).pipe(
+    return this.http.post<Usuario>(this.URI, user, { withCredentials: true }).pipe(
       map(response => {
         // Crear un nuevo objeto de usuario a partir de la respuesta del servidor
         this.usuarioCreado = response
@@ -50,12 +50,12 @@ export class UsuarioService {
   }
   
   getUsuarioSop$(){
-    return this.http.get<Usuario[]>(`${this.URI}/roles/onlysop`)
+    return this.http.get<Usuario[]>(`${this.URI}/roles/onlysop`, { withCredentials: true })
   }
 
   // GET Usuario por id
   getUsuario$(id: string){
-    return this.http.get<Usuario>(`${this.URI}/${id}`)
+    return this.http.get<Usuario>(`${this.URI}/${id}`, { withCredentials: true })
   }
 
   // PATCH
@@ -63,12 +63,12 @@ export class UsuarioService {
     usuario.id_usuario_actualizo = localStorage.getItem('_us')
     usuario.id_clinica = localStorage.getItem('_cli')
     usuario.fecha_actualizacion = DateUtil.getCurrentFormattedDate()
-    return this.http.patch<Usuario>(`${this.URI}/${id}`, usuario);
+    return this.http.patch<Usuario>(`${this.URI}/${id}`, usuario, { withCredentials: true });
   }
 
   /* No se envía id_usuario_creador en este método */
   updateUsuarioRegister(id: string, nombre:string, apellidop:string, id_clinica:string) {
-    return this.http.patch(`${this.URI}/usuario/${id}/registro`, {nombre, apellidop, id_clinica});
+    return this.http.patch(`${this.URI}/usuario/${id}/registro`, {nombre, apellidop, id_clinica, withCredentials: true });
   }
 
   // DELETE
@@ -77,7 +77,7 @@ export class UsuarioService {
       .set('id_usuario_elimino', localStorage.getItem('_us'))
       .set('id_clinica', localStorage.getItem('_cli'))
       .set('fecha_eliminacion', DateUtil.getCurrentFormattedDate())
-    return this.http.delete<void>(`${this.URI}/${id}`, { params });
+    return this.http.delete<void>(`${this.URI}/${id}`, { params, withCredentials: true });
   }
   
   // getUsusuario Paginados por id_usuario
@@ -94,7 +94,7 @@ export class UsuarioService {
       .set('orderBy', String(orderBy))
       .set('way', String(way));
   
-    return this.http.get<UsuariosPaginados>(`${this.URI}/paginacion/usuario/${id}`, { params });
+    return this.http.get<UsuariosPaginados>(`${this.URI}/paginacion/usuario/${id}`, { params, withCredentials: true });
   }
 
   // getUsusuario Paginados por id_clinica
@@ -111,11 +111,11 @@ export class UsuarioService {
       .set('orderBy', String(orderBy))
       .set('way', String(way));
   
-    return this.http.get<UsuariosPaginados>(`${this.URI}/paginacion/clinica/${id_clinica}`, { params });
+    return this.http.get<UsuariosPaginados>(`${this.URI}/paginacion/clinica/${id_clinica}`, { params, withCredentials: true });
   }
 
   buscarMedicos(id_clinica: string, query: string, ): Observable<any> {
-    return this.http.post(`${this.URI}/buscador/${id_clinica}`, { query });
+    return this.http.post(`${this.URI}/buscador/${id_clinica}`, { query, withCredentials: true });
   }
 
 }

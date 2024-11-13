@@ -21,19 +21,19 @@ export class CitaService {
     cita.id_usuario_creador = localStorage.getItem('_us')
     cita.id_clinica = localStorage.getItem('_cli')
     cita.fecha_creacion = DateUtil.getCurrentFormattedDate()
-    return this.http.post<Cita>(this.URI, cita);
+    return this.http.post<Cita>(this.URI, cita, { withCredentials: true });
   }
 
   createEvento(evento): Observable<Cita> {
     evento.id_usuario_creador = localStorage.getItem('_us')
     evento.id_clinica = localStorage.getItem('_cli')
     evento.fecha_creacion = DateUtil.getCurrentFormattedDate()
-    return this.http.post<Cita>(`${this.URI}/evento`, evento);
+    return this.http.post<Cita>(`${this.URI}/evento`, evento, { withCredentials: true });
   }
   
 
   getCitas$(id_clinica): Observable<Cita[]>{
-    this.http.get<Cita[]>(`${this.URI}/clinica/${id_clinica}`).subscribe(
+    this.http.get<Cita[]>(`${this.URI}/clinica/${id_clinica}`, { withCredentials: true }).subscribe(
       res=>{
         this.citas.next(res)
       },
@@ -43,7 +43,7 @@ export class CitaService {
   }
 
   getCitaById$(id: string) {
-    return this.http.get<CitaEditar>(`${this.URI}/${id}`);
+    return this.http.get<CitaEditar>(`${this.URI}/${id}`, { withCredentials: true });
   }
   
 
@@ -61,7 +61,7 @@ export class CitaService {
     cita.id_usuario_actualizo = localStorage.getItem('_us')
     cita.id_clinica = localStorage.getItem('_cli')
     cita.fecha_actualizacion = DateUtil.getCurrentFormattedDate()
-    return this.http.patch<CitaEditar>(`${this.URI}/${id}`, cita);
+    return this.http.patch<CitaEditar>(`${this.URI}/${id}`, cita, { withCredentials: true });
   }
 
   deleteCita(id: string): Observable<void> {
@@ -69,11 +69,11 @@ export class CitaService {
       .set('id_usuario_elimino', localStorage.getItem('_us'))
       .set('id_clinica', localStorage.getItem('_cli'))
       .set('fecha_eliminacion', DateUtil.getCurrentFormattedDate())
-    return this.http.delete<void>(`${this.URI}/${id}`, { params });
+    return this.http.delete<void>(`${this.URI}/${id}`, { params, withCredentials: true });
   }
 
   getCitasByIdPaciente(id_paciente): Observable<CitaPaciente[]>{
-    return this.http.get<CitaPaciente[]>(`${this.URI}/paciente/${id_paciente}`);
+    return this.http.get<CitaPaciente[]>(`${this.URI}/paciente/${id_paciente}`, { withCredentials: true });
   }
 
 }

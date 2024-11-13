@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
 
   correoUsuario: string
   id_usuario:string
+  id_clinica:string
   formularioLogin:FormGroup
   auth:Auth
   usuario: Usuario
@@ -105,6 +106,7 @@ export class LoginComponent implements OnInit {
           // Token
           console.log("Token")
           this.cifradoService.setEncryptedToken(this.auth.token)
+          console.log("AQUI DEBIO GENERAR LA COOKIE USUARIO SN 2fa")
           this.validaUsuarioPorCorreo()
         }  
         
@@ -132,16 +134,20 @@ export class LoginComponent implements OnInit {
   }
 
   validaUsuarioPorCorreo(){
+    console.log("validaUsuarioPorCorreo:: "+this.correoUsuario)
     const correoJson = {
       correo:this.correoUsuario
     }
 
     this.authService.getUsuarioByCorreo$(correoJson).subscribe(
       res => {
-        console.log("Valida Usuario por Correo:")
+        console.log("Validó Usuario correo")
+        this.usuario = res
         console.log(this.usuario)
+        console.log(JSON.stringify(this.usuario))
         this.usuario=res
         this.id_usuario=this.usuario.id
+        this.id_clinica=this.usuario.id_clinica
         this.rol=this.usuario.rol
         this.sharedService.setNombreUsuario(this.usuario.nombre +" "+this.usuario.apellidop)
         localStorage.setItem('_cli', this.usuario.id_clinica)
@@ -149,10 +155,12 @@ export class LoginComponent implements OnInit {
         this.cifradoService.setEncryptedRol(this.usuario.rol)
         this.cifradoService.setEncryptedIdPlan(this.usuario.id_plan)
         
-        if(this.rol =="suadmin"){
-          this.validaTieneClinicaSuperAdmin()
+        if(this.rol =="suadmin" && this.usuario.id_clinica == ""){
+          //this.validaTieneClinicaSuperAdmin()
+          this.router.navigate(['/configuracion/perfil/usuario'])
         }else{
-          this.validaClinicaPerteneciente()
+          //this.validaClinicaPerteneciente()
+          this.getCentro()
         }
 
         this.sharedService.notifyApp.emit();
@@ -165,29 +173,10 @@ export class LoginComponent implements OnInit {
     )
   }
 
-  validaTieneClinicaSuperAdmin(){
-    console.log("Valida tiene clinica, id usuario:: "+this.id_usuario)
-    this.centroService.getCentroByIdUserSuAdmin(this.id_usuario).subscribe(
+  getCentro(){
+    this.centroService.getCentro$(this.id_clinica).subscribe(
       res => {
-        console.log("SU admin tiene Clinica")
-        this.centro=res
-        
-        this.sharedService.setNombreClinica(this.centro.nombre);
-        //this.validarPlanGratuito()
-        this.router.navigate(['/calendario'])
-      },
-      err => {
-        console.log("No tiene Clínica")
-        console.log(err)
-        this.router.navigate(['/configuracion/perfil/usuario'])
-      }
-    )
-  }
-
-  validaClinicaPerteneciente(){
-    this.centroService.getCentro$(this.usuario.id_clinica).subscribe(
-      res => {
-        console.log("Si pertenece a una Clinica")
+        console.log("Clinica")
         this.centro = res
         this.sharedService.setNombreClinica(this.centro.nombre);
         //this.validarPlanGratuito()
@@ -200,7 +189,7 @@ export class LoginComponent implements OnInit {
       }
     )
   }
-
+  
   openModal2FA(content: TemplateRef<any>) {
     this.modalService.open(content, { centered: true, backdrop: 'static', keyboard: false });
   }
@@ -270,6 +259,8 @@ export class LoginComponent implements OnInit {
       this.validaUsuarioPorCorreo()
 
       this.modalService.dismissAll()
+
+      console.log("AQUI YA DEBIÓ DEVOLVER LA COOKIE")
     },
     err => {
       console.log(err)
@@ -279,7 +270,7 @@ export class LoginComponent implements OnInit {
     })
   }
 
-  validarPlanGratuito(){
+  /*validarPlanGratuito(){
     console.log("Desencripar para validar...")
     const id_plan = this.cifradoService.getDecryptedIdPlan()  
     //console.log("Validar vigencia de plan gratuito:: " +id_plan);
@@ -295,12 +286,13 @@ export class LoginComponent implements OnInit {
 
             this.sharedService.setDiasRestantesPlanGratuito(diasRestantes.toString());
             localStorage.setItem('dias_restantes_p_g', diasRestantes.toString())
+
           },
           err => {
             console.log("Error al invocar el plan")
           }
       )
     }
-  }
+  }*/
 
 }
